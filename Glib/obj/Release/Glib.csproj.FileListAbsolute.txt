@@ -1,0 +1,10 @@
+C:\Users\angusm\Documents\Dropbox\Programming\c#\Glib\Glib\bin\Release\Glib.dll
+C:\Users\angusm\Documents\Dropbox\Programming\c#\Glib\Glib\bin\Release\Glib.pdb
+C:\Users\angusm\Documents\Dropbox\Programming\c#\Glib\Glib\obj\Release\Glib.dll
+C:\Users\angusm\Documents\Dropbox\Programming\c#\Glib\Glib\obj\Release\Glib.pdb
+C:\Users\angusm\Documents\Dropbox\Programming\c#\Glib\Glib\obj\Release\Glib.csprojResolveAssemblyReference.cache
+C:\Users\angusm\Documents\Dropbox\Programming\CSharp\Glib\Glib\bin\Release\Glib.dll
+C:\Users\angusm\Documents\Dropbox\Programming\CSharp\Glib\Glib\bin\Release\Glib.pdb
+C:\Users\angusm\Documents\Dropbox\Programming\CSharp\Glib\Glib\obj\Release\Glib.dll
+C:\Users\angusm\Documents\Dropbox\Programming\CSharp\Glib\Glib\obj\Release\Glib.pdb
+C:\Users\angusm\Documents\Dropbox\Programming\CSharp\Glib\Glib\obj\Release\Glib.csprojResolveAssemblyReference.cache
