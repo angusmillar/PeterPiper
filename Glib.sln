@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glib", "Glib\Glib.csproj", "{25AB1577-FF72-4F41-B1E4-5E3ADE7995EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjectGlib", "TestProjectGlib\TestProjectGlib.csproj", "{35FF6B08-A1E6-4D92-8B18-87D283F2E628}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC3C1D92-FBF7-4E87-B3A3-29E0CD2A3BCE}"
+	ProjectSection(SolutionItems) = preProject
+		Glib.vsmdi = Glib.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Glib.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{25AB1577-FF72-4F41-B1E4-5E3ADE7995EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25AB1577-FF72-4F41-B1E4-5E3ADE7995EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25AB1577-FF72-4F41-B1E4-5E3ADE7995EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25AB1577-FF72-4F41-B1E4-5E3ADE7995EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35FF6B08-A1E6-4D92-8B18-87D283F2E628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35FF6B08-A1E6-4D92-8B18-87D283F2E628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35FF6B08-A1E6-4D92-8B18-87D283F2E628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35FF6B08-A1E6-4D92-8B18-87D283F2E628}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
