@@ -98,24 +98,7 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       }
     }
 
-    internal int? _ComponentCount = null;
-    //public string ComponentCount
-    //{
-    //  get
-    //  {
-    //    return _ComponentCount.ToString();
-    //  }
-    //}
-    //public int ComponentCountInteger
-    //{
-    //  get
-    //  {
-    //    if (_ComponentCount == null)
-    //      return 0;
-    //    else
-    //      return Convert.ToInt32(_ComponentCount);
-    //  }
-    //}
+    internal int? _ComponentCount = null;    
 
     internal int? _SubComponentPosition = null;
     public string SubComponentPosition
