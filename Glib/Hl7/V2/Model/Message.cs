@@ -269,8 +269,8 @@ namespace Glib.Hl7.V2.Model
     }   
     public Segment Segment(string Code)
     {
-      ValidateSegmentCode(Code);            
-      return _SegmentDictonary.FirstOrDefault(i => i.Value.Code.ToUpper() == Code.ToUpper()).Value;      
+      ValidateSegmentCode(Code);
+      return GetSegment(Code);
     }    
     public Segment Segment(int index)
     {
@@ -299,9 +299,12 @@ namespace Glib.Hl7.V2.Model
     }    
     internal Segment GetSegment(string Code)
     {
-      if (Code.Length != 3)
-        throw new ArgumentException("All Segment codes must be 3 charaters in length.");
-      return _SegmentDictonary.FirstOrDefault(i => i.Value.Code.ToUpper() == Code.ToUpper()).Value;
+      ValidateSegmentCode(Code);      
+      Segment oSeg = _SegmentDictonary.FirstOrDefault(i => i.Value.Code.ToUpper() == Code.ToUpper()).Value;
+      if (oSeg != null)
+        return oSeg;
+      else
+        throw new ArgumentOutOfRangeException("There is no segment with a segment code of " + Code + " within the message. \n Perhaps you should test for the segments existence with SegmentCount first or create the segment in the message first.");      
     }
     internal int CountSegment
     {
