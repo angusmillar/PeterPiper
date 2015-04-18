@@ -82,7 +82,18 @@ namespace TestProjectGlib
     [TestMethod()]
     public void DecoderTest()
     {
+
+      //C:\Users\AngusMillar\Documents\GITRepositories\hl7-simplicity-library\TestResults\Deploy_AngusMillar 2015-04-18 21_08_00\Out
       string path = AssemblyDirectory + "\\TestResource\\ED Data Test.zip";
+      string NewPath = String.Empty;
+      //This is to work around VS2013 Community not running testcases like VS2010 Pro did.
+      if (path.Contains(@"\TestResults\"))
+      {
+        NewPath = path.Substring(0, path.IndexOf(@"\TestResults\"));
+        path = NewPath + @"\TestProjectGlib\TestResource\ED Data Test.zip"; 
+      }
+      
+
       byte[] item = File.ReadAllBytes(path);
       byte[] expected = null;
       string temp;      
