@@ -20,28 +20,9 @@ namespace Glib.Hl7.V2.Model
       this._Delimiters = Delimiters;
     }
 
-    public virtual string AsString
-    {
-      get
-      {
-        return "";
-      }
-      set
-      {
-        { throw new NotImplementedException(); }
-      }
-    }
-    public virtual string AsStringRaw
-    {
-      get
-      {
-        { throw new NotImplementedException(); }
-      }
-      set
-      {
-        { throw new NotImplementedException(); }
-      }
-    }
+    public virtual string AsString {get; set;}    
+    public virtual string AsStringRaw {get; set;}
+    
     public int? Index
     {
       get
@@ -50,11 +31,11 @@ namespace Glib.Hl7.V2.Model
       }
     }
 
-    public ModelSupport.PathInformation  PathInformation
+    public ModelSupport.PathDetail  PathDetail
     {
       get
       {
-        return  ModelSupport.PathInformationFactory.GetPathInformation(this);
+        return  ModelSupport.PathDetailFactory.GetPathDetail(this);
       }
     }
 
@@ -105,7 +86,7 @@ namespace Glib.Hl7.V2.Model
     internal void ValidateItemNotInUse(ModelBase item)
     {
       if (item._Parent != null && item._Index != null && item._Temporary != true)
-        throw new ArgumentException("The item passed is in use within another structure. This is not allowed. Have you forgotten to Clone() the item before reusing.");
+        throw new ArgumentException("The object instance passed is in use within another structure. This is not allowed. Have you forgotten to Clone() the instance before reusing.");
     }
 
   }

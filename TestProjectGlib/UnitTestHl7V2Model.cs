@@ -693,20 +693,32 @@ namespace TestProjectGlib
       oSegment.Insert(1, new Element(""));
       oSegment.Insert(1, new Element(""));
       Assert.AreEqual("PID|||First1~First2|Second||||||||||Third", oSegment.AsString, "oSegment.RepeatInsertBefore returned incorrect");
-      
-      ////Very intresting senario, add the same Component to two different parent fields. 
-      ////The Parent property set to that lass parent the object was added to even though it is now contatined in both parent's ComponentList
-      ////This is not good but as we currently don't use the Parent property for any functional use it works. 
-      ////Need to review weather we even need the Parent property at all?
+
+      //Very interesting scenario, add the same Component to two different parent fields. 
+      //The Parent property of the Component can only have one parent and is set to the last known even though it is now contained in both parent's ComponentList
+      //This was not allowed to happen. I have implemented a base .Clone method which needed to be done anyway and also 
+      //now throw an exception for this case as tested below.
+      //End story is users must clone object instances to use them in another structure. I think this 
+      //is reasonable 
+
       oSegment.ClearAll();
       var oElement = new Element("Test");
-      oSegment.Insert(1, oElement.Clone());
+      oSegment.Insert(1, oElement);
+      try
+      {
+        oSegment.Insert(2, oElement);
+      }      
+      catch (ArgumentException e)
+      {
+        Assert.AreEqual("The object instance passed is in use within another structure. This is not allowed. Have you forgotten to Clone() the instance before reusing.", 
+                        e.Message, "Exception thrown has wrong text");
+      }
       oSegment.Insert(2, oElement.Clone());
       oSegment.Add(oElement.Clone());
       oElement.AsString = "Test2";
       Segment oSegment2 = new Segment("ROL|");
-      oSegment2.Add(oElement);
-
+      oSegment2.Add(oElement.Clone());
+      string teeeest = oSegment.Field(1).PathDetail.PathBrief;
 
       ////Test Adding and removing Fields on segment instance
       oSegment.ClearAll();
@@ -1151,6 +1163,7 @@ namespace TestProjectGlib
       oMessage.Segment("PID").Field(2).Add(oContent1.Clone());
       oMessage.Segment("PID").Field(2).Component(1).Add(oContent1.Clone());
 
+      
     }
 
   }
