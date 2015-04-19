@@ -82,7 +82,14 @@ namespace TestProjectGlib
     [TestMethod()]
     public void Hl7ReaderConstructorTest()
     {
-      string path = AssemblyDirectory + "\\TestResource\\TestSetOfMsg.dat";
+      string path = AssemblyDirectory;
+
+      //This is to work around VS2013 Community not running test cases like VS2010 Pro did.
+      if (path.Contains(@"\TestResults\"))
+      {
+        path = path.Substring(0, path.IndexOf(@"\TestResults\")) + @"\TestProjectGlib\TestResource\TestSetOfMsg.dat";        
+      }
+
       Hl7StreamReader target = new Hl7StreamReader(path);      
     }
 
@@ -115,8 +122,15 @@ namespace TestProjectGlib
     [TestMethod()]
     public void ReadTest()
     {
-      string readpath = AssemblyDirectory + "\\TestResource\\TestSetOfMsg.dat";      
-      string writepath = AssemblyDirectory + "\\TestResource\\TestSetOfMsg2.dat";
+      string path = AssemblyDirectory;      
+      //This is to work around VS2013 Community not running test cases like VS2010 Pro did.
+      if (path.Contains(@"\TestResults\"))
+      {
+        path = path.Substring(0, path.IndexOf(@"\TestResults\")) + @"\TestProjectGlib";
+      }
+      string readpath = path + "\\TestResource\\TestSetOfMsg.dat";
+      string writepath = path + "\\TestResource\\TestSetOfMsg2.dat";
+
       Hl7StreamReader reader = new Hl7StreamReader(readpath);
       HL7StreamWriter writer = new HL7StreamWriter(writepath, true);
       List<Glib.Hl7.V2.Model.Message> oMessageList = new List<Glib.Hl7.V2.Model.Message>();
