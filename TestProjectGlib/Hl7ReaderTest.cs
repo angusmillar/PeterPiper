@@ -87,7 +87,11 @@ namespace TestProjectGlib
       //This is to work around VS2013 Community not running test cases like VS2010 Pro did.
       if (path.Contains(@"\TestResults\"))
       {
-        path = path.Substring(0, path.IndexOf(@"\TestResults\")) + @"\TestProjectGlib\TestResource\TestSetOfMsg.dat";        
+        path = path.Substring(0, path.IndexOf(@"\TestResults\")) + @"\TestProjectGlib\TestResource\TestSetOfMsg.dat";
+      }
+      else
+      {
+        path = AssemblyDirectory + @"\TestResource\TestSetOfMsg.dat";
       }
 
       Hl7StreamReader target = new Hl7StreamReader(path);      
