@@ -70,7 +70,7 @@ namespace TestProjectGlib
     [TestMethod()]
     public void AsDateTimeTest()
     {
-      string HL7StandardDateTimeString = "20140225083022.5190+08:00";
+      string HL7StandardDateTimeString = "20140225083022.5190+0800";
       DateTime expected = new DateTime(2014,02,25,10,30,22,519,DateTimeKind.Local);
       DateTime actual;
       actual = DateTimeTools.ConvertStringToDateTime.AsDateTime(HL7StandardDateTimeString);
@@ -112,7 +112,7 @@ namespace TestProjectGlib
     [DeploymentItem("Glib.dll")]
     public void HasTimeMillisecondsAndTimeZoneTest()
     {
-      string String = "20140225083022.5190+08:00"; ; 
+      string String = "20140225083022.5190+0800"; ; 
       string expected = "yyyyMMddHHmmss.ffffzzzzz"; 
       string actual;
       actual = DateTimeTools_Accessor.ConvertStringToDateTime.HasTimeMillisecondsAndTimeZone(String);
@@ -127,7 +127,7 @@ namespace TestProjectGlib
     [DeploymentItem("Glib.dll")]
     public void HasTimeZoneTest()
     {
-      string String = "20140225083022+08:00"; ; 
+      string String = "20140225083022+0800"; ; 
       string expected = "yyyyMMddHHmmsszzzzz"; 
       string actual;
       actual = DateTimeTools_Accessor.ConvertStringToDateTime.HasTimeZone(String);

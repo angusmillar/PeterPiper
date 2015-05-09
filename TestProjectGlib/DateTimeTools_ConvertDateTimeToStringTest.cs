@@ -108,7 +108,7 @@ namespace TestProjectGlib
     public void AsDateHourMinTest1()
     {      
       TimeSpan OffSetTime = new TimeSpan(+8,0,0); 
-      string expected = "201402250830+08:00";
+      string expected = "201402250830+0800";
       string actual;
       actual = DateTimeTools.ConvertDateTimeToString.AsDateHourMin(oDateTime, OffSetTime);
       Assert.AreEqual(expected, actual);      
@@ -134,7 +134,7 @@ namespace TestProjectGlib
     {
       
       TimeSpan OffSetTime = new TimeSpan(+8,0,0); 
-      string expected = "20140225083022+08:00";
+      string expected = "20140225083022+0800";
       string actual;
       actual = DateTimeTools.ConvertDateTimeToString.AsDateHourMinSec(oDateTime, OffSetTime);
       Assert.AreEqual(expected, actual);    
@@ -159,7 +159,7 @@ namespace TestProjectGlib
     public void AsDateHourMinSecMilliTest1()
     {      
       TimeSpan OffSetTime = new TimeSpan(+8,0,0); 
-      string expected = "20140225083022.5190+08:00";
+      string expected = "20140225083022.5190+0800";
       string actual;
       actual = DateTimeTools.ConvertDateTimeToString.AsDateHourMinSecMilli(oDateTime, OffSetTime);
       Assert.AreEqual(expected, actual);      

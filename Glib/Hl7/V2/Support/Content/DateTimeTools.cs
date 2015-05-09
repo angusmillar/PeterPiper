@@ -40,7 +40,7 @@ namespace Glib.Hl7.V2.Support.Content
       public static string AsDateHourMinSecMilli(DateTime oDateTime, TimeSpan OffSetTime)
       {
         DateTimeOffset NewTime = new DateTimeOffset(oDateTime);
-        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}.{3}{4}", fDate, fHourMin, fSec, fMilliSec, fTimeZone));
+        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}.{3}{4}", fDate, fHourMin, fSec, fMilliSec, fTimeZone)).Replace(":", "");
       }
       /// <summary>
       /// Returns a Datetime as a string representation of YYYYMMDDHHMMSS (i.e 20150125103025)
@@ -60,7 +60,7 @@ namespace Glib.Hl7.V2.Support.Content
       public static string AsDateHourMinSec(DateTime oDateTime, TimeSpan OffSetTime)
       {
         DateTimeOffset NewTime = new DateTimeOffset(oDateTime);
-        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}{3}", fDate, fHourMin, fSec, fTimeZone));
+        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}{3}", fDate, fHourMin, fSec, fTimeZone)).Replace(":","");
       }
       /// <summary>
       /// Returns a Datetime as a string representation of YYYYMMDDHHMM (i.e 201501251030)
@@ -80,7 +80,7 @@ namespace Glib.Hl7.V2.Support.Content
       public static string AsDateHourMin(DateTime oDateTime, TimeSpan OffSetTime)
       {
         DateTimeOffset NewTime = new DateTimeOffset(oDateTime);
-        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}", fDate, fHourMin, fTimeZone));
+        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}", fDate, fHourMin, fTimeZone)).Replace(":", "");
       }
       /// <summary>
       /// Returns a Datetime as a string representation of YYYYMMDD (i.e 20150125)
@@ -177,17 +177,17 @@ namespace Glib.Hl7.V2.Support.Content
       {
         switch (String.Length)
         {
-          case 10:
+          case 9:
             return "yyyyzzzzz";
-          case 12:
+          case 11:
             return "yyyyMMzzzzz";
-          case 14:
+          case 13:
             return "yyyyMMddzzzzz";
-          case 16:
+          case 15:
             return "yyyyMMddHHzzzzz";
-          case 18:
+          case 17:
             return "yyyyMMddHHmmzzzzz";
-          case 20:
+          case 19:
             return "yyyyMMddHHmmsszzzzz";
           default:
             throw new FormatException(String.Format(LengthExceptionMessage, String));
@@ -215,13 +215,13 @@ namespace Glib.Hl7.V2.Support.Content
       {
         switch (String.Length)
         {
-          case 22:
+          case 21:
             return "yyyyMMddHHmmss.fzzzzz";
-          case 23:
+          case 22:
             return "yyyyMMddHHmmss.ffzzzzz";
-          case 24:
+          case 23:
             return "yyyyMMddHHmmss.fffzzzzz";
-          case 25:
+          case 24:
             return "yyyyMMddHHmmss.ffffzzzzz";
           default:
             throw new FormatException(String.Format(LengthExceptionMessage, String));
