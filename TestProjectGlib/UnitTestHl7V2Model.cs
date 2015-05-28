@@ -1117,7 +1117,7 @@ namespace TestProjectGlib
       Assert.AreEqual("1^^^4^5^6^^8", oPIDSeg.Field(3).AsString, "oPIDSeg.Field(3).ComponentList returns the incorrect values");
 
       string datetest = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeToString.AsDateHourMinSec(DateTime.Now, new TimeSpan(+8,0,0));
-      DateTime testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTime("2014+08:00");
+      DateTime testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTime("2014+0800");
 
       oMessage = new Message(sbMessage.ToString());
       SubComponent SubCom = new SubComponent("Sub");

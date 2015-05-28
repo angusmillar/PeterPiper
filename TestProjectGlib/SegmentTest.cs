@@ -534,26 +534,26 @@ namespace TestProjectGlib
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||oneC^TwoC^One&Two~one2C^Two2C^One2&Two2|||201405270956|RB^PATH QLD Central^AUSLAB";
       Segment target = new Segment(StringRaw);
-      Assert.AreEqual("OBX", target.PathInformation.PathBrief, "A test for PathInformation 1");
-      Assert.AreEqual("Segment: OBX", target.PathInformation.PathVerbos, "A test for PathInformation 2");
+      Assert.AreEqual("OBX", target.PathDetail.PathBrief, "A test for PathInformation 1");
+      Assert.AreEqual("Segment: OBX", target.PathDetail.PathVerbos, "A test for PathInformation 2");
 
-      Assert.AreEqual("OBX-3", target.Field(3).PathInformation.PathBrief, "A test for PathInformation 3");
-      Assert.AreEqual("Segment: OBX, Field: 3", target.Field(3).PathInformation.PathVerbos, "A test for PathInformation 4");
+      Assert.AreEqual("OBX-3", target.Field(3).PathDetail.PathBrief, "A test for PathInformation 3");
+      Assert.AreEqual("Segment: OBX, Field: 3", target.Field(3).PathDetail.PathVerbos, "A test for PathInformation 4");
 
-      Assert.AreEqual("OBX-3", target.Element(3).PathInformation.PathBrief, "A test for PathInformation 5");
-      Assert.AreEqual("Segment: OBX, Field: 3", target.Element(3).PathInformation.PathVerbos, "A test for PathInformation 6");
+      Assert.AreEqual("OBX-3", target.Element(3).PathDetail.PathBrief, "A test for PathInformation 5");
+      Assert.AreEqual("Segment: OBX, Field: 3", target.Element(3).PathDetail.PathVerbos, "A test for PathInformation 6");
 
-      Assert.AreEqual("OBX-3.2", target.Element(3).Component(2).PathInformation.PathBrief, "A test for PathInformation 7");
-      Assert.AreEqual("Segment: OBX, Field: 3, Component: 2", target.Element(3).Component(2).PathInformation.PathVerbos, "A test for PathInformation 8");
+      Assert.AreEqual("OBX-3.2", target.Element(3).Component(2).PathDetail.PathBrief, "A test for PathInformation 7");
+      Assert.AreEqual("Segment: OBX, Field: 3, Component: 2", target.Element(3).Component(2).PathDetail.PathVerbos, "A test for PathInformation 8");
 
-      Assert.AreEqual("OBX-6 [1]", target.Element(6).Content(1).PathInformation.PathBrief, "A test for PathInformation 9");
-      Assert.AreEqual("Segment: OBX, Field: 6, [Content: 1]", target.Element(6).Content(1).PathInformation.PathVerbos, "A test for PathInformation 10");
+      Assert.AreEqual("OBX-6 [1]", target.Element(6).Content(1).PathDetail.PathBrief, "A test for PathInformation 9");
+      Assert.AreEqual("Segment: OBX, Field: 6, [Content: 1]", target.Element(6).Content(1).PathDetail.PathVerbos, "A test for PathInformation 10");
 
-      Assert.AreEqual("OBX-6", target.Element(6).PathInformation.PathBrief, "A test for PathInformation 11");
-      Assert.AreEqual("Segment: OBX, Field: 6", target.Element(6).PathInformation.PathVerbos, "A test for PathInformation 12");
+      Assert.AreEqual("OBX-6", target.Element(6).PathDetail.PathBrief, "A test for PathInformation 11");
+      Assert.AreEqual("Segment: OBX, Field: 6", target.Element(6).PathDetail.PathVerbos, "A test for PathInformation 12");
 
-      Assert.AreEqual("OBX-11{2}.3.2", target.Element(11).Repeat(2).Component(3).SubComponent(2).PathInformation.PathBrief, "A test for PathInformation 11");
-      Assert.AreEqual("Segment: OBX, Field: 11, {Repeat: 2, Component: 3, SubComponent: 2 }", target.Element(11).Repeat(2).Component(3).SubComponent(2).PathInformation.PathVerbos, "A test for PathInformation 12");
+      Assert.AreEqual("OBX-11{2}.3.2", target.Element(11).Repeat(2).Component(3).SubComponent(2).PathDetail.PathBrief, "A test for PathInformation 11");
+      Assert.AreEqual("Segment: OBX, Field: 11, {Repeat: 2, Component: 3, SubComponent: 2 }", target.Element(11).Repeat(2).Component(3).SubComponent(2).PathDetail.PathVerbos, "A test for PathInformation 12");
 
     }
   }

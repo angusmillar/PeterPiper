@@ -7,15 +7,15 @@ using Glib.Hl7.V2.Support.Content;
 
 namespace Glib.Hl7.V2.Model.ModelSupport
 {
-  internal static class PathInformationFactory
+  internal static class PathDetailFactory
   {
-    public static PathInformation GetPathInformation(ModelBase item)
+    public static PathDetail GetPathDetail(ModelBase item)
     {
-      return LoadInfomationData(item);      
+      return LoadPathDetailData(item);      
     }
-    private static PathInformation LoadInfomationData(ModelBase item)
+    private static PathDetail LoadPathDetailData(ModelBase item)
     {
-      PathInformation _Info = new PathInformation();  
+      PathDetail _Info = new PathDetail();  
       if (item is Glib.Hl7.V2.Model.Content)
       {
         GetContentInfo(item, _Info);
@@ -46,21 +46,21 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       }
       return _Info;
     }
-    private static void GetContentInfo(Glib.Hl7.V2.Model.ModelBase item, PathInformation _Info)
+    private static void GetContentInfo(Glib.Hl7.V2.Model.ModelBase item, PathDetail _Info)
     {
       var Content = item as Glib.Hl7.V2.Model.Content;
       _Info._ContentPosition = Content._Index;        
       if (item._Parent != null)
         GetSubComponentInfo(item._Parent,_Info);     
     }
-    private static void GetSubComponentInfo(Glib.Hl7.V2.Model.ModelBase item, PathInformation _Info)
+    private static void GetSubComponentInfo(Glib.Hl7.V2.Model.ModelBase item, PathDetail _Info)
     {
       var SubComponent = item as Glib.Hl7.V2.Model.SubComponent;
       _Info._SubComponentPosition = SubComponent._Index;
       if (item._Parent != null)
         GetComponentInfo(item._Parent, _Info);
     }
-    private static void GetComponentInfo(Glib.Hl7.V2.Model.ModelBase item, PathInformation _Info)
+    private static void GetComponentInfo(Glib.Hl7.V2.Model.ModelBase item, PathDetail _Info)
     {
       var Component = item as Glib.Hl7.V2.Model.Component;
       _Info._ComponentPosition = Component._Index;
@@ -68,7 +68,7 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       if (item._Parent != null)
         GetFieldInfo(item._Parent, _Info);
     }
-    private static void GetFieldInfo(Glib.Hl7.V2.Model.ModelBase item, PathInformation _Info)
+    private static void GetFieldInfo(Glib.Hl7.V2.Model.ModelBase item, PathDetail _Info)
     {
       var Field = item as Glib.Hl7.V2.Model.Field;
       _Info._RepeatPosition = Field._Index;
@@ -76,7 +76,7 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       if (item._Parent != null)
         GetElementInfo(item._Parent, _Info);
     }
-    private static void GetElementInfo(Glib.Hl7.V2.Model.ModelBase item, PathInformation _Info)
+    private static void GetElementInfo(Glib.Hl7.V2.Model.ModelBase item, PathDetail _Info)
     {
       var Element = item as Glib.Hl7.V2.Model.Element;
       _Info._FieldPosition = Element._Index;
@@ -84,7 +84,7 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       if (item._Parent != null)
         GetSegmentInfo(item._Parent, _Info);
     }
-    private static void GetSegmentInfo(Glib.Hl7.V2.Model.ModelBase item, PathInformation _Info)
+    private static void GetSegmentInfo(Glib.Hl7.V2.Model.ModelBase item, PathDetail _Info)
     {
       var Segment = item as Glib.Hl7.V2.Model.Segment;
       int SegmentCount = 0;
@@ -99,7 +99,7 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       if (item._Parent != null)
         GetMessageInfo(item._Parent, _Info);
     }
-    private static void GetMessageInfo(Glib.Hl7.V2.Model.ModelBase item, PathInformation _Info)
+    private static void GetMessageInfo(Glib.Hl7.V2.Model.ModelBase item, PathDetail _Info)
     {
       var Message = item as Glib.Hl7.V2.Model.Message;
       _Info._MessageType = Message.MessageType;

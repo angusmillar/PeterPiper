@@ -396,9 +396,9 @@ namespace TestProjectGlib
     public void PathInformationTest()
     {
       Component target = new Component("one&two&three&four");
-      Assert.AreEqual("<unk>-?", target.PathInformation.PathBrief, "A test for SubComponentList");
-      Assert.AreEqual("<unk>-?.?.2", target.SubComponent(2).PathInformation.PathBrief, "A test for SubComponentList");
-      Assert.AreEqual("<unk>-?.?.2 [0]", target.SubComponent(2).Content(0).PathInformation.PathBrief, "A test for SubComponentList");
+      Assert.AreEqual("<unk>-?", target.PathDetail.PathBrief, "A test for SubComponentList");
+      Assert.AreEqual("<unk>-?.?.2", target.SubComponent(2).PathDetail.PathBrief, "A test for SubComponentList");
+      Assert.AreEqual("<unk>-?.?.2 [0]", target.SubComponent(2).Content(0).PathDetail.PathBrief, "A test for SubComponentList");
     }
   }
 }

@@ -76,8 +76,8 @@ namespace TestProjectGlib
     {
       EscapeType EscapeType = Glib.Hl7.V2.Support.Standard.EscapeType.NewLine;       
       Content target = new Content(EscapeType, CustomDelimiters);
-      Assert.AreEqual(".br", target.AsStringRaw, "Custom Delimiters reterned incorrectly.");
-      Assert.AreEqual("%", target.Delimiters.Escape.ToString(), "Custom Delimiters reterned incorrectly.");
+      Assert.AreEqual(".br", target.AsStringRaw, "Custom Delimiters returned incorrectly.");
+      Assert.AreEqual("%", target.Delimiters.Escape.ToString(), "Custom Delimiters returned incorrectly.");
     }
 
     /// <summary>
@@ -88,8 +88,8 @@ namespace TestProjectGlib
     {
       EscapeData EscapeMetaData = new EscapeData(EscapeType.SkipVerticalSpaces, "+10");
       Content target = new Content(EscapeMetaData);
-      Assert.AreEqual(".sp+10", target.AsStringRaw, "Custom Delimiters reterned incorrectly.");
-      Assert.AreEqual("|", target.Delimiters.Field.ToString(), "Custom Delimiters reterned incorrectly.");
+      Assert.AreEqual(".sp+10", target.AsStringRaw, "Custom Delimiters returned incorrectly.");
+      Assert.AreEqual("|", target.Delimiters.Field.ToString(), "Custom Delimiters returned incorrectly.");
     }
 
     /// <summary>
@@ -130,9 +130,9 @@ namespace TestProjectGlib
     public void ContentConstructorTest4()
     {
       string String = "Test Content";      
-      bool Temporary = true; // TODO: Initialize to an appropriate value
-      Nullable<int> Index = 20; // TODO: Initialize to an appropriate value
-      ContentBase Parent = null; // TODO: Initia;ize to an appropriate value
+      bool Temporary = true; 
+      Nullable<int> Index = 20; 
+      ContentBase Parent = null;
       Content target = new Content(String, CustomDelimiters, Temporary, Index, Parent);
       Assert.AreSame("Test Content", target.AsStringRaw, "Content Constructor test failed");
     }
@@ -143,7 +143,7 @@ namespace TestProjectGlib
     [TestMethod()]
     public void ContentConstructorTest5()
     {
-      string String = "Q5555"; // TODO: Initialize to an appropriate value
+      string String = "Q5555"; 
       ContentType ContentType = Glib.Hl7.V2.Support.Content.ContentType.Escape;      
       Content target = new Content(String, ContentType, CustomDelimiters);
       Assert.AreEqual("Q5555", target.AsStringRaw, "Content Constructor test failed");
@@ -230,8 +230,8 @@ namespace TestProjectGlib
     public void CloneTest()
     {
       EscapeType EscapeType = Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOff;
-      Content target = new Content(EscapeType); // TODO: Initialize to an appropriate value
-      Content expected = target; // TODO: Initialize to an appropriate value
+      Content target = new Content(EscapeType); 
+      Content expected = target; 
       Content actual;
       actual = target.Clone();
       Assert.AreEqual(expected._Index, actual._Index);
@@ -334,8 +334,8 @@ namespace TestProjectGlib
     [TestMethod()]
     public void AsStringTest()
     {      
-      Content target = new Content("Hellow World"); // TODO: Initialize to an appropriate value
-      string expected = "Hellow World";
+      Content target = new Content("Hello World"); 
+      string expected = "Hello World";
       string actual;
       target.AsString = expected;
       actual = target.AsString;
@@ -428,7 +428,7 @@ namespace TestProjectGlib
     public void PathInformationTest()
     {
       Content target = new Content("one");
-      Assert.AreEqual("<unk>-?", target.PathInformation.PathBrief);     
+      Assert.AreEqual("<unk>-?", target.PathDetail.PathBrief);     
     }
   }
 }

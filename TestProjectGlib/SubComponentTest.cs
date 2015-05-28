@@ -315,12 +315,12 @@ namespace TestProjectGlib
     public void PathInformationTest()
     {
       SubComponent target = new SubComponent("Hello \\F\\ World");      
-      Assert.AreEqual("<unk>-?", target.PathInformation.PathBrief);
-      Assert.AreEqual("<unk>-? [0]", target.Content(0).PathInformation.PathBrief);
-      Assert.AreEqual("<unk>-? [1]", target.Content(1).PathInformation.PathBrief);
-      Assert.AreEqual("<unk>-? [2]", target.Content(2).PathInformation.PathBrief);
-      Assert.AreEqual("<unk>-? [3]", target.Content(3).PathInformation.PathBrief);
-      Assert.AreEqual("<unk>-? [3]", target.Content(4).PathInformation.PathBrief);
+      Assert.AreEqual("<unk>-?", target.PathDetail.PathBrief);
+      Assert.AreEqual("<unk>-? [0]", target.Content(0).PathDetail.PathBrief);
+      Assert.AreEqual("<unk>-? [1]", target.Content(1).PathDetail.PathBrief);
+      Assert.AreEqual("<unk>-? [2]", target.Content(2).PathDetail.PathBrief);
+      Assert.AreEqual("<unk>-? [3]", target.Content(3).PathDetail.PathBrief);
+      Assert.AreEqual("<unk>-? [3]", target.Content(4).PathDetail.PathBrief);
     }
 
   }

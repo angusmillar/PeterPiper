@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Glib.Hl7.V2.Model.ModelSupport
 {
-  public class PathInformation
+  public class PathDetail
   {
     internal string _MessageType = string.Empty;
     public string MessageType
