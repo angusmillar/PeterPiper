@@ -311,7 +311,8 @@ namespace Glib.Hl7.V2.Model
     {
       get
       {
-        return (this._Data == String.Empty);
+        return String.IsNullOrWhiteSpace(this._Data);
+        //return (this._Data == String.Empty);
       }
     }
     public bool IsHL7Null
