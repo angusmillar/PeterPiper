@@ -44,7 +44,7 @@ namespace Glib.Hl7.V2.Support.Standard
     /// </summary>
     public const string LocallyDefined = "Z";
     /// <summary>
-    /// Unknowen is a non HL7 Standard Escape i.e "\Qx54\"
+    /// Unknowen is a non HL7 Standard Escape i.e "\Qx54\", We will treat it as being 'Z' the LocallyDefined char
     /// </summary>
     public const string Unknown = "Z";
     /// <summary>
