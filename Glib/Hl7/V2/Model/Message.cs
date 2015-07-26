@@ -45,8 +45,8 @@ namespace Glib.Hl7.V2.Model
       MSHTemplate.Append(this.Delimiters.Field);
       MSHTemplate.Append("NE");
       
-      _SegmentDictonary = new Dictionary<int, Segment>();
-      _SegmentDictonary.Add(1, new Segment(MSHTemplate.ToString()));
+      _SegmentDictonary = new Dictionary<int, Segment>();      
+      _SegmentDictonary.Add(1, new Segment(MSHTemplate.ToString(),this.Delimiters,false,1,this));
       
     }
     public Message(Segment item)
@@ -56,6 +56,9 @@ namespace Glib.Hl7.V2.Model
       if (item.IsMSH)
       {
         _SegmentDictonary = new Dictionary<int, Segment>();
+        item._Index = 1;
+        item._Parent = this;
+        item._Temporary = false;
         _SegmentDictonary.Add(1, item);
       }
       else
