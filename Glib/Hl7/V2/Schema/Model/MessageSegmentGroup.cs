@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Glib.Hl7.V2.Schema.Model
 {
-  class MessageSegmentGroup : MessageItemBase
+  public class MessageSegmentGroup : MessageItemBase
   {
     private string _SegmentGroupName;
     public string SegmentGroupName

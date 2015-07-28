@@ -11,15 +11,16 @@ namespace Glib.Hl7.V2.Schema.XmlParser
     //private string SchemaParser.XMLSchemaNameSpace = "http://www.w3.org/2001/XMLSchema";
     //private string SchemaParser.Hl7NameSpace = "urn:com.sun:encoder-hl7-1.0";
     private XDocument xDoc;
-    private string _Version;
+    private Model.VersionsSupported Version;
     private List<Model.Composite> CompositeList;
     private List<Model.DataTypeBase> DataTypeList;
     private Dictionary<string, List<int>> CompositeIndexList;
     private IEnumerable<XElement> CompositeElementList;
 
-    public DataTypeParser(string Version)
+
+    public DataTypeParser(Model.VersionsSupported version)
     {
-      this._Version = Version;
+      Version = version;
     }
 
     public List<Model.DataTypeBase> Run(XDocument xDocument)
@@ -52,8 +53,8 @@ namespace Glib.Hl7.V2.Schema.XmlParser
       foreach (var x in PrimitiveElementList)
       {
         if (x.Element(HL7v2Xsd.Elements.Restriction).Attribute(HL7v2Xsd.Attributes.Base).Value == "xsd:string")
-        {          
-          if (_Version == "2.3")
+        {
+          if (Version == Model.VersionsSupported.V2_3)
           {  
             //Version 2.3 talks of CM - composite as a data type that should not be used anymore although it is
             //used throughout this version's .xsd's. The xsd's also states the following primitives codes yet never 
@@ -84,8 +85,8 @@ namespace Glib.Hl7.V2.Schema.XmlParser
         {
           throw new Exception("Primitive base not found to be xsd:string");
         }
-      }      
-      if (_Version == "2.3")
+      }
+      if (Version == Model.VersionsSupported.V2_3)
       {
         Model.Primitive oCM = new Model.Primitive();
         oCM.Code = "CM";

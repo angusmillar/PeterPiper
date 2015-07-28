@@ -476,5 +476,23 @@ namespace TestHl7V2
       Assert.AreEqual("", actual.PathVerbos, "A test for MessageEvent");
 
     }
+
+    [Test]
+    public void MessageSchemaTest()
+    {
+      Message target = new Message(oMsg.ToString());
+      Glib.Hl7.V2.Schema.Support.SchemaSupport oSchemaSupport = new Glib.Hl7.V2.Schema.Support.SchemaSupport();
+      oSchemaSupport.LoadSchema(target);
+      target.Segment("MSH").Field(9).Component(1).AsString = "ORM";
+      target.Segment("MSH").Field(9).Component(2).AsString = "O01";
+      oSchemaSupport.LoadSchema(target);
+      target.Segment("MSH").Field(12).AsString = "2.4";
+      oSchemaSupport.LoadSchema(target);
+
+      
+
+
+    }
+
   }
 }
