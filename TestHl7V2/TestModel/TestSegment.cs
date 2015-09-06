@@ -510,7 +510,7 @@ namespace TestHl7V2
       Assert.AreEqual("OBX-6", target.Element(6).PathDetail.PathBrief, "A test for PathInformation 11");
       Assert.AreEqual("Segment: OBX, Field: 6", target.Element(6).PathDetail.PathVerbos, "A test for PathInformation 12");
 
-      Assert.AreEqual("OBX-11{2}.3.2", target.Element(11).Repeat(2).Component(3).SubComponent(2).PathDetail.PathBrief, "A test for PathInformation 11");
+      Assert.AreEqual("OBX-11.3.2 {Rpt: 2}", target.Element(11).Repeat(2).Component(3).SubComponent(2).PathDetail.PathBrief, "A test for PathInformation 11");
       Assert.AreEqual("Segment: OBX, Field: 11, {Repeat: 2, Component: 3, SubComponent: 2 }", target.Element(11).Repeat(2).Component(3).SubComponent(2).PathDetail.PathVerbos, "A test for PathInformation 12");
 
     }

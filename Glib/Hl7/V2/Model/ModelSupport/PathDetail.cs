@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Glib.Hl7.V2.Model.ModelSupport
 {
-  public class PathDetail
+  public class PathDetailBase
   {
     internal string _MessageType = string.Empty;
     public string MessageType
@@ -98,7 +98,14 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       }
     }
 
-    internal int? _ComponentCount = null;    
+    internal int? _ComponentCount = null;
+    public string ComponentCount
+    {
+      get
+      {
+        return _ComponentCount.ToString();
+      }
+    }
 
     internal int? _SubComponentPosition = null;
     public string SubComponentPosition
@@ -110,6 +117,13 @@ namespace Glib.Hl7.V2.Model.ModelSupport
     }
 
     internal int? _SubComponentCount = null;
+    public string SubComponentCount
+    {
+      get
+      {
+        return _SubComponentCount.ToString();
+      }
+    }
 
     internal int? _ContentPosition = null;
     public string ContentPosition
@@ -132,12 +146,7 @@ namespace Glib.Hl7.V2.Model.ModelSupport
           sb.Append("-");
           sb.Append(FieldPosition);
         }
-        if (RepeatPosition != string.Empty && _RepeatCount > 1)
-        {
-          sb.Append("{");
-          sb.Append(RepeatPosition);
-          sb.Append("}");
-        }
+
         if (ComponentPosition != string.Empty && _ComponentCount > 1)
         {
           if (sb.Length == 0)
@@ -149,6 +158,8 @@ namespace Glib.Hl7.V2.Model.ModelSupport
         {
           if (sb.Length == 0)
             sb.Append("<unk>-?.?");
+          if (_ComponentCount == 1)
+            sb.Append("." + ComponentPosition);
           sb.Append(".");
           sb.Append(SubComponentPosition);
         }
@@ -160,6 +171,13 @@ namespace Glib.Hl7.V2.Model.ModelSupport
           sb.Append(ContentPosition);
           sb.Append("]");
         }
+        if (RepeatPosition != string.Empty && _RepeatCount > 1)
+        {
+          sb.Append(" {Rpt: ");
+          sb.Append(RepeatPosition);
+          sb.Append("}");
+        }
+
         if (sb.Length == 0)
           sb.Append("<unk>-?");
         return sb.ToString();
@@ -213,4 +231,5 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       }
     }
   }
+  
 }

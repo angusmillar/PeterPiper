@@ -517,7 +517,7 @@ namespace TestProjectGlib
     public void PathInformationTest()
     {
       Message target = new Message(oMsg.ToString());
-      Glib.Hl7.V2.Model.ModelSupport.PathDetail actual;
+      Glib.Hl7.V2.Model.ModelSupport.PathDetailBase actual;
       actual = target.PathDetail;
 
       Assert.AreEqual("ORU", actual.MessageType, "A test for MessageEvent");

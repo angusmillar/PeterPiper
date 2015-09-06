@@ -26,8 +26,11 @@ namespace Glib.Hl7.V2.Schema.XmlParser
       var VersionSchemaDictionary = new Dictionary<Model.VersionsSupported, Schema.Model.VersionSchema>();
       foreach (Model.VersionsSupported version in Enum.GetValues(typeof(Model.VersionsSupported)))
       {
-        _VersionCurrent = version;
-        VersionSchemaDictionary.Add(_VersionCurrent, LoadVersion());
+        if (version != Model.VersionsSupported.NotSupported)
+        {
+          _VersionCurrent = version;
+          VersionSchemaDictionary.Add(_VersionCurrent, LoadVersion());
+        }
       }
       return VersionSchemaDictionary;
     }

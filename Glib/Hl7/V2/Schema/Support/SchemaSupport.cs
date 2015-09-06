@@ -21,16 +21,20 @@ namespace Glib.Hl7.V2.Schema.Support
     }
     public void LoadSchema(string MessageVersion, string MessageType, string MessageTrigger)
     {
-      if (_CurrentSchema == null)
+      var oMessageVersion = Model.Version.GetVersionFromString(MessageVersion);
+      if (oMessageVersion != Model.VersionsSupported.NotSupported)
       {
-        _CurrentSchema = V2.Schema.XmlParser.SchemaParser.LoadSingleMessage(V2.Schema.Model.Version.GetVersionFromString(MessageVersion), MessageType.ToUpper(), MessageTrigger.ToUpper());
-      }
-      else
-      {
-        if (_CurrentSchema.Version == Model.Version.GetVersionFromString(MessageVersion))
-          V2.Schema.XmlParser.SchemaParser.LoadAnotherMessage(_CurrentSchema, MessageType.ToUpper(), MessageTrigger.ToUpper());
-        else
+        if (_CurrentSchema == null)
+        {
           _CurrentSchema = V2.Schema.XmlParser.SchemaParser.LoadSingleMessage(V2.Schema.Model.Version.GetVersionFromString(MessageVersion), MessageType.ToUpper(), MessageTrigger.ToUpper());
+        }
+        else
+        {
+          if (_CurrentSchema.Version == Model.Version.GetVersionFromString(MessageVersion))
+            V2.Schema.XmlParser.SchemaParser.LoadAnotherMessage(_CurrentSchema, MessageType.ToUpper(), MessageTrigger.ToUpper());
+          else
+            _CurrentSchema = V2.Schema.XmlParser.SchemaParser.LoadSingleMessage(V2.Schema.Model.Version.GetVersionFromString(MessageVersion), MessageType.ToUpper(), MessageTrigger.ToUpper());
+        }
       }
     }
   }

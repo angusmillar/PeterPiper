@@ -31,7 +31,7 @@ namespace Glib.Hl7.V2.Model
       }
     }
 
-    public ModelSupport.PathDetail  PathDetail
+    public ModelSupport.PathDetailBase  PathDetail
     {
       get
       {
