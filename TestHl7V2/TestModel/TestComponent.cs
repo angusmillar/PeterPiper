@@ -247,6 +247,11 @@ namespace TestHl7V2
       target.AsString = expected;
       actual = target.AsString;
       Assert.AreEqual(expected, actual, "A test for ToString");
+
+      target.AsString = "left^right";
+      expected = "left\\S\\right";
+      Assert.AreEqual(expected, target.AsStringRaw, "A test for AsString escaping");
+
     }
 
     /// <summary>

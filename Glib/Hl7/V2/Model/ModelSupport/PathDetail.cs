@@ -7,6 +7,24 @@ namespace Glib.Hl7.V2.Model.ModelSupport
 {
   public class PathDetailBase
   {
+
+    public V2.Schema.Model.VersionsSupported MessageVersionSupported
+    {
+      get
+      {
+        return V2.Schema.Model.Version.GetVersionFromString(_MessageVersion);
+      }
+    }
+
+    internal string _MessageVersion = string.Empty;
+    public string MessageVersion
+    {
+      get
+      {
+        return _MessageVersion;
+      }
+    }
+
     internal string _MessageType = string.Empty;
     public string MessageType
     {

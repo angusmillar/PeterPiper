@@ -104,6 +104,8 @@ namespace Glib.Hl7.V2.Model.ModelSupport
       var Message = item as Glib.Hl7.V2.Model.Message;
       _Info._MessageType = Message.MessageType;
       _Info._MessageEvent = Message.MessageTrigger;
+      _Info._MessageVersion = Message.MessageVersion;
+     
     }
   }  
 }
