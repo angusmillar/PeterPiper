@@ -351,5 +351,19 @@ namespace TestHl7V2
       Assert.AreEqual("<unk>-?.?.2 [0]", target.SubComponent(2).Content(0).PathDetail.PathBrief, "A test for SubComponentList");
     }
 
+    /// <summary>
+    ///A test for MessageDelimiters
+    ///</summary>
+    [Test]
+    public void DelimterAccessTest()
+    {
+      Component target = new Component("o\\R\\ne&two&three&four");
+      Assert.AreEqual('~', target.MessageDelimiters.Repeat, "A test for MessageDelimiters");
+      Assert.AreEqual('|', target.MessageDelimiters.Field, "A test for MessageDelimiters");
+      Assert.AreEqual('^', target.MessageDelimiters.Component, "A test for MessageDelimiters");
+      Assert.AreEqual('&', target.MessageDelimiters.SubComponent, "A test for MessageDelimiters");
+      Assert.AreEqual('\\', target.MessageDelimiters.Escape, "A test for MessageDelimiters");
+    }
+
   }
 }

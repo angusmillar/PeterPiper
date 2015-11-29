@@ -146,5 +146,19 @@ namespace TestHl7V2
       Assert.AreEqual(expected.IsHL7Null, actual.IsHL7Null);
       Assert.AreEqual(expected.EscapeMetaData.EscapeType, actual.EscapeMetaData.EscapeType);
     }
+
+    /// <summary>
+    ///A test for MessageDelimiters
+    ///</summary>
+    [Test]
+    public void DelimterAccessTest()
+    {
+      Content target = new Content("Test", ContentType.Text, CustomDelimiters);            
+      Assert.AreEqual('#', target.MessageDelimiters.Field, "A test for MessageDelimiters");
+      Assert.AreEqual('@', target.MessageDelimiters.Repeat, "A test for MessageDelimiters");
+      Assert.AreEqual('*', target.MessageDelimiters.Component, "A test for MessageDelimiters");
+      Assert.AreEqual('!', target.MessageDelimiters.SubComponent, "A test for MessageDelimiters");
+      Assert.AreEqual('%', target.MessageDelimiters.Escape, "A test for MessageDelimiters");
+    }
   }
 }

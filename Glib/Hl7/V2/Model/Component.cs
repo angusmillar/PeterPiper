@@ -85,6 +85,13 @@ namespace Glib.Hl7.V2.Model
     }
 
     //Instance access
+    public Support.MessageDelimiters MessageDelimiters
+    {
+      get
+      {
+        return this.Delimiters;
+      }
+    } 
     public Component Clone()
     {
       return new Component(this.AsStringRaw, this.Delimiters, true, null, null);

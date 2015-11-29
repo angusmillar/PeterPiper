@@ -427,6 +427,18 @@ namespace TestHl7V2
       Assert.AreEqual(3, actual, "A test for SubComponentCount");
     }
 
-
+    /// <summary>
+    ///A test for MessageDelimiters
+    ///</summary>
+    [Test]
+    public void DelimterAccessTest()
+    {
+      Field target = new Field("Test", CustomDelimiters);
+      Assert.AreEqual('#', target.MessageDelimiters.Field, "A test for MessageDelimiters");
+      Assert.AreEqual('@', target.MessageDelimiters.Repeat, "A test for MessageDelimiters");
+      Assert.AreEqual('*', target.MessageDelimiters.Component, "A test for MessageDelimiters");
+      Assert.AreEqual('!', target.MessageDelimiters.SubComponent, "A test for MessageDelimiters");
+      Assert.AreEqual('%', target.MessageDelimiters.Escape, "A test for MessageDelimiters");
+    }
   }
 }

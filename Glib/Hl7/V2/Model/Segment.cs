@@ -40,6 +40,13 @@ namespace Glib.Hl7.V2.Model
     }    
 
     //Instance access
+    public Support.MessageDelimiters MessageDelimiters
+    {
+      get
+      {
+        return this.Delimiters;
+      }
+    } 
     public Segment Clone()
     {
       return new Segment(this.AsStringRaw, this.Delimiters, true, null, null);
