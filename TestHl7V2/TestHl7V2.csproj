@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1DE12433-6E94-441E-82CC-23429D0FD443}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestHl7V2</RootNamespace>
     <AssemblyName>TestHl7V2</AssemblyName>
@@ -32,9 +32,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunitlite, Version=3.0.5813.39032, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnitLite.3.0.1\lib\net45\nunitlite.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,11 +53,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="TestModel\TestAcknowledgement.cs" />
+    <Compile Include="TestModel\TestAddHocHl7V2Model.cs" />
+    <Compile Include="TestModel\TestBase64.cs" />
     <Compile Include="TestModel\TestComponent.cs" />
     <Compile Include="TestModel\TestContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestModel\TestDateTimeTools_ConvertDateTimeToString.cs" />
+    <Compile Include="TestModel\TestDateTimeTools_ConvertStringToDateTimeOffset.cs" />
     <Compile Include="TestModel\TestElement.cs" />
     <Compile Include="TestModel\TestField.cs" />
+    <Compile Include="TestModel\TestHl7Reader.cs" />
     <Compile Include="TestModel\TestMessage.cs" />
     <Compile Include="TestModel\TestSegment.cs" />
     <Compile Include="TestModel\TestSubComponent.cs" />
@@ -60,6 +75,15 @@
       <Project>{25ab1577-ff72-4f41-b1e4-5e3ade7995ea}</Project>
       <Name>Glib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="TestResource\ED Data Test.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestResource\TestSetOfMsg.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

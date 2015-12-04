@@ -7,14 +7,14 @@ using System.Globalization;
 namespace Glib.Hl7.V2.Support.Content
 {
   /// <summary>
-  /// A set of tools / methods to work with Hl7 datetimes 
+  /// A set of tools / methods to work with Hl7 DatetimeOffset 
   /// </summary>
   public static class DateTimeTools
   {
     /// <summary>
-    /// A set of static functions to convert a DateTime type to its HL7 datetime string eqivilants format.   
+    /// A set of static functions to convert a DateTime type to its HL7 DatetimeOffset string equivalents format.   
     /// </summary>
-    public static class ConvertDateTimeToString
+    public static class ConvertDateTimeOffsetToString
     {
       private static string fDate = "yyyyMMdd";
       private static string fHourMin = "HHmm";
@@ -23,103 +23,78 @@ namespace Glib.Hl7.V2.Support.Content
       private static string fTimeZone = "zzzz";
 
       /// <summary>
-      /// Returns a Datetime as a string representation of YYYYMMDDHHMMSSMMMM (i.e 201501251030251234)
+      /// Returns a DatetimeOffset as a HL7 Datetime string representation with Timezone if WithTimeZone = true. YYYYMMDDHHMMSSMMMM+HHMM (i.e 201501251030251234+1000)
       /// </summary>
-      /// <param name="DateTime"></param>
+      /// <param name="DateTimeOffset"></param>
+      /// <param name="WithTimeZone"></param>
       /// <returns></returns>
-      public static string AsDateHourMinSecMilli(DateTime DateTime)
+      public static string AsDateHourMinSecMilli(DateTimeOffset DateTimeOffset, bool WithTimeZone = false)
       {
-        return DateTime.ToString(String.Format("{0}{1}{2}.{3}", fDate, fHourMin, fSec, fMilliSec));
+        if (WithTimeZone)
+          return DateTimeOffset.ToString(String.Format("{0}{1}{2}.{3}{4}", fDate, fHourMin, fSec, fMilliSec, fTimeZone)).Replace(":", "");        
+        else
+          return DateTimeOffset.ToString(String.Format("{0}{1}{2}.{3}", fDate, fHourMin, fSec, fMilliSec));
       }
+
       /// <summary>
-      /// Returns a Datetime and Timespan as a string representation with Timezone  component of YYYYMMDDHHMMSSMMMM+HHMM (i.e 201501251030251234+1000)
+      /// Returns a DatetimeOffset as a HL7 string representation with Timezone if WithTimeZone = true. YYYYMMDDHHMMSS+HHMM (i.e 20150125103025+1000)
       /// </summary>
-      /// <param name="oDateTime"></param>
-      /// <param name="OffSetTime"></param>
+      /// <param name="oDateTimeOffset"></param>
+      /// <param name="WithTimeZone"></param>
       /// <returns></returns>
-      public static string AsDateHourMinSecMilli(DateTime oDateTime, TimeSpan OffSetTime)
+      public static string AsDateHourMinSec(DateTimeOffset oDateTimeOffset, bool WithTimeZone = false)
       {
-        DateTimeOffset NewTime = new DateTimeOffset(oDateTime);
-        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}.{3}{4}", fDate, fHourMin, fSec, fMilliSec, fTimeZone)).Replace(":", "");
+        if (WithTimeZone)
+          return oDateTimeOffset.ToString(String.Format("{0}{1}{2}{3}", fDate, fHourMin, fSec, fTimeZone)).Replace(":", "");
+        else
+          return oDateTimeOffset.ToString(String.Format("{0}{1}{2}", fDate, fHourMin, fSec));
       }
+      
       /// <summary>
-      /// Returns a Datetime as a string representation of YYYYMMDDHHMMSS (i.e 20150125103025)
+      /// Returns a DatetimeOffset as a HL7 string representation with Timezone if WithTimeZone = true. YYYYMMDDHHMM+HHMM (i.e 201501251030+1000)
       /// </summary>
-      /// <param name="DateTime"></param>
+      /// <param name="DateTimeOffset"></param>
+      /// <param name="WithTimeZone"></param>
       /// <returns></returns>
-      public static string AsDateHourMinSec(DateTime DateTime)
+      public static string AsDateHourMin(DateTimeOffset DateTimeOffset, bool WithTimeZone = false)
       {
-        return DateTime.ToString(String.Format("{0}{1}{2}", fDate, fHourMin, fSec));
+        if (WithTimeZone)
+          return DateTimeOffset.ToString(String.Format("{0}{1}{2}", fDate, fHourMin, fTimeZone)).Replace(":", "");
+        else
+          return DateTimeOffset.ToString(String.Format("{0}{1}", fDate, fHourMin));
       }
+      
       /// <summary>
-      /// Returns a Datetime and Timespan as a string representation with Timezone component of YYYYMMDDHHMMSS+HHMM (i.e 20150125103025+1000)
+      /// Returns a DatetimeOffset as a HL7 string representation with Timezone if WithTimeZone = true. YYYYMMDD+HHMM (i.e 20150125+1000)
       /// </summary>
-      /// <param name="oDateTime"></param>
-      /// <param name="OffSetTime"></param>
+      /// <param name="DateTimeOffset"></param>
+      /// <param name="WithTimeZone"></param>
       /// <returns></returns>
-      public static string AsDateHourMinSec(DateTime oDateTime, TimeSpan OffSetTime)
-      {
-        DateTimeOffset NewTime = new DateTimeOffset(oDateTime);
-        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}{3}", fDate, fHourMin, fSec, fTimeZone)).Replace(":","");
-      }
-      /// <summary>
-      /// Returns a Datetime as a string representation of YYYYMMDDHHMM (i.e 201501251030)
-      /// </summary>
-      /// <param name="DateTime"></param>
-      /// <returns></returns>
-      public static string AsDateHourMin(DateTime DateTime)
-      {
-        return DateTime.ToString(String.Format("{0}{1}", fDate, fHourMin));
-      }
-      /// <summary>
-      /// Returns a Datetime and Timespan as a string representation with Timezone component of YYYYMMDDHHMM+HHMM (i.e 201501251030+1000)
-      /// </summary>
-      /// <param name="oDateTime"></param>
-      /// <param name="OffSetTime"></param>
-      /// <returns></returns>
-      public static string AsDateHourMin(DateTime oDateTime, TimeSpan OffSetTime)
-      {
-        DateTimeOffset NewTime = new DateTimeOffset(oDateTime);
-        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}{2}", fDate, fHourMin, fTimeZone)).Replace(":", "");
-      }
-      /// <summary>
-      /// Returns a Datetime as a string representation of YYYYMMDD (i.e 20150125)
-      /// </summary>
-      /// <param name="DateTime"></param>
-      /// <returns></returns>
-      public static string AsDate(DateTime DateTime)
-      {
-        return DateTime.ToString(String.Format("{0}", fDate));
-      }
-      /// <summary>
-      /// Returns a Datetime and Timespan as a string representation with Timezone component of YYYYMMDD+HHMM (i.e 20150125+1000)
-      /// </summary>
-      /// <param name="oDateTime"></param>
-      /// <param name="OffSetTime"></param>
-      /// <returns></returns>
-      public static string AsDate(DateTime oDateTime, TimeSpan OffSetTime)
-      {
-        DateTimeOffset NewTime = new DateTimeOffset(oDateTime);
-        return NewTime.ToOffset(OffSetTime).ToString(String.Format("{0}{1}", fDate, fTimeZone));
+      public static string AsDate(DateTimeOffset DateTimeOffset, bool WithTimeZone = false)
+      {        
+        if (WithTimeZone)
+          return DateTimeOffset.ToString(String.Format("{0}{1}", fDate, fTimeZone));
+        else
+          return DateTimeOffset.ToString(String.Format("{0}", fDate));
       }
     }
 
     /// <summary>
-    /// A static function to parse HL7 Datetime strings to their equivilent datetime type.
+    /// A static function to parse HL7 Datetime strings to their equivalent datetime type.
     /// </summary>
     public static class ConvertStringToDateTime
     {
-      private static string LengthExceptionMessage = "The Content length does not match the allowed lengths for HL7 Statndard datetime conversions. Found: '{0}',  Allowed Format: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ].";
-      private static string FormatExceptionMessage = "The Content does not match the allowed HL7 Statndard datetime formats. Found: '{0}',  Allowed Format: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ].";
+      private static string LengthExceptionMessage = "The Content length does not match the allowed lengths for HL7 Standard datetime conversions. Found: '{0}',  Allowed Format: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ].";
+      private static string FormatExceptionMessage = "The Content does not match the allowed HL7 Standard datetime formats. Found: '{0}',  Allowed Format: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ].";
       /// <summary>
-      /// Parse any string datetime which is in a HL7 datetime format into a Datetime type. Can handle timezones. 
+      /// Parse any string datetime which is in a HL7 datetime format into a DateTimeOffset type. Can handle time zones. 
       ///  Exceptions:
       ///   System.FormatException:
       ///     The string parsed does not meet the datatime formats as specified within the Hl7 Standard.   
       /// </summary>
       /// <param name="HL7StandardDateTimeString"></param>
       /// <returns></returns>
-      public static DateTime AsDateTime(string HL7StandardDateTimeString)
+      public static DateTimeOffset AsDateTimeOffset(string HL7StandardDateTimeString)
       {
         char[] MilliSecondsDelimiter = { '.' };
         char[] TimeZomeDelimiter = { '+', '-' };        
@@ -130,20 +105,20 @@ namespace Glib.Hl7.V2.Support.Content
           {
             if (HL7StandardDateTimeString.IndexOfAny(TimeZomeDelimiter) > 0)
             {
-              return DateTime.ParseExact(HL7StandardDateTimeString, HasTimeMillisecondsAndTimeZone(HL7StandardDateTimeString), provider);              
+              return DateTimeOffset.ParseExact(HL7StandardDateTimeString, HasTimeMillisecondsAndTimeZone(HL7StandardDateTimeString), provider);              
             }
             else
             {
-              return DateTime.ParseExact(HL7StandardDateTimeString, HasMilliseconds(HL7StandardDateTimeString), provider);                  
+              return DateTimeOffset.ParseExact(HL7StandardDateTimeString, HasMilliseconds(HL7StandardDateTimeString), provider);                  
             }
           }
           else if (HL7StandardDateTimeString.IndexOfAny(TimeZomeDelimiter) > 0)
           {
-            return DateTime.ParseExact(HL7StandardDateTimeString, HasTimeZone(HL7StandardDateTimeString), provider);               
+            return DateTimeOffset.ParseExact(HL7StandardDateTimeString, HasTimeZone(HL7StandardDateTimeString), provider);               
           }
           else
           {
-            return DateTime.ParseExact(HL7StandardDateTimeString, HasNoMillisecondsOrTimeZone(HL7StandardDateTimeString), provider);              
+            return DateTimeOffset.ParseExact(HL7StandardDateTimeString, HasNoMillisecondsOrTimeZone(HL7StandardDateTimeString), provider);              
           }
         }
         catch (FormatException FormatExec)

@@ -69,8 +69,11 @@ namespace TestHl7V2
       Assert.AreEqual("ORU", target.MessageType, "A test for Message Constructor");
       Assert.AreEqual("R01", target.MessageTrigger, "A test for Message Constructor");
       Assert.AreEqual("ORU_R01", target.MessageStructure, "A test for Message Constructor");
-      Assert.AreEqual("2.3.1", target.MessageVersion, "A test for Message Constructor");
-      Assert.AreEqual(new DateTime(2014, 05, 27, 9, 56, 57), target.MessageCreationDateTime, "A test for Message Constructor");
+      Assert.AreEqual("2.3.1", target.MessageVersion, "A test for Message Constructor");      
+      //Get the time zone for where we are running now
+      TimeZone zone = TimeZone.CurrentTimeZone;
+      TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
+      Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");      
       Assert.AreEqual(1, target.SegmentCount(), "A test for Message Constructor");
       Assert.AreEqual(true, target.IsParseMSHSegmentOnly, "A test for Message Constructor");
     }
@@ -124,7 +127,10 @@ namespace TestHl7V2
       Assert.AreEqual("R01", target.MessageTrigger, "A test for Message Constructor");
       Assert.AreEqual("ORU_R01", target.MessageStructure, "A test for Message Constructor");
       Assert.AreEqual("2.3.1", target.MessageVersion, "A test for Message Constructor");
-      Assert.AreEqual(new DateTime(2014, 05, 27, 9, 56, 57), target.MessageCreationDateTime, "A test for Message Constructor");
+      //Get the time zone for where we are running now
+      TimeZone zone = TimeZone.CurrentTimeZone;
+      TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
+      Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");
       Assert.AreEqual(1, target.SegmentCount(), "A test for Message Constructor");
       Assert.AreEqual(false, target.IsParseMSHSegmentOnly, "A test for Message Constructor");
     }

@@ -1,32 +1,33 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Text;
+using System.Threading.Tasks;
 using Glib.Hl7.V2.Model;
 using Glib.Hl7.V2.Support;
+using NUnit.Framework;
 
-namespace TestProjectGlib
+namespace TestHl7V2.TestModel
 {
-  [TestClass]
+  [TestFixture]
   public class UnitTestContentModel
   {
-    [TestMethod]
+    [Test]
     public void TestContentTypeCreate()
     {
-      Content oContent = new Content("The data for a content", Glib.Hl7.V2. Support.Content.ContentType.Text);
+      Content oContent = new Content("The data for a content", Glib.Hl7.V2.Support.Content.ContentType.Text);
       Assert.AreEqual("The data for a content", oContent.AsString, "AsString Failed on get");
       Assert.AreEqual("The data for a content", oContent.AsStringRaw, "AsStringRaw Failed on get");
       Assert.AreEqual("The data for a content", oContent.ToString(), "ToString Failed on get");
     }
 
-    [TestMethod]
+    [Test]
     public void TestContentTypeExceptions()
     {
       Content obj = null;
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Field.ToString(), Glib.Hl7.V2. Support.Content.ContentType.Text);
+        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Field.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -36,7 +37,7 @@ namespace TestProjectGlib
 
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Component.ToString(), Glib.Hl7.V2. Support.Content.ContentType.Text);
+        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Component.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -46,7 +47,7 @@ namespace TestProjectGlib
 
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.SubComponent.ToString(), Glib.Hl7.V2. Support.Content.ContentType.Text);
+        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.SubComponent.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -56,7 +57,7 @@ namespace TestProjectGlib
 
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Repeat.ToString(), Glib.Hl7.V2. Support.Content.ContentType.Text);
+        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Repeat.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -66,7 +67,7 @@ namespace TestProjectGlib
 
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Escape.ToString(), Glib.Hl7.V2. Support.Content.ContentType.Text);
+        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Escape.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -76,7 +77,7 @@ namespace TestProjectGlib
 
       try
       {
-        obj = new Content("Test Data", Glib.Hl7.V2. Support.Content.ContentType.Text);
+        obj = new Content("Test Data", Glib.Hl7.V2.Support.Content.ContentType.Text);
         obj.AsString = Glib.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
         Assert.Fail("An exception should have been thrown on setting AsString");
       }
@@ -87,37 +88,37 @@ namespace TestProjectGlib
 
       try
       {
-        obj = new Content("Test Data", Glib.Hl7.V2. Support.Content.ContentType.Text);
+        obj = new Content("Test Data", Glib.Hl7.V2.Support.Content.ContentType.Text);
         obj.AsStringRaw = Glib.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
         Assert.Fail("An exception should have been thrown on setting AsString");
       }
       catch (ArgumentException ae)
       {
         Assert.AreEqual("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.", ae.Message);
-      }      
+      }
     }
   }
 
-  [TestClass]
+  [TestFixture]
   public class UnitTestSubComponentModel
   {
-    [TestMethod]
+    [Test]
     public void TestSubComponentCreate()
     {
       SubComponent oSubComonentWithEscapes = new SubComponent("\\N\\this is not Highlighted\\H\\ This is higlighted \\N\\ This is not, this is hex  \\X0xC2\\ this is local \\Ztesttest\\ this is field \\F\\ this is Compponet \\S\\ this is SubCompoent \\T\\ repeat \\R\\ this is escape \\E\\ done ");
       SubComponent oSubComonentPlainOLDText = new SubComponent("This is plan old test");
     }
 
-    [TestMethod]
+    [Test]
     public void TestSubComponentAddingContent()
     {
       string FullTestStringWithEscapes = "not highlighted\\H\\ Highlighted \\N\\highlighted ended \\H\\Added highlight \\N\\Added not highlight \\H\\\\N\\";
       string FullTestStringWithOutEscapes = "not highlighted Highlighted highlighted ended Added highlight Added not highlight ";
       SubComponent oSubComonent = new SubComponent("not highlighted\\H\\ Highlighted \\N\\highlighted ended ");
-      Content oContentEscapeHiglightStart = new Content("H", Glib.Hl7.V2. Support.Content.ContentType.Escape);
-      Content oContentEscapeHiglightEnd = new Content("N", Glib.Hl7.V2. Support.Content.ContentType.Escape);
-      Content oContent1 = new Content("Added highlight ", Glib.Hl7.V2. Support.Content.ContentType.Text);
-      Content oContent2 = new Content("Added not highlight ", Glib.Hl7.V2. Support.Content.ContentType.Text);
+      Content oContentEscapeHiglightStart = new Content("H", Glib.Hl7.V2.Support.Content.ContentType.Escape);
+      Content oContentEscapeHiglightEnd = new Content("N", Glib.Hl7.V2.Support.Content.ContentType.Escape);
+      Content oContent1 = new Content("Added highlight ", Glib.Hl7.V2.Support.Content.ContentType.Text);
+      Content oContent2 = new Content("Added not highlight ", Glib.Hl7.V2.Support.Content.ContentType.Text);
       oSubComonent.Add(oContentEscapeHiglightStart);
       oSubComonent.Add(oContent1);
       oSubComonent.Add(oContentEscapeHiglightEnd);
@@ -141,10 +142,10 @@ namespace TestProjectGlib
       Assert.AreEqual("This is bold text", oSubComonent.Content(1).AsStringRaw);
       Assert.AreEqual(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOff, oSubComonent.Content(2).EscapeMetaData.EscapeType);
 
-      Assert.AreEqual(Glib.Hl7.V2. Support.Content.ContentType.Escape, oSubComonent.Content(0).ContentType, "Incorrect ContentType");
-      Assert.AreEqual(Glib.Hl7.V2. Support.Content.ContentType.Text, oSubComonent.Content(1).ContentType, "Incorrect ContentType");
-      Assert.AreEqual(Glib.Hl7.V2. Support.Content.ContentType.Escape, oSubComonent.Content(2).ContentType, "Incorrect ContentType");
-      
+      Assert.AreEqual(Glib.Hl7.V2.Support.Content.ContentType.Escape, oSubComonent.Content(0).ContentType, "Incorrect ContentType");
+      Assert.AreEqual(Glib.Hl7.V2.Support.Content.ContentType.Text, oSubComonent.Content(1).ContentType, "Incorrect ContentType");
+      Assert.AreEqual(Glib.Hl7.V2.Support.Content.ContentType.Escape, oSubComonent.Content(2).ContentType, "Incorrect ContentType");
+
       oSubComonent = new SubComponent("\\H\\This is bold text\\N\\Not bold Text");
       oSubComonent.Insert(10, new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine));
       Assert.AreEqual(oSubComonent.Content(4).EscapeMetaData.EscapeType, Glib.Hl7.V2.Support.Standard.EscapeType.NewLine, "Incorrect ContentType");
@@ -155,7 +156,7 @@ namespace TestProjectGlib
       Assert.AreEqual("\\H\\\\.br\\This is bold textNot bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
     }
 
-    [TestMethod]
+    [Test]
     public void TestSubComponentSettingContent()
     {
       SubComponent oSubComp = new SubComponent();
@@ -165,7 +166,7 @@ namespace TestProjectGlib
       }
       Content oConentHEscape = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOn);
       Content oConentText = new Content("This will be highlighted");
-      Content oConentNEscape = new Content("N", Glib.Hl7.V2. Support.Content.ContentType.Escape);
+      Content oConentNEscape = new Content("N", Glib.Hl7.V2.Support.Content.ContentType.Escape);
 
       oSubComp.ClearAll();
       oSubComp.Add(oConentHEscape);
@@ -213,7 +214,7 @@ namespace TestProjectGlib
       oSubComp.Add(new Content("Fith "));
       oSubComp.Add(new Content("Seven "));
       oSubComp.Insert(1, new Content("Second "));
-      oSubComp.Insert(5,new Content("Sixth "));
+      oSubComp.Insert(5, new Content("Sixth "));
       oSubComp.RemoveContentAt(3);
       Assert.AreEqual(oSubComp.AsStringRaw, "First Second Third Fith Sixth Seven ", "Testing oSubComp.Content mixure");
 
@@ -226,7 +227,7 @@ namespace TestProjectGlib
 
     }
 
-    [TestMethod]
+    [Test]
     public void TestSubComponentContentCount()
     {
       SubComponent oSubComp = new SubComponent("First ");
@@ -246,10 +247,10 @@ namespace TestProjectGlib
     }
   }
 
-  [TestClass]
+  [TestFixture]
   public class UnitTestComponentModel
   {
-    [TestMethod]
+    [Test]
     public void TestComponentCreate()
     {
       Component oComponent = new Component("First&Se\\e\\cond&\\H\\Third is Bold\\n\\&forth&fith");
@@ -302,7 +303,7 @@ namespace TestProjectGlib
 
       oComponent.RemoveSubComponentAt(1);
       oComponent.RemoveSubComponentAt(1);
-      Assert.AreEqual("", oComponent.AsString, ",oComponent.AsString returned incorrect");      
+      Assert.AreEqual("", oComponent.AsString, ",oComponent.AsString returned incorrect");
 
       oComponent.ClearAll();
       oComponent.Insert(10, new SubComponent("Third"));
@@ -330,13 +331,13 @@ namespace TestProjectGlib
 
       //AsString = "Mater Hospital caters for Women \\Zhildren\\ Men";
       oComponent.ClearAll();
-      oComponent.Add(new Content("Mater Hospital",Glib.Hl7.V2.Support.Content.ContentType.Text));
-      oComponent.Add(new Content("C4568",Glib.Hl7.V2.Support.Content.ContentType.Escape));
+      oComponent.Add(new Content("Mater Hospital", Glib.Hl7.V2.Support.Content.ContentType.Text));
+      oComponent.Add(new Content("C4568", Glib.Hl7.V2.Support.Content.ContentType.Escape));
       Assert.AreEqual("Mater Hospital", oComponent.AsString, ",oComponent.AsString returned incorrect");
       Assert.AreEqual("Mater Hospital\\C4568\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
 
       oComponent.ClearAll();
-      oComponent.AsStringRaw = "Mater Hospital\\Q4568\\new line\\.sp+5\\";      
+      oComponent.AsStringRaw = "Mater Hospital\\Q4568\\new line\\.sp+5\\";
       Assert.AreEqual("Mater Hospitalnew line", oComponent.AsString, ",oComponent.AsString returned incorrect");
       Assert.AreEqual("Mater Hospital\\Q4568\\new line\\.sp+5\\", oComponent.AsStringRaw, ",oComponent.AsStringRaw returned incorrect");
       Assert.AreEqual(true, oComponent.Content(3).EscapeMetaData.IsFormattingCommand, ",.Content(3).EscapeMetaData.IsFormattingCommand returned incorrect");
@@ -346,10 +347,10 @@ namespace TestProjectGlib
     }
   }
 
-  [TestClass]
+  [TestFixture]
   public class UnitTestFieldModel
   {
-    [TestMethod]
+    [Test]
     public void TestFieldCreate()
     {
       //Test setting data through create
@@ -410,7 +411,7 @@ namespace TestProjectGlib
       Assert.AreEqual("First^Third", oField.AsString, ",oField.RemoveComponentAt(2) returned incorrect");
       oField.RemoveComponentAt(1);
       oField.RemoveComponentAt(1);
-      Assert.AreEqual("", oField.AsString, ",oField.RemoveComponentAt() returned incorrect");      
+      Assert.AreEqual("", oField.AsString, ",oField.RemoveComponentAt() returned incorrect");
 
       //Test InsertBefore
       oField.ClearAll();
@@ -465,13 +466,12 @@ namespace TestProjectGlib
 
 
     }
-
   }
 
-  [TestClass]
+  [TestFixture]
   public class UnitTestElementModel
   {
-    [TestMethod]
+    [Test]
     public void TestFieldCreate()
     {
       //Test setting data through create
@@ -546,7 +546,7 @@ namespace TestProjectGlib
       Assert.AreEqual("The Component", oElement.AsString, ",oElement.Add(new Component(); returned incorrect");
       oElement.Add(new Component("The Component2"));
       Assert.AreEqual("The Component^The Component2", oElement.AsString, ",oElement.Add(new Component(); returned incorrect");
-      
+
       oElement.ClearAll();
       oElement.Add(new SubComponent("The SubComponent1"));
       Assert.AreEqual("The SubComponent1", oElement.AsString, ",oElement.Add(new SubComponent(); returned incorrect");
@@ -595,13 +595,12 @@ namespace TestProjectGlib
       Assert.AreEqual("#H#Second2#N#", oElement.Repeat(2).Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("Third22", oElement.Repeat(2).Component(3).SubComponent(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
     }
-
   }
 
-  [TestClass]
+  [TestFixture]
   public class UnitTestSegmentModel
   {
-    [TestMethod]
+    [Test]
     public void TestFieldCreate()
     {
       //Test setting data through create
@@ -707,10 +706,10 @@ namespace TestProjectGlib
       try
       {
         oSegment.Insert(2, oElement);
-      }      
+      }
       catch (ArgumentException e)
       {
-        Assert.AreEqual("The object instance passed is in use within another structure. This is not allowed. Have you forgotten to Clone() the instance before reusing.", 
+        Assert.AreEqual("The object instance passed is in use within another structure. This is not allowed. Have you forgotten to Clone() the instance before reusing.",
                         e.Message, "Exception thrown has wrong text");
       }
       oSegment.Insert(2, oElement.Clone());
@@ -727,8 +726,8 @@ namespace TestProjectGlib
       Assert.AreEqual("PID|1|2|3|4|5|6|NewField1", oSegment.AsString, "oSegment.Add() returned incorrect");
       oSegment.Insert(6, new Field("NewField2"));
       Assert.AreEqual("PID|1|2|3|4|5|NewField2|6|NewField1", oSegment.AsString, "oSegment.Add() returned incorrect");
-     
-      
+
+
       ////Test mixture of Append , insert before and after
       oSegment.ClearAll();
       oSegment.Insert(1, new Element("First"));
@@ -775,12 +774,12 @@ namespace TestProjectGlib
       Assert.AreEqual("#H#Second2#N#", oSegment.Element(1).Repeat(2).Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("Third22", oSegment.Element(1).Repeat(2).Component(3).SubComponent(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
     }
-
   }
-  [TestClass]
+
+  [TestFixture]
   public class UnitTestMessageModel
   {
-    [TestMethod]
+    [Test]
     public void TestMessageCreate()
     {
       Message oMessage;
@@ -800,7 +799,7 @@ namespace TestProjectGlib
       {
         Assert.AreEqual("Second MSH segment found when parseing new message. Single messages must only have one MSH segment as the first segment.", ae.Message, "Exception should have been thrown in setting oMessage.AsString");
       }
-      
+
       StringBuilder sbMessage = new StringBuilder();
       sbMessage.Append("MSH|^~\\&|HNAM^RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN"); sbMessage.Append("\r");
       sbMessage.Append("PID|1|1038785005^^^QH^PT^CD&A^^\"\"|1038785005^^^QH^PT^CD&A^^\"\"~993171^^^QH^MR^PAH&A^^\"\"~343211^^^QH^MR^LOGH&A^^\"\"~43028819141^^^HIC^MC^^^10/2018~\"\"^^^DVA^VA^^\"\"~420823031C^^^HIC^PEN&9^^^31/07/2015~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|993171-PAH^^^^MR^PAH|KABONGO^KABEDI^^^MS^^C||19520725|F||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|24 Holles Street^^WATERFORD WEST^^4133||(046)927-3235^Home|(046)927-3235^Business|78|3^Widowed|2999^Other Christian, nec|1504352845^^^PAH FIN Number Alias Pool^FIN NBR|43028819141||||||0|||||N"); sbMessage.Append("\r");
@@ -819,7 +818,7 @@ namespace TestProjectGlib
       oMessage = new Message(MessageString);
       //Check parsed Message same as Original
       Assert.AreEqual(sbMessage.ToString(), oMessage.AsStringRaw, "Parsed Message is not equal to orginal message.");
-      
+
 
 
       //test IsEmpty property
@@ -835,10 +834,10 @@ namespace TestProjectGlib
 
       //oMessage.
       //Some Time & Date Tests
-      DateTime testDateTime = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();
-      oMessage.Segment("MSH").Field(7).AsDateHourMinSec(DateTime.Now, new TimeSpan(+8, 0, 0));
-      testDateTime = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();      
-      DateTime testDateTime3 = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();
+      DateTimeOffset testDateTime = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();
+      oMessage.Segment("MSH").Field(7).AsDateHourMinSec(DateTimeOffset.Now, true);
+      testDateTime = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();
+      DateTimeOffset testDateTime3 = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();
 
       Assert.AreEqual(12, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual(4, oMessage.SegmentList("OBX").Count, "The oMessage.SegmentList(\"OBX\").Count returns the incorrect value.");
@@ -911,7 +910,7 @@ namespace TestProjectGlib
       Assert.AreEqual("GUS", oMessage.SegmentList()[12].Code, "oMessage.SegmentList()[12].Code");
 
       Segment oNewSegment2 = new Segment("NTE|Comment here 2");
-      oMessage.Insert(9,oNewSegment2);
+      oMessage.Insert(9, oNewSegment2);
       Assert.AreEqual(14, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual("NTE", oMessage.Segment(9).Code, "oMessage.Segment(9).Code");
       Assert.AreEqual("Comment here 2", oMessage.Segment(9).Field(1).AsString, "oMessage.Segment(9).Field(1).AsString");
@@ -970,7 +969,7 @@ namespace TestProjectGlib
       StringBuilder sbMSH1Exception = new StringBuilder();
       sbMSH1Exception.Append("MSH-1 contains the 'Main Separator' charater and is not accessible from the Field or Element object instance as it is critical to message construction.");
       sbMSH1Exception.Append(Environment.NewLine);
-      sbMSH1Exception.Append("Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");  
+      sbMSH1Exception.Append("Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");
 
       try
       {
@@ -978,7 +977,7 @@ namespace TestProjectGlib
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
-      {        
+      {
         Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
@@ -990,7 +989,7 @@ namespace TestProjectGlib
       catch (ArgumentException ae)
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
-      }                 
+      }
 
       try
       {
@@ -1041,7 +1040,7 @@ namespace TestProjectGlib
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
-      
+
       try
       {
         oMessage.Segment(1).AsString = "ABC|^~\\&|AUSLAB|TRAIN|";
@@ -1064,7 +1063,7 @@ namespace TestProjectGlib
 
       try
       {
-        Segment testSeg  = new Segment("BAD");
+        Segment testSeg = new Segment("BAD");
         testSeg.AsStringRaw = "MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1";
         testSeg.AsStringRaw = "ABC|^~\\&|AUSLAB|TRAIN|";
         Assert.Fail("An exception should have been thrown");
@@ -1076,7 +1075,7 @@ namespace TestProjectGlib
 
       Segment NewMSH = new Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
       try
-      {        
+      {
         oMessage.Add(NewMSH);
         Assert.Fail("An exception should have been thrown");
       }
@@ -1087,7 +1086,7 @@ namespace TestProjectGlib
 
       try
       {
-        oMessage.Insert(2,NewMSH);
+        oMessage.Insert(2, NewMSH);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -1116,8 +1115,8 @@ namespace TestProjectGlib
       }
       Assert.AreEqual("1^^^4^5^6^^8", oPIDSeg.Field(3).AsString, "oPIDSeg.Field(3).ComponentList returns the incorrect values");
 
-      string datetest = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeToString.AsDateHourMinSec(DateTime.Now, new TimeSpan(+8,0,0));
-      DateTime testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTime("2014+0800");
+      string datetest = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTimeOffset.Now, true);
+      DateTimeOffset testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset("2014+0800");
 
       oMessage = new Message(sbMessage.ToString());
       SubComponent SubCom = new SubComponent("Sub");
@@ -1132,13 +1131,13 @@ namespace TestProjectGlib
       oContent1.AsString = "Test111";
       oContent2.AsString = "Test222";
       Assert.AreEqual("SubRaw1Test222", SubCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
-      
+
 
       Content oContent3 = new Content("Test3");
       Content oContent4 = new Content("Test4");
       SubCom.Set(1, oContent3);
       SubCom.Set(2, oContent4);
-      Assert.AreEqual("SubTest3Test4", SubCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");      
+      Assert.AreEqual("SubTest3Test4", SubCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
 
       Field oField = new Field("Field");
       oField.Component(1).Set(0, oContent1);
@@ -1163,8 +1162,9 @@ namespace TestProjectGlib
       oMessage.Segment("PID").Field(2).Add(oContent1.Clone());
       oMessage.Segment("PID").Field(2).Component(1).Add(oContent1.Clone());
 
-      
-    }
 
+    }
   }
+
+
 }

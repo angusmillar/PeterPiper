@@ -1,74 +1,22 @@
-﻿using Glib.Hl7.V2.Support.Standard;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
 using Glib.Hl7.V2.Model;
+using Glib.Hl7.V2.Support.Standard;
 
-namespace TestProjectGlib
+namespace TestHl7V2.TestModel
 {
-    
-    
-    /// <summary>
-    ///This is a test class for AcknowledgementTest and is intended
-    ///to contain all AcknowledgementTest Unit Tests
-    ///</summary>
-  [TestClass()]
-  public class AcknowledgementTest
+  [TestFixture]
+  public class TestAcknowledgement
   {
-
-
-    private TestContext testContextInstance;
-
-    /// <summary>
-    ///Gets or sets the test context which provides
-    ///information about and functionality for the current test run.
-    ///</summary>
-    public TestContext TestContext
-    {
-      get
-      {
-        return testContextInstance;
-      }
-      set
-      {
-        testContextInstance = value;
-      }
-    }
-
-    #region Additional test attributes
-    // 
-    //You can use the following additional attributes as you write your tests:
-    //
-    //Use ClassInitialize to run code before running the first test in the class
-    //[ClassInitialize()]
-    //public static void MyClassInitialize(TestContext testContext)
-    //{
-    //}
-    //
-    //Use ClassCleanup to run code after all tests in a class have run
-    //[ClassCleanup()]
-    //public static void MyClassCleanup()
-    //{
-    //}
-    //
-    //Use TestInitialize to run code before running each test
-    //[TestInitialize()]
-    //public void MyTestInitialize()
-    //{
-    //}
-    //
-    //Use TestCleanup to run code after each test has run
-    //[TestCleanup()]
-    //public void MyTestCleanup()
-    //{
-    //}
-    //
-    #endregion
-
 
     /// <summary>
     ///A test for Acknowledgement Constructor
     ///</summary>
-    [TestMethod()]
+    [Test]
     public void AcknowledgementConstructorTest()
     {
       Acknowledgement target = new Acknowledgement();
@@ -78,7 +26,7 @@ namespace TestProjectGlib
     /// <summary>
     ///A test for GenerateAcknowledgementMessage
     ///</summary>
-    [TestMethod()]
+    [Test]
     public void GenerateAcknowledgementMessageTest()
     {
       System.Text.StringBuilder oMsg = new System.Text.StringBuilder();
@@ -100,8 +48,8 @@ namespace TestProjectGlib
       Message oReceivedMessage = new Message(oMsg.ToString());
       Message expected = new Message(oAck.ToString());
       Message actual;
-      actual = target.GenerateAcknowledgementMessage(oReceivedMessage,Hl7Table.Table_0008.AcknowledgmentCodeType.ApplicationAccept);
-      
+      actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.ApplicationAccept);
+
       Assert.AreEqual(expected.Segment(1).Field(3).AsStringRaw, actual.Segment(1).Field(3).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
       Assert.AreEqual(expected.Segment(1).Field(4).AsStringRaw, actual.Segment(1).Field(4).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
       Assert.AreEqual(expected.Segment(1).Field(5).AsStringRaw, actual.Segment(1).Field(5).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
@@ -129,7 +77,8 @@ namespace TestProjectGlib
 
       actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.CommitReject);
       Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Hl7Table.Table_0008.CommitReject, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
-    
+
     }
+
   }
 }

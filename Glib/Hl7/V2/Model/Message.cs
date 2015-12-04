@@ -21,7 +21,7 @@ namespace Glib.Hl7.V2.Model
       MSHTemplate.Append(this.Delimiters.Escape);
       MSHTemplate.Append(this.Delimiters.SubComponent);
       MSHTemplate.Append(this.Delimiters.Field,5);
-      MSHTemplate.Append(Support.Content.DateTimeTools.ConvertDateTimeToString.AsDateHourMinSecMilli(DateTime.Now));
+      MSHTemplate.Append(Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSecMilli(DateTimeOffset.Now,true));
       MSHTemplate.Append(this.Delimiters.Field, 2);
       MSHTemplate.Append(MessageType);
       MSHTemplate.Append(this.Delimiters.Component);
@@ -233,7 +233,7 @@ namespace Glib.Hl7.V2.Model
       }
     }
     
-    public DateTime MessageCreationDateTime
+    public DateTimeOffset MessageCreationDateTime
     {
       get
       {
