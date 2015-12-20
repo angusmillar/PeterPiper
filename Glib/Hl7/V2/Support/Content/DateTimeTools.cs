@@ -73,7 +73,7 @@ namespace Glib.Hl7.V2.Support.Content
       public static string AsDate(DateTimeOffset DateTimeOffset, bool WithTimeZone = false)
       {        
         if (WithTimeZone)
-          return DateTimeOffset.ToString(String.Format("{0}{1}", fDate, fTimeZone));
+          return DateTimeOffset.ToString(String.Format("{0}{1}", fDate, fTimeZone)).Replace(":", "");
         else
           return DateTimeOffset.ToString(String.Format("{0}", fDate));
       }
