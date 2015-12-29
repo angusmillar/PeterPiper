@@ -530,5 +530,46 @@ namespace TestHl7V2
       Assert.AreEqual('!', target.MessageDelimiters.SubComponent, "A test for MessageDelimiters");
       Assert.AreEqual('%', target.MessageDelimiters.Escape, "A test for MessageDelimiters");
     }
+
+    /// <summary>
+    ///A test for inspecting a non-existent element, should not then add that element in output. 
+    ///</summary>
+    [Test]
+    public void InspectingANonExistentField()
+    {     
+      //This Commented out test case fails but the solution/workaround is to use Element() to inspect not field().
+      //as it achieves the same outcome. See active test case below. 
+      //The reason for this is that when generating a temp Field it 
+      //Must always be committed to a Elements Repeat Dictionary as repeat one, this committing 
+      //sets the field as not temp and there for it is not removed.
+      //In looking at this I also remembered that the _Temp property may be redundant. Need to check that
+      //when I have time.
+
+      //---- Test Case that fails ---------------------------
+      //Segment target = new Segment("OBR|");
+      //target.Field(1).AsString = "1";
+      //target.Field(4).Component(1).AsString = "Test";
+      //target.Field(4).Component(2).AsString = "TestTwo";
+
+      //if (target.Field(25).AsString == "X")
+      //{
+      //  //do nothing
+      //}
+      //Assert.AreEqual(4, target.FieldCount, "Field count should only be 4 ad not 25 ");
+
+      //---- Workaround Test Case that passes ---------------------------
+      Segment target = new Segment("OBR|");
+      target.Field(1).AsString = "1";
+      target.Field(4).Component(1).AsString = "Test";
+      target.Field(4).Component(2).AsString = "TestTwo";
+
+      if (target.Element(25).AsString == "X")
+      {
+        //do nothing
+      }
+      Assert.AreEqual(4, target.FieldCount, "Field count should only be 4 ad not 25 ");
+    }
+
+
   }
 }

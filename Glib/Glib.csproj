@@ -101,9 +101,10 @@
     <Compile Include="Hl7\V2\Model\ModelSupport\PathDetailFactory.cs" />
     <Compile Include="Hl7\V2\Support\Content\ContentType.cs" />
     <Compile Include="Hl7\V2\Model\ModelSupport\ContentTypeInternal.cs" />
-    <Compile Include="Hl7\V2\Support\Content\DateTimeTools.cs" />
+    <Compile Include="Hl7\V2\Support\Content\DateTimeSupport.cs" />
     <Compile Include="Hl7\V2\Support\Content\EscapeData.cs" />
     <Compile Include="Hl7\V2\Model\ModelSupport\PathDetail.cs" />
+    <Compile Include="Hl7\V2\Support\Content\DateTimeSupportTools.cs" />
     <Compile Include="Hl7\V2\Support\MessageDelimiters.cs" />
     <Compile Include="Hl7\V2\Support\Standard\Acknowledgement.cs" />
     <Compile Include="Hl7\V2\Support\Standard\Delimiters.cs" />

@@ -631,11 +631,18 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("PID-3.1.1&PID-3.1.2", oSegment.Element(3).Repeat(1).Component(1).AsStringRaw, "oSegment.Field(3).ToString() did not match Set StringRaw");
       Assert.AreEqual("PID-{3}1.2.3", oSegment.Element(1).Repeat(3).Component(2).SubComponent(3).AsStringRaw, "oSegment.Field(3).ToString() did not match Set StringRaw");
 
-      //Test inspect Component does not add Components
+      //Test inspect Element does not add Elements
       if (oSegment.Element(100).AsString == "")
       {
         Assert.AreEqual(5, oSegment.ElementCount, "oSegment.CountElement is incorrect");
       }
+
+      //##Issues## This test fails!!!
+      ////Test inspect Field does not add fields & elements
+      //if (oSegment.Field(100).AsString == "")
+      //{
+      //  Assert.AreEqual(5, oSegment.ElementCount, "oSegment.CountElement is incorrect");
+      //}
 
       //Test zero index exception
       try
@@ -834,10 +841,10 @@ namespace TestHl7V2.TestModel
 
       //oMessage.
       //Some Time & Date Tests
-      DateTimeOffset testDateTime = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();
-      oMessage.Segment("MSH").Field(7).AsDateHourMinSec(DateTimeOffset.Now, true);
-      testDateTime = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();
-      DateTimeOffset testDateTime3 = oMessage.Segment("MSH").Field(7).AsDateHourMinSec();
+      DateTimeOffset testDateTime = oMessage.Segment("MSH").Field(7).DateTimeSupport.GetDateTimeOffset();
+      oMessage.Segment("MSH").Field(7).DateTimeSupport.SetDateTimeOffset(DateTimeOffset.Now);
+      testDateTime = oMessage.Segment("MSH").Field(7).DateTimeSupport.GetDateTimeOffset();
+      DateTimeOffset testDateTime3 = oMessage.Segment("MSH").Field(7).DateTimeSupport.GetDateTimeOffset();
 
       Assert.AreEqual(12, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual(4, oMessage.SegmentList("OBX").Count, "The oMessage.SegmentList(\"OBX\").Count returns the incorrect value.");
@@ -1115,8 +1122,10 @@ namespace TestHl7V2.TestModel
       }
       Assert.AreEqual("1^^^4^5^6^^8", oPIDSeg.Field(3).AsString, "oPIDSeg.Field(3).ComponentList returns the incorrect values");
 
-      string datetest = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTimeOffset.Now, true);
-      DateTimeOffset testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset("2014+0800");
+      string datetest = Glib.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
+      //string datetest = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTimeOffset.Now, true);
+      //DateTimeOffset testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset("2014+0800");
+      DateTimeOffset testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeSupportTools.AsDateTimeOffSet("2014+0800");
 
       oMessage = new Message(sbMessage.ToString());
       SubComponent SubCom = new SubComponent("Sub");

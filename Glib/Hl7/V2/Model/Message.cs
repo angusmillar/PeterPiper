@@ -21,7 +21,7 @@ namespace Glib.Hl7.V2.Model
       MSHTemplate.Append(this.Delimiters.Escape);
       MSHTemplate.Append(this.Delimiters.SubComponent);
       MSHTemplate.Append(this.Delimiters.Field,5);
-      MSHTemplate.Append(Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSecMilli(DateTimeOffset.Now,true));
+      MSHTemplate.Append(Glib.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli));      
       MSHTemplate.Append(this.Delimiters.Field, 2);
       MSHTemplate.Append(MessageType);
       MSHTemplate.Append(this.Delimiters.Component);
@@ -237,7 +237,7 @@ namespace Glib.Hl7.V2.Model
     {
       get
       {
-        return this.GetSegment(1).GetField(7).AsDateHourMinSecMilli();
+        return this.GetSegment(1).GetField(7).DateTimeSupport.GetDateTimeOffset();
       }
     }
     public Support.MessageDelimiters MessageDelimiters

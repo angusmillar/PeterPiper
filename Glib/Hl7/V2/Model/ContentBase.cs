@@ -15,65 +15,13 @@ namespace Glib.Hl7.V2.Model
     {        
     }    
 
-    public void AsDate(DateTimeOffset DateTimeOffset, bool WithTimeZone)
+    public Glib.Hl7.V2.Support.Content.DateTimeSupport DateTimeSupport
     {
-      this.AsStringRaw = Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDate(DateTimeOffset, WithTimeZone);
+      get
+      {
+        return new Support.Content.DateTimeSupport(this);
+      }
     }
-    public DateTimeOffset AsDate()
-    {
-      return Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset(this.AsStringRaw);
-    }
-
-    //----------------------------------------------------------------------------------------------------
-    public void AsDateHourMin(DateTime DateTime)
-    {
-      this.AsStringRaw = Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMin(DateTime);
-    }
-
-    public void AsDateHourMin(DateTimeOffset DateTimeOffset, bool WithTimeZone = false)
-    {
-      this.AsStringRaw = Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMin(DateTimeOffset, WithTimeZone);
-    }
-
-    //----------------------------------------------------------------------------------------------------
-
-    public DateTimeOffset AsDateHourMin()
-    {
-      return Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset(this.AsStringRaw);
-    }
-
-    //----------------------------------------------------------------------------------------------------
-
-    public void AsDateHourMinSec(DateTime DateTime)
-    {
-      this.AsStringRaw = Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTime);
-    }
-
-    public void AsDateHourMinSec(DateTimeOffset DateTimeOffset, bool WithTimeZone = false)
-    {
-      this.AsStringRaw = Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTimeOffset, WithTimeZone);
-    }
-
-
-    public DateTimeOffset AsDateHourMinSec()
-    {
-      return Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset(this.AsStringRaw);
-    }
-
-    //----------------------------------------------------------------------------------------------------
-
-    public void AsDateHourMinSecMilli(DateTimeOffset oDateTimeOffset, bool WithTimeZone = false)
-    {
-      this.AsStringRaw = Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSecMilli(oDateTimeOffset, WithTimeZone);
-    }
-    public DateTimeOffset AsDateHourMinSecMilli()
-    {
-      return Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset(this.AsStringRaw);
-    }
-
-    //----------------------------------------------------------------------------------------------------
-
-
     public void ToBase64(byte[] item)
     {
       this.AsStringRaw = Support.Content.Base64.Encoder(item);

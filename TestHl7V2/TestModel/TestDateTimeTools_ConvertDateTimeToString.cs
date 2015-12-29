@@ -28,7 +28,8 @@ namespace TestHl7V2.TestModel
     {
       string expected = "20140225"; 
       string actual;
-      actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDate(oDateTimeOffSet);
+      actual = DateTimeSupportTools.AsString(oDateTimeOffSet, false, DateTimeSupportTools.DateTimePrecision.Date);
+      //actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDate(oDateTimeOffSet);
       Assert.AreEqual(expected, actual);
     }
 
@@ -39,9 +40,10 @@ namespace TestHl7V2.TestModel
     public void AsDateTest1()
     {
       
-      string expected = "20140225+08:00";
+      string expected = "20140225+0800";
       string actual;
-      actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDate(oDateTimeOffSet.ToOffset(new TimeSpan(+8, 0, 0)), true);
+      //actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDate(oDateTimeOffSet.ToOffset(new TimeSpan(+8, 0, 0)), true);
+      actual = DateTimeSupportTools.AsString(oDateTimeOffSet.ToOffset(new TimeSpan(+8, 0, 0)), true, DateTimeSupportTools.DateTimePrecision.Date);
       Assert.AreEqual(expected, actual);
     }
 
@@ -53,7 +55,8 @@ namespace TestHl7V2.TestModel
     {
       string expected = "201402251030";
       string actual;
-      actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMin(oDateTimeOffSet);
+      //actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMin(oDateTimeOffSet);
+      actual = DateTimeSupportTools.AsString(oDateTimeOffSet, false, DateTimeSupportTools.DateTimePrecision.DateHourMin);
       Assert.AreEqual(expected, actual);
     }
 
@@ -65,7 +68,8 @@ namespace TestHl7V2.TestModel
     {         
       string expected = "201402250830+0800";
       string actual;
-      actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMin(oDateTimeOffSet.ToOffset(new TimeSpan(+8, 0, 0)), true);
+      //actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMin(oDateTimeOffSet.ToOffset(new TimeSpan(+8, 0, 0)), true);
+      actual = DateTimeSupportTools.AsString(oDateTimeOffSet.ToOffset(new TimeSpan(+8, 0, 0)), true, DateTimeSupportTools.DateTimePrecision.DateHourMin);
       Assert.AreEqual(expected, actual);
     }
 
@@ -77,7 +81,8 @@ namespace TestHl7V2.TestModel
     {
       string expected = "20140225103022";
       string actual;
-      actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(oDateTimeOffSet);
+      //actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(oDateTimeOffSet);
+      actual = DateTimeSupportTools.AsString(oDateTimeOffSet, false, DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
       Assert.AreEqual(expected, actual);
     }
 
@@ -89,7 +94,8 @@ namespace TestHl7V2.TestModel
     {      
       string expected = "20140225083022+0800";
       string actual;
-      actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(oDateTimeOffSet.ToOffset(new TimeSpan(+8,0,0)), true);
+      //actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(oDateTimeOffSet.ToOffset(new TimeSpan(+8,0,0)), true);
+      actual = DateTimeSupportTools.AsString(oDateTimeOffSet.ToOffset(new TimeSpan(+8, 0, 0)), true, DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
       Assert.AreEqual(expected, actual);
     }
 
@@ -101,7 +107,8 @@ namespace TestHl7V2.TestModel
     {
       string expected = "20140225103022.5190";
       string actual;
-      actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSecMilli(oDateTimeOffSet);
+      //actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSecMilli(oDateTimeOffSet);
+      actual = DateTimeSupportTools.AsString(oDateTimeOffSet, false, DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
       Assert.AreEqual(expected, actual);
     }
 
@@ -113,7 +120,8 @@ namespace TestHl7V2.TestModel
     {      
       string expected = "20140225083022.5190+0800";
       string actual;
-      actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSecMilli(oDateTimeOffSet.ToOffset(new TimeSpan(+8,0,0)),true);
+      //actual = DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSecMilli(oDateTimeOffSet.ToOffset(new TimeSpan(+8,0,0)),true);
+      actual = DateTimeSupportTools.AsString(oDateTimeOffSet.ToOffset(new TimeSpan(+8, 0, 0)), true, DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
       Assert.AreEqual(expected, actual);
     }
 

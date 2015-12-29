@@ -23,7 +23,8 @@ namespace TestHl7V2.TestModel
       string HL7StandardDateTimeString = "20140225083022.5190+0800";
       DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, 519, new TimeSpan(+8, 0, 0));
       DateTimeOffset actual;
-      actual = DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset(HL7StandardDateTimeString);
+      //actual = DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset(HL7StandardDateTimeString);
+      actual = DateTimeSupportTools.AsDateTimeOffSet(HL7StandardDateTimeString);
       Assert.AreEqual(expected, actual);
     }
 
@@ -35,9 +36,8 @@ namespace TestHl7V2.TestModel
     {
       string String = "20140225083022.519"; ;
       Field oField = new Field(String);
-      DateTimeOffset actual = oField.AsDateHourMinSecMilli();
-      var zone = TimeZone.CurrentTimeZone;
-      DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, 519, zone.GetUtcOffset(DateTime.Now));     
+      DateTimeOffset actual = oField.DateTimeSupport.GetDateTimeOffset();      
+      DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, 519, new TimeSpan(0,0,0));     
       Assert.AreEqual(expected, actual);
     }
 
@@ -49,9 +49,8 @@ namespace TestHl7V2.TestModel
     {
       string String = "20140225083022";
       Field oField = new Field(String);
-      DateTimeOffset actual = oField.AsDateHourMinSecMilli();
-      var zone = TimeZone.CurrentTimeZone;
-      DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, zone.GetUtcOffset(DateTime.Now));
+      DateTimeOffset actual = oField.DateTimeSupport.GetDateTimeOffset();      
+      DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, new TimeSpan(0,0,0));
       Assert.AreEqual(expected, actual);
     }
 
@@ -63,7 +62,7 @@ namespace TestHl7V2.TestModel
     {
       string String = "20140225083022.519+0800";
       Field oField = new Field(String);
-      DateTimeOffset actual = oField.AsDateHourMinSecMilli();
+      DateTimeOffset actual = oField.DateTimeSupport.GetDateTimeOffset();
       var zone = TimeZone.CurrentTimeZone;
       DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22,519, new TimeSpan(+8,0,0));
       Assert.AreEqual(expected, actual);
@@ -77,11 +76,29 @@ namespace TestHl7V2.TestModel
     {
       string String = "20140225083022+0800";
       Field oField = new Field(String);
-      DateTimeOffset actual = oField.AsDateHourMinSecMilli();
+      DateTimeOffset actual = oField.DateTimeSupport.GetDateTimeOffset();
       var zone = TimeZone.CurrentTimeZone;
       DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, new TimeSpan(+8, 0, 0));      Assert.AreEqual(expected, actual);
 
     }
+
+    /// <summary>
+    ///New Date Time Support
+    ///</summary>
+    [Test]
+    public void Hl7DateTimeTest()
+    {
+      string String = "20140225083022"; ;
+      Field oField = new Field(String);
+      string actual = string.Empty;
+      if (oField.DateTimeSupport.CanParseToDateTimeOffset)
+        actual = oField.DateTimeSupport.AsString(false, DateTimeSupportTools.DateTimePrecision.Year);
+      var zone = TimeZone.CurrentTimeZone;
+      
+      string expected = "2014";
+      Assert.AreEqual(expected, actual);
+    }
+
 
 
   }
