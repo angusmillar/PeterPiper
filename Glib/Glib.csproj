@@ -40,33 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hl7\Nehta\CDA\DataType\Any.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\Boolean.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\CodeableText.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\CodedText.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\DateTime.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\Duration.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\EncapsulatedData.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\Hxit.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\Integer.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\IVL.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\Link.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\QSET.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\QTY.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\Quantity.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\QuantityRange.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\QuantityRatio.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\Real.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\Text.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\TimeInterval.cs" />
-    <Compile Include="Hl7\Nehta\CDA\DataType\UniqueIdentifier.cs" />
-    <Compile Include="Hl7\Nehta\CDA\Enum\CodingRationale.cs" />
-    <Compile Include="Hl7\Nehta\CDA\Enum\CompressionAlgorithm.cs" />
-    <Compile Include="Hl7\Nehta\CDA\Enum\IdentifierReliability.cs" />
-    <Compile Include="Hl7\Nehta\CDA\Enum\IdentifierScope.cs" />
-    <Compile Include="Hl7\Nehta\CDA\Enum\IntegrityCheckAlgorithm.cs" />
-    <Compile Include="Hl7\Nehta\CDA\Enum\NullFlavor.cs" />
-    <Compile Include="Hl7\Nehta\CDA\Enum\UncertaintyType.cs" />
     <Compile Include="Hl7\V2\Model\Component.cs" />
     <Compile Include="Hl7\V2\Model\Content.cs" />
     <Compile Include="Hl7\V2\Model\Element.cs" />
