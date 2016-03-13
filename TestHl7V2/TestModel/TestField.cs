@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support;
 using System.Collections.ObjectModel;
 using NUnit.Framework;
 
@@ -77,7 +77,7 @@ namespace TestHl7V2
     public void AddTest2()
     {
       Field target = new Field("Field1.1\\.br\\Field1.2\\.br\\Field1.3^Field2^Field3^Field4");
-      Content item = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine);
+      Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
       target.Add(item);
       Assert.AreEqual("Field1.1\\.br\\Field1.2\\.br\\Field1.3\\.br\\^Field2^Field3^Field4", target.AsStringRaw, "A test for Add 2");
       Assert.AreEqual(6, target.Component(1).ContentCount, "A test for Add 2");
@@ -145,7 +145,7 @@ namespace TestHl7V2
     {
       Field target = new Field("Comp1\\H\\Comp1.2&Sub^Sub1&Sub2&Sub3^");
       int index = 1;
-      Content expected = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOn);
+      Content expected = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn);
       Content actual;
       actual = target.Content(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Content");
@@ -173,11 +173,11 @@ namespace TestHl7V2
     {
       Field target = new Field("one\\T\\two");
       int index = 1;
-      Content item = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine);
+      Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
       target.Insert(index, item);
       Assert.AreEqual("one\\.br\\\\T\\two", target.AsStringRaw, "A test for Insert 1");
       target = new Field();
-      Content item2 = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine);
+      Content item2 = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
       target.Insert(5, item2);
       Assert.AreEqual("\\.br\\", target.AsStringRaw, "A test for Insert 1");
 
@@ -257,7 +257,7 @@ namespace TestHl7V2
     {
       Field target = new Field("\\H\\Cont1\\N\\Cont3\\.br\\newline&Sub1^Comp2");
       int index = 3;
-      Content item = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.CenterNextLine);
+      Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.CenterNextLine);
       target.Set(index, item);
       Assert.AreEqual(6, target.ContentCount, "A test for Set");
       Assert.AreEqual("\\H\\Cont1\\N\\\\.ce\\\\.br\\newline&Sub1^Comp2", target.AsStringRaw, "A test for Set");

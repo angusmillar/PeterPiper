@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support;
-using Glib.Hl7.V2.Support.Content;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support;
+using PeterPiper.Hl7.V2.Support.Content;
 
 namespace TestHl7V2.TestModel
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Glib.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model;
 
 namespace TestHl7V2.TestModel
 {
@@ -17,37 +17,37 @@ namespace TestHl7V2.TestModel
       string HL7StandardDateTimeString = "20140225083022.5190+0800";
       Field oField = new Field(HL7StandardDateTimeString);
       //Year
-      string actual = oField.DateTimeSupport.AsString(false, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.Year);
+      string actual = oField.DateTimeSupport.AsString(false, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.Year);
       string expected = "2014";
       Assert.AreEqual(expected, actual);
 
       //YearMonth
-      actual = oField.DateTimeSupport.AsString(false, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.YearMonth);
+      actual = oField.DateTimeSupport.AsString(false, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.YearMonth);
       expected = "201402";
       Assert.AreEqual(expected, actual);
 
       //Date
-      actual = oField.DateTimeSupport.AsString(false, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.Date);
+      actual = oField.DateTimeSupport.AsString(false, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.Date);
       expected = "20140225";
       Assert.AreEqual(expected, actual);
 
       //Date Hour Min
-      actual = oField.DateTimeSupport.AsString(false, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMin);
+      actual = oField.DateTimeSupport.AsString(false, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMin);
       expected = "201402250830";
       Assert.AreEqual(expected, actual);
 
       //Date Hour Min Sec
-      actual = oField.DateTimeSupport.AsString(false, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
+      actual = oField.DateTimeSupport.AsString(false, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
       expected = "20140225083022";
       Assert.AreEqual(expected, actual);
 
       //Date Hour Min Sec Milli
-      actual = oField.DateTimeSupport.AsString(false, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
+      actual = oField.DateTimeSupport.AsString(false, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
       expected = "20140225083022.5190";
       Assert.AreEqual(expected, actual);
 
       //Date Hour Min Sec Milli +timezone
-      actual = oField.DateTimeSupport.AsString(true, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
+      actual = oField.DateTimeSupport.AsString(true, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
       expected = "20140225083022.5190+0800";
       Assert.AreEqual(expected, actual);
 
@@ -58,8 +58,8 @@ namespace TestHl7V2.TestModel
 
       //Check Precision
       actual = oField.DateTimeSupport.AsString();
-      var expectedPrecision = new Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision();
-      expectedPrecision = Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli;
+      var expectedPrecision = new PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision();
+      expectedPrecision = PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli;
       var actualPrecision = oField.DateTimeSupport.GetPrecision();
       Assert.AreEqual(expectedPrecision, actualPrecision);
     }
@@ -92,7 +92,7 @@ namespace TestHl7V2.TestModel
       HL7StandardDateTimeString = "20140224084022+0800";
       DateTimeOffset expectedDateTime = new DateTimeOffset(2014, 02, 24, 08, 40, 22, new TimeSpan(+8, 0, 0));
       //Tell the content to use new settings for timezone and precision
-      oField.AsString = oField.DateTimeSupport.AsString(true, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
+      oField.AsString = oField.DateTimeSupport.AsString(true, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
       //Set the new datetime 
       oField.DateTimeSupport.SetDateTimeOffset(expectedDateTime);
       Assert.AreEqual(HL7StandardDateTimeString, oField.DateTimeSupport.AsString());

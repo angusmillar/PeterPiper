@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support;
 using NUnit.Framework;
 
 namespace TestHl7V2
@@ -74,7 +74,7 @@ namespace TestHl7V2
       TimeZone zone = TimeZone.CurrentTimeZone;
       TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
       var date = new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan);
-      target.Segment("MSH").Field(7).AsString = Glib.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(date, true, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
+      target.Segment("MSH").Field(7).AsString = PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(date, true, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
       Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");      
       Assert.AreEqual(1, target.SegmentCount(), "A test for Message Constructor");
       Assert.AreEqual(true, target.IsParseMSHSegmentOnly, "A test for Message Constructor");
@@ -476,7 +476,7 @@ namespace TestHl7V2
     public void PathInformationTest()
     {
       Message target = new Message(oMsg.ToString());
-      Glib.Hl7.V2.Model.ModelSupport.PathDetailBase actual;
+      PeterPiper.Hl7.V2.Model.ModelSupport.PathDetailBase actual;
       actual = target.PathDetail;
 
       Assert.AreEqual("ORU", actual.MessageType, "A test for MessageEvent");
@@ -491,7 +491,7 @@ namespace TestHl7V2
     public void MessageSchemaTest()
     {
       Message target = new Message(oMsg.ToString());
-      Glib.Hl7.V2.Schema.Support.SchemaSupport oSchemaSupport = new Glib.Hl7.V2.Schema.Support.SchemaSupport();
+      PeterPiper.Hl7.V2.Schema.Support.SchemaSupport oSchemaSupport = new PeterPiper.Hl7.V2.Schema.Support.SchemaSupport();
       oSchemaSupport.LoadSchema(target);
       target.Segment("MSH").Field(9).Component(1).AsString = "ORM";
       target.Segment("MSH").Field(9).Component(2).AsString = "O01";

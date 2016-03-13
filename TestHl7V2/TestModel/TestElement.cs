@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support;
 using System.Collections.ObjectModel;
 
 namespace TestHl7V2
@@ -165,7 +165,7 @@ namespace TestHl7V2
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
       Element target = new Element(StringRaw);
       int index = 3;
-      Content expected = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine);
+      Content expected = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
       Content actual;
       actual = target.Content(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Content");

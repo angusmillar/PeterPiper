@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using NUnit.Framework;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support;
 
 namespace TestHl7V2
 {
@@ -50,8 +50,8 @@ namespace TestHl7V2
         string StringRaw = "Content1\\H\\Content2Bold\\N\\Content3";
         SubComponent target = new SubComponent(StringRaw);
         Assert.AreEqual(5, target.ContentCount, "SubComponentConstructorTest3()");
-        Assert.AreEqual(Glib.Hl7.V2.Support.Content.ContentType.Escape, target.Content(1).ContentType, "SubComponentConstructorTest3()");
-        Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Escapes.HighlightStart.ToString(), target.Content(1).EscapeMetaData.EscapeTypeCharater, "SubComponentConstructorTest3()");
+        Assert.AreEqual(PeterPiper.Hl7.V2.Support.Content.ContentType.Escape, target.Content(1).ContentType, "SubComponentConstructorTest3()");
+        Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Escapes.HighlightStart.ToString(), target.Content(1).EscapeMetaData.EscapeTypeCharater, "SubComponentConstructorTest3()");
       }
 
       /// <summary>
@@ -62,7 +62,7 @@ namespace TestHl7V2
       {
         SubComponent target = new SubComponent();
         Content item1 = new Content("Hello World");
-        Content item2 = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine);
+        Content item2 = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
         target.Add(item1);
         target.Add(item2);
         Assert.AreEqual(".br", target.Content(1).EscapeMetaData.EscapeTypeCharater, "AddTest() 1");
@@ -117,7 +117,7 @@ namespace TestHl7V2
       {
         SubComponent target = new SubComponent("Hello "); // TODO: Initialize to an appropriate value
         int index = 1; // TODO: Initialize to an appropriate value
-        Content item = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.SubComponent);
+        Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.SubComponent);
         target.Insert(index, item);
         Assert.AreEqual("&", target.Content(1).AsString, "A test for Insert");
       }
@@ -142,7 +142,7 @@ namespace TestHl7V2
       {
         SubComponent target = new SubComponent("Hello \\F\\ World");
         int index = 1;
-        Content item = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.SubComponent);
+        Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.SubComponent);
         target.Set(index, item);
         Assert.AreEqual("Hello & World", target.AsString, "A test for Set");
       }
@@ -238,7 +238,7 @@ namespace TestHl7V2
       [Test]
       public void IsHL7NullTest()
       {
-        SubComponent target = new SubComponent(Glib.Hl7.V2.Support.Standard.Null.HL7Null); // TODO: Initialize to an appropriate value
+        SubComponent target = new SubComponent(PeterPiper.Hl7.V2.Support.Standard.Null.HL7Null); // TODO: Initialize to an appropriate value
         bool actual;
         actual = target.IsHL7Null;
         Assert.AreEqual(true, actual);

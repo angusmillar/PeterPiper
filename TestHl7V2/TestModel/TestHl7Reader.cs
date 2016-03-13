@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Glib.Hl7.V2.Support.TextFile;
+using PeterPiper.Hl7.V2.Support.TextFile;
 using NUnit.Framework;
 
 namespace TestHl7V2.TestModel
@@ -74,11 +74,11 @@ namespace TestHl7V2.TestModel
 
       Hl7StreamReader reader = new Hl7StreamReader(readpath);
       HL7StreamWriter writer = new HL7StreamWriter(writepath, true);
-      List<Glib.Hl7.V2.Model.Message> oMessageList = new List<Glib.Hl7.V2.Model.Message>();
+      List<PeterPiper.Hl7.V2.Model.Message> oMessageList = new List<PeterPiper.Hl7.V2.Model.Message>();
       string actual;
       while ((actual = reader.Read()) != null)
       {
-        Glib.Hl7.V2.Model.Message oHl7 = new Glib.Hl7.V2.Model.Message(actual);
+        PeterPiper.Hl7.V2.Model.Message oHl7 = new PeterPiper.Hl7.V2.Model.Message(actual);
         Assert.IsTrue(oHl7.SegmentCount() > 1);
         oMessageList.Add(oHl7);
         writer.Write(oHl7, HL7StreamWriter.HL7OutputStyles.InterfaceReadable);
@@ -89,7 +89,7 @@ namespace TestHl7V2.TestModel
       int counter = 0;
       while ((actual = reader.Read()) != null)
       {
-        Glib.Hl7.V2.Model.Message oHl7 = new Glib.Hl7.V2.Model.Message(actual);
+        PeterPiper.Hl7.V2.Model.Message oHl7 = new PeterPiper.Hl7.V2.Model.Message(actual);
         if (!oMessageList[counter].AsStringRaw.Equals(oHl7.AsStringRaw))
         {
           Assert.Fail("The Hl7 Message read in does not match the hl7 message written out and back in again by the Hl7StreamWriter and Hl7StreamReader.");

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support;
 using NUnit.Framework;
 
 namespace TestHl7V2.TestModel
@@ -15,7 +15,7 @@ namespace TestHl7V2.TestModel
     [Test]
     public void TestContentTypeCreate()
     {
-      Content oContent = new Content("The data for a content", Glib.Hl7.V2.Support.Content.ContentType.Text);
+      Content oContent = new Content("The data for a content", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
       Assert.AreEqual("The data for a content", oContent.AsString, "AsString Failed on get");
       Assert.AreEqual("The data for a content", oContent.AsStringRaw, "AsStringRaw Failed on get");
       Assert.AreEqual("The data for a content", oContent.ToString(), "ToString Failed on get");
@@ -27,7 +27,7 @@ namespace TestHl7V2.TestModel
       Content obj = null;
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Field.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
+        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Field.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -37,7 +37,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Component.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
+        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Component.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -47,7 +47,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.SubComponent.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
+        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SubComponent.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -57,7 +57,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Repeat.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
+        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Repeat.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -67,7 +67,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content(Glib.Hl7.V2.Support.Standard.Delimiters.Escape.ToString(), Glib.Hl7.V2.Support.Content.ContentType.Text);
+        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -77,8 +77,8 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content("Test Data", Glib.Hl7.V2.Support.Content.ContentType.Text);
-        obj.AsString = Glib.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
+        obj = new Content("Test Data", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj.AsString = PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
         Assert.Fail("An exception should have been thrown on setting AsString");
       }
       catch (ArgumentException ae)
@@ -88,8 +88,8 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content("Test Data", Glib.Hl7.V2.Support.Content.ContentType.Text);
-        obj.AsStringRaw = Glib.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
+        obj = new Content("Test Data", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj.AsStringRaw = PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
         Assert.Fail("An exception should have been thrown on setting AsString");
       }
       catch (ArgumentException ae)
@@ -115,10 +115,10 @@ namespace TestHl7V2.TestModel
       string FullTestStringWithEscapes = "not highlighted\\H\\ Highlighted \\N\\highlighted ended \\H\\Added highlight \\N\\Added not highlight \\H\\\\N\\";
       string FullTestStringWithOutEscapes = "not highlighted Highlighted highlighted ended Added highlight Added not highlight ";
       SubComponent oSubComonent = new SubComponent("not highlighted\\H\\ Highlighted \\N\\highlighted ended ");
-      Content oContentEscapeHiglightStart = new Content("H", Glib.Hl7.V2.Support.Content.ContentType.Escape);
-      Content oContentEscapeHiglightEnd = new Content("N", Glib.Hl7.V2.Support.Content.ContentType.Escape);
-      Content oContent1 = new Content("Added highlight ", Glib.Hl7.V2.Support.Content.ContentType.Text);
-      Content oContent2 = new Content("Added not highlight ", Glib.Hl7.V2.Support.Content.ContentType.Text);
+      Content oContentEscapeHiglightStart = new Content("H", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
+      Content oContentEscapeHiglightEnd = new Content("N", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
+      Content oContent1 = new Content("Added highlight ", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+      Content oContent2 = new Content("Added not highlight ", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
       oSubComonent.Add(oContentEscapeHiglightStart);
       oSubComonent.Add(oContent1);
       oSubComonent.Add(oContentEscapeHiglightEnd);
@@ -138,21 +138,21 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual(oSubComonent.ToString(), FullTestStringWithOutEscapes);
 
       oSubComonent = new SubComponent("\\H\\This is bold text\\N\\");
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOn, oSubComonent.Content(0).EscapeMetaData.EscapeType);
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn, oSubComonent.Content(0).EscapeMetaData.EscapeType);
       Assert.AreEqual("This is bold text", oSubComonent.Content(1).AsStringRaw);
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOff, oSubComonent.Content(2).EscapeMetaData.EscapeType);
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff, oSubComonent.Content(2).EscapeMetaData.EscapeType);
 
-      Assert.AreEqual(Glib.Hl7.V2.Support.Content.ContentType.Escape, oSubComonent.Content(0).ContentType, "Incorrect ContentType");
-      Assert.AreEqual(Glib.Hl7.V2.Support.Content.ContentType.Text, oSubComonent.Content(1).ContentType, "Incorrect ContentType");
-      Assert.AreEqual(Glib.Hl7.V2.Support.Content.ContentType.Escape, oSubComonent.Content(2).ContentType, "Incorrect ContentType");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Content.ContentType.Escape, oSubComonent.Content(0).ContentType, "Incorrect ContentType");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Content.ContentType.Text, oSubComonent.Content(1).ContentType, "Incorrect ContentType");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Content.ContentType.Escape, oSubComonent.Content(2).ContentType, "Incorrect ContentType");
 
       oSubComonent = new SubComponent("\\H\\This is bold text\\N\\Not bold Text");
-      oSubComonent.Insert(10, new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine));
-      Assert.AreEqual(oSubComonent.Content(4).EscapeMetaData.EscapeType, Glib.Hl7.V2.Support.Standard.EscapeType.NewLine, "Incorrect ContentType");
+      oSubComonent.Insert(10, new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine));
+      Assert.AreEqual(oSubComonent.Content(4).EscapeMetaData.EscapeType, PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine, "Incorrect ContentType");
       Assert.AreEqual("\\H\\This is bold text\\N\\Not bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
       oSubComonent.RemoveContentAt(2);
       Assert.AreEqual("\\H\\This is bold textNot bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
-      oSubComonent.Insert(1, new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine));
+      oSubComonent.Insert(1, new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine));
       Assert.AreEqual("\\H\\\\.br\\This is bold textNot bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
     }
 
@@ -164,9 +164,9 @@ namespace TestHl7V2.TestModel
       {
         oSubComp.Content(5).AsString = "New Text";
       }
-      Content oConentHEscape = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOn);
+      Content oConentHEscape = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn);
       Content oConentText = new Content("This will be highlighted");
-      Content oConentNEscape = new Content("N", Glib.Hl7.V2.Support.Content.ContentType.Escape);
+      Content oConentNEscape = new Content("N", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
 
       oSubComp.ClearAll();
       oSubComp.Add(oConentHEscape);
@@ -318,12 +318,12 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("First&Second&Third", oComponent.AsString, ",oComponent.AsString returned incorrect");
 
       oComponent.ClearAll();
-      oComponent.Add(new Content(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
+      oComponent.Add(new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
       oComponent.Add(new Content("This is Bold"));
-      oComponent.Add(new Content(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOff));
-      oComponent.Add(new Content(new Glib.Hl7.V2.Support.Content.EscapeData(Glib.Hl7.V2.Support.Standard.EscapeType.Unknown, "HAHAHAHAH")));
+      oComponent.Add(new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff));
+      oComponent.Add(new Content(new PeterPiper.Hl7.V2.Support.Content.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "HAHAHAHAH")));
       Assert.AreEqual("\\H\\This is Bold\\N\\\\ZHAHAHAHAH\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
-      oComponent.Set(3, new Content(new Glib.Hl7.V2.Support.Content.EscapeData(Glib.Hl7.V2.Support.Standard.EscapeType.Unknown, "Boo")));
+      oComponent.Set(3, new Content(new PeterPiper.Hl7.V2.Support.Content.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "Boo")));
       Assert.AreEqual("\\H\\This is Bold\\N\\\\ZBoo\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
       oComponent.Insert(2, new Content("Not BOLD"));
       Assert.AreEqual("\\H\\This is BoldNot BOLD\\N\\\\ZBoo\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
@@ -331,8 +331,8 @@ namespace TestHl7V2.TestModel
 
       //AsString = "Mater Hospital caters for Women \\Zhildren\\ Men";
       oComponent.ClearAll();
-      oComponent.Add(new Content("Mater Hospital", Glib.Hl7.V2.Support.Content.ContentType.Text));
-      oComponent.Add(new Content("C4568", Glib.Hl7.V2.Support.Content.ContentType.Escape));
+      oComponent.Add(new Content("Mater Hospital", PeterPiper.Hl7.V2.Support.Content.ContentType.Text));
+      oComponent.Add(new Content("C4568", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape));
       Assert.AreEqual("Mater Hospital", oComponent.AsString, ",oComponent.AsString returned incorrect");
       Assert.AreEqual("Mater Hospital\\C4568\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
 
@@ -341,8 +341,8 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("Mater Hospitalnew line", oComponent.AsString, ",oComponent.AsString returned incorrect");
       Assert.AreEqual("Mater Hospital\\Q4568\\new line\\.sp+5\\", oComponent.AsStringRaw, ",oComponent.AsStringRaw returned incorrect");
       Assert.AreEqual(true, oComponent.Content(3).EscapeMetaData.IsFormattingCommand, ",.Content(3).EscapeMetaData.IsFormattingCommand returned incorrect");
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.EscapeType.SkipVerticalSpaces, oComponent.Content(3).EscapeMetaData.EscapeType, "oComponent.Content(3).EscapeMetaData.EscapeType returned incorrect");
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Escapes.SkipVerticalSpaces, oComponent.Content(3).EscapeMetaData.EscapeTypeCharater, ",oComponent.Content(3).EscapeMetaData.EscapeTypeCharater returned incorrect");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.SkipVerticalSpaces, oComponent.Content(3).EscapeMetaData.EscapeType, "oComponent.Content(3).EscapeMetaData.EscapeType returned incorrect");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Escapes.SkipVerticalSpaces, oComponent.Content(3).EscapeMetaData.EscapeTypeCharater, ",oComponent.Content(3).EscapeMetaData.EscapeTypeCharater returned incorrect");
       Assert.AreEqual("+5", oComponent.Content(3).EscapeMetaData.MetaData, ",.Content(3).EscapeMetaData.MetaData returned incorrect");
     }
   }
@@ -457,7 +457,7 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("First^Second^Third", FieldClone.AsString, ",oField.Clone test2 returned incorrect");
 
       //Test Custom Delimiters
-      var oCustomDelimiters = new Glib.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#');
+      var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#');
       oField = new Field("First*#H#Second#N#*Third1%Third2", oCustomDelimiters);
       Assert.AreEqual("Second", oField.Component(2).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second#N#", oField.Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -566,7 +566,7 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("First^^^^Forth~Second~~~~~~~~~~~~~~~~~~~~Third", oElement.AsString, ",oElement.RepeatInsertBefore returned incorrect");
       oElement.Insert(5, new SubComponent("Five"));
       Assert.AreEqual("First&&&&Five^^^^Forth~Second~~~~~~~~~~~~~~~~~~~~Third", oElement.AsString, ",oElement.RepeatInsertBefore returned incorrect");
-      oElement.Insert(5, new Content(Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
+      oElement.Insert(5, new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
       Assert.AreEqual("First\\H\\&&&&Five^^^^Forth~Second~~~~~~~~~~~~~~~~~~~~Third", oElement.AsStringRaw, ",oElement.RepeatInsertBefore returned incorrect");
 
       //Test mixture of Append , insert before and after
@@ -589,7 +589,7 @@ namespace TestHl7V2.TestModel
       }
 
       //Test Custom Delimiters
-      var oCustomDelimiters = new Glib.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
+      var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
       oElement = new Element("First1*#H#Second1#N#*Third11%Third12@First2*#H#Second2#N#*Third21%Third22", oCustomDelimiters);
       Assert.AreEqual("First2*Second2*Third21%Third22", oElement.Repeat(2).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second2#N#", oElement.Repeat(2).Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -775,7 +775,7 @@ namespace TestHl7V2.TestModel
 
 
       ////Test Custom Delimiters
-      var oCustomDelimiters = new Glib.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
+      var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
       oSegment = new Segment("PID!First1*#H#Second1#N#*Third11%Third12@First2*#H#Second2#N#*Third21%Third22", oCustomDelimiters);
       Assert.AreEqual("First1*Second1*Third11%Third12", oSegment.Field(1).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second2#N#", oSegment.Element(1).Repeat(2).Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -937,7 +937,7 @@ namespace TestHl7V2.TestModel
         Assert.Fail("oMessage.RemoveSegmentAt(9) shoudl have returned True");
       }
 
-      Glib.Hl7.V2.Support.MessageDelimiters oDelim = new Glib.Hl7.V2.Support.MessageDelimiters('*', '~', '^', '&', '\\');
+      PeterPiper.Hl7.V2.Support.MessageDelimiters oDelim = new PeterPiper.Hl7.V2.Support.MessageDelimiters('*', '~', '^', '&', '\\');
       Segment oMSHSeg = new Segment("MSH*^~\\&*AUSLAB*QHPS*EGATE-Atomic*CITEC*20140804143827**ORU^R01*000000000000005EVT6P*P*2.3.1*", oDelim);
       Message oMessage3 = new Message(oMSHSeg);
       Segment oPIDSeg = new Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
@@ -1122,10 +1122,10 @@ namespace TestHl7V2.TestModel
       }
       Assert.AreEqual("1^^^4^5^6^^8", oPIDSeg.Field(3).AsString, "oPIDSeg.Field(3).ComponentList returns the incorrect values");
 
-      string datetest = Glib.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Glib.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
-      //string datetest = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTimeOffset.Now, true);
-      //DateTimeOffset testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset("2014+0800");
-      DateTimeOffset testDateTime2 = Glib.Hl7.V2.Support.Content.DateTimeSupportTools.AsDateTimeOffSet("2014+0800");
+      string datetest = PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
+      //string datetest = PeterPiper.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTimeOffset.Now, true);
+      //DateTimeOffset testDateTime2 = PeterPiper.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset("2014+0800");
+      DateTimeOffset testDateTime2 = PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.AsDateTimeOffSet("2014+0800");
 
       oMessage = new Message(sbMessage.ToString());
       SubComponent SubCom = new SubComponent("Sub");

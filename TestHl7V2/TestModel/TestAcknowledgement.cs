@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support.Standard;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support.Standard;
 
 namespace TestHl7V2.TestModel
 {
@@ -61,22 +61,22 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual(expected.Segment(2).AsStringRaw, actual.Segment(2).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
 
       actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.ApplicationAccept);
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Hl7Table.Table_0008.ApplicationAccept, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Hl7Table.Table_0008.ApplicationAccept, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
 
       actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.ApplicationError);
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Hl7Table.Table_0008.ApplicationError, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Hl7Table.Table_0008.ApplicationError, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
 
       actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.ApplicationReject);
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Hl7Table.Table_0008.ApplicationReject, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Hl7Table.Table_0008.ApplicationReject, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
 
       actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.CommitAccept);
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Hl7Table.Table_0008.CommitAccept, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Hl7Table.Table_0008.CommitAccept, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
 
       actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.CommitError);
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Hl7Table.Table_0008.CommitError, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Hl7Table.Table_0008.CommitError, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
 
       actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.CommitReject);
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Hl7Table.Table_0008.CommitReject, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Hl7Table.Table_0008.CommitReject, actual.Segment(2).Field(1).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
 
     }
 

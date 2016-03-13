@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support.Standard;
-using Glib.Hl7.V2.Support;
-using Glib.Hl7.V2.Support.Content;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support.Standard;
+using PeterPiper.Hl7.V2.Support;
+using PeterPiper.Hl7.V2.Support.Content;
 
 namespace TestHl7V2
 {
@@ -25,7 +25,7 @@ namespace TestHl7V2
     [Test]
     public void ContentConstructorTest1()
     {
-      var EscapeType = Glib.Hl7.V2.Support.Standard.EscapeType.NewLine;
+      var EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
       Content target = new Content(EscapeType, CustomDelimiters);
       Assert.AreEqual(".br", target.AsStringRaw, "Custom Delimiters returned incorrectly.");      
     }
@@ -49,7 +49,7 @@ namespace TestHl7V2
     public void ContentConstructorTest3()
     {
       string String = "Q5555";
-      ContentType ContentType = Glib.Hl7.V2.Support.Content.ContentType.Escape;
+      ContentType ContentType = PeterPiper.Hl7.V2.Support.Content.ContentType.Escape;
       Content target = new Content(String, ContentType, CustomDelimiters);
       Assert.AreEqual("Q5555", target.AsStringRaw, "Content Constructor test failed");
       Assert.AreEqual("5555", target.EscapeMetaData.MetaData, "Content Constructor test failed");
@@ -65,7 +65,7 @@ namespace TestHl7V2
     public void ContentConstructorTest4()
     {
       string String = "Hello World";
-      ContentType ContentType = Glib.Hl7.V2.Support.Content.ContentType.Text;
+      ContentType ContentType = PeterPiper.Hl7.V2.Support.Content.ContentType.Text;
       Content target = new Content(String, ContentType);
       Assert.AreEqual("Hello World", target.AsStringRaw, "Content Constructor test failed");
       Assert.AreEqual("Hello World", target.AsString, "Content Constructor test failed");
@@ -94,7 +94,7 @@ namespace TestHl7V2
     [Test]
     public void ContentConstructorTest6()
     {
-      EscapeType EscapeType = Glib.Hl7.V2.Support.Standard.EscapeType.NewLine;
+      EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
       Content target = new Content(EscapeType);
       Assert.AreEqual("", target.AsString, "Content Constructor test failed");
       Assert.AreEqual(".br", target.AsStringRaw, "Content Constructor test failed");
@@ -121,7 +121,7 @@ namespace TestHl7V2
     [Test]
     public void ClearAllTest()
     {
-      EscapeType EscapeType = Glib.Hl7.V2.Support.Standard.EscapeType.NewLine;
+      EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
       Content target = new Content(EscapeType);
       Assert.AreSame(".br", target.AsStringRaw, "Content Constructor test failed");
       target.ClearAll();
@@ -134,7 +134,7 @@ namespace TestHl7V2
     [Test]
     public void CloneTest()
     {
-      EscapeType EscapeType = Glib.Hl7.V2.Support.Standard.EscapeType.HighlightOff;
+      EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff;
       Content target = new Content(EscapeType);
       Content expected = target;
       Content actual;

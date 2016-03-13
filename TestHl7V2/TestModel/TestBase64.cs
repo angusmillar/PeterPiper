@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using System.IO;
-using Glib.Hl7.V2.Support.Content;
+using PeterPiper.Hl7.V2.Support.Content;
 
 namespace TestHl7V2.TestModel
 {

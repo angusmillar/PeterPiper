@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Glib.Hl7.V2.Model;
-using Glib.Hl7.V2.Support;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support;
 using System.Collections.ObjectModel;
 
 
@@ -79,7 +79,7 @@ namespace TestHl7V2
     public void AddTest2()
     {
       Component target = new Component("Comp1");
-      Content item = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine);
+      Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
       target.Add(item);
       Assert.AreEqual("Comp1\\.br\\", target.AsStringRaw, "A test for Add 2");
     }
@@ -117,7 +117,7 @@ namespace TestHl7V2
     {
       Component target = new Component("Hello \\T\\ World \\F\\ Bye");
       int index = 3;
-      Content expected = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.Field);
+      Content expected = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Field);
       Content actual;
       actual = target.Content(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Content");
@@ -145,7 +145,7 @@ namespace TestHl7V2
     {
       Component target = new Component("Hello\\R\\World\\R\\Bye");
       int index = 3;
-      Content item = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.Field);
+      Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Field);
       target.Insert(index, item);
       Assert.AreEqual("Hello~World|~Bye", target.AsString, "A test for Insert");
     }
@@ -182,8 +182,8 @@ namespace TestHl7V2
     {
       Component target = new Component("Hello\\R\\World\\R\\Bye&SecondComponent");
       int index = 1;
-      Content item1 = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.NewLine);
-      Content item2 = new Content(Glib.Hl7.V2.Support.Standard.EscapeType.Indent);
+      Content item1 = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
+      Content item2 = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Indent);
       target.Set(index, item1);
       Assert.AreEqual("HelloWorld~Bye&SecondComponent", target.AsString, "A test for Set");
       Assert.AreEqual(".br", target.Content(1).AsStringRaw, "A test for Set");
@@ -305,7 +305,7 @@ namespace TestHl7V2
       bool actual;
       actual = target.IsHL7Null;
       Assert.AreEqual(true, target.IsHL7Null, "A test for IsHL7Null");
-      Assert.AreEqual(Glib.Hl7.V2.Support.Standard.Null.HL7Null, target.AsString, "A test for IsHL7Null");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Null.HL7Null, target.AsString, "A test for IsHL7Null");
       target.AsString = "Hello";
       Assert.AreEqual(false, target.IsHL7Null, "A test for IsHL7Null");
 
