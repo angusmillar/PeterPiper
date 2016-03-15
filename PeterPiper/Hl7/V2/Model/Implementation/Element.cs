@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Element : ContentBase
+  public class Element : ContentBase, IElement
   {
     internal bool _IsMainSeparator = false;
     internal bool _IsEncodingCharacters = false;
 
     private Dictionary<int, Field> _RepeatDictonary;
 
-    //Constructors
-    public Element()
+    //Creator Factory used Constructors
+    internal Element()
     {
       _RepeatDictonary = new Dictionary<int, Field>();
       _Temporary = true;
       _Index = null;
       _Parent = null;
     }
-    public Element(Support.MessageDelimiters CustomDelimiters)
+    internal Element(Support.MessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _RepeatDictonary = new Dictionary<int, Field>();
@@ -29,7 +30,7 @@ namespace PeterPiper.Hl7.V2.Model
       _Index = null;
       _Parent = null;
     }
-    public Element(string StringRaw)
+    internal Element(string StringRaw)
     {
       _Temporary = true;
       _Index = null;
@@ -40,7 +41,7 @@ namespace PeterPiper.Hl7.V2.Model
         _RepeatDictonary = ParseElementRawStringToRepeat(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
       }
     }
-    public Element(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    internal Element(string StringRaw, Support.MessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -53,6 +54,7 @@ namespace PeterPiper.Hl7.V2.Model
       }
     }
 
+    //Only internal Constructors
     internal Element(Field Field, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
@@ -97,7 +99,7 @@ namespace PeterPiper.Hl7.V2.Model
         return this.Delimiters;
       }
     } 
-    public Element Clone()
+    public IElement Clone()
     {
       return new Element(this.AsStringRaw, this.Delimiters, true, null, null);
     }
@@ -179,53 +181,55 @@ namespace PeterPiper.Hl7.V2.Model
       _RepeatDictonary.Clear();
       RemoveFromParent();
     }
-    public void Set(int index, Content item)
+    public void Set(int index, IContent item)
     {
-      this.ContentSet(item, index);
+      this.ContentSet(item as Content, index);
     }
-    public void Set(int index, SubComponent item)
+    public void Set(int index, ISubComponent item)
     {
-      this.SubComponentSet(item, index);
+      this.SubComponentSet(item as SubComponent, index);
     }
-    public void Add(Field item)
+    public void Add(IField item)
     {
-      ValidateItemNotInUse(item);
-      this.RepeatAppend(item);
+      ValidateItemNotInUse(item as Field);
+      this.RepeatAppend(item as Field);
     }
-    public void Add(Component item)
+    public void Add(IComponent item)
     {
-      ValidateItemNotInUse(item);
-      this.ComponentAppend(item);
+      var Component = item as Component;
+      ValidateItemNotInUse(Component);
+      this.ComponentAppend(Component);
     }
-    public void Add(SubComponent item)
+    public void Add(ISubComponent item)
     {
-      ValidateItemNotInUse(item);
-      this.SubComponentAppend(item);
+      ValidateItemNotInUse(item as SubComponent);
+      this.SubComponentAppend(item as SubComponent);
     }
-    public void Add(Content item)
+    public void Add(IContent item)
     {
-      ValidateItemNotInUse(item);
-      this.ContentAppend(item);
+      ValidateItemNotInUse(item as Content);
+      this.ContentAppend(item as Content);
     }
-    public void Insert(int index, Field item)
+    public void Insert(int index, IField item)
     {
-      ValidateItemNotInUse(item);
-      this.RepeatInsertBefore(item, index);
+      ValidateItemNotInUse(item as Field);
+      this.RepeatInsertBefore(item as Field, index);
     }
-    public void Insert(int index, Component item)
+    public void Insert(int index, IComponent item)
     {
-      ValidateItemNotInUse(item);
-      this.ComponentInsertBefore(item, index);
+      var Component = item as Component;
+      ValidateItemNotInUse(Component);
+      this.ComponentInsertBefore(Component, index);
     }
-    public void Insert(int index, SubComponent item)
+    public void Insert(int index, ISubComponent item)
     {
-      ValidateItemNotInUse(item);
-      this.SubComponentInsertBefore(item, index);
+      ValidateItemNotInUse(item as SubComponent);
+      this.SubComponentInsertBefore(item as SubComponent, index);
     }
-    public void Insert(int index, Content item)
+    public void Insert(int index, IContent item)
     {
-      ValidateItemNotInUse(item);
-      this.ContentInsertBefore(item, index);
+      ValidateItemNotInUse(item as Content);
+      this.ContentInsertBefore(item as Content, index);
     }
     public void RemoveRepeatAt(int index)
     {
@@ -271,33 +275,33 @@ namespace PeterPiper.Hl7.V2.Model
         return this.CountContent;
       }
     }
-    public Field Repeat(int index)
+    public IField Repeat(int index)
     {
       if (index == 0)
         throw new ArgumentException("Repeat is a one based index, zero is not a valid index");
       return this.GetRepeat(index);
     }
-    public Component Component(int index)
+    public IComponent Component(int index)
     {
       if (index == 0)
         throw new ArgumentException("Component is a one based index, zero is not a valid index");
       return this.GetComponent(index);
     }
-    public SubComponent SubComponent(int index)
+    public ISubComponent SubComponent(int index)
     {
       if (index == 0)
         throw new ArgumentException("SubComponent is a one based index, zero is not a valid index");
       return this.GetSubComponent(index);
     }
-    public Content Content(int index)
+    public IContent Content(int index)
     {
       return this.GetContent(index);
     }
-    public ReadOnlyCollection<Field> RepeatList
+    public ReadOnlyCollection<IField> RepeatList
     {
       get
       {
-        List<Field> oNewList = new List<Field>();
+        List<IField> oNewList = new List<IField>();
         int Counter = 1;
         foreach (var item in _RepeatDictonary.OrderBy(x => x.Key))
         {

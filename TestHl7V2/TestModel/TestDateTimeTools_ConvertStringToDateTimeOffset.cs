@@ -35,7 +35,7 @@ namespace TestHl7V2.TestModel
     public void HasMillisecondsTest()
     {
       string String = "20140225083022.519"; ;
-      Field oField = new Field(String);
+      var oField = Creator.Field(String);
       DateTimeOffset actual = oField.DateTimeSupport.GetDateTimeOffset();      
       DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, 519, new TimeSpan(0,0,0));     
       Assert.AreEqual(expected, actual);
@@ -48,7 +48,7 @@ namespace TestHl7V2.TestModel
     public void HasNoMillisecondsOrTimeZoneTest()
     {
       string String = "20140225083022";
-      Field oField = new Field(String);
+      var oField = Creator.Field(String);
       DateTimeOffset actual = oField.DateTimeSupport.GetDateTimeOffset();      
       DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, new TimeSpan(0,0,0));
       Assert.AreEqual(expected, actual);
@@ -61,7 +61,7 @@ namespace TestHl7V2.TestModel
     public void HasTimeMillisecondsAndTimeZoneTest()
     {
       string String = "20140225083022.519+0800";
-      Field oField = new Field(String);
+      var oField = Creator.Field(String);
       DateTimeOffset actual = oField.DateTimeSupport.GetDateTimeOffset();
       var zone = TimeZone.CurrentTimeZone;
       DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22,519, new TimeSpan(+8,0,0));
@@ -75,7 +75,7 @@ namespace TestHl7V2.TestModel
     public void HasTimeZoneTest()
     {
       string String = "20140225083022+0800";
-      Field oField = new Field(String);
+      var oField = Creator.Field(String);
       DateTimeOffset actual = oField.DateTimeSupport.GetDateTimeOffset();
       var zone = TimeZone.CurrentTimeZone;
       DateTimeOffset expected = new DateTimeOffset(2014, 02, 25, 08, 30, 22, new TimeSpan(+8, 0, 0));      Assert.AreEqual(expected, actual);
@@ -89,7 +89,7 @@ namespace TestHl7V2.TestModel
     public void Hl7DateTimeTest()
     {
       string String = "20140225083022"; ;
-      Field oField = new Field(String);
+      var oField = Creator.Field(String);
       string actual = string.Empty;
       if (oField.DateTimeSupport.CanParseToDateTimeOffset)
         actual = oField.DateTimeSupport.AsString(false, DateTimeSupportTools.DateTimePrecision.Year);

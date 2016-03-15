@@ -45,10 +45,9 @@ namespace TestHl7V2.TestModel
       oAck.Append("MSA|AA|0000000000000000010D|HL7 Acknowledgment"); oAck.Append("\r");
 
       Acknowledgement target = new Acknowledgement();
-      Message oReceivedMessage = new Message(oMsg.ToString());
-      Message expected = new Message(oAck.ToString());
-      Message actual;
-      actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.ApplicationAccept);
+      var oReceivedMessage = Creator.Message(oMsg.ToString());
+      var expected = Creator.Message(oAck.ToString());      
+      var actual = target.GenerateAcknowledgementMessage(oReceivedMessage, Hl7Table.Table_0008.AcknowledgmentCodeType.ApplicationAccept);
 
       Assert.AreEqual(expected.Segment(1).Field(3).AsStringRaw, actual.Segment(1).Field(3).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");
       Assert.AreEqual(expected.Segment(1).Field(4).AsStringRaw, actual.Segment(1).Field(4).AsStringRaw, "A test for GenerateEnhancedModeAcknowledgementMessage");

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model;
 
-
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Segment : ModelBase
+  public class Segment : ModelBase, ISegment
   {
     private Dictionary<int, Element> _ElementDictonary;
-  
-    //Constructors
-    public Segment(string StringRaw)
+
+    //Creator Factory used Constructors
+    internal Segment(string StringRaw)
     {
       _Temporary = true;
       _Index = null;
@@ -20,7 +20,7 @@ namespace PeterPiper.Hl7.V2.Model
       StringRaw = ValidateStringRaw(StringRaw);
       _ElementDictonary = ParseSegmentRawStringToElement(StringRaw);
     }
-    public Segment(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    internal Segment(string StringRaw, Support.MessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -29,6 +29,8 @@ namespace PeterPiper.Hl7.V2.Model
       StringRaw = ValidateStringRaw(StringRaw);
       _ElementDictonary = ParseSegmentRawStringToElement(StringRaw);
     }
+    
+    //Only internal Constructors
     internal Segment(string StringRaw, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
@@ -47,7 +49,7 @@ namespace PeterPiper.Hl7.V2.Model
         return this.Delimiters;
       }
     } 
-    public Segment Clone()
+    public ISegment Clone()
     {
       return new Segment(this.AsStringRaw, this.Delimiters, true, null, null);
     }    
@@ -161,7 +163,7 @@ namespace PeterPiper.Hl7.V2.Model
     {
       if (this._IsMSH)
       {
-        Dictionary<int, Element> oNewDic = new Dictionary<int, Model.Element>();
+        Dictionary<int, Element> oNewDic = new Dictionary<int, Element>();
         oNewDic.Add(1, new Element(ModelSupport.ContentTypeInternal.MainSeparator, _ElementDictonary[1].Delimiters, false, 1, this));
         oNewDic.Add(2, new Element(ModelSupport.ContentTypeInternal.EncodingCharacters, _ElementDictonary[2].Delimiters, false, 2, this));       
         _ElementDictonary = oNewDic;
@@ -187,29 +189,29 @@ namespace PeterPiper.Hl7.V2.Model
         return _IsMSH;
       }
     }    
-    public void Add(Element item)
+    public void Add(IElement item)
     {
-      ValidateItemNotInUse(item);
-      this.ElementAppend(item);
+      ValidateItemNotInUse(item as Element);
+      this.ElementAppend(item as Element);
     }
-    public void Add(Field item)
+    public void Add(IField item)
     {
-      ValidateItemNotInUse(item);
-      this.FieldAppend(item);
+      ValidateItemNotInUse(item as Field);
+      this.FieldAppend(item as Field);
     }
-    public void Insert(int index, Element item)
+    public void Insert(int index, IElement item)
     {
       if (index == 0)
         throw new ArgumentOutOfRangeException("Element index is a one based index, zero in not allowed");
-      ValidateItemNotInUse(item);
-      this.ElementInsertBefore(item, index);
+      ValidateItemNotInUse(item as Element);
+      this.ElementInsertBefore(item as Element, index);
     }
-    public void Insert(int index, Field item)
+    public void Insert(int index, IField item)
     {
       if (index == 0)
         throw new ArgumentOutOfRangeException("Field is a one based index, zero is not a valid index.");
-      ValidateItemNotInUse(item);
-      this.FieldInsertBefore(item, index);
+      ValidateItemNotInUse(item as Field);
+      this.FieldInsertBefore(item as Field, index);
     }
     public void RemoveElementAt(int index)
     {
@@ -237,23 +239,23 @@ namespace PeterPiper.Hl7.V2.Model
         return this.CountField;
       }
     }
-    public Element Element(int index)
+    public IElement Element(int index)
     {
       if (index == 0)
         throw new ArgumentOutOfRangeException("Element index is a one based index, zero in not allowed");
       return this.GetElement(index);
     }    
-    public Field Field(int index)
+    public IField Field(int index)
     {
       if (Index == 0)
         throw new ArgumentOutOfRangeException("Element index is a one based index, zero in not allowed");
       return this.GetField(index);
     }    
-    public ReadOnlyCollection<Element> ElementList
+    public ReadOnlyCollection<IElement> ElementList
     {
       get
       {
-        List<Element> oNewList = new List<Element>();
+        List<IElement> oNewList = new List<IElement>();
         int Counter = 1;
         foreach (var item in _ElementDictonary.OrderBy(x => x.Key))
         {
@@ -564,7 +566,7 @@ namespace PeterPiper.Hl7.V2.Model
         return ParseNormalSegmentStringToElement(StringRaw.Substring(4, StringRaw.Length - 4));
       }
     }
-    private Dictionary<int, Model.Element> ParseNormalSegmentStringToElement(string StringRaw)
+    private Dictionary<int, Element> ParseNormalSegmentStringToElement(string StringRaw)
     {
       _ElementDictonary = new Dictionary<int, Element>();
       if (StringRaw.Contains(this.Delimiters.Field))
@@ -588,7 +590,7 @@ namespace PeterPiper.Hl7.V2.Model
       }
       return _ElementDictonary;
     }
-    private Dictionary<int, Model.Element> ParseMSHSegmentStringToElement(string StringRaw)
+    private Dictionary<int, Element> ParseMSHSegmentStringToElement(string StringRaw)
     {
       //example: |^~\&|HNAM RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN     
       _ElementDictonary = new Dictionary<int, Element>();

@@ -26,7 +26,7 @@ namespace TestHl7V2
     public void ContentConstructorTest1()
     {
       var EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
-      Content target = new Content(EscapeType, CustomDelimiters);
+      var target = Creator.Content(EscapeType, CustomDelimiters);
       Assert.AreEqual(".br", target.AsStringRaw, "Custom Delimiters returned incorrectly.");      
     }
 
@@ -38,7 +38,7 @@ namespace TestHl7V2
     public void ContentConstructorTest2()
     {
       var EscapeMetaData = new EscapeData(EscapeType.SkipVerticalSpaces, "+10");
-      Content target = new Content(EscapeMetaData);
+      var target = Creator.Content(EscapeMetaData);
       Assert.AreEqual(".sp+10", target.AsStringRaw, "Custom Delimiters returned incorrectly.");      
     }
 
@@ -50,7 +50,7 @@ namespace TestHl7V2
     {
       string String = "Q5555";
       ContentType ContentType = PeterPiper.Hl7.V2.Support.Content.ContentType.Escape;
-      Content target = new Content(String, ContentType, CustomDelimiters);
+      var target = Creator.Content(String, ContentType, CustomDelimiters);
       Assert.AreEqual("Q5555", target.AsStringRaw, "Content Constructor test failed");
       Assert.AreEqual("5555", target.EscapeMetaData.MetaData, "Content Constructor test failed");
       Assert.AreEqual("Q", target.EscapeMetaData.EscapeTypeCharater, "Content Constructor test failed");
@@ -66,7 +66,7 @@ namespace TestHl7V2
     {
       string String = "Hello World";
       ContentType ContentType = PeterPiper.Hl7.V2.Support.Content.ContentType.Text;
-      Content target = new Content(String, ContentType);
+      var target = Creator.Content(String, ContentType);
       Assert.AreEqual("Hello World", target.AsStringRaw, "Content Constructor test failed");
       Assert.AreEqual("Hello World", target.AsString, "Content Constructor test failed");
       Assert.AreEqual(ContentType.Text, target.ContentType, "Content Constructor test failed");
@@ -80,7 +80,7 @@ namespace TestHl7V2
     public void ContentConstructorTest5()
     {
       string String = "Hello World";
-      Content target = new Content(String);
+      var target = Creator.Content(String);
       Assert.AreEqual("Hello World", target.AsStringRaw, "Content Constructor test failed");
       Assert.AreEqual("Hello World", target.AsString, "Content Constructor test failed");
       Assert.AreEqual(ContentType.Text, target.ContentType, "Content Constructor test failed");
@@ -95,7 +95,7 @@ namespace TestHl7V2
     public void ContentConstructorTest6()
     {
       EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
-      Content target = new Content(EscapeType);
+      var target = Creator.Content(EscapeType);
       Assert.AreEqual("", target.AsString, "Content Constructor test failed");
       Assert.AreEqual(".br", target.AsStringRaw, "Content Constructor test failed");
       Assert.AreEqual(true, target.EscapeMetaData.IsFormattingCommand, "Content Constructor test failed");
@@ -108,7 +108,7 @@ namespace TestHl7V2
     public void ContentConstructorTest7()
     {
       string String = "Hello World";
-      Content target = new Content(String, CustomDelimiters);
+      var target = Creator.Content(String, CustomDelimiters);
       Assert.AreEqual("Hello World", target.AsString, "Content Constructor test failed");
       Assert.AreEqual("Hello World", target.AsStringRaw, "Content Constructor test failed");
       Assert.AreEqual(null, target.EscapeMetaData, "Content Constructor test failed");
@@ -122,7 +122,7 @@ namespace TestHl7V2
     public void ClearAllTest()
     {
       EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
-      Content target = new Content(EscapeType);
+      var target = Creator.Content(EscapeType);
       Assert.AreSame(".br", target.AsStringRaw, "Content Constructor test failed");
       target.ClearAll();
       Assert.AreSame("", target.AsStringRaw, "Content Constructor test failed");
@@ -135,10 +135,9 @@ namespace TestHl7V2
     public void CloneTest()
     {
       EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff;
-      Content target = new Content(EscapeType);
-      Content expected = target;
-      Content actual;
-      actual = target.Clone();
+      var target = Creator.Content(EscapeType);
+      var expected = target;      
+      var actual = target.Clone();
       Assert.AreEqual(expected.AsString, actual.AsString);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw);
       Assert.AreEqual(expected.ContentType, actual.ContentType);
@@ -153,7 +152,7 @@ namespace TestHl7V2
     [Test]
     public void DelimterAccessTest()
     {
-      Content target = new Content("Test", ContentType.Text, CustomDelimiters);            
+      var target = Creator.Content("Test", ContentType.Text, CustomDelimiters);            
       Assert.AreEqual('#', target.MessageDelimiters.Field, "A test for MessageDelimiters");
       Assert.AreEqual('@', target.MessageDelimiters.Repeat, "A test for MessageDelimiters");
       Assert.AreEqual('*', target.MessageDelimiters.Component, "A test for MessageDelimiters");

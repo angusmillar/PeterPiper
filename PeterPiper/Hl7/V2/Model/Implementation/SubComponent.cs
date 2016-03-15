@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class SubComponent : ContentBase
+  public class SubComponent : ContentBase, ISubComponent
   {
 
     private Dictionary<int, Content> _ContentDictonary;
 
-    //Constructors
-    public SubComponent()
+    //Creator Factory used Constructors
+    internal SubComponent()
     {
       _ContentDictonary = new Dictionary<int, Content>();
       _Temporary = true;
       _Index = null;
       _Parent = null;
     }
-    public SubComponent(Support.MessageDelimiters CustomDelimiters)
+    internal SubComponent(Support.MessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _ContentDictonary = new Dictionary<int, Content>();
@@ -27,7 +28,7 @@ namespace PeterPiper.Hl7.V2.Model
       _Index = null;
       _Parent = null;
     }
-    public SubComponent(string StringRaw)
+    internal SubComponent(string StringRaw)
     {
       _Temporary = true;
       _Index = null;
@@ -37,7 +38,7 @@ namespace PeterPiper.Hl7.V2.Model
         _ContentDictonary = ParseSubComponentRawStringToContent(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
       }
     }
-    public SubComponent(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    internal SubComponent(string StringRaw, Support.MessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -49,6 +50,7 @@ namespace PeterPiper.Hl7.V2.Model
       }
     }
 
+    //Only internal Constructors
     internal SubComponent(Content Content, Support.MessageDelimiters CustomDelimiters,
                           Boolean Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
@@ -95,7 +97,7 @@ namespace PeterPiper.Hl7.V2.Model
         return this.Delimiters;
       }
     } 
-    public SubComponent Clone()
+    public ISubComponent Clone()
     {
       return new SubComponent(this.AsStringRaw, this.Delimiters, true, null, null);
     }
@@ -197,20 +199,20 @@ namespace PeterPiper.Hl7.V2.Model
       _ContentDictonary.Clear();
       RemoveFromParent();
     }
-    public void Set(int index, Content item)
+    public void Set(int index, IContent item)
     {
-      ValidateItemNotInUse(item);
-      this.ContentSet(index, item);
+      ValidateItemNotInUse(item as Content);
+      this.ContentSet(index, item as Content);
     }
-    public void Add(Content item)
+    public void Add(IContent item)
     {
-      ValidateItemNotInUse(item);
-      this.ContentAppend(item);
+      ValidateItemNotInUse(item as Content);
+      this.ContentAppend(item as Content);
     }
-    public void Insert(int index, Content item)
+    public void Insert(int index, IContent item)
     {
-      ValidateItemNotInUse(item);
-      this.ContentInsertBefore(item, index);
+      ValidateItemNotInUse(item as Content);
+      this.ContentInsertBefore(item as Content, index);
     }
     public void RemoveContentAt(int index)
     {
@@ -223,15 +225,15 @@ namespace PeterPiper.Hl7.V2.Model
         return this.CountContent;
       }
     }
-    public Content Content(int index)
+    public IContent Content(int index)
     {
       return this.GetContent(index);
     }
-    public ReadOnlyCollection<Content> ContentList
+    public ReadOnlyCollection<IContent> ContentList
     {
       get
       {
-        return _ContentDictonary.OrderBy(x => x.Key).Select(i => i.Value).ToList().AsReadOnly();
+        return _ContentDictonary.OrderBy(x => x.Key).Select(i => i.Value as IContent).ToList().AsReadOnly();
       }
     }
 

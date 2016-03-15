@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Message : ModelBase
+  public class Message : ModelBase, IMessage
   {
     private Dictionary<int, Segment> _SegmentDictonary;
     private bool _ParseMSHSegmentOnly = false;
-    //Constructors
-    public Message(string MessageVersion, string MessageType, string MessageTrigger, string MessageControlID = "<GUID>", string MessageStructure = "")
+    //Creator Factory used Constructors
+    internal Message(string MessageVersion, string MessageType, string MessageTrigger, string MessageControlID = "<GUID>", string MessageStructure = "")
     {      
       //need to validate version and message types somewhat.
       StringBuilder MSHTemplate = new StringBuilder(Support.Standard.Segments.Msh.Code);
@@ -49,24 +50,25 @@ namespace PeterPiper.Hl7.V2.Model
       _SegmentDictonary.Add(1, new Segment(MSHTemplate.ToString(),this.Delimiters,false,1,this));
       
     }
-    public Message(Segment item)
-      : base(item.Delimiters)
+    internal Message(ISegment item)
+      : base(item.MessageDelimiters)
     {
-      ValidateItemNotInUse(item);
-      if (item.IsMSH)
+      var Segment = item as Segment;
+      ValidateItemNotInUse(Segment);
+      if (Segment.IsMSH)
       {
         _SegmentDictonary = new Dictionary<int, Segment>();
-        item._Index = 1;
-        item._Parent = this;
-        item._Temporary = false;
-        _SegmentDictonary.Add(1, item);
+        Segment._Index = 1;
+        Segment._Parent = this;
+        Segment._Temporary = false;
+        _SegmentDictonary.Add(1, Segment);
       }
       else
       {
         throw new ArgumentException("The Segment instance passed in is not a MSH Segment, only a MSH Segment can be passed in on creation / instantiation of a Message");
       }
     }
-    public Message(string StringRaw, bool ParseMSHSegmentOnly = false)
+    internal Message(string StringRaw, bool ParseMSHSegmentOnly = false)
     {      
       List<string> MessageList = StringRaw.Split(Support.Standard.Delimiters.SegmentTerminator).ToList();
       if (ParseMSHSegmentOnly)
@@ -81,8 +83,8 @@ namespace PeterPiper.Hl7.V2.Model
           _SegmentDictonary = ParseMessageRawStringToSegment(MessageList);
         }
       }
-    }    
-    public Message(List<string> collection, bool ParseMSHSegmentOnly = false)
+    }
+    internal Message(List<string> collection, bool ParseMSHSegmentOnly = false)
     {
       if (collection.Count > 0)
       {
@@ -106,7 +108,7 @@ namespace PeterPiper.Hl7.V2.Model
     }
 
     //Instance access
-    public Message Clone()
+    public IMessage Clone()
     {
       return new Message(this.AsStringRaw);
     }
@@ -166,8 +168,7 @@ namespace PeterPiper.Hl7.V2.Model
     }
     public void ClearAll()
     {
-
-      Segment oMSH = _SegmentDictonary[1].Clone();      
+      Segment oMSH = _SegmentDictonary[1].Clone() as Segment;      
       _SegmentDictonary = new Dictionary<int, Segment>();           
       _SegmentDictonary.Add(1, oMSH);
       _SegmentDictonary[1].ClearAll(); ;
@@ -247,15 +248,15 @@ namespace PeterPiper.Hl7.V2.Model
         return this.Delimiters;
       }
     }    
-    public void Add(Segment item)
+    public void Add(ISegment item)
     {
-      ValidateItemNotInUse(item);
-      this.SegmentAppend(item);
+      ValidateItemNotInUse(item as Segment);
+      this.SegmentAppend(item as Segment);
     }
-    public void Insert(int index, Segment item)
+    public void Insert(int index, ISegment item)
     {
-      ValidateItemNotInUse(item);
-      this.SegmentInsertBefore(item, index);
+      ValidateItemNotInUse(item as Segment);
+      this.SegmentInsertBefore(item as Segment, index);
     }
     public bool RemoveSegmentAt(int index)
     {
@@ -270,26 +271,26 @@ namespace PeterPiper.Hl7.V2.Model
     {
       return this.CountSegment;
     }   
-    public Segment Segment(string Code)
+    public ISegment Segment(string Code)
     {
       ValidateSegmentCode(Code);
       return GetSegment(Code);
     }    
-    public Segment Segment(int index)
+    public ISegment Segment(int index)
     {
       if (index == 0)
         throw new ArgumentOutOfRangeException("Element is a one based index, zero is not a valid index");
       return this.GetSegment(index); 
 
     }    
-    public ReadOnlyCollection<Segment> SegmentList(string Code)
+    public ReadOnlyCollection<ISegment> SegmentList(string Code)
     {
       ValidateSegmentCode(Code);      
-      return _SegmentDictonary.OrderBy(x => x.Key).Select(i => i.Value).ToList().Where(x => x.Code == Code).ToList().AsReadOnly();      
+      return _SegmentDictonary.OrderBy(x => x.Key).Select(i => i.Value as ISegment).ToList().Where(x => x.Code == Code).ToList().AsReadOnly();      
     }
-    public ReadOnlyCollection<Segment> SegmentList()
+    public ReadOnlyCollection<ISegment> SegmentList()
     {
-      return _SegmentDictonary.OrderBy(x => x.Key).Select(i => i.Value).ToList().AsReadOnly();
+      return _SegmentDictonary.OrderBy(x => x.Key).Select(i => i.Value as ISegment).ToList().AsReadOnly();
     }
 
     //Segment

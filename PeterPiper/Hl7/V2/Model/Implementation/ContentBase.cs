@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Implementation;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public abstract class ContentBase : ModelBase
+  public abstract class ContentBase : ModelBase, IContentBase
   {
     protected ContentBase(Support.MessageDelimiters Delimiters) 
       :base(Delimiters)

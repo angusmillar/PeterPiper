@@ -15,7 +15,7 @@ namespace TestHl7V2.TestModel
     public void TestHasPrecision()
     {
       string HL7StandardDateTimeString = "20140225083022.5190+0800";
-      Field oField = new Field(HL7StandardDateTimeString);
+      var oField = Creator.Field(HL7StandardDateTimeString);
       //Year
       string actual = oField.DateTimeSupport.AsString(false, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.Year);
       string expected = "2014";
@@ -69,14 +69,14 @@ namespace TestHl7V2.TestModel
     {
       //with timezone
       string HL7StandardDateTimeString = "20140225083022.5190+0800";
-      Field oField = new Field(HL7StandardDateTimeString);
+      var oField = Creator.Field(HL7StandardDateTimeString);
       bool expected = true;
       bool actual = oField.DateTimeSupport.HasTimezone;
       Assert.AreEqual(expected, actual);
 
       //Without timezone
       HL7StandardDateTimeString = "20140225083022.5190+0700";
-      oField = new Field(HL7StandardDateTimeString);
+      oField = Creator.Field(HL7StandardDateTimeString);
       expected = true;
       actual = oField.DateTimeSupport.HasTimezone;
       Assert.AreEqual(expected, actual);

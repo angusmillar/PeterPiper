@@ -27,7 +27,7 @@ namespace TestHl7V2
     public void SegmentConstructorTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       Assert.AreEqual("MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1", target.AsStringRaw, "A test for Segment Constructor");
     }
 
@@ -39,7 +39,7 @@ namespace TestHl7V2
     {
       //'#', '@', '*', '!', '%'
       string StringRaw = "MSH#*@%!#####20141208064531##ORM*O01*ORM_O01#Q54356818T82744882#P#2.3.1";
-      Segment target = new Segment(StringRaw, CustomDelimiters);
+      var target = Creator.Segment(StringRaw, CustomDelimiters);
       Assert.AreEqual("MSH#*@%!#####20141208064531##ORM*O01*ORM_O01#Q54356818T82744882#P#2.3.1", target.AsStringRaw, "A test for Segment Constructor 1");
       Assert.AreEqual(12, target.ElementCount, "A test for Segment Constructor 1");
     }
@@ -51,8 +51,8 @@ namespace TestHl7V2
     public void AddTest1()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
-      Element item = new Element("Hello World");
+      var target = Creator.Segment(StringRaw);
+      var item = Creator.Element("Hello World");
       target.Add(item);
       Assert.AreEqual("MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|Hello World", target.AsStringRaw, "A test for Add");
     }
@@ -64,8 +64,8 @@ namespace TestHl7V2
     public void AddTest2()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
-      Field item = new Field("Hello World");
+      var target = Creator.Segment(StringRaw);
+      var item = Creator.Field("Hello World");
       target.Add(item);
       Assert.AreEqual("MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|Hello World", target.AsStringRaw, "A test for Add 2");
     }
@@ -78,13 +78,13 @@ namespace TestHl7V2
     public void ClearAllTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       target.ClearAll();
       Assert.AreEqual("MSH|^~\\&|", target.AsStringRaw, "A test for ClearAll");
-      target.Add(new Field("TestField"));
+      target.Add(Creator.Field("TestField"));
       Assert.AreEqual("MSH|^~\\&|TestField", target.AsStringRaw, "A test for ClearAll");
       StringRaw = "ZQT|TestCase^35|Step^2|Message^2";
-      target = new Segment(StringRaw);
+      target = Creator.Segment(StringRaw);
       Assert.AreEqual("ZQT|TestCase^35|Step^2|Message^2", target.AsStringRaw, "A test for ClearAll");
       target.ClearAll();
       Assert.AreEqual("ZQT|", target.AsStringRaw, "A test for ClearAll");
@@ -97,10 +97,9 @@ namespace TestHl7V2
     public void CloneTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
-      Segment expected = new Segment("MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1");
-      Segment actual;
-      actual = target.Clone();
+      var target = Creator.Segment(StringRaw);
+      var expected = Creator.Segment("MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1");      
+      var actual = target.Clone();
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Clone");
     }
 
@@ -111,11 +110,10 @@ namespace TestHl7V2
     public void ElementTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       int index = 9;
-      Element expected = new Element("ORM^O01^ORM_O01");
-      Element actual;
-      actual = target.Element(index);
+      var expected = Creator.Element("ORM^O01^ORM_O01");      
+      var actual = target.Element(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Element");
     }
 
@@ -126,11 +124,10 @@ namespace TestHl7V2
     public void FieldTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       int index = 9;
-      Field expected = new Field("ORM^O01^ORM_O01");
-      Field actual;
-      actual = target.Field(index);
+      var expected = Creator.Field("ORM^O01^ORM_O01");      
+      var actual = target.Field(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Field");
     }
 
@@ -151,9 +148,9 @@ namespace TestHl7V2
       sbMSH2Exception.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
 
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
 
-      Field item = new Field("Hello");
+      var item = Creator.Field("Hello");
 
       try
       {
@@ -196,9 +193,9 @@ namespace TestHl7V2
       sbMSH2Exception.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
 
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
 
-      Element item = new Element("Hello");
+      var item = Creator.Element("Hello");
       try
       {
         target.Insert(1, item);
@@ -240,7 +237,7 @@ namespace TestHl7V2
       sbMSH2Exception.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
 
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
 
       try
       {
@@ -295,7 +292,7 @@ namespace TestHl7V2
       sbMSH2Exception.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
 
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
 
       try
       {
@@ -339,7 +336,7 @@ namespace TestHl7V2
     public void ToStringTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       string expected = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
       string actual;
       actual = target.ToString();
@@ -353,7 +350,7 @@ namespace TestHl7V2
     public void AsStringTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       string expected = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
       string actual;
       try
@@ -370,7 +367,7 @@ namespace TestHl7V2
       Assert.AreEqual(expected, actual, "A test for AsString");
 
       StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
-      target = new Segment(StringRaw);
+      target = Creator.Segment(StringRaw);
       actual = target.AsString;
       expected = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10^6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
       Assert.AreEqual(expected, actual, "A test for AsString");
@@ -383,7 +380,7 @@ namespace TestHl7V2
     public void AsStringRawTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       string expected = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
       string actual;
       try
@@ -400,7 +397,7 @@ namespace TestHl7V2
       Assert.AreEqual(expected, actual, "A test for AsStringRaw");
 
       StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
-      target = new Segment(StringRaw);
+      target = Creator.Segment(StringRaw);
       actual = target.AsStringRaw;
       expected = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
       Assert.AreEqual(expected, actual, "A test for AsStringRaw");
@@ -413,7 +410,7 @@ namespace TestHl7V2
     public void CodeTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       string actual;
       actual = target.Code;
       Assert.AreEqual("OBX", actual, "A test for AsStringRaw");
@@ -426,7 +423,7 @@ namespace TestHl7V2
     public void ElementCountTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       int actual;
       actual = target.ElementCount;
       Assert.AreEqual(15, actual, "A test for AsStringRaw");
@@ -440,8 +437,8 @@ namespace TestHl7V2
     public void ElementListTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
-      Segment target = new Segment(StringRaw);
-      ReadOnlyCollection<Element> actual;
+      var target = Creator.Segment(StringRaw);
+      ReadOnlyCollection<IElement> actual;
       actual = target.ElementList;
       int counter = 1;
       Assert.AreEqual(15, actual.Count, "A test for ElementList");
@@ -463,7 +460,7 @@ namespace TestHl7V2
     public void FieldCountTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       int actual;
       actual = target.FieldCount;
       Assert.AreEqual(15, actual, "A test for FieldCount");
@@ -476,7 +473,7 @@ namespace TestHl7V2
     public void IsEmptyTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       bool actual;
       actual = target.IsEmpty;
       Assert.AreEqual(false, actual, "A test for FieldCount");
@@ -491,7 +488,7 @@ namespace TestHl7V2
     public void PathInformationTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||oneC^TwoC^One&Two~one2C^Two2C^One2&Two2|||201405270956|RB^PATH QLD Central^AUSLAB";
-      Segment target = new Segment(StringRaw);
+      var target = Creator.Segment(StringRaw);
       Assert.AreEqual("OBX", target.PathDetail.PathBrief, "A test for PathInformation 1");
       Assert.AreEqual("Segment: OBX", target.PathDetail.PathVerbos, "A test for PathInformation 2");
 
@@ -523,7 +520,7 @@ namespace TestHl7V2
     {
       //'#', '@', '*', '!', '%'
       string StringRaw = "MSH#*@%!#####20141208064531##ORM*O01*ORM_O01#Q54356818T82744882#P#2.3.1";
-      Segment target = new Segment(StringRaw, CustomDelimiters);
+      var target = Creator.Segment(StringRaw, CustomDelimiters);
       Assert.AreEqual('#', target.MessageDelimiters.Field, "A test for MessageDelimiters");
       Assert.AreEqual('@', target.MessageDelimiters.Repeat, "A test for MessageDelimiters");
       Assert.AreEqual('*', target.MessageDelimiters.Component, "A test for MessageDelimiters");
@@ -546,7 +543,7 @@ namespace TestHl7V2
       //when I have time.
 
       //---- Test Case that fails ---------------------------
-      //Segment target = new Segment("OBR|");
+      //var target = Creator.Segment("OBR|");
       //target.Field(1).AsString = "1";
       //target.Field(4).Component(1).AsString = "Test";
       //target.Field(4).Component(2).AsString = "TestTwo";
@@ -558,7 +555,7 @@ namespace TestHl7V2
       //Assert.AreEqual(4, target.FieldCount, "Field count should only be 4 ad not 25 ");
 
       //---- Workaround Test Case that passes ---------------------------
-      Segment target = new Segment("OBR|");
+      var target = Creator.Segment("OBR|");
       target.Field(1).AsString = "1";
       target.Field(4).Component(1).AsString = "Test";
       target.Field(4).Component(2).AsString = "TestTwo";

@@ -59,11 +59,11 @@ namespace TestHl7V2
 
       string StringRaw = oMsg.ToString();
       bool ParseMSHSegmentOnly = false;
-      Message target = new Message(StringRaw, ParseMSHSegmentOnly);
+      var target = Creator.Message(StringRaw, ParseMSHSegmentOnly);
       Assert.AreEqual(StringRaw, target.AsStringRaw, "A test for Message Constructor");
 
       ParseMSHSegmentOnly = true;
-      target = new Message(StringRaw, ParseMSHSegmentOnly);
+      target = Creator.Message(StringRaw, ParseMSHSegmentOnly);
       Assert.AreEqual(oMsg.ToString().Split('\r')[0] + '\r', target.AsStringRaw, "A test for Message Constructor");
       Assert.AreEqual("0000000000000000010D", target.MessageControlID, "A test for Message Constructor");
       Assert.AreEqual("ORU", target.MessageType, "A test for Message Constructor");
@@ -93,7 +93,7 @@ namespace TestHl7V2
         collection.Add(Line);
       }
       bool ParseMSHSegmentOnly = false;
-      Message target = new Message(collection, ParseMSHSegmentOnly);
+      var target = Creator.Message(collection, ParseMSHSegmentOnly);
       Assert.AreEqual(oMsg.ToString(), target.AsStringRaw, "A test for Message Constructor 1");
       Assert.AreEqual(24, target.SegmentCount(), "A test for Message Constructor 1");
       Assert.AreEqual(false, target.IsParseMSHSegmentOnly, "A test for Message Constructor 1");
@@ -110,7 +110,7 @@ namespace TestHl7V2
       string MessageTrigger = "R01";
       string MessageControlID = "1234567890";
       string MessageStructure = "ORU_R01";
-      Message target = new Message(MessageVersion, MessageType, MessageTrigger, MessageControlID, MessageStructure);
+      var target = Creator.Message(MessageVersion, MessageType, MessageTrigger, MessageControlID, MessageStructure);
       target.Segment(1).Field(7).ClearAll();
       Assert.AreEqual("MSH|^~\\&|||||||ORU^R01^ORU_R01|1234567890|P|2.7|||AL|NE\r", target.AsStringRaw, "A test for Message Constructor 1");
     }
@@ -121,8 +121,8 @@ namespace TestHl7V2
     [Test]
     public void MessageConstructorTest3()
     {
-      Segment item = new Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
-      Message target = new Message(item);
+      var item = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var target = Creator.Message(item);
       Assert.AreEqual(oMsg.ToString().Split('\r')[0] + '\r', target.AsStringRaw, "A test for Message Constructor");
       Assert.AreEqual("0000000000000000010D", target.MessageControlID, "A test for Message Constructor");
       Assert.AreEqual("ORU", target.MessageType, "A test for Message Constructor");
@@ -145,9 +145,9 @@ namespace TestHl7V2
     [Test]
     public void AddTest1()
     {
-      Segment item = new Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
-      Message target = new Message(item);
-      Segment item1 = new Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var item = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var target = Creator.Message(item);
+      var item1 = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
       try
       {
         target.Add(item1);
@@ -158,7 +158,7 @@ namespace TestHl7V2
         Assert.AreEqual("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
-      item1 = new Segment("OBX|1|TX|CULCOM^Culture Comment^AUSLAB||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^AUSLAB");
+      item1 = Creator.Segment("OBX|1|TX|CULCOM^Culture Comment^AUSLAB||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^AUSLAB");
       target.Add(item1);
       Assert.AreEqual("Culture Comment", target.Segment(2).Field(3).Component(2).AsString, "A test for Add");
       Assert.AreEqual(2, target.SegmentCount(), "A test for Add");
@@ -170,19 +170,19 @@ namespace TestHl7V2
     [Test]
     public void ClearAllTest()
     {
-      Message target;
-      Segment itemOBX = new Segment("OBX|1|TX|CULCOM^Culture Comment^AUSLAB||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^AUSLAB");
+      IMessage target;
+      var itemOBX = Creator.Segment("OBX|1|TX|CULCOM^Culture Comment^AUSLAB||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^AUSLAB");
       try
       {
-        target = new Message(itemOBX);
+        target = Creator.Message(itemOBX);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
       {
         Assert.AreEqual("The Segment instance passed in is not a MSH Segment, only a MSH Segment can be passed in on creation / instantiation of a Message", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
-      Segment itemMSH = new Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
-      target = new Message(itemMSH);
+      var itemMSH = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      target = Creator.Message(itemMSH);
       target.ClearAll();
       Assert.AreEqual(2, target.Segment(1).ElementCount, "A test for ClearAll");
       Assert.AreEqual(2, target.Segment(1).FieldCount, "A test for ClearAll");
@@ -207,10 +207,9 @@ namespace TestHl7V2
     [Test]
     public void CloneTest()
     {
-      Message target = new Message(oMsg.ToString());
-      Message expected = new Message(oMsg.ToString());
-      Message actual;
-      actual = target.Clone();
+      var target = Creator.Message(oMsg.ToString());
+      var expected = Creator.Message(oMsg.ToString());      
+      var actual = target.Clone();
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Clone");
     }
 
@@ -220,13 +219,13 @@ namespace TestHl7V2
     [Test]
     public void InsertTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       int index = 2;
-      Segment itemOBX = new Segment("OBX|99|TX|CULCOM^Culture Comment^AUSLAB||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^AUSLAB");
+      var itemOBX = Creator.Segment("OBX|99|TX|CULCOM^Culture Comment^AUSLAB||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^AUSLAB");
       target.Insert(index, itemOBX);
       Assert.AreEqual("OBX|99|TX|CULCOM^Culture Comment^AUSLAB||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^AUSLAB", target.Segment(2).AsStringRaw, "A test for Insert");
 
-      Segment itemMSH = new Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var itemMSH = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
       try
       {
         target.Insert(index, itemMSH);
@@ -244,7 +243,7 @@ namespace TestHl7V2
     [Test]
     public void RemoveSegmentAtTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       int SegCount = target.SegmentCount();
       int index = 10;
       bool actual;
@@ -260,11 +259,10 @@ namespace TestHl7V2
     [Test]
     public void SegmentTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       string Code = "OBX";
-      Segment expected = new Segment(Code);
-      Segment actual;
-      actual = target.Segment(Code);
+      var expected = Creator.Segment(Code);      
+      var actual = target.Segment(Code);
       Assert.AreEqual("OBX|1|CE|MSTAT^Micro Report Status^AUSLAB||COM^COMPLETE^AUSLAB|||H|||F|||201405270956|RB^PATH QLD Central^AUSLAB", actual.AsStringRaw, "A test for Segment");
     }
 
@@ -274,11 +272,10 @@ namespace TestHl7V2
     [Test]
     public void SegmentTest1()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       int index = 6; // TODO: Initialize to an appropriate value
-      Segment expected = new Segment("OBX|1|CE|MSTAT^Micro Report Status^AUSLAB||COM^COMPLETE^AUSLAB|||H|||F|||201405270956|RB^PATH QLD Central^AUSLAB");
-      Segment actual;
-      actual = target.Segment(index);
+      var expected = Creator.Segment("OBX|1|CE|MSTAT^Micro Report Status^AUSLAB||COM^COMPLETE^AUSLAB|||H|||F|||201405270956|RB^PATH QLD Central^AUSLAB");      
+      var actual = target.Segment(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Segment");
     }
 
@@ -288,9 +285,9 @@ namespace TestHl7V2
     [Test]
     public void SegmentListTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       string Code = "OBX";
-      ReadOnlyCollection<Segment> actual;
+      ReadOnlyCollection<ISegment> actual;
       actual = target.SegmentList(Code);
       Assert.AreEqual(18, actual.Count, "A test for SegmentList");
       Assert.AreEqual("OBX|5|CE|UCRY1^Urine Crystals 1^AUSLAB||NCRYS^No Crystals Seen^AUSLAB||||||F|||201405270956|RB^PATH QLD Central^AUSLAB", actual[4].AsStringRaw, "A test for SegmentList");
@@ -302,8 +299,8 @@ namespace TestHl7V2
     [Test]
     public void SegmentListTest1()
     {
-      Message target = new Message(oMsg.ToString());
-      ReadOnlyCollection<Segment> actual;
+      var target = Creator.Message(oMsg.ToString());
+      ReadOnlyCollection<ISegment> actual;
       actual = target.SegmentList();
       Assert.AreEqual(24, actual.Count, "A test for SegmentList");
       Assert.AreEqual("OBX|5|CE|UCRY1^Urine Crystals 1^AUSLAB||NCRYS^No Crystals Seen^AUSLAB||||||F|||201405270956|RB^PATH QLD Central^AUSLAB", actual[9].AsStringRaw, "A test for SegmentList 2");
@@ -315,7 +312,7 @@ namespace TestHl7V2
     [Test]
     public void ToStringTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       string expected = oMsg.ToString();
       string actual;
       actual = target.ToString();
@@ -331,7 +328,7 @@ namespace TestHl7V2
     [Test]
     public void AsStringTest()
     {
-      //Message target = new Message(oMsg.ToString());
+      //Message target = Creator.Message(oMsg.ToString());
       //string expected = oMsg.ToString();
       //string actual;
       //target.AsString = expected;
@@ -347,7 +344,7 @@ namespace TestHl7V2
     [Test]
     public void AsStringRawTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       string expected = oMsg.ToString();
       string actual;
       target.AsStringRaw = expected;
@@ -361,7 +358,7 @@ namespace TestHl7V2
     [Test]
     public void EscapeSequenceTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       string actual;
       actual = target.EscapeSequence;
       Assert.AreEqual("^~\\&", actual, "A test for EscapeSequence");
@@ -373,7 +370,7 @@ namespace TestHl7V2
     [Test]
     public void MainSeparatorTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       string actual;
       actual = target.MainSeparator;
       Assert.AreEqual("|", actual, "A test for MainSeparator");
@@ -385,7 +382,7 @@ namespace TestHl7V2
     [Test]
     public void MessageControlIDTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       string actual;
       actual = target.MessageControlID;
       Assert.AreEqual("0000000000000000010D", actual, "A test for MessageControlID");
@@ -397,7 +394,7 @@ namespace TestHl7V2
     [Test]
     public void MessageDelimitersTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target = Creator.Message(oMsg.ToString());
       MessageDelimiters expected = new MessageDelimiters('|', '~', '^', '&', '\\');
       MessageDelimiters actual;
       actual = target.MessageDelimiters;
@@ -414,7 +411,7 @@ namespace TestHl7V2
     [Test]
     public void MessageStructureTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target  = Creator.Message(oMsg.ToString());
       string actual;
       actual = target.MessageStructure;
       Assert.AreEqual("ORU_R01", actual, "A test for MessageStructure");
@@ -426,7 +423,7 @@ namespace TestHl7V2
     [Test]
     public void MessageTriggerTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target  = Creator.Message(oMsg.ToString());
       string actual;
       actual = target.MessageTrigger;
       Assert.AreEqual("R01", actual, "A test for MessageTrigger");
@@ -438,7 +435,7 @@ namespace TestHl7V2
     [Test]
     public void MessageTypeTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target  = Creator.Message(oMsg.ToString());
       string actual;
       actual = target.MessageType;
       Assert.AreEqual("ORU", actual, "A test for MessageType");
@@ -450,7 +447,7 @@ namespace TestHl7V2
     [Test]
     public void MessageVersionTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target  = Creator.Message(oMsg.ToString());
       string actual;
       actual = target.MessageVersion;
       Assert.AreEqual("2.3.1", actual, "A test for MessageVersion");
@@ -462,7 +459,7 @@ namespace TestHl7V2
     [Test]
     public void SegmentCountTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target  = Creator.Message(oMsg.ToString());
       int actual;
       actual = target.SegmentCount();
       Assert.AreEqual(24, actual, "A test for SegmentCount");
@@ -475,7 +472,7 @@ namespace TestHl7V2
     [Test]
     public void PathInformationTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target  = Creator.Message(oMsg.ToString());
       PeterPiper.Hl7.V2.Model.ModelSupport.PathDetailBase actual;
       actual = target.PathDetail;
 
@@ -490,7 +487,7 @@ namespace TestHl7V2
     [Test]
     public void MessageSchemaTest()
     {
-      Message target = new Message(oMsg.ToString());
+      var target  = Creator.Message(oMsg.ToString());
       PeterPiper.Hl7.V2.Schema.Support.SchemaSupport oSchemaSupport = new PeterPiper.Hl7.V2.Schema.Support.SchemaSupport();
       oSchemaSupport.LoadSchema(target);
       target.Segment("MSH").Field(9).Component(1).AsString = "ORM";

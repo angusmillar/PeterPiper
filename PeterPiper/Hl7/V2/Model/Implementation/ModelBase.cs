@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public abstract class ModelBase
+  public abstract class ModelBase : IModelBase
   {
     internal bool _Temporary = true;
     internal int? _Index;

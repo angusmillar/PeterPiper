@@ -15,7 +15,7 @@ namespace TestHl7V2.TestModel
     [Test]
     public void TestContentTypeCreate()
     {
-      Content oContent = new Content("The data for a content", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+      var oContent = Creator.Content("The data for a content", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
       Assert.AreEqual("The data for a content", oContent.AsString, "AsString Failed on get");
       Assert.AreEqual("The data for a content", oContent.AsStringRaw, "AsStringRaw Failed on get");
       Assert.AreEqual("The data for a content", oContent.ToString(), "ToString Failed on get");
@@ -24,10 +24,10 @@ namespace TestHl7V2.TestModel
     [Test]
     public void TestContentTypeExceptions()
     {
-      Content obj = null;
+      IContent obj = null;
       try
       {
-        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Field.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Field.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -37,7 +37,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Component.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Component.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -47,7 +47,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SubComponent.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SubComponent.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -57,7 +57,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Repeat.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Repeat.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -67,7 +67,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -77,7 +77,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content("Test Data", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj = Creator.Content("Test Data", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         obj.AsString = PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
         Assert.Fail("An exception should have been thrown on setting AsString");
       }
@@ -88,7 +88,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        obj = new Content("Test Data", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+        obj = Creator.Content("Test Data", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         obj.AsStringRaw = PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
         Assert.Fail("An exception should have been thrown on setting AsString");
       }
@@ -105,8 +105,8 @@ namespace TestHl7V2.TestModel
     [Test]
     public void TestSubComponentCreate()
     {
-      SubComponent oSubComonentWithEscapes = new SubComponent("\\N\\this is not Highlighted\\H\\ This is higlighted \\N\\ This is not, this is hex  \\X0xC2\\ this is local \\Ztesttest\\ this is field \\F\\ this is Compponet \\S\\ this is SubCompoent \\T\\ repeat \\R\\ this is escape \\E\\ done ");
-      SubComponent oSubComonentPlainOLDText = new SubComponent("This is plan old test");
+      var oSubComonentWithEscapes = Creator.SubComponent("\\N\\this is not Highlighted\\H\\ This is higlighted \\N\\ This is not, this is hex  \\X0xC2\\ this is local \\Ztesttest\\ this is field \\F\\ this is Compponet \\S\\ this is SubCompoent \\T\\ repeat \\R\\ this is escape \\E\\ done ");
+      var oSubComonentPlainOLDText = Creator.SubComponent("This is plan old test");
     }
 
     [Test]
@@ -114,11 +114,11 @@ namespace TestHl7V2.TestModel
     {
       string FullTestStringWithEscapes = "not highlighted\\H\\ Highlighted \\N\\highlighted ended \\H\\Added highlight \\N\\Added not highlight \\H\\\\N\\";
       string FullTestStringWithOutEscapes = "not highlighted Highlighted highlighted ended Added highlight Added not highlight ";
-      SubComponent oSubComonent = new SubComponent("not highlighted\\H\\ Highlighted \\N\\highlighted ended ");
-      Content oContentEscapeHiglightStart = new Content("H", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
-      Content oContentEscapeHiglightEnd = new Content("N", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
-      Content oContent1 = new Content("Added highlight ", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
-      Content oContent2 = new Content("Added not highlight ", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+      var oSubComonent = Creator.SubComponent("not highlighted\\H\\ Highlighted \\N\\highlighted ended ");
+      var oContentEscapeHiglightStart = Creator.Content("H", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
+      var oContentEscapeHiglightEnd = Creator.Content("N", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
+      var oContent1 = Creator.Content("Added highlight ", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
+      var oContent2 = Creator.Content("Added not highlight ", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
       oSubComonent.Add(oContentEscapeHiglightStart);
       oSubComonent.Add(oContent1);
       oSubComonent.Add(oContentEscapeHiglightEnd);
@@ -137,7 +137,7 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual(oSubComonent.AsString, FullTestStringWithOutEscapes);
       Assert.AreEqual(oSubComonent.ToString(), FullTestStringWithOutEscapes);
 
-      oSubComonent = new SubComponent("\\H\\This is bold text\\N\\");
+      oSubComonent = Creator.SubComponent("\\H\\This is bold text\\N\\");
       Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn, oSubComonent.Content(0).EscapeMetaData.EscapeType);
       Assert.AreEqual("This is bold text", oSubComonent.Content(1).AsStringRaw);
       Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff, oSubComonent.Content(2).EscapeMetaData.EscapeType);
@@ -146,27 +146,27 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual(PeterPiper.Hl7.V2.Support.Content.ContentType.Text, oSubComonent.Content(1).ContentType, "Incorrect ContentType");
       Assert.AreEqual(PeterPiper.Hl7.V2.Support.Content.ContentType.Escape, oSubComonent.Content(2).ContentType, "Incorrect ContentType");
 
-      oSubComonent = new SubComponent("\\H\\This is bold text\\N\\Not bold Text");
-      oSubComonent.Insert(10, new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine));
+      oSubComonent = Creator.SubComponent("\\H\\This is bold text\\N\\Not bold Text");
+      oSubComonent.Insert(10, Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine));
       Assert.AreEqual(oSubComonent.Content(4).EscapeMetaData.EscapeType, PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine, "Incorrect ContentType");
       Assert.AreEqual("\\H\\This is bold text\\N\\Not bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
       oSubComonent.RemoveContentAt(2);
       Assert.AreEqual("\\H\\This is bold textNot bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
-      oSubComonent.Insert(1, new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine));
+      oSubComonent.Insert(1, Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine));
       Assert.AreEqual("\\H\\\\.br\\This is bold textNot bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
     }
 
     [Test]
     public void TestSubComponentSettingContent()
     {
-      SubComponent oSubComp = new SubComponent();
+      var oSubComp = Creator.SubComponent();
       if (oSubComp.Content(5).AsString == string.Empty)
       {
         oSubComp.Content(5).AsString = "New Text";
       }
-      Content oConentHEscape = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn);
-      Content oConentText = new Content("This will be highlighted");
-      Content oConentNEscape = new Content("N", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
+      var oConentHEscape = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn);
+      var oConentText = Creator.Content("This will be highlighted");
+      var oConentNEscape = Creator.Content("N", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
 
       oSubComp.ClearAll();
       oSubComp.Add(oConentHEscape);
@@ -180,41 +180,41 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual(oSubComp.Content(2).AsStringRaw, "N");
       Assert.AreEqual(oSubComp.AsStringRaw, "\\H\\This will be highlighted\\N\\");
       Assert.AreEqual(oSubComp.AsString, "This will be highlighted");
-      oSubComp.Insert(1, new Content(" 2nd "));
+      oSubComp.Insert(1, Creator.Content(" 2nd "));
       Assert.AreEqual(oSubComp.AsStringRaw, "\\H\\ 2nd This will be highlighted\\N\\", "Testing oSubComp.Add and AsString, ASStringRaw");
 
 
       oSubComp.ClearAll();
-      oSubComp.Insert(99, new Content("First "));
-      oSubComp.Insert(1, new Content("Second "));
-      oSubComp.Insert(2, new Content("Fourth "));
-      oSubComp.Insert(3, new Content("Fith "));
-      oSubComp.Insert(4, new Content("Sixth "));
-      oSubComp.Insert(5, new Content("Seven "));
-      oSubComp.Insert(2, new Content("Third "));
+      oSubComp.Insert(99, Creator.Content("First "));
+      oSubComp.Insert(1, Creator.Content("Second "));
+      oSubComp.Insert(2, Creator.Content("Fourth "));
+      oSubComp.Insert(3, Creator.Content("Fith "));
+      oSubComp.Insert(4, Creator.Content("Sixth "));
+      oSubComp.Insert(5, Creator.Content("Seven "));
+      oSubComp.Insert(2, Creator.Content("Third "));
       Assert.AreEqual(oSubComp.AsStringRaw, "First Second Third Fourth Fith Sixth Seven ", "Testing oSubComp.ContentInsertAfter");
 
       oSubComp.ClearAll();
-      oSubComp.Insert(100, new Content("First "));
-      oSubComp.Insert(0, new Content("Second "));
-      oSubComp.Insert(0, new Content("Fourth "));
-      oSubComp.Insert(0, new Content("Fith "));
-      oSubComp.Insert(0, new Content("Sixth "));
-      oSubComp.Insert(0, new Content("Seven "));
-      oSubComp.Insert(4, new Content("Third "));
+      oSubComp.Insert(100, Creator.Content("First "));
+      oSubComp.Insert(0, Creator.Content("Second "));
+      oSubComp.Insert(0, Creator.Content("Fourth "));
+      oSubComp.Insert(0, Creator.Content("Fith "));
+      oSubComp.Insert(0, Creator.Content("Sixth "));
+      oSubComp.Insert(0, Creator.Content("Seven "));
+      oSubComp.Insert(4, Creator.Content("Third "));
       Assert.AreEqual(oSubComp.AsStringRaw, "Seven Sixth Fith Fourth Third Second First ", "Testing oSubComp.ContentInsertBefore");
 
       oSubComp.RemoveContentAt(3);
       Assert.AreEqual(oSubComp.AsStringRaw, "Seven Sixth Fith Third Second First ", "testing oSubComp.AsStringRaw");
 
       oSubComp.ClearAll();
-      oSubComp.Add(new Content("First "));
-      oSubComp.Add(new Content("Third "));
-      oSubComp.Add(new Content("Fourth "));
-      oSubComp.Add(new Content("Fith "));
-      oSubComp.Add(new Content("Seven "));
-      oSubComp.Insert(1, new Content("Second "));
-      oSubComp.Insert(5, new Content("Sixth "));
+      oSubComp.Add(Creator.Content("First "));
+      oSubComp.Add(Creator.Content("Third "));
+      oSubComp.Add(Creator.Content("Fourth "));
+      oSubComp.Add(Creator.Content("Fith "));
+      oSubComp.Add(Creator.Content("Seven "));
+      oSubComp.Insert(1, Creator.Content("Second "));
+      oSubComp.Insert(5, Creator.Content("Sixth "));
       oSubComp.RemoveContentAt(3);
       Assert.AreEqual(oSubComp.AsStringRaw, "First Second Third Fith Sixth Seven ", "Testing oSubComp.Content mixure");
 
@@ -230,10 +230,10 @@ namespace TestHl7V2.TestModel
     [Test]
     public void TestSubComponentContentCount()
     {
-      SubComponent oSubComp = new SubComponent("First ");
-      oSubComp.Add(new Content("Second "));
-      oSubComp.Add(new Content("Third "));
-      oSubComp.Add(new Content("Fourth "));
+      var oSubComp = Creator.SubComponent("First ");
+      oSubComp.Add(Creator.Content("Second "));
+      oSubComp.Add(Creator.Content("Third "));
+      oSubComp.Add(Creator.Content("Fourth "));
       Assert.AreEqual(oSubComp.ContentCount, 4, "Testing oSubComp.ContentCount");
       oSubComp.Content(10).AsStringRaw = "";
       Assert.AreEqual(oSubComp.ContentCount, 4, "Testing oSubComp.ContentCount");
@@ -253,7 +253,7 @@ namespace TestHl7V2.TestModel
     [Test]
     public void TestComponentCreate()
     {
-      Component oComponent = new Component("First&Se\\e\\cond&\\H\\Third is Bold\\n\\&forth&fith");
+      var oComponent = Creator.Component("First&Se\\e\\cond&\\H\\Third is Bold\\n\\&forth&fith");
       Assert.AreEqual("First&Se\\e\\cond&\\H\\Third is Bold\\n\\&forth&fith", oComponent.AsStringRaw, "oComonentWithEscapes.AsStringRaw did not match create string");
       oComponent.AsStringRaw = "";
       oComponent.AsStringRaw = "First&Se\\e\\cond&\\H\\Third is Bold\\n\\&forth&fith";
@@ -286,10 +286,10 @@ namespace TestHl7V2.TestModel
 
       oComponent.ClearAll();
       Assert.AreEqual(0, oComponent.SubComponentCount, ",oComonent.CountSubComponent is incorrect");
-      oComponent.Add(new SubComponent("First"));
-      oComponent.Add(new SubComponent("Second"));
-      oComponent.Add(new SubComponent("Third"));
-      oComponent.Add(new SubComponent("Forth"));
+      oComponent.Add(Creator.SubComponent("First"));
+      oComponent.Add(Creator.SubComponent("Second"));
+      oComponent.Add(Creator.SubComponent("Third"));
+      oComponent.Add(Creator.SubComponent("Forth"));
       Assert.AreEqual(4, oComponent.SubComponentCount, ",oComonent.CountSubComponent is incorrect");
       Assert.AreEqual("First", oComponent.SubComponent(1).AsStringRaw, ",oComponent.SubComponent() returned incorrect");
       Assert.AreEqual("Second", oComponent.SubComponent(2).AsString, ",oComponent.SubComponent() returned incorrect");
@@ -306,33 +306,33 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("", oComponent.AsString, ",oComponent.AsString returned incorrect");
 
       oComponent.ClearAll();
-      oComponent.Insert(10, new SubComponent("Third"));
-      oComponent.Insert(1, new SubComponent("First"));
-      oComponent.Insert(2, new SubComponent("Second"));
+      oComponent.Insert(10, Creator.SubComponent("Third"));
+      oComponent.Insert(1, Creator.SubComponent("First"));
+      oComponent.Insert(2, Creator.SubComponent("Second"));
       Assert.AreEqual("First&Second&&&&&&&&&&Third", oComponent.AsString, ",oComponent.AsString returned incorrect");
 
       oComponent.ClearAll();
-      oComponent.Insert(1, new SubComponent("First"));
-      oComponent.Insert(2, new SubComponent("Second"));
-      oComponent.Add(new SubComponent("Third"));
+      oComponent.Insert(1, Creator.SubComponent("First"));
+      oComponent.Insert(2, Creator.SubComponent("Second"));
+      oComponent.Add(Creator.SubComponent("Third"));
       Assert.AreEqual("First&Second&Third", oComponent.AsString, ",oComponent.AsString returned incorrect");
 
       oComponent.ClearAll();
-      oComponent.Add(new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
-      oComponent.Add(new Content("This is Bold"));
-      oComponent.Add(new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff));
-      oComponent.Add(new Content(new PeterPiper.Hl7.V2.Support.Content.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "HAHAHAHAH")));
+      oComponent.Add(Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
+      oComponent.Add(Creator.Content("This is Bold"));
+      oComponent.Add(Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff));
+      oComponent.Add(Creator.Content(new PeterPiper.Hl7.V2.Support.Content.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "HAHAHAHAH")));
       Assert.AreEqual("\\H\\This is Bold\\N\\\\ZHAHAHAHAH\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
-      oComponent.Set(3, new Content(new PeterPiper.Hl7.V2.Support.Content.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "Boo")));
+      oComponent.Set(3, Creator.Content(new PeterPiper.Hl7.V2.Support.Content.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "Boo")));
       Assert.AreEqual("\\H\\This is Bold\\N\\\\ZBoo\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
-      oComponent.Insert(2, new Content("Not BOLD"));
+      oComponent.Insert(2, Creator.Content("Not BOLD"));
       Assert.AreEqual("\\H\\This is BoldNot BOLD\\N\\\\ZBoo\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
 
 
       //AsString = "Mater Hospital caters for Women \\Zhildren\\ Men";
       oComponent.ClearAll();
-      oComponent.Add(new Content("Mater Hospital", PeterPiper.Hl7.V2.Support.Content.ContentType.Text));
-      oComponent.Add(new Content("C4568", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape));
+      oComponent.Add(Creator.Content("Mater Hospital", PeterPiper.Hl7.V2.Support.Content.ContentType.Text));
+      oComponent.Add(Creator.Content("C4568", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape));
       Assert.AreEqual("Mater Hospital", oComponent.AsString, ",oComponent.AsString returned incorrect");
       Assert.AreEqual("Mater Hospital\\C4568\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
 
@@ -355,7 +355,7 @@ namespace TestHl7V2.TestModel
     {
       //Test setting data through create
       string TestString = "first^Second^ThirdHasSubs1&ThirdHasSubs2^Forth^\\H\\Fith\\N\\";
-      Field oField = new Field(TestString);
+      var oField = Creator.Field(TestString);
       Assert.AreEqual(TestString, oField.AsStringRaw, "oField.AsStringRaw did not match create string");
 
       //Test setting data through StringRaw
@@ -391,10 +391,10 @@ namespace TestHl7V2.TestModel
       //Test Append
       oField.ClearAll();
       Assert.AreEqual(0, oField.ComponentCount, ",oField.ComponentCount is incorrect");
-      oField.Add(new Component("First"));
-      oField.Add(new Component("Second"));
-      oField.Add(new Component("Third"));
-      oField.Add(new Component("Forth"));
+      oField.Add(Creator.Component("First"));
+      oField.Add(Creator.Component("Second"));
+      oField.Add(Creator.Component("Third"));
+      oField.Add(Creator.Component("Forth"));
 
       //Test Component lookup
       Assert.AreEqual(4, oField.ComponentCount, ",oComonent.CountSubComponent is incorrect");
@@ -415,16 +415,16 @@ namespace TestHl7V2.TestModel
 
       //Test InsertBefore
       oField.ClearAll();
-      oField.Insert(10, new Component("Third"));
-      oField.Insert(1, new Component("First"));
-      oField.Insert(2, new Component("Second"));
+      oField.Insert(10, Creator.Component("Third"));
+      oField.Insert(1, Creator.Component("First"));
+      oField.Insert(2, Creator.Component("Second"));
       Assert.AreEqual("First^Second^^^^^^^^^^Third", oField.AsString, ",oField.ComponentInsertBefore returned incorrect");
 
       //Test InsertBefore
       oField.ClearAll();
-      oField.Add(new SubComponent("The SubComponent"));
+      oField.Add(Creator.SubComponent("The SubComponent"));
       Assert.AreEqual("The SubComponent", oField.AsString, ",oField.ComponentInsertBefore returned incorrect");
-      oField.Add(new Content(" The Content"));
+      oField.Add(Creator.Content(" The Content"));
       Assert.AreEqual("The SubComponent The Content", oField.AsString, ",oField.ComponentInsertBefore returned incorrect");
 
 
@@ -433,23 +433,23 @@ namespace TestHl7V2.TestModel
       //This is not good but as we currently don't use the Parent property for any functional use it works. 
       //Need to review weather we even need the Parent property at all?
       oField.ClearAll();
-      var oComponent = new Component("Test");
+      var oComponent = Creator.Component("Test");
       oField.Insert(1, oComponent.Clone());
       oField.Insert(2, oComponent.Clone());
       oField.Add(oComponent.Clone());
       oComponent.AsString = "Test2";
-      Field oField2 = new Field();
+      var oField2 = Creator.Field();
       oField2.Add(oComponent.Clone());
 
       //Test mixture of Append , insert before and after
       oField.ClearAll();
-      oField.Insert(1, new Component("First"));
-      oField.Insert(2, new Component("Second"));
-      oField.Add(new Component("Third"));
+      oField.Insert(1, Creator.Component("First"));
+      oField.Insert(2, Creator.Component("Second"));
+      oField.Add(Creator.Component("Third"));
       Assert.AreEqual("First^Second^Third", oField.AsString, ",oField Component insert mix returned incorrect");
 
       //Test Clone
-      Field FieldClone = oField.Clone();
+      var FieldClone = oField.Clone();
       oField.Component(1).AsString = FieldClone.Component(3).AsString;
       oField.Component(2).AsString = FieldClone.Component(2).AsString;
       oField.Component(3).AsString = FieldClone.Component(1).AsString;
@@ -458,7 +458,7 @@ namespace TestHl7V2.TestModel
 
       //Test Custom Delimiters
       var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#');
-      oField = new Field("First*#H#Second#N#*Third1%Third2", oCustomDelimiters);
+      oField = Creator.Field("First*#H#Second#N#*Third1%Third2", oCustomDelimiters);
       Assert.AreEqual("Second", oField.Component(2).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second#N#", oField.Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("Third2", oField.Component(3).SubComponent(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -477,7 +477,7 @@ namespace TestHl7V2.TestModel
       //Test setting data through create
       string TestStringEscape = "1first^1Second^1ThirdHasSubs1&1ThirdHasSubs2^1Forth^\\H\\1Fith\\N\\~2first^2Second^2ThirdHasSubs1&2ThirdHasSubs2^2Forth^\\H\\2Fith\\N\\~3first^3Second^3ThirdHasSubs1&3ThirdHasSubs2^3Forth^\\H\\3Fith\\N\\";
       string TestString = "1first^1Second^1ThirdHasSubs1&1ThirdHasSubs2^1Forth^1Fith~2first^2Second^2ThirdHasSubs1&2ThirdHasSubs2^2Forth^2Fith~3first^3Second^3ThirdHasSubs1&3ThirdHasSubs2^3Forth^3Fith";
-      Element oElement = new Element(TestStringEscape);
+      var oElement = Creator.Element(TestStringEscape);
       Assert.AreEqual(TestStringEscape, oElement.AsStringRaw, "oElement.AsStringRaw did not match create string");
 
       //Test setting data through StringRaw
@@ -513,10 +513,10 @@ namespace TestHl7V2.TestModel
       //Test Append
       oElement.ClearAll();
       Assert.AreEqual(0, oElement.RepeatCount, ",oElement.RepeatCount is incorrect");
-      oElement.Add(new Field("First"));
-      oElement.Add(new Field("Second"));
-      oElement.Add(new Field("Third"));
-      oElement.Add(new Field("Forth"));
+      oElement.Add(Creator.Field("First"));
+      oElement.Add(Creator.Field("Second"));
+      oElement.Add(Creator.Field("Third"));
+      oElement.Add(Creator.Field("Forth"));
 
       //Test Component lookup
       Assert.AreEqual(4, oElement.RepeatCount, ",oElement.RepeatCount is incorrect");
@@ -536,48 +536,48 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("", oElement.AsString, ",oElement.RemoveRepeatAt() returned incorrect");
 
       ////Test InsertAfter
-      //oElement.RepeatInsertAfter(new Field("First"), 100);
-      //oElement.RepeatInsertAfter(new Field("Third"), 1);
-      //oElement.RepeatInsertAfter(new Field("Second"), 1);
+      //oElement.RepeatInsertAfter(Creator.Field("First"), 100);
+      //oElement.RepeatInsertAfter(Creator.Field("Third"), 1);
+      //oElement.RepeatInsertAfter(Creator.Field("Second"), 1);
       //Assert.AreEqual("First~Second~Third", oElement.AsString, ",oElement.RepeatInsertAfter returned incorrect");
       //Test InsertBefore
       oElement.ClearAll();
-      oElement.Add(new Component("The Component"));
-      Assert.AreEqual("The Component", oElement.AsString, ",oElement.Add(new Component(); returned incorrect");
-      oElement.Add(new Component("The Component2"));
-      Assert.AreEqual("The Component^The Component2", oElement.AsString, ",oElement.Add(new Component(); returned incorrect");
+      oElement.Add(Creator.Component("The Component"));
+      Assert.AreEqual("The Component", oElement.AsString, ",oElement.Add(Creator.Component(); returned incorrect");
+      oElement.Add(Creator.Component("The Component2"));
+      Assert.AreEqual("The Component^The Component2", oElement.AsString, ",oElement.Add(Creator.Component(); returned incorrect");
 
       oElement.ClearAll();
-      oElement.Add(new SubComponent("The SubComponent1"));
+      oElement.Add(Creator.SubComponent("The SubComponent1"));
       Assert.AreEqual("The SubComponent1", oElement.AsString, ",oElement.Add(new SubComponent(); returned incorrect");
 
       oElement.ClearAll();
-      oElement.Add(new Content("The Content1"));
-      Assert.AreEqual("The Content1", oElement.AsString, ",oElement.Add(new Content(); returned incorrect");
+      oElement.Add(Creator.Content("The Content1"));
+      Assert.AreEqual("The Content1", oElement.AsString, ",oElement.Add(Creator.Content(); returned incorrect");
 
 
       //Test InsertBefore
       oElement.ClearAll();
-      oElement.Insert(20, new Field("Third"));
-      oElement.Insert(1, new Field("First"));
-      oElement.Insert(2, new Field("Second"));
+      oElement.Insert(20, Creator.Field("Third"));
+      oElement.Insert(1, Creator.Field("First"));
+      oElement.Insert(2, Creator.Field("Second"));
       Assert.AreEqual("First~Second~~~~~~~~~~~~~~~~~~~~Third", oElement.AsString, ",oElement.RepeatInsertBefore returned incorrect");
-      oElement.Insert(5, new Component("Forth"));
+      oElement.Insert(5, Creator.Component("Forth"));
       Assert.AreEqual("First^^^^Forth~Second~~~~~~~~~~~~~~~~~~~~Third", oElement.AsString, ",oElement.RepeatInsertBefore returned incorrect");
-      oElement.Insert(5, new SubComponent("Five"));
+      oElement.Insert(5, Creator.SubComponent("Five"));
       Assert.AreEqual("First&&&&Five^^^^Forth~Second~~~~~~~~~~~~~~~~~~~~Third", oElement.AsString, ",oElement.RepeatInsertBefore returned incorrect");
-      oElement.Insert(5, new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
+      oElement.Insert(5, Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
       Assert.AreEqual("First\\H\\&&&&Five^^^^Forth~Second~~~~~~~~~~~~~~~~~~~~Third", oElement.AsStringRaw, ",oElement.RepeatInsertBefore returned incorrect");
 
       //Test mixture of Append , insert before and after
       oElement.ClearAll();
-      oElement.Insert(1, new Field("First"));
-      oElement.Insert(2, new Field("Second"));
-      oElement.Add(new Field("Third"));
+      oElement.Insert(1, Creator.Field("First"));
+      oElement.Insert(2, Creator.Field("Second"));
+      oElement.Add(Creator.Field("Third"));
       Assert.AreEqual("First~Second~Third", oElement.AsString, ",oElement Repeat insert mix returned incorrect");
 
       //Test Clone
-      Element ElementClone = oElement.Clone();
+      var ElementClone = oElement.Clone();
       oElement.Repeat(1).AsString = ElementClone.Repeat(3).AsString;
       oElement.Repeat(2).AsString = ElementClone.Repeat(2).AsString;
       oElement.Repeat(3).AsString = ElementClone.Repeat(1).AsString;
@@ -590,7 +590,7 @@ namespace TestHl7V2.TestModel
 
       //Test Custom Delimiters
       var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
-      oElement = new Element("First1*#H#Second1#N#*Third11%Third12@First2*#H#Second2#N#*Third21%Third22", oCustomDelimiters);
+      oElement = Creator.Element("First1*#H#Second1#N#*Third11%Third12@First2*#H#Second2#N#*Third21%Third22", oCustomDelimiters);
       Assert.AreEqual("First2*Second2*Third21%Third22", oElement.Repeat(2).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second2#N#", oElement.Repeat(2).Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("Third22", oElement.Repeat(2).Component(3).SubComponent(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -606,7 +606,7 @@ namespace TestHl7V2.TestModel
       //Test setting data through create
       string TestStringEscape = "PID||PID-2.1^PID-2.2|PID-3.1.1&PID-3.1.2^PID-3.1|PID-{1}4~PID-{2}4|PID-5.1^\\H\\PID-5.2\\N\\";
       string TestString = "PID||PID-2.1^PID-2.2|PID-3.1.1&PID-3.1.2^PID-3.1|PID-{1}4~PID-{2}4|PID-5.1^PID-5.2";
-      Segment oSegment = new Segment(TestStringEscape);
+      var oSegment = Creator.Segment(TestStringEscape);
       Assert.AreEqual(TestStringEscape, oSegment.AsStringRaw, "oSegment.AsStringRaw did not match create string");
 
       //Test setting data through StringRaw
@@ -658,10 +658,10 @@ namespace TestHl7V2.TestModel
       //Test Append
       oSegment.ClearAll();
       Assert.AreEqual(0, oSegment.ElementCount, "oSegment.RepeatCount is incorrect");
-      oSegment.Add(new Element("First"));
-      oSegment.Add(new Element("Second"));
-      oSegment.Add(new Element("Third"));
-      oSegment.Add(new Element("Forth"));
+      oSegment.Add(Creator.Element("First"));
+      oSegment.Add(Creator.Element("Second"));
+      oSegment.Add(Creator.Element("Third"));
+      oSegment.Add(Creator.Element("Forth"));
 
       ////Test Component lookup
       Assert.AreEqual(4, oSegment.ElementCount, "oSegment.RepeatCount is incorrect");
@@ -686,18 +686,18 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("PID|", oSegment.AsString, "oSegment.RemoveRepeatAt() returned incorrect");
 
       ////Test InsertAfter
-      oSegment.Insert(1, new Element("First1~First2"));
-      oSegment.Insert(2, new Element("Third"));
-      oSegment.Insert(2, new Element("Second"));
+      oSegment.Insert(1, Creator.Element("First1~First2"));
+      oSegment.Insert(2, Creator.Element("Third"));
+      oSegment.Insert(2, Creator.Element("Second"));
       Assert.AreEqual("PID|First1~First2|Second|Third", oSegment.AsString, "oSegment.RepeatInsertAfter returned incorrect");
 
       ////Test InsertBefore
       oSegment.ClearAll();
-      oSegment.Insert(10, new Element("Third"));
-      oSegment.Insert(1, new Element("First1~First2"));
-      oSegment.Insert(2, new Element("Second"));
-      oSegment.Insert(1, new Element(""));
-      oSegment.Insert(1, new Element(""));
+      oSegment.Insert(10, Creator.Element("Third"));
+      oSegment.Insert(1, Creator.Element("First1~First2"));
+      oSegment.Insert(2, Creator.Element("Second"));
+      oSegment.Insert(1, Creator.Element(""));
+      oSegment.Insert(1, Creator.Element(""));
       Assert.AreEqual("PID|||First1~First2|Second||||||||||Third", oSegment.AsString, "oSegment.RepeatInsertBefore returned incorrect");
 
       //Very interesting scenario, add the same Component to two different parent fields. 
@@ -708,7 +708,7 @@ namespace TestHl7V2.TestModel
       //is reasonable 
 
       oSegment.ClearAll();
-      var oElement = new Element("Test");
+      var oElement = Creator.Element("Test");
       oSegment.Insert(1, oElement);
       try
       {
@@ -722,28 +722,28 @@ namespace TestHl7V2.TestModel
       oSegment.Insert(2, oElement.Clone());
       oSegment.Add(oElement.Clone());
       oElement.AsString = "Test2";
-      Segment oSegment2 = new Segment("ROL|");
+      var oSegment2 = Creator.Segment("ROL|");
       oSegment2.Add(oElement.Clone());
       string teeeest = oSegment.Field(1).PathDetail.PathBrief;
 
       ////Test Adding and removing Fields on segment instance
       oSegment.ClearAll();
       oSegment.AsStringRaw = "PID|1|2|3|4|5|6";
-      oSegment.Add(new Field("NewField1"));
+      oSegment.Add(Creator.Field("NewField1"));
       Assert.AreEqual("PID|1|2|3|4|5|6|NewField1", oSegment.AsString, "oSegment.Add() returned incorrect");
-      oSegment.Insert(6, new Field("NewField2"));
+      oSegment.Insert(6, Creator.Field("NewField2"));
       Assert.AreEqual("PID|1|2|3|4|5|NewField2|6|NewField1", oSegment.AsString, "oSegment.Add() returned incorrect");
 
 
       ////Test mixture of Append , insert before and after
       oSegment.ClearAll();
-      oSegment.Insert(1, new Element("First"));
-      oSegment.Insert(2, new Element("Second"));
-      oSegment.Add(new Element("Third"));
+      oSegment.Insert(1, Creator.Element("First"));
+      oSegment.Insert(2, Creator.Element("Second"));
+      oSegment.Add(Creator.Element("Third"));
       Assert.AreEqual("PID|First|Second|Third", oSegment.AsString, "oSegment insert mix returned incorrect");
 
       ////Test Clone
-      Segment SegmentClone = oSegment.Clone();
+      var SegmentClone = oSegment.Clone();
       oSegment.Element(1).AsString = SegmentClone.Element(3).AsString;
       oSegment.Element(2).AsString = SegmentClone.Element(2).AsString;
       oSegment.Element(3).AsString = SegmentClone.Element(1).AsString;
@@ -776,7 +776,7 @@ namespace TestHl7V2.TestModel
 
       ////Test Custom Delimiters
       var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
-      oSegment = new Segment("PID!First1*#H#Second1#N#*Third11%Third12@First2*#H#Second2#N#*Third21%Third22", oCustomDelimiters);
+      oSegment = Creator.Segment("PID!First1*#H#Second1#N#*Third11%Third12@First2*#H#Second2#N#*Third21%Third22", oCustomDelimiters);
       Assert.AreEqual("First1*Second1*Third11%Third12", oSegment.Field(1).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second2#N#", oSegment.Element(1).Repeat(2).Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("Third22", oSegment.Element(1).Repeat(2).Component(3).SubComponent(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -789,9 +789,9 @@ namespace TestHl7V2.TestModel
     [Test]
     public void TestMessageCreate()
     {
-      Message oMessage;
+      
 
-      oMessage = new Message("2.3.1", "ORU", "R01");
+      var oMessage = Creator.Message("2.3.1", "ORU", "R01");
 
 
       StringBuilder sbMessageWithTwoMSHSegments = new StringBuilder();
@@ -800,7 +800,7 @@ namespace TestHl7V2.TestModel
       sbMessageWithTwoMSHSegments.Append("MSH|^~\\&|HNAM^RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN"); sbMessageWithTwoMSHSegments.Append("\r");
       try
       {
-        oMessage = new Message(sbMessageWithTwoMSHSegments.ToString());
+        oMessage = Creator.Message(sbMessageWithTwoMSHSegments.ToString());
       }
       catch (ArgumentException ae)
       {
@@ -822,7 +822,7 @@ namespace TestHl7V2.TestModel
       sbMessage.Append("OBX|4|IS|CD:1278500^RADIOLOGY INPATIENT / OUTPATIENT||CD:4"); sbMessage.Append("\r");
 
       string MessageString = sbMessage.ToString();
-      oMessage = new Message(MessageString);
+      oMessage = Creator.Message(MessageString);
       //Check parsed Message same as Original
       Assert.AreEqual(sbMessage.ToString(), oMessage.AsStringRaw, "Parsed Message is not equal to orginal message.");
 
@@ -886,7 +886,7 @@ namespace TestHl7V2.TestModel
       {
         Assert.AreEqual("While setting a message using AsString() could technicaly work it would make no sense to have the message's escape charaters in MSH-1 & MSH-2 re-escaped. You should be using AsStringRaw()", ae.Message, "Exception should have been thrown in setting oMessage.AsString");
       }
-      Message oMesage2 = new Message(MessageString);
+      var oMesage2 = Creator.Message(MessageString);
       oMessage = oMesage2.Clone();
       Assert.AreEqual(12, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual(4, oMessage.SegmentList("OBX").Count, "The oMessage.SegmentList(\"OBX\").Count returns the incorrect value.");
@@ -911,18 +911,18 @@ namespace TestHl7V2.TestModel
         Assert.AreEqual((i + 1).ToString(), oMessage.SegmentList("OBX")[i].Field(1).AsString, "oMessage.SegmentList(\"OBX\")[i].Field(1).AsString returns the incorrect value.");
       }
 
-      Segment oNewSegment = new Segment("GUS|hello^World");
+      var oNewSegment = Creator.Segment("GUS|hello^World");
       oMessage.Add(oNewSegment);
       Assert.AreEqual(13, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual("GUS", oMessage.SegmentList()[12].Code, "oMessage.SegmentList()[12].Code");
 
-      Segment oNewSegment2 = new Segment("NTE|Comment here 2");
+      var oNewSegment2 = Creator.Segment("NTE|Comment here 2");
       oMessage.Insert(9, oNewSegment2);
       Assert.AreEqual(14, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual("NTE", oMessage.Segment(9).Code, "oMessage.Segment(9).Code");
       Assert.AreEqual("Comment here 2", oMessage.Segment(9).Field(1).AsString, "oMessage.Segment(9).Field(1).AsString");
 
-      Segment oNewSegment3 = new Segment("NTE|Comment here 3");
+      var oNewSegment3 = Creator.Segment("NTE|Comment here 3");
       oMessage.Insert(9, oNewSegment3);
       Assert.AreEqual(15, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual("NTE", oMessage.Segment(9).Code, "oMessage.SegmentList()[12].Code");
@@ -938,9 +938,9 @@ namespace TestHl7V2.TestModel
       }
 
       PeterPiper.Hl7.V2.Support.MessageDelimiters oDelim = new PeterPiper.Hl7.V2.Support.MessageDelimiters('*', '~', '^', '&', '\\');
-      Segment oMSHSeg = new Segment("MSH*^~\\&*AUSLAB*QHPS*EGATE-Atomic*CITEC*20140804143827**ORU^R01*000000000000005EVT6P*P*2.3.1*", oDelim);
-      Message oMessage3 = new Message(oMSHSeg);
-      Segment oPIDSeg = new Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
+      var oMSHSeg = Creator.Segment("MSH*^~\\&*AUSLAB*QHPS*EGATE-Atomic*CITEC*20140804143827**ORU^R01*000000000000005EVT6P*P*2.3.1*", oDelim);
+      var oMessage3 = Creator.Message(oMSHSeg);
+      var oPIDSeg = Creator.Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
       try
       {
         oMessage3.Add(oPIDSeg);
@@ -961,7 +961,7 @@ namespace TestHl7V2.TestModel
         Assert.AreEqual("Index one is the MSH Segment. This segment can not be removed, it can be modified or a new Message instance can be created", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
-      oMessage = new Message(MessageString);
+      oMessage = Creator.Message(MessageString);
 
       Assert.AreEqual("|", oMessage.MainSeparator, "oMessage.MainSeparator returns the incorrect value");
       Assert.AreEqual("^~\\&", oMessage.EscapeSequence, "oMessage.MessageDelimiters returns the incorrect value");
@@ -1020,7 +1020,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        oMessage.Segment(1).Insert(1, new Element("sffsfsdfAfter"));
+        oMessage.Segment(1).Insert(1, Creator.Element("sffsfsdfAfter"));
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -1030,7 +1030,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        oMessage.Segment(1).Insert(1, new Element("sffsfsdfBefore"));
+        oMessage.Segment(1).Insert(1, Creator.Element("sffsfsdfBefore"));
         Assert.Fail("An exception should have been thrown");
       }
       catch (ArgumentException ae)
@@ -1070,7 +1070,7 @@ namespace TestHl7V2.TestModel
 
       try
       {
-        Segment testSeg = new Segment("BAD");
+        var testSeg = Creator.Segment("BAD");
         testSeg.AsStringRaw = "MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1";
         testSeg.AsStringRaw = "ABC|^~\\&|AUSLAB|TRAIN|";
         Assert.Fail("An exception should have been thrown");
@@ -1080,7 +1080,7 @@ namespace TestHl7V2.TestModel
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
-      Segment NewMSH = new Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
+      var NewMSH = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
       try
       {
         oMessage.Add(NewMSH);
@@ -1112,7 +1112,7 @@ namespace TestHl7V2.TestModel
       }
 
       //Check Component List works correctly
-      oPIDSeg = new Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
+      oPIDSeg = Creator.Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
       Counter = 1;
       foreach (var Com in oPIDSeg.Field(3).ComponentList)
       {
@@ -1127,10 +1127,10 @@ namespace TestHl7V2.TestModel
       //DateTimeOffset testDateTime2 = PeterPiper.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset("2014+0800");
       DateTimeOffset testDateTime2 = PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.AsDateTimeOffSet("2014+0800");
 
-      oMessage = new Message(sbMessage.ToString());
-      SubComponent SubCom = new SubComponent("Sub");
-      Content oContent1 = new Content("Test1");
-      Content oContent2 = new Content("Test2");
+      oMessage = Creator.Message(sbMessage.ToString());
+      var SubCom = Creator.SubComponent("Sub");
+      var oContent1 = Creator.Content("Test1");
+      var oContent2 = Creator.Content("Test2");
       SubCom.Add(oContent1);
       SubCom.Content(1).AsStringRaw = "";
       SubCom.Content(1).AsStringRaw = "Raw1";
@@ -1142,22 +1142,22 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("SubRaw1Test222", SubCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
 
 
-      Content oContent3 = new Content("Test3");
-      Content oContent4 = new Content("Test4");
+      var oContent3 = Creator.Content("Test3");
+      var oContent4 = Creator.Content("Test4");
       SubCom.Set(1, oContent3);
       SubCom.Set(2, oContent4);
       Assert.AreEqual("SubTest3Test4", SubCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
 
-      Field oField = new Field("Field");
+      var oField = Creator.Field("Field");
       oField.Component(1).Set(0, oContent1);
       Assert.AreEqual("Test111", oField.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
       oField.Component(1).Set(0, oContent2);
       Assert.AreEqual("Test222", oField.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
       oContent1.AsStringRaw = "Test1";
 
-      oField = new Field("Field");
-      Component oComp = new Component();
-      SubComponent oSubComp = new SubComponent();
+      oField = Creator.Field("Field");
+      var oComp = Creator.Component();
+      var oSubComp = Creator.SubComponent();
       oField.Add(oComp);
       oField.Component(2).Add(oSubComp.Clone());
       oField.Component(2).Add(oSubComp.Clone());

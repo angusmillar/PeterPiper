@@ -40,15 +40,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hl7\V2\Model\Component.cs" />
-    <Compile Include="Hl7\V2\Model\Content.cs" />
-    <Compile Include="Hl7\V2\Model\Element.cs" />
-    <Compile Include="Hl7\V2\Model\Field.cs" />
-    <Compile Include="Hl7\V2\Model\ContentBase.cs" />
-    <Compile Include="Hl7\V2\Model\Message.cs" />
-    <Compile Include="Hl7\V2\Model\ModelBase.cs" />
-    <Compile Include="Hl7\V2\Model\Segment.cs" />
-    <Compile Include="Hl7\V2\Model\SubComponent.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\Component.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\Content.cs" />
+    <Compile Include="Hl7\V2\Model\Creator.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\Element.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\Field.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\ContentBase.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\IMessage.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\IElement.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\IField.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\IContentBase.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\IModelBase.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\IComponent.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\IContent.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\ISubComponent.cs" />
+    <Compile Include="Hl7\V2\Model\Interface\ISegment.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\Message.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\ModelBase.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\Segment.cs" />
+    <Compile Include="Hl7\V2\Model\Implementation\SubComponent.cs" />
     <Compile Include="Hl7\V2\Schema\Model\Cardinality.cs" />
     <Compile Include="Hl7\V2\Schema\Model\MessageSegment.cs" />
     <Compile Include="Hl7\V2\Schema\Model\MessageItemBase.cs" />

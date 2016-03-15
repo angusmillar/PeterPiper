@@ -30,7 +30,7 @@ namespace TestHl7V2
     public void ElementConstructorTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       Assert.AreEqual(StringRaw, target.AsStringRaw, "A test for Element Constructor");
       Assert.AreEqual(4, target.RepeatCount, "A test for Element Constructor");
     }
@@ -42,7 +42,7 @@ namespace TestHl7V2
     public void ElementConstructorTest1()
     {
       string StringRaw = "Hello %T% World %.br%Earth!Sub2!Sub3*Comp2*Comp3@R2Hello %T% World %.br%Earth!R2Sub2!R2Sub3*R2Comp2*R2Comp3@R3@R4";
-      Element target = new Element(StringRaw, CustomDelimiters);
+      var target = Creator.Element(StringRaw, CustomDelimiters);
       Assert.AreEqual(StringRaw, target.AsStringRaw, "A test for Element Constructor 1");
       Assert.AreEqual(4, target.RepeatCount, "A test for Element Constructor 1");
     }
@@ -53,7 +53,7 @@ namespace TestHl7V2
     [Test]
     public void ElementConstructorTest2()
     {
-      Element target = new Element();
+      var target = Creator.Element();
       Assert.AreEqual("", target.AsStringRaw, "A test for Element Constructor 2");
       Assert.AreEqual(0, target.RepeatCount, "A test for Element Constructor 2");
     }
@@ -65,8 +65,8 @@ namespace TestHl7V2
     public void AddTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
-      Field item = new Field("R5");
+      var target = Creator.Element(StringRaw);
+      var item = Creator.Field("R5");
       target.Add(item);
       Assert.AreEqual(StringRaw + "~R5", target.AsStringRaw, "A test for Add");
       Assert.AreEqual(5, target.RepeatCount, "A test for Add");
@@ -79,8 +79,8 @@ namespace TestHl7V2
     public void AddTest1()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
-      Component item = new Component("CompAdded");
+      var target = Creator.Element(StringRaw);
+      var item = Creator.Component("CompAdded");
       target.Add(item);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3^CompAdded~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for Add");
       Assert.AreEqual(4, target.ComponentCount, "A test for Element Constructor 2");
@@ -93,8 +93,8 @@ namespace TestHl7V2
     public void AddTest2()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
-      SubComponent item = new SubComponent("SubAdded");
+      var target = Creator.Element(StringRaw);
+      var item = Creator.SubComponent("SubAdded");
       target.Add(item);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3&SubAdded^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for Add 2");
       Assert.AreEqual(4, target.SubComponetCount, "A test for Add 2");
@@ -107,8 +107,8 @@ namespace TestHl7V2
     public void AddTest3()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
-      Content item = new Content("ContAdded");
+      var target = Creator.Element(StringRaw);
+      var item = Creator.Content("ContAdded");
       target.Add(item);
       Assert.AreEqual("Hello \\T\\ World \\.br\\EarthContAdded&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for Add 2");
       Assert.AreEqual(6, target.ContentCount, "A test for Add 2");
@@ -121,7 +121,7 @@ namespace TestHl7V2
     public void ClearAllTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       target.ClearAll();
       Assert.AreEqual(true, target.IsEmpty, "A test for ClearAll");
       Assert.AreEqual(String.Empty, target.AsStringRaw, "A test for ClearAll");
@@ -134,10 +134,9 @@ namespace TestHl7V2
     public void CloneTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
-      Element expected = new Element(StringRaw);
-      Element actual;
-      actual = target.Clone();
+      var target = Creator.Element(StringRaw);
+      var expected = Creator.Element(StringRaw);      
+      var actual = target.Clone();
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Clone");
     }
 
@@ -146,13 +145,12 @@ namespace TestHl7V2
     ///</summary>
     [Test]
     public void ComponentTest()
-    {
+    {      
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 2;
-      Component expected = new Component("Comp2");
-      Component actual;
-      actual = target.Component(index);
+      var expected = Creator.Component("Comp2");      
+      var actual = target.Component(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Component");
     }
 
@@ -163,11 +161,10 @@ namespace TestHl7V2
     public void ContentTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 3;
-      Content expected = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
-      Content actual;
-      actual = target.Content(index);
+      var expected = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);      
+      var actual = target.Content(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Content");
       Assert.AreEqual(expected.ContentType, actual.ContentType, "A test for Content");
       Assert.AreEqual(expected.EscapeMetaData.EscapeType, actual.EscapeMetaData.EscapeType, "A test for Content");
@@ -180,9 +177,9 @@ namespace TestHl7V2
     public void InsertTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 2;
-      SubComponent item = new SubComponent("SubInserted");
+      var item = Creator.SubComponent("SubInserted");
       target.Insert(index, item);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&SubInserted&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for Insert");
     }
@@ -194,9 +191,9 @@ namespace TestHl7V2
     public void InsertTest1()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 3;
-      Content item = new Content("ContentInserted");
+      var item = Creator.Content("ContentInserted");
       target.Insert(index, item);
       Assert.AreEqual("Hello \\T\\ World ContentInserted\\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for Insert 1");
     }
@@ -208,9 +205,9 @@ namespace TestHl7V2
     public void InsertTest2()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 2; // 
-      Component item = new Component("CompInserted");
+      var item = Creator.Component("CompInserted");
       target.Insert(index, item);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^CompInserted^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for Insert 2");
     }
@@ -222,9 +219,9 @@ namespace TestHl7V2
     public void InsertTest4()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 3;
-      Field item = new Field("FieldInseted");
+      var item = Creator.Field("FieldInseted");
       target.Insert(index, item);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~FieldInseted~R3~R4", target.AsStringRaw, "A test for Insert 4");
     }
@@ -236,7 +233,7 @@ namespace TestHl7V2
     public void RemoveComponentAtTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 2;
       target.RemoveComponentAt(index);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for RemoveComponentAt");
@@ -249,7 +246,7 @@ namespace TestHl7V2
     public void RemoveContentAtTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 3;
       target.RemoveContentAt(index);
       Assert.AreEqual("Hello \\T\\ World Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for RemoveComponentAt");
@@ -262,7 +259,7 @@ namespace TestHl7V2
     public void RemoveRepeatAtTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 2;
       target.RemoveRepeatAt(index);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R3~R4", target.AsStringRaw, "A test for RemoveComponentAt");
@@ -275,7 +272,7 @@ namespace TestHl7V2
     public void RemoveSubComponentAtTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 2;
       target.RemoveSubComponentAt(index);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for RemoveComponentAt");
@@ -288,11 +285,10 @@ namespace TestHl7V2
     public void RepeatTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 2;
-      Field expected = new Field("R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3");
-      Field actual;
-      actual = target.Repeat(index);
+      var expected = Creator.Field("R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3");      
+      var actual = target.Repeat(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Repeat");
 
     }
@@ -304,9 +300,9 @@ namespace TestHl7V2
     public void SetTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 3;
-      Content item = new Content("ContNew");
+      var item = Creator.Content("ContNew");
       target.Set(index, item);
       Assert.AreEqual("Hello \\T\\ World ContNewEarth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for Set");
     }
@@ -318,11 +314,10 @@ namespace TestHl7V2
     public void SubComponentTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int index = 2; // TODO: Initialize to an appropriate value
-      SubComponent expected = new SubComponent("Sub2");
-      SubComponent actual;
-      actual = target.SubComponent(index);
+      var expected = Creator.SubComponent("Sub2");      
+      var actual = target.SubComponent(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for SubComponent");
 
     }
@@ -334,7 +329,7 @@ namespace TestHl7V2
     public void ToStringTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       string expected = "Hello & World Earth&Sub2&Sub3^Comp2^Comp3~R2Hello & World Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
       string actual;
       actual = target.ToString();
@@ -348,7 +343,7 @@ namespace TestHl7V2
     public void AsStringTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       string expected = "Hello & World Earth&Sub2&Sub3^Comp2^Comp3~R2Hello & World Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
       string actual;
       target.AsString = expected;
@@ -363,7 +358,7 @@ namespace TestHl7V2
     public void AsStringRawTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       string expected = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
       string actual;
       target.AsStringRaw = expected;
@@ -379,7 +374,7 @@ namespace TestHl7V2
     public void ComponentCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int actual;
       actual = target.ComponentCount;
       Assert.AreEqual(3, actual, "A test for ComponentCount");
@@ -392,7 +387,7 @@ namespace TestHl7V2
     public void ContentCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int actual;
       actual = target.ContentCount;
       Assert.AreEqual(5, actual, "A test for ContentCount");
@@ -405,7 +400,7 @@ namespace TestHl7V2
     public void IsEmptyTest()
     {
       string StringRaw = "";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       bool actual;
       actual = target.IsEmpty;
       Assert.AreEqual(true, actual, "A test for ContentCount");
@@ -421,7 +416,7 @@ namespace TestHl7V2
     [Test]
     public void IsHL7NullTest()
     {
-      Element target = new Element(); // TODO: Initialize to an appropriate value
+      var target = Creator.Element(); // TODO: Initialize to an appropriate value
       bool actual;
       actual = target.IsHL7Null;
       Assert.AreEqual(false, actual, "A test for IsHL7Null");
@@ -437,7 +432,7 @@ namespace TestHl7V2
     public void RepeatCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int actual;
       actual = target.RepeatCount;
       Assert.AreEqual(4, actual, "A test for RepeatCount");
@@ -450,8 +445,8 @@ namespace TestHl7V2
     public void RepeatListTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
-      ReadOnlyCollection<Field> actual;
+      var target = Creator.Element(StringRaw);
+      ReadOnlyCollection<IField> actual;
       actual = target.RepeatList;
       Assert.AreEqual(4, actual.Count, "A test for RepeatList");
 
@@ -468,7 +463,7 @@ namespace TestHl7V2
     public void SubComponetCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
-      Element target = new Element(StringRaw);
+      var target = Creator.Element(StringRaw);
       int actual;
       actual = target.SubComponetCount;
       Assert.AreEqual(3, actual, "A test for SubComponetCount");
@@ -480,7 +475,7 @@ namespace TestHl7V2
     [Test]
     public void DelimterAccessTest()
     {
-      Element target = new Element("Test", CustomDelimiters);
+      var target = Creator.Element("Test", CustomDelimiters);
       Assert.AreEqual('#', target.MessageDelimiters.Field, "A test for MessageDelimiters");
       Assert.AreEqual('@', target.MessageDelimiters.Repeat, "A test for MessageDelimiters");
       Assert.AreEqual('*', target.MessageDelimiters.Component, "A test for MessageDelimiters");

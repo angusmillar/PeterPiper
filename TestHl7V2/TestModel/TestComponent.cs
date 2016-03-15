@@ -29,7 +29,7 @@ namespace TestHl7V2
     [Test]
     public void ComponentConstructorTest()
     {
-      Component target = new Component(ComponentTestString);
+      var target = Creator.Component(ComponentTestString);
       Assert.AreEqual("Cat&Mice&Dogs&Cats", target.AsString, "A test for Component Constructor");
       Assert.AreEqual("Cat\\T\\Mice&Dogs\\T\\Cats", target.AsStringRaw, "A test for Component Constructor");
     }
@@ -41,7 +41,7 @@ namespace TestHl7V2
     public void ComponentConstructorTest1()
     {
       string StringRaw = "Cat%T%Mice!Dogs%T%Cats";
-      Component target = new Component(StringRaw, CustomDelimiters);
+      var target = Creator.Component(StringRaw, CustomDelimiters);
       Assert.AreEqual("Cat!Mice!Dogs!Cats", target.AsString, "A test for Component Constructor 1");
       Assert.AreEqual("Cat%T%Mice!Dogs%T%Cats", target.AsStringRaw, "A test for Component Constructor 1");
     }
@@ -52,7 +52,7 @@ namespace TestHl7V2
     [Test]
     public void ComponentConstructorTest2()
     {
-      Component target = new Component();
+      var target = Creator.Component();
       Assert.AreEqual(String.Empty, target.AsString, "A test for Component Constructor 2");
       Assert.AreEqual(true, target.IsEmpty, "A test for Component Constructor 2");
       Assert.AreEqual(String.Empty, target.SubComponent(1).AsStringRaw, "A test for Component Constructor 2");
@@ -66,8 +66,8 @@ namespace TestHl7V2
     [Test]
     public void AddTest1()
     {
-      Component target = new Component("Comp1");
-      SubComponent item = new SubComponent("Sub1");
+      var target = Creator.Component("Comp1");
+      var item = Creator.SubComponent("Sub1");
       target.Add(item);
       Assert.AreEqual("Comp1&Sub1", target.AsStringRaw, "A test for Add 1");
     }
@@ -78,8 +78,8 @@ namespace TestHl7V2
     [Test]
     public void AddTest2()
     {
-      Component target = new Component("Comp1");
-      Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
+      var target = Creator.Component("Comp1");
+      var item = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
       target.Add(item);
       Assert.AreEqual("Comp1\\.br\\", target.AsStringRaw, "A test for Add 2");
     }
@@ -90,7 +90,7 @@ namespace TestHl7V2
     [Test]
     public void ClearAllTest()
     {
-      Component target = new Component("Comp1&Sub1&Sub2\\T\\2");
+      var target = Creator.Component("Comp1&Sub1&Sub2\\T\\2");
       target.ClearAll();
       Assert.AreEqual(String.Empty, target.AsStringRaw, "A test for ClearAll");
       Assert.AreEqual(true, target.IsEmpty, "A test for ClearAll");
@@ -101,11 +101,10 @@ namespace TestHl7V2
     ///</summary>
     [Test]
     public void CloneTest()
-    {
-      Component target = new Component("Comp1&Sub1&Sub2\\T\\2");
-      Component expected = new Component("Comp1&Sub1&Sub2\\T\\2");
-      Component actual;
-      actual = target.Clone();
+    {      
+      var target = Creator.Component("Comp1&Sub1&Sub2\\T\\2");
+      var expected = Creator.Component("Comp1&Sub1&Sub2\\T\\2");      
+      var actual = target.Clone();
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Clone");
     }
 
@@ -115,11 +114,10 @@ namespace TestHl7V2
     [Test]
     public void ContentTest()
     {
-      Component target = new Component("Hello \\T\\ World \\F\\ Bye");
+      var target = Creator.Component("Hello \\T\\ World \\F\\ Bye");
       int index = 3;
-      Content expected = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Field);
-      Content actual;
-      actual = target.Content(index);
+      var expected = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Field);      
+      var actual = target.Content(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Content");
 
     }
@@ -130,9 +128,9 @@ namespace TestHl7V2
     [Test]
     public void InsertTest()
     {
-      Component target = new Component("Hello&World&Bye");
+      var target = Creator.Component("Hello&World&Bye");
       int index = 2;
-      SubComponent item = new SubComponent("Earth");
+      var item = Creator.SubComponent("Earth");
       target.Insert(index, item);
       Assert.AreEqual("Hello&Earth&World&Bye", target.AsStringRaw, "A test for Insert");
     }
@@ -143,9 +141,9 @@ namespace TestHl7V2
     [Test]
     public void InsertTest1()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye");
       int index = 3;
-      Content item = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Field);
+      var item = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Field);
       target.Insert(index, item);
       Assert.AreEqual("Hello~World|~Bye", target.AsString, "A test for Insert");
     }
@@ -156,7 +154,7 @@ namespace TestHl7V2
     [Test]
     public void RemoveContentAtTest()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye");
       int index = 3; // TODO: Initialize to an appropriate value
       target.RemoveContentAt(index);
       Assert.AreEqual("Hello~WorldBye", target.AsString, "A test for RemoveContentAt");
@@ -168,7 +166,7 @@ namespace TestHl7V2
     [Test]
     public void RemoveSubComponentAtTest()
     {
-      Component target = new Component("Hello!World!Bye", CustomDelimiters);
+      var target = Creator.Component("Hello!World!Bye", CustomDelimiters);
       int index = 2; // TODO: Initialize to an appropriate value
       target.RemoveSubComponentAt(index);
       Assert.AreEqual("Hello!Bye", target.AsString, "A test for RemoveSubComponentAt");
@@ -180,10 +178,10 @@ namespace TestHl7V2
     [Test]
     public void SetTest()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye&SecondComponent");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye&SecondComponent");
       int index = 1;
-      Content item1 = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
-      Content item2 = new Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Indent);
+      var item1 = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
+      var item2 = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Indent);
       target.Set(index, item1);
       Assert.AreEqual("HelloWorld~Bye&SecondComponent", target.AsString, "A test for Set");
       Assert.AreEqual(".br", target.Content(1).AsStringRaw, "A test for Set");
@@ -197,10 +195,10 @@ namespace TestHl7V2
     [Test]
     public void SetTest1()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye&SecondComponent&ThirdComponent");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye&SecondComponent&ThirdComponent");
       int index = 2;
-      SubComponent item = new SubComponent("NewSub");
-      SubComponent item2 = new SubComponent("NewSub2");
+      var item = Creator.SubComponent("NewSub");
+      var item2 = Creator.SubComponent("NewSub2");
       target.Set(index, item);
       Assert.AreEqual("NewSub", target.SubComponent(2).AsStringRaw, "A test for Set 2");
       target.Set(10, item2);
@@ -214,11 +212,10 @@ namespace TestHl7V2
     [Test]
     public void SubComponentTest()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye&SecondComponent");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye&SecondComponent");
       int index = 2;
-      SubComponent expected = new SubComponent("SecondComponent");
-      SubComponent actual;
-      actual = target.SubComponent(index);
+      var expected = Creator.SubComponent("SecondComponent");      
+      var actual = target.SubComponent(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for SubComponent");
     }
 
@@ -228,7 +225,7 @@ namespace TestHl7V2
     [Test]
     public void ToStringTest()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye&SecondComponent");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye&SecondComponent");
       string expected = "Hello~World~Bye&SecondComponent";
       string actual;
       actual = target.ToString();
@@ -241,7 +238,7 @@ namespace TestHl7V2
     [Test]
     public void AsStringTest()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye&SecondComponent");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye&SecondComponent");
       string expected = "Hello~World~Bye&SecondComponent"; // TODO: Initialize to an appropriate value
       string actual;
       target.AsString = expected;
@@ -260,7 +257,7 @@ namespace TestHl7V2
     [Test]
     public void AsStringRawTest()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye&SecondComponent");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye&SecondComponent");
       string expected = "Hello\\R\\World\\R\\Bye&SecondComponent";
       string actual;
       target.AsStringRaw = expected;
@@ -275,7 +272,7 @@ namespace TestHl7V2
     [Test]
     public void ContentCountTest()
     {
-      Component target = new Component("Hello\\R\\World\\R\\Bye&SecondComponent");
+      var target = Creator.Component("Hello\\R\\World\\R\\Bye&SecondComponent");
       int actual;
       actual = target.ContentCount;
       Assert.AreEqual(5, target.ContentCount, "A test for ContentCount");
@@ -287,7 +284,7 @@ namespace TestHl7V2
     [Test]
     public void IsEmptyTest()
     {
-      Component target = new Component(); // TODO: Initialize to an appropriate value
+      var target = Creator.Component(); // TODO: Initialize to an appropriate value
       bool actual;
       actual = target.IsEmpty;
       Assert.AreEqual(true, target.IsEmpty, "A test for IsEmpty");
@@ -301,7 +298,7 @@ namespace TestHl7V2
     [Test]
     public void IsHL7NullTest()
     {
-      Component target = new Component("\"\"");
+      var target = Creator.Component("\"\"");
       bool actual;
       actual = target.IsHL7Null;
       Assert.AreEqual(true, target.IsHL7Null, "A test for IsHL7Null");
@@ -317,7 +314,7 @@ namespace TestHl7V2
     [Test]
     public void SubComponentCountTest()
     {
-      Component target = new Component("one&two&three&four");
+      var target = Creator.Component("one&two&three&four");
       int actual;
       actual = target.SubComponentCount;
       Assert.AreEqual(4, actual, "A test for SubComponentCount");
@@ -329,8 +326,8 @@ namespace TestHl7V2
     [Test]
     public void SubComponentListTest()
     {
-      Component target = new Component("one&two&three&four");
-      ReadOnlyCollection<SubComponent> actual;
+      var target = Creator.Component("one&two&three&four");
+      ReadOnlyCollection<ISubComponent> actual;
       actual = target.SubComponentList;
       Assert.AreEqual(4, actual.Count, "A test for SubComponentList");
       Assert.AreEqual("one", actual[0].AsString, "A test for SubComponentList");
@@ -344,8 +341,8 @@ namespace TestHl7V2
     ///</summary>
     [Test]
     public void PathInformationTest()
-    {
-      Component target = new Component("one&two&three&four");
+    {      
+      var target = Creator.Component("one&two&three&four");
       Assert.AreEqual("<unk>-?", target.PathDetail.PathBrief, "A test for SubComponentList");
       Assert.AreEqual("<unk>-?.?.2", target.SubComponent(2).PathDetail.PathBrief, "A test for SubComponentList");
       Assert.AreEqual("<unk>-?.?.2 [0]", target.SubComponent(2).Content(0).PathDetail.PathBrief, "A test for SubComponentList");
@@ -357,7 +354,7 @@ namespace TestHl7V2
     [Test]
     public void DelimterAccessTest()
     {
-      Component target = new Component("o\\R\\ne&two&three&four");
+      var target = Creator.Component("o\\R\\ne&two&three&four");
       Assert.AreEqual('~', target.MessageDelimiters.Repeat, "A test for MessageDelimiters");
       Assert.AreEqual('|', target.MessageDelimiters.Field, "A test for MessageDelimiters");
       Assert.AreEqual('^', target.MessageDelimiters.Component, "A test for MessageDelimiters");

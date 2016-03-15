@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Content : ContentBase
+  public class Content : ContentBase, IContent
   {    
     private ModelSupport.ContentTypeInternal _InternalContentType;
     public Support.Content.ContentType ContentType
@@ -46,13 +47,13 @@ namespace PeterPiper.Hl7.V2.Model
 
     private string _Data = string.Empty;
 
-    //Constructors
+    //Creator Factory used Constructors
     /// <summary>
     /// Set any type of Content, maybe used for non HL7 Standard escape i.e \Qxx5\
     /// </summary>
     /// <param name="String"></param>
     /// <param name="ContentType"></param>
-    public Content(string String, Support.Content.ContentType ContentType)
+    internal Content(string String, Support.Content.ContentType ContentType)
     {
       _Temporary = true;
       _Index = null;
@@ -82,7 +83,7 @@ namespace PeterPiper.Hl7.V2.Model
         }
       }
     }
-    public Content(string String, Support.Content.ContentType ContentType, Support.MessageDelimiters CustomDelimiters)
+    internal Content(string String, Support.Content.ContentType ContentType, Support.MessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -117,7 +118,7 @@ namespace PeterPiper.Hl7.V2.Model
     /// Set a Content to normal text, defaults to ContentType = TEXT
     /// </summary>
     /// <param name="String"></param>
-    public Content(string String)
+    internal Content(string String)
     {
       _Temporary = true;
       _Index = null;
@@ -133,7 +134,7 @@ namespace PeterPiper.Hl7.V2.Model
         }
       }
     }
-    public Content(string String, Support.MessageDelimiters CustomDelimiters)
+    internal Content(string String, Support.MessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -154,7 +155,7 @@ namespace PeterPiper.Hl7.V2.Model
     /// Set Content as HL7 Standard escape
     /// </summary>
     /// <param name="EscapeType"></param>
-    public Content(Support.Standard.EscapeType EscapeType)
+    internal Content(Support.Standard.EscapeType EscapeType)
     {
       _Temporary = true;
       _Index = null;
@@ -164,7 +165,7 @@ namespace PeterPiper.Hl7.V2.Model
       _Data = _EscapeMetaData.EscapeTypeCharater.ToString();      
       SetParent();
     }
-    public Content(Support.Content.EscapeData EscapeMetaData)
+    internal Content(Support.Content.EscapeData EscapeMetaData)
     {
       _Temporary = true;
       _Index = null;
@@ -174,7 +175,7 @@ namespace PeterPiper.Hl7.V2.Model
       _Data = String.Format("{0}{1}", _EscapeMetaData.EscapeTypeCharater, _EscapeMetaData.MetaData);
       SetParent();
     }
-    public Content(Support.Standard.EscapeType EscapeType, Support.MessageDelimiters CustomDelimiters)
+    internal Content(Support.Standard.EscapeType EscapeType, Support.MessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -186,6 +187,7 @@ namespace PeterPiper.Hl7.V2.Model
       SetParent();
     }
 
+    //Only internal Constructors
     internal Content(string String, ModelSupport.ContentTypeInternal ContentTypeInternal,
                      Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
@@ -272,7 +274,7 @@ namespace PeterPiper.Hl7.V2.Model
         return this.Delimiters;
       }
     } 
-    public Content Clone()
+    public IContent Clone()
     {
       return new Content(this.AsStringRaw, _InternalContentType, this.Delimiters, true, null, null);
     }

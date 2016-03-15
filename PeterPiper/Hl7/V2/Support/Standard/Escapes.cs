@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model.Implementation;
 
 namespace PeterPiper.Hl7.V2.Support.Standard
 {
@@ -242,7 +243,7 @@ namespace PeterPiper.Hl7.V2.Support.Standard
     /// <param name="StringRaw"></param>
     /// <returns></returns>
 
-    public static string Decode(PeterPiper.Hl7.V2.Model.Content oContent)
+    public static string Decode(PeterPiper.Hl7.V2.Model.Implementation.Content oContent)
     {
       if (oContent.ContentType == Content.ContentType.Text)
         return oContent.AsStringRaw;
