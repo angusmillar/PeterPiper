@@ -10,7 +10,7 @@ using PeterPiper.Hl7.V2.Model;
 
 
 
-namespace TestHl7V2.TestSchema
+namespace TestPeterPiper.TestSchema
 {
   [TestFixture]
   public class TestSchemaParser

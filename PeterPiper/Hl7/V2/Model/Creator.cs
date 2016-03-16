@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Implementation;
+using PeterPiper.Hl7.V2.Model.Interface;
 
 namespace PeterPiper.Hl7.V2.Model
 {
@@ -33,7 +34,7 @@ namespace PeterPiper.Hl7.V2.Model
       return new Segment(StringRaw);
     }
 
-    public static ISegment Segment(String StringRaw, Support.MessageDelimiters CustomDelimiters)
+    public static ISegment Segment(String StringRaw, IMessageDelimiters CustomDelimiters)
     {
       return new Segment(StringRaw, CustomDelimiters);
     }
@@ -48,12 +49,12 @@ namespace PeterPiper.Hl7.V2.Model
       return new Element(StringRaw);
     }
 
-    public static IElement Element(Support.MessageDelimiters CustomDelimiters)
+    public static IElement Element(IMessageDelimiters CustomDelimiters)
     {
       return new Element(CustomDelimiters);
     }
 
-    public static IElement Element(String StringRaw, Support.MessageDelimiters CustomDelimiters)
+    public static IElement Element(String StringRaw, IMessageDelimiters CustomDelimiters)
     {
       return new Element(StringRaw, CustomDelimiters);
     }
@@ -68,12 +69,12 @@ namespace PeterPiper.Hl7.V2.Model
       return new Field(StringRaw);
     }
 
-    public static IField Field(Support.MessageDelimiters CustomDelimiters)
+    public static IField Field(IMessageDelimiters CustomDelimiters)
     {
       return new Field(CustomDelimiters);
     }
 
-    public static IField Field(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    public static IField Field(string StringRaw, IMessageDelimiters CustomDelimiters)
     {
       return new Field(StringRaw, CustomDelimiters);
     }
@@ -88,12 +89,12 @@ namespace PeterPiper.Hl7.V2.Model
       return new Component(StringRaw);
     }
 
-    public static IComponent Component(Support.MessageDelimiters CustomDelimiters)
+    public static IComponent Component(IMessageDelimiters CustomDelimiters)
     {
       return new Component(CustomDelimiters);
     }
 
-    public static IComponent Component(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    public static IComponent Component(string StringRaw, IMessageDelimiters CustomDelimiters)
     {
       return new Component(StringRaw, CustomDelimiters);
     }
@@ -108,12 +109,12 @@ namespace PeterPiper.Hl7.V2.Model
       return new SubComponent(StringRaw);
     }
 
-    public static ISubComponent SubComponent(Support.MessageDelimiters CustomDelimiters)
+    public static ISubComponent SubComponent(IMessageDelimiters CustomDelimiters)
     {
       return new SubComponent(CustomDelimiters);
     }
 
-    public static ISubComponent SubComponent(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    public static ISubComponent SubComponent(string StringRaw, IMessageDelimiters CustomDelimiters)
     {
       return new SubComponent(StringRaw, CustomDelimiters);
     }
@@ -128,12 +129,12 @@ namespace PeterPiper.Hl7.V2.Model
       return new Content(String, ContentType);
     }
 
-    public static IContent Content(string String, Support.Content.ContentType ContentType, Support.MessageDelimiters CustomDelimiters)
+    public static IContent Content(string String, Support.Content.ContentType ContentType, IMessageDelimiters CustomDelimiters)
     {
       return new Content(String, ContentType, CustomDelimiters);
     }
 
-    public static IContent Content(string String, Support.MessageDelimiters CustomDelimiters)
+    public static IContent Content(string String, IMessageDelimiters CustomDelimiters)
     {
       return new Content(String, CustomDelimiters);
     }
@@ -143,15 +144,36 @@ namespace PeterPiper.Hl7.V2.Model
       return new Content(EscapeType);
     }
 
-    public static IContent Content(Support.Content.EscapeData EscapeMetaData)
+    public static IContent Content(IEscapeData EscapeMetaData)
     {
       return new Content(EscapeMetaData);
     }
 
-    public static IContent Content(Support.Standard.EscapeType EscapeType, Support.MessageDelimiters CustomDelimiters)
+    public static IContent Content(Support.Standard.EscapeType EscapeType, IMessageDelimiters CustomDelimiters)
     {
       return new Content(EscapeType, CustomDelimiters);
     }
+
+    public static IMessageDelimiters MessageDelimiters()
+    {
+      return new MessageDelimiters();
+    }
+
+    public static IMessageDelimiters MessageDelimiters(char Field, char Repeat, char Component, char SubComponent, char Escape)
+    {
+      return new MessageDelimiters(Field, Repeat, Component, SubComponent, Escape);
+    }
+
+    public static IEscapeData EscapeData(string ContentEscapeString)
+    {
+      return new EscapeData(ContentEscapeString);
+    }
+
+    public static IEscapeData EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType EscapeType, string MetaData)
+    {
+      return new EscapeData(EscapeType, MetaData);
+    }
+
 
   }
 }

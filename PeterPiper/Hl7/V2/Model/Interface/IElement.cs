@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Interface
 {
   public interface IElement : IContentBase
   {
@@ -22,7 +22,7 @@ namespace PeterPiper.Hl7.V2.Model
     void Insert(int index, ISubComponent item);
     bool IsEmpty { get; }
     bool IsHL7Null { get; }
-    PeterPiper.Hl7.V2.Support.MessageDelimiters MessageDelimiters { get; }
+    IMessageDelimiters MessageDelimiters { get; }
     void RemoveComponentAt(int index);
     void RemoveContentAt(int index);
     void RemoveRepeatAt(int index);

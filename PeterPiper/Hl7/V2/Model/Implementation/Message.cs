@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Message : ModelBase, IMessage
+  internal class Message : ModelBase, IMessage
   {
     private Dictionary<int, Segment> _SegmentDictonary;
     private bool _ParseMSHSegmentOnly = false;
+
     //Creator Factory used Constructors
     internal Message(string MessageVersion, string MessageType, string MessageTrigger, string MessageControlID = "<GUID>", string MessageStructure = "")
     {      
@@ -241,7 +242,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return this.GetSegment(1).GetField(7).Convert.DateTime.GetDateTimeOffset();
       }
     }
-    public Support.MessageDelimiters MessageDelimiters
+    public IMessageDelimiters MessageDelimiters
     {
       get
       {
@@ -473,7 +474,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         char FirstFieldSeparatorFound = Convert.ToChar(StringRawList[0].Substring(8, 1));
         if (FirstFieldSeparatorFound == MessagesFieldSeparator)
         {
-          this.Delimiters = new Support.MessageDelimiters(MessagesFieldSeparator,
+          this.Delimiters = new MessageDelimiters(MessagesFieldSeparator,
                                                             MessagesRepeatSeparator,
                                                             MessagesComponentSeparator,
                                                             MessagesSubComponentSeparator,

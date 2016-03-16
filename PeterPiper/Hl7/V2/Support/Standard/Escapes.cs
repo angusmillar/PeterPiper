@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Implementation;
+using PeterPiper.Hl7.V2.Model.Interface;
 
 namespace PeterPiper.Hl7.V2.Support.Standard
 {
@@ -243,7 +244,7 @@ namespace PeterPiper.Hl7.V2.Support.Standard
     /// <param name="StringRaw"></param>
     /// <returns></returns>
 
-    public static string Decode(PeterPiper.Hl7.V2.Model.Implementation.Content oContent)
+    public static string Decode(PeterPiper.Hl7.V2.Model.Interface.IContent oContent)
     {
       if (oContent.ContentType == Content.ContentType.Text)
         return oContent.AsStringRaw;
@@ -252,15 +253,15 @@ namespace PeterPiper.Hl7.V2.Support.Standard
         switch (oContent.EscapeMetaData.EscapeType)
         {
           case EscapeType.Field:
-            return oContent.Delimiters.Field.ToString();
+            return oContent.MessageDelimiters.Field.ToString();
           case EscapeType.Repeat:
-            return oContent.Delimiters.Repeat.ToString();
+            return oContent.MessageDelimiters.Repeat.ToString();
           case EscapeType.Component:
-            return oContent.Delimiters.Component.ToString();
+            return oContent.MessageDelimiters.Component.ToString();
           case EscapeType.SubComponent:
-            return oContent.Delimiters.SubComponent.ToString();
+            return oContent.MessageDelimiters.SubComponent.ToString();
           case EscapeType.Escape:
-            return oContent.Delimiters.Escape.ToString();
+            return oContent.MessageDelimiters.Escape.ToString();
           case EscapeType.HighlightOn:
             return String.Empty;
           case EscapeType.HighlightOff:
@@ -299,7 +300,7 @@ namespace PeterPiper.Hl7.V2.Support.Standard
       }
     }
 
-    public static string Encode(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    public static string Encode(string StringRaw, IMessageDelimiters CustomDelimiters)
     {
       StringRaw = StringRaw.Replace(String.Format("{0}{1}{0}", CustomDelimiters.Escape, Support.Standard.Escapes.HighlightStart.ToLower()), String.Empty);
       StringRaw = StringRaw.Replace(String.Format("{0}{1}{0}", CustomDelimiters.Escape, Support.Standard.Escapes.HighlightStart), String.Empty);

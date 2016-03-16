@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.Model.Interface;
 
-namespace PeterPiper.Hl7.V2.Support
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class MessageDelimiters
+  internal class MessageDelimiters : IMessageDelimiters
   {
     public MessageDelimiters(char Field, char Repeat, char Component, char SubComponent, char Escape)
     {
@@ -18,6 +19,7 @@ namespace PeterPiper.Hl7.V2.Support
     public MessageDelimiters()
     {
     }
+
     private char _Field = Hl7.V2.Support.Standard.Delimiters.Field;
     public char Field
     {

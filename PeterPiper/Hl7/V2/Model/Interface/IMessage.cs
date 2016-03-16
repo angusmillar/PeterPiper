@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Interface
 {
   public interface IMessage : IModelBase
   {
@@ -15,7 +15,7 @@ namespace PeterPiper.Hl7.V2.Model
     string MainSeparator { get; }
     string MessageControlID { get; }
     DateTimeOffset MessageCreationDateTime { get; }
-    PeterPiper.Hl7.V2.Support.MessageDelimiters MessageDelimiters { get; }
+    IMessageDelimiters MessageDelimiters { get; }
     string MessageStructure { get; }
     string MessageTrigger { get; }
     string MessageType { get; }

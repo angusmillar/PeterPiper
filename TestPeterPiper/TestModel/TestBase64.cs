@@ -7,7 +7,7 @@ using NUnit.Framework;
 using System.IO;
 using PeterPiper.Hl7.V2.Support.Content;
 
-namespace TestHl7V2.TestModel
+namespace TestPeterPiper.TestModel
 {
   [TestFixture]
   public class TestBase64

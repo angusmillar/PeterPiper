@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.Model.Implementation;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public abstract class ModelBase : IModelBase
+  internal abstract class ModelBase : IModelBase
   {
     internal bool _Temporary = true;
     internal int? _Index;
@@ -14,11 +15,11 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
     public ModelBase()
     {
-      _Delimiters = new Support.MessageDelimiters();
+      _Delimiters = new MessageDelimiters();
     }
-    public ModelBase(Support.MessageDelimiters Delimiters)
+    public ModelBase(IMessageDelimiters Delimiters)
     {
-      this._Delimiters = Delimiters;
+      this._Delimiters = Delimiters as MessageDelimiters;
     }
 
     public virtual string AsString {get; set;}    
@@ -32,7 +33,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
 
-    public ModelSupport.PathDetailBase  PathDetail
+    public ModelSupport.Interface.IPathDetailBase  PathDetail
     {
       get
       {
@@ -40,8 +41,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
 
-    private Support.MessageDelimiters _Delimiters;
-    internal Support.MessageDelimiters Delimiters
+    private MessageDelimiters _Delimiters;
+    internal MessageDelimiters Delimiters
     {
       get
       {
@@ -53,8 +54,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
 
-    private List<object> _UtilityObjectsList;
-    public List<object> UtilityObjectList
+    private IEnumerable<object> _UtilityObjectsList;
+    public IEnumerable<object> UtilityObjectList
     {
       get
       {
@@ -70,7 +71,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
 
-    internal bool ValidateDelimiters(Support.MessageDelimiters DelimitersToCompaire)
+    internal bool ValidateDelimiters(MessageDelimiters DelimitersToCompaire)
     {
       if (_Delimiters.Field != DelimitersToCompaire.Field)
         return false;

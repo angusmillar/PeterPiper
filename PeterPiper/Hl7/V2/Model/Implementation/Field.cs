@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.Model.Implementation;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Field : ContentBase, IContentBase, IField
+  internal class Field : ContentBase, IContentBase, IField
   {
     private Dictionary<int, Component> _ComponentDictonary;
 
@@ -19,7 +20,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Index = null;
       _Parent = null;
     }
-    internal Field(Support.MessageDelimiters CustomDelimiters)
+    internal Field(IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _ComponentDictonary = new Dictionary<int, Component>();
@@ -38,7 +39,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         _ComponentDictonary = ParseFieldRawStringToComponent(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
       }
     }
-    internal Field(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    internal Field(string StringRaw, IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -52,7 +53,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
     
     //Only internal Constructors
-    internal Field(string StringRaw, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ContentBase Parent)
+    internal Field(string StringRaw, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ContentBase Parent)
       : base(CustomDelimiters)
     {
       _Temporary = Temporary;
@@ -64,7 +65,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         _ComponentDictonary = ParseFieldRawStringToComponent(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
       }
     }
-    internal Field(ModelSupport.ContentTypeInternal ContentTypeInternal, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ContentBase Parent)
+    internal Field(ModelSupport.ContentTypeInternal ContentTypeInternal, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ContentBase Parent)
       : base(CustomDelimiters)
     {
       _Temporary = Temporary;
@@ -75,7 +76,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
 
     //Instance access
-    public Support.MessageDelimiters MessageDelimiters
+    public IMessageDelimiters MessageDelimiters
     {
       get
       {

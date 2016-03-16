@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Support.Standard;
 using PeterPiper.Hl7.V2.Support;
 using PeterPiper.Hl7.V2.Support.Content;
@@ -14,12 +15,12 @@ namespace TestHl7V2
   [TestFixture]
   public class TestContent
   {
-    public MessageDelimiters CustomDelimiters;
+    public IMessageDelimiters CustomDelimiters;
 
     [SetUp]
     public void Setup()
     {
-      CustomDelimiters = new MessageDelimiters('#', '@', '*', '!', '%'); 
+      CustomDelimiters = Creator.MessageDelimiters('#', '@', '*', '!', '%'); 
     }
 
     [Test]
@@ -37,7 +38,7 @@ namespace TestHl7V2
     [Test]
     public void ContentConstructorTest2()
     {
-      var EscapeMetaData = new EscapeData(EscapeType.SkipVerticalSpaces, "+10");
+      var EscapeMetaData = Creator.EscapeData(EscapeType.SkipVerticalSpaces, "+10");
       var target = Creator.Content(EscapeMetaData);
       Assert.AreEqual(".sp+10", target.AsStringRaw, "Custom Delimiters returned incorrectly.");      
     }

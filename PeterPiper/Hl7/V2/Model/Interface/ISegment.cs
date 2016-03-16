@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model.Interface
 {
   public interface ISegment : IModelBase
   {
@@ -19,7 +19,7 @@ namespace PeterPiper.Hl7.V2.Model
     void Insert(int index, IElement item);
     void Insert(int index, IField item);
     bool IsEmpty { get; }
-    PeterPiper.Hl7.V2.Support.MessageDelimiters MessageDelimiters { get; }
+    IMessageDelimiters MessageDelimiters { get; }
     void RemoveElementAt(int index);
     void RemoveFieldAt(int index);
     string ToString();

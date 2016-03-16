@@ -1,12 +1,15 @@
 ﻿using System;
-namespace PeterPiper.Hl7.V2.Model
+using System.Collections.Generic;
+using PeterPiper.Hl7.V2.Model.ModelSupport.Interface;
+
+namespace PeterPiper.Hl7.V2.Model.Interface
 {
   public interface IModelBase
   {
     //string AsString { get; set; }
     //string AsStringRaw { get; set; }
     int? Index { get; }
-    PeterPiper.Hl7.V2.Model.ModelSupport.PathDetailBase PathDetail { get; }
-    System.Collections.Generic.List<object> UtilityObjectList { get; set; }
+    IPathDetailBase PathDetail { get; }
+    IEnumerable<object> UtilityObjectList { get; set; }
   }
 }

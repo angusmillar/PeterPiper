@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.Model.Implementation;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Element : ContentBase, IElement
+  internal class Element : ContentBase, IElement
   {
     internal bool _IsMainSeparator = false;
     internal bool _IsEncodingCharacters = false;
@@ -22,7 +23,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Index = null;
       _Parent = null;
     }
-    internal Element(Support.MessageDelimiters CustomDelimiters)
+    internal Element(IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _RepeatDictonary = new Dictionary<int, Field>();
@@ -41,7 +42,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         _RepeatDictonary = ParseElementRawStringToRepeat(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
       }
     }
-    internal Element(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    internal Element(string StringRaw, IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -55,7 +56,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
 
     //Only internal Constructors
-    internal Element(Field Field, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
+    internal Element(Field Field, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
       ValidateItemNotInUse(Field);
@@ -67,7 +68,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _RepeatDictonary.Add(1, Field);
 
     }
-    internal Element(string StringRaw, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
+    internal Element(string StringRaw, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
       _Temporary = Temporary;
@@ -79,7 +80,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         _RepeatDictonary = ParseElementRawStringToRepeat(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
       }
     }
-    internal Element(ModelSupport.ContentTypeInternal ContentTypeInternal, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
+    internal Element(ModelSupport.ContentTypeInternal ContentTypeInternal, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
       _Temporary = Temporary;
@@ -92,7 +93,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
 
     //Instance access
-    public Support.MessageDelimiters MessageDelimiters
+    public IMessageDelimiters MessageDelimiters
     {
       get
       {

@@ -15,7 +15,7 @@ namespace PeterPiper.Hl7.V2.Schema.Support
       set { _CurrentSchema = value; }
     }
 
-    public void LoadSchema(PeterPiper.Hl7.V2.Model.IMessage oMsg)
+    public void LoadSchema(PeterPiper.Hl7.V2.Model.Interface.IMessage oMsg)
     {
       this.LoadSchema(oMsg.MessageVersion, oMsg.MessageType, oMsg.MessageTrigger);
     }

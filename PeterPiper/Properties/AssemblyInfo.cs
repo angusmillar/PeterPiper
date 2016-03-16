@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Glib")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Peter Piper")]
+[assembly: AssemblyDescription("Peter Piper Parser a HL7 V2 message parser for .net")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Glib")]
+[assembly: AssemblyCompany("Angus Milar")]
+[assembly: AssemblyProduct("Peter Piper")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -36,3 +37,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TestProjectGlib")]
+[assembly: NeutralResourcesLanguageAttribute("en-AU")]

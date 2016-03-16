@@ -8,7 +8,7 @@ using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
 using PeterPiper.Hl7.V2.Support.Content.Convert.Tools;
 
-namespace TestHl7V2.TestModel
+namespace TestPeterPiper.TestModel
 {
   [TestFixture]
   public class TestDateTimeTools_ConvertDateTimeToString

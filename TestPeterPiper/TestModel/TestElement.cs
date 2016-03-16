@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Support;
 using System.Collections.ObjectModel;
 
@@ -14,12 +15,12 @@ namespace TestHl7V2
   public class TestElement
   {
 
-    public MessageDelimiters CustomDelimiters;
+    public IMessageDelimiters CustomDelimiters;
 
     [SetUp]
     public void MyTestInitialize()
     {
-      CustomDelimiters = new MessageDelimiters('#', '@', '*', '!', '%');
+      CustomDelimiters = Creator.MessageDelimiters('#', '@', '*', '!', '%');
     }
 
 

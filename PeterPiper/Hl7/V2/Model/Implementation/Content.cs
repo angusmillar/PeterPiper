@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.Model.Implementation;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Content : ContentBase, IContent
+  internal class Content : ContentBase, IContent
   {    
     private ModelSupport.ContentTypeInternal _InternalContentType;
     public Support.Content.ContentType ContentType
@@ -36,8 +37,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
     
-    private Support.Content.EscapeData _EscapeMetaData = null;
-    public Support.Content.EscapeData EscapeMetaData
+    private EscapeData _EscapeMetaData = null;
+    public IEscapeData EscapeMetaData
     {
       get
       {
@@ -73,7 +74,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           _Data = String;
           if (ContentType == Support.Content.ContentType.Escape)
           {
-            _EscapeMetaData = new Support.Content.EscapeData(String);
+            _EscapeMetaData = new EscapeData(String);
           }
           else
           {
@@ -83,7 +84,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
       }
     }
-    internal Content(string String, Support.Content.ContentType ContentType, Support.MessageDelimiters CustomDelimiters)
+    internal Content(string String, Support.Content.ContentType ContentType, IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -97,7 +98,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           _Data = String;
           if (ContentType == Support.Content.ContentType.Escape)
           {
-            _EscapeMetaData = new Support.Content.EscapeData(String);            
+            _EscapeMetaData = new EscapeData(String);            
           }
           else
           {            
@@ -134,7 +135,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
       }
     }
-    internal Content(string String, Support.MessageDelimiters CustomDelimiters)
+    internal Content(string String, IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -161,35 +162,35 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Index = null;
       _Parent = null;
       this.ContentType = Support.Content.ContentType.Escape;
-      _EscapeMetaData = new Support.Content.EscapeData(EscapeType, String.Empty);
+      _EscapeMetaData = new EscapeData(EscapeType, String.Empty);
       _Data = _EscapeMetaData.EscapeTypeCharater.ToString();      
       SetParent();
     }
-    internal Content(Support.Content.EscapeData EscapeMetaData)
+    internal Content(IEscapeData EscapeMetaData)
     {
       _Temporary = true;
       _Index = null;
       _Parent = null;
       this.ContentType = Support.Content.ContentType.Escape;      
-      _EscapeMetaData = EscapeMetaData;
+      _EscapeMetaData = EscapeMetaData as EscapeData;
       _Data = String.Format("{0}{1}", _EscapeMetaData.EscapeTypeCharater, _EscapeMetaData.MetaData);
       SetParent();
     }
-    internal Content(Support.Standard.EscapeType EscapeType, Support.MessageDelimiters CustomDelimiters)
+    internal Content(Support.Standard.EscapeType EscapeType, IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
       _Index = null;
       _Parent = null;
       this.ContentType = Support.Content.ContentType.Escape;
-      _EscapeMetaData = new Support.Content.EscapeData(EscapeType, String.Empty);
+      _EscapeMetaData = new EscapeData(EscapeType, String.Empty);
       _Data = _EscapeMetaData.EscapeTypeCharater.ToString();      
       SetParent();
     }
 
     //Only internal Constructors
     internal Content(string String, ModelSupport.ContentTypeInternal ContentTypeInternal,
-                     Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
+                     MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
       _Temporary = Temporary;
@@ -213,7 +214,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           if (ValidateData(String))
           {
             _Data = String;
-            _EscapeMetaData = new Support.Content.EscapeData(String);            
+            _EscapeMetaData = new EscapeData(String);            
           }
           SetParent();
         }
@@ -235,7 +236,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
       }
     }
-    internal Content(string String, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index,
+    internal Content(string String, MessageDelimiters CustomDelimiters, bool Temporary, int? Index,
                      ModelBase Parent)
       : base(CustomDelimiters)
     {
@@ -253,7 +254,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
       }
     }
-    internal Content(Support.Standard.EscapeType EscapeType, Support.MessageDelimiters CustomDelimiters,
+    internal Content(Support.Standard.EscapeType EscapeType, MessageDelimiters CustomDelimiters,
                      bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
@@ -261,13 +262,13 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Index = Index;
       _Parent = Parent;
       _InternalContentType = ModelSupport.ContentTypeInternal.Escape;
-      _EscapeMetaData = new Support.Content.EscapeData(EscapeType, String.Empty);      
+      _EscapeMetaData = new EscapeData(EscapeType, String.Empty);      
       _Data = Support.Standard.Escapes.ResolveEscapeChararter(EscapeType).ToString();
       SetParent();
     }
 
     //Instance access
-    public Support.MessageDelimiters MessageDelimiters
+    public IMessageDelimiters MessageDelimiters
     {
       get
       {

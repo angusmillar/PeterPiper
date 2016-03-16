@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Support;
 using NUnit.Framework;
 
@@ -396,9 +397,8 @@ namespace TestHl7V2
     public void MessageDelimitersTest()
     {
       var target = Creator.Message(oMsg.ToString());
-      MessageDelimiters expected = new MessageDelimiters('|', '~', '^', '&', '\\');
-      MessageDelimiters actual;
-      actual = target.MessageDelimiters;
+      var expected = Creator.MessageDelimiters('|', '~', '^', '&', '\\');      
+      var actual = target.MessageDelimiters;
       Assert.AreEqual(expected.Field, actual.Field, " test for MessageDelimiters");
       Assert.AreEqual(expected.Repeat, actual.Repeat, "test for MessageDelimiters");
       Assert.AreEqual(expected.Component, actual.Component, " test for MessageDelimiters");
@@ -474,8 +474,8 @@ namespace TestHl7V2
     public void PathInformationTest()
     {
       var target  = Creator.Message(oMsg.ToString());
-      PeterPiper.Hl7.V2.Model.ModelSupport.PathDetailBase actual;
-      actual = target.PathDetail;
+      
+      var actual = target.PathDetail;
 
       Assert.AreEqual("ORU", actual.MessageType, "A test for MessageEvent");
       Assert.AreEqual("R01", actual.MessageEvent, "A test for MessageEvent");
@@ -496,10 +496,6 @@ namespace TestHl7V2
       oSchemaSupport.LoadSchema(target);
       target.Segment("MSH").Field(12).AsString = "2.4";
       oSchemaSupport.LoadSchema(target);
-
-      
-
-
     }
 
   }

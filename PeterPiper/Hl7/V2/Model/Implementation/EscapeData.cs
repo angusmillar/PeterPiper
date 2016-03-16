@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Support.Standard;
 
-namespace PeterPiper.Hl7.V2.Support.Content
+namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class EscapeData
+  internal class EscapeData : PeterPiper.Hl7.V2.Model.Interface.IEscapeData
   {
     public EscapeData(EscapeType EscapeType, string MetaData)
     {
-      if (EscapeType == Standard.EscapeType.NotAnEscape)
-        throw new ArgumentException(String.Format("EscapeMetaData's EscapeType argument can not be set to '{0}', maybe you should choose '{1}'", Standard.EscapeType.NotAnEscape.ToString(), Standard.EscapeType.Unknown.ToString()));
+      if (EscapeType == EscapeType.NotAnEscape)
+        throw new ArgumentException(String.Format("EscapeMetaData's EscapeType argument can not be set to '{0}', maybe you should choose '{1}'", EscapeType.NotAnEscape.ToString(), EscapeType.Unknown.ToString()));
       this._EscapeType = EscapeType;
       this._EscapeTypeCharater = Escapes.ResolveEscapeChararter(_EscapeType);
       this._MetaData = MetaData;
@@ -22,7 +22,7 @@ namespace PeterPiper.Hl7.V2.Support.Content
         throw new ArgumentException("EscapeMetaData supplied string was empty, this is not allowed.");
 
       this._EscapeType = Escapes.ResolveEscapeType(ContentEscapeString);
-      if (_EscapeType != Standard.EscapeType.Unknown)
+      if (_EscapeType != EscapeType.Unknown)
       {
         this._EscapeTypeCharater = Escapes.ResolveEscapeChararter(_EscapeType);
       }

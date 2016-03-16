@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Support;
 using NUnit.Framework;
 
-namespace TestHl7V2.TestModel
+namespace TestPeterPiper.TestModel
 {
   [TestFixture]
   public class UnitTestContentModel
@@ -321,9 +322,9 @@ namespace TestHl7V2.TestModel
       oComponent.Add(Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn));
       oComponent.Add(Creator.Content("This is Bold"));
       oComponent.Add(Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff));
-      oComponent.Add(Creator.Content(new PeterPiper.Hl7.V2.Support.Content.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "HAHAHAHAH")));
+      oComponent.Add(Creator.Content(Creator.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "HAHAHAHAH")));
       Assert.AreEqual("\\H\\This is Bold\\N\\\\ZHAHAHAHAH\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
-      oComponent.Set(3, Creator.Content(new PeterPiper.Hl7.V2.Support.Content.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "Boo")));
+      oComponent.Set(3, Creator.Content(Creator.EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType.Unknown, "Boo")));
       Assert.AreEqual("\\H\\This is Bold\\N\\\\ZBoo\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
       oComponent.Insert(2, Creator.Content("Not BOLD"));
       Assert.AreEqual("\\H\\This is BoldNot BOLD\\N\\\\ZBoo\\", oComponent.AsStringRaw, ",oComponent.AsString returned incorrect");
@@ -457,7 +458,7 @@ namespace TestHl7V2.TestModel
       Assert.AreEqual("First^Second^Third", FieldClone.AsString, ",oField.Clone test2 returned incorrect");
 
       //Test Custom Delimiters
-      var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#');
+      var oCustomDelimiters = Creator.MessageDelimiters('!', '@', '*', '%', '#');
       oField = Creator.Field("First*#H#Second#N#*Third1%Third2", oCustomDelimiters);
       Assert.AreEqual("Second", oField.Component(2).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second#N#", oField.Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -589,7 +590,7 @@ namespace TestHl7V2.TestModel
       }
 
       //Test Custom Delimiters
-      var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
+      var oCustomDelimiters = Creator.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
       oElement = Creator.Element("First1*#H#Second1#N#*Third11%Third12@First2*#H#Second2#N#*Third21%Third22", oCustomDelimiters);
       Assert.AreEqual("First2*Second2*Third21%Third22", oElement.Repeat(2).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second2#N#", oElement.Repeat(2).Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -775,7 +776,7 @@ namespace TestHl7V2.TestModel
 
 
       ////Test Custom Delimiters
-      var oCustomDelimiters = new PeterPiper.Hl7.V2.Support.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
+      var oCustomDelimiters = Creator.MessageDelimiters('!', '@', '*', '%', '#'); //Field, Repeat, Component, SubComponet,Escape
       oSegment = Creator.Segment("PID!First1*#H#Second1#N#*Third11%Third12@First2*#H#Second2#N#*Third21%Third22", oCustomDelimiters);
       Assert.AreEqual("First1*Second1*Third11%Third12", oSegment.Field(1).AsString, ",CustomDelimiters test returned incorrect");
       Assert.AreEqual("#H#Second2#N#", oSegment.Element(1).Repeat(2).Component(2).AsStringRaw, ",CustomDelimiters test returned incorrect");
@@ -937,7 +938,7 @@ namespace TestHl7V2.TestModel
         Assert.Fail("oMessage.RemoveSegmentAt(9) shoudl have returned True");
       }
 
-      PeterPiper.Hl7.V2.Support.MessageDelimiters oDelim = new PeterPiper.Hl7.V2.Support.MessageDelimiters('*', '~', '^', '&', '\\');
+      var oDelim = Creator.MessageDelimiters('*', '~', '^', '&', '\\');
       var oMSHSeg = Creator.Segment("MSH*^~\\&*AUSLAB*QHPS*EGATE-Atomic*CITEC*20140804143827**ORU^R01*000000000000005EVT6P*P*2.3.1*", oDelim);
       var oMessage3 = Creator.Message(oMSHSeg);
       var oPIDSeg = Creator.Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");

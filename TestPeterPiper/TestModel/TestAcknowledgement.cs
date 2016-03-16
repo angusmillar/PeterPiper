@@ -7,7 +7,7 @@ using NUnit.Framework;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support.Standard;
 
-namespace TestHl7V2.TestModel
+namespace TestPeterPiper.TestModel
 {
   [TestFixture]
   public class TestAcknowledgement

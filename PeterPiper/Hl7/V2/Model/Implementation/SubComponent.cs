@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.Model.Implementation;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class SubComponent : ContentBase, ISubComponent
+  internal class SubComponent : ContentBase, ISubComponent
   {
 
     private Dictionary<int, Content> _ContentDictonary;
@@ -20,7 +21,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Index = null;
       _Parent = null;
     }
-    internal SubComponent(Support.MessageDelimiters CustomDelimiters)
+    internal SubComponent(IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _ContentDictonary = new Dictionary<int, Content>();
@@ -38,7 +39,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         _ContentDictonary = ParseSubComponentRawStringToContent(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
       }
     }
-    internal SubComponent(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    internal SubComponent(string StringRaw, IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -51,7 +52,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
 
     //Only internal Constructors
-    internal SubComponent(Content Content, Support.MessageDelimiters CustomDelimiters,
+    internal SubComponent(Content Content, MessageDelimiters CustomDelimiters,
                           Boolean Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
@@ -66,7 +67,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _ContentDictonary.Add(0, Content);
       this.SetParent();
     }
-    internal SubComponent(string StringRaw, Support.MessageDelimiters CustomDelimiters,
+    internal SubComponent(string StringRaw, MessageDelimiters CustomDelimiters,
                           Boolean Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
@@ -79,7 +80,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
     internal SubComponent(ModelSupport.ContentTypeInternal ContentTypeInternal,
-                          Support.MessageDelimiters CustomDelimiters, Boolean Temporary,
+                          MessageDelimiters CustomDelimiters, Boolean Temporary,
                           int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
@@ -90,7 +91,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
 
     //Instance access
-    public Support.MessageDelimiters MessageDelimiters
+    public IMessageDelimiters MessageDelimiters
     {
       get
       {

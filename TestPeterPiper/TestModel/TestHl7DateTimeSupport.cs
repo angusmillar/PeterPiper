@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using PeterPiper.Hl7.V2.Model;
 
-namespace TestHl7V2.TestModel
+namespace TestPeterPiper.TestModel
 {
   [TestFixture]
   public class TestHl7DateTimeSupport

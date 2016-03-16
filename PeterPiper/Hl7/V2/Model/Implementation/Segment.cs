@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Model.Interface;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  public class Segment : ModelBase, ISegment
+  internal class Segment : ModelBase, ISegment
   {
     private Dictionary<int, Element> _ElementDictonary;
 
@@ -20,7 +20,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       StringRaw = ValidateStringRaw(StringRaw);
       _ElementDictonary = ParseSegmentRawStringToElement(StringRaw);
     }
-    internal Segment(string StringRaw, Support.MessageDelimiters CustomDelimiters)
+    internal Segment(string StringRaw, IMessageDelimiters CustomDelimiters)
       : base(CustomDelimiters)
     {
       _Temporary = true;
@@ -31,7 +31,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
     
     //Only internal Constructors
-    internal Segment(string StringRaw, Support.MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
+    internal Segment(string StringRaw, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
       : base(CustomDelimiters)
     {
       _Temporary = Temporary;
@@ -42,7 +42,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }    
 
     //Instance access
-    public Support.MessageDelimiters MessageDelimiters
+    public IMessageDelimiters MessageDelimiters
     {
       get
       {
