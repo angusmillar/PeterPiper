@@ -35,8 +35,8 @@ namespace TestHl7V2.TestModel
       byte[] item = File.ReadAllBytes(path);
       byte[] expected = null;
       string temp;
-      temp = Base64.Encoder(item);
-      expected = Base64.Decoder(temp);
+      temp = PeterPiper.Hl7.V2.Support.Content.Convert.Tools.Base64Tools.Encoder(item);
+      expected = PeterPiper.Hl7.V2.Support.Content.Convert.Tools.Base64Tools.Decoder(temp);
       //Below is just for debugging, it writes file back out to system
       //File.WriteAllBytes(path + ".new", expected);
 

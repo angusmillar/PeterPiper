@@ -22,7 +22,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       MSHTemplate.Append(this.Delimiters.Escape);
       MSHTemplate.Append(this.Delimiters.SubComponent);
       MSHTemplate.Append(this.Delimiters.Field,5);
-      MSHTemplate.Append(PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli));      
+      MSHTemplate.Append(PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Support.Content.Convert.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli));      
       MSHTemplate.Append(this.Delimiters.Field, 2);
       MSHTemplate.Append(MessageType);
       MSHTemplate.Append(this.Delimiters.Component);
@@ -238,7 +238,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.GetSegment(1).GetField(7).DateTimeSupport.GetDateTimeOffset();
+        return this.GetSegment(1).GetField(7).Convert.DateTime.GetDateTimeOffset();
       }
     }
     public Support.MessageDelimiters MessageDelimiters

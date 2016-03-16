@@ -841,10 +841,10 @@ namespace TestHl7V2.TestModel
 
       //oMessage.
       //Some Time & Date Tests
-      DateTimeOffset testDateTime = oMessage.Segment("MSH").Field(7).DateTimeSupport.GetDateTimeOffset();
-      oMessage.Segment("MSH").Field(7).DateTimeSupport.SetDateTimeOffset(DateTimeOffset.Now);
-      testDateTime = oMessage.Segment("MSH").Field(7).DateTimeSupport.GetDateTimeOffset();
-      DateTimeOffset testDateTime3 = oMessage.Segment("MSH").Field(7).DateTimeSupport.GetDateTimeOffset();
+      DateTimeOffset testDateTime = oMessage.Segment("MSH").Field(7).Convert.DateTime.GetDateTimeOffset();
+      oMessage.Segment("MSH").Field(7).Convert.DateTime.SetDateTimeOffset(DateTimeOffset.Now);
+      testDateTime = oMessage.Segment("MSH").Field(7).Convert.DateTime.GetDateTimeOffset();
+      DateTimeOffset testDateTime3 = oMessage.Segment("MSH").Field(7).Convert.DateTime.GetDateTimeOffset();
 
       Assert.AreEqual(12, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual(4, oMessage.SegmentList("OBX").Count, "The oMessage.SegmentList(\"OBX\").Count returns the incorrect value.");
@@ -1122,10 +1122,10 @@ namespace TestHl7V2.TestModel
       }
       Assert.AreEqual("1^^^4^5^6^^8", oPIDSeg.Field(3).AsString, "oPIDSeg.Field(3).ComponentList returns the incorrect values");
 
-      string datetest = PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
+      string datetest = PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
       //string datetest = PeterPiper.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTimeOffset.Now, true);
       //DateTimeOffset testDateTime2 = PeterPiper.Hl7.V2.Support.Content.DateTimeTools.ConvertStringToDateTime.AsDateTimeOffset("2014+0800");
-      DateTimeOffset testDateTime2 = PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.AsDateTimeOffSet("2014+0800");
+      DateTimeOffset testDateTime2 = PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.AsDateTimeOffSet("2014+0800");
 
       oMessage = Creator.Message(sbMessage.ToString());
       var SubCom = Creator.SubComponent("Sub");

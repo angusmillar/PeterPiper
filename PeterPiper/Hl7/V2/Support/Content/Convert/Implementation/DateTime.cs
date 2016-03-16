@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Implementation;
+using PeterPiper.Hl7.V2.Support.Content.Convert.Tools;
 
-namespace PeterPiper.Hl7.V2.Support.Content
+namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
 {
-  public class DateTimeSupport
+  public class DateTime : PeterPiper.Hl7.V2.Support.Content.Convert.Interface.IDateTime
   {
     private ContentBase _ContentBase;
 
-    internal DateTimeSupport(ContentBase ContentBase)
+    internal DateTime(ContentBase ContentBase)
     {
       _ContentBase = ContentBase;
     }

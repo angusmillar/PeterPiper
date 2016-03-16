@@ -74,7 +74,7 @@ namespace TestHl7V2
       TimeZone zone = TimeZone.CurrentTimeZone;
       TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
       var date = new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan);
-      target.Segment("MSH").Field(7).AsString = PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.AsString(date, true, PeterPiper.Hl7.V2.Support.Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
+      target.Segment("MSH").Field(7).AsString = PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.AsString(date, true, PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
       Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");      
       Assert.AreEqual(1, target.SegmentCount(), "A test for Message Constructor");
       Assert.AreEqual(true, target.IsParseMSHSegmentOnly, "A test for Message Constructor");
@@ -122,7 +122,8 @@ namespace TestHl7V2
     public void MessageConstructorTest3()
     {
       var item = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
-      var target = Creator.Message(item);
+      var target = Creator.Message(item);      
+      
       Assert.AreEqual(oMsg.ToString().Split('\r')[0] + '\r', target.AsStringRaw, "A test for Message Constructor");
       Assert.AreEqual("0000000000000000010D", target.MessageControlID, "A test for Message Constructor");
       Assert.AreEqual("ORU", target.MessageType, "A test for Message Constructor");
@@ -133,7 +134,7 @@ namespace TestHl7V2
       TimeZone zone = TimeZone.CurrentTimeZone;
       TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
       var date = new DateTimeOffset(2014,05,27,9,56,57,TimeSpan);
-      target.Segment("MSH").Field(7).DateTimeSupport.SetDateTimeOffset(date);
+      target.Segment("MSH").Field(7).Convert.DateTime.SetDateTimeOffset(date);
       Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");
       Assert.AreEqual(1, target.SegmentCount(), "A test for Message Constructor");
       Assert.AreEqual(false, target.IsParseMSHSegmentOnly, "A test for Message Constructor");

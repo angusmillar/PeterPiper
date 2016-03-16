@@ -323,7 +323,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         Component._Parent = this;
         if (SetToDictonary(Component))
           Component._Temporary = false;
-        return _ComponentDictonary[Convert.ToInt32(Component._Index)];
+        return _ComponentDictonary[System.Convert.ToInt32(Component._Index)];
       }
     }
     internal Component ComponentAppend(Component Component)
@@ -615,16 +615,16 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       try
       {
-        if (_ComponentDictonary.ContainsKey(Convert.ToInt32(oComponent._Index)))
+        if (_ComponentDictonary.ContainsKey(System.Convert.ToInt32(oComponent._Index)))
         {
-          _ComponentDictonary[Convert.ToInt32(oComponent._Index)]._Temporary = true;
-          _ComponentDictonary[Convert.ToInt32(oComponent._Index)]._Parent = null;
-          _ComponentDictonary[Convert.ToInt32(oComponent._Index)]._Index = null;
-          _ComponentDictonary[Convert.ToInt32(oComponent._Index)] = oComponent;
+          _ComponentDictonary[System.Convert.ToInt32(oComponent._Index)]._Temporary = true;
+          _ComponentDictonary[System.Convert.ToInt32(oComponent._Index)]._Parent = null;
+          _ComponentDictonary[System.Convert.ToInt32(oComponent._Index)]._Index = null;
+          _ComponentDictonary[System.Convert.ToInt32(oComponent._Index)] = oComponent;
         }
         else
         {
-          _ComponentDictonary.Add(Convert.ToInt32(oComponent._Index), oComponent);
+          _ComponentDictonary.Add(System.Convert.ToInt32(oComponent._Index), oComponent);
         }
         SetParent();
         return true;
@@ -676,7 +676,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         try
         {
           Element oElement = this._Parent as Element;
-          oElement.RemoveChild(Convert.ToInt32(this._Index));
+          oElement.RemoveChild(System.Convert.ToInt32(this._Index));
         }
         catch (InvalidCastException oInvalidCastExec)
         {

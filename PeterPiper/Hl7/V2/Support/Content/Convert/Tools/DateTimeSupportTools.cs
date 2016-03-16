@@ -5,7 +5,7 @@ using System.Text;
 using PeterPiper.Hl7.V2.Model;
 using System.Globalization;
 
-namespace PeterPiper.Hl7.V2.Support.Content
+namespace PeterPiper.Hl7.V2.Support.Content.Convert.Tools
 {
   public static class  DateTimeSupportTools
   {
@@ -73,8 +73,8 @@ namespace PeterPiper.Hl7.V2.Support.Content
         try
         {
           var TimeZoneString = Hl7DateTimeString.Substring(Hl7DateTimeString.LastIndexOfAny(TimeZomeDelimiter), Hl7DateTimeString.Length - Hl7DateTimeString.LastIndexOfAny(TimeZomeDelimiter));
-          int Hours = Convert.ToInt32(TimeZoneString.Substring(0, 3));
-          int min = Convert.ToInt32(TimeZoneString.Substring(3, 2));
+          int Hours = System.Convert.ToInt32(TimeZoneString.Substring(0, 3));
+          int min = System.Convert.ToInt32(TimeZoneString.Substring(3, 2));
           return new TimeSpan(Hours, min, 0);
         }
         catch(Exception Exec)

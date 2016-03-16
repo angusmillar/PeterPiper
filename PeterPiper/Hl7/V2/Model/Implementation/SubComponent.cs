@@ -287,7 +287,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         Content._Parent = this;
         if (SetToDictonary(Content))
           Content._Temporary = false;
-        return _ContentDictonary[Convert.ToInt32(Content._Index)];
+        return _ContentDictonary[System.Convert.ToInt32(Content._Index)];
       }
     }
     internal Content ContentAppend(Content Content)
@@ -388,14 +388,14 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       try
       {
-        if (_ContentDictonary.ContainsKey(Convert.ToInt32(oContent._Index)))
+        if (_ContentDictonary.ContainsKey(System.Convert.ToInt32(oContent._Index)))
         {
           //this 1 line n=below is new is it ok?. Do we need to do this else where, I think so?
-          _ContentDictonary[Convert.ToInt32(oContent._Index)]._Temporary = true;
-          _ContentDictonary[Convert.ToInt32(oContent._Index)]._Parent = null;
-          _ContentDictonary[Convert.ToInt32(oContent._Index)]._Index = null;
+          _ContentDictonary[System.Convert.ToInt32(oContent._Index)]._Temporary = true;
+          _ContentDictonary[System.Convert.ToInt32(oContent._Index)]._Parent = null;
+          _ContentDictonary[System.Convert.ToInt32(oContent._Index)]._Index = null;
           //---------------------------------------
-          _ContentDictonary[Convert.ToInt32(oContent._Index)] = oContent;
+          _ContentDictonary[System.Convert.ToInt32(oContent._Index)] = oContent;
         }
         else
         {
@@ -461,7 +461,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         try
         {
           Component oComponent = this._Parent as Component;
-          oComponent.RemoveChild(Convert.ToInt32(this._Index));
+          oComponent.RemoveChild(System.Convert.ToInt32(this._Index));
         }
         catch (InvalidCastException oInvalidCastExec)
         {

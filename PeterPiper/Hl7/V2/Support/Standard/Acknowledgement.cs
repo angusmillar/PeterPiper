@@ -27,7 +27,7 @@ namespace PeterPiper.Hl7.V2.Support.Standard
       IMessage oAckMessage = Creator.Message(oRecivedMessage.MessageVersion, AcknowledgementMessageStructureCode, "", oRecivedMessage.MessageControlID);
       oAckMessage.Segment(Support.Standard.Segments.Msh.Code).Field(15).ClearAll();
       oAckMessage.Segment(Support.Standard.Segments.Msh.Code).Field(16).ClearAll();
-      oAckMessage.Segment(Support.Standard.Segments.Msh.Code).Field(7).DateTimeSupport.SetDateTimeOffset(DateTimeOffset.Now, true, Content.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);      
+      oAckMessage.Segment(Support.Standard.Segments.Msh.Code).Field(7).Convert.DateTime.SetDateTimeOffset(DateTimeOffset.Now, true, Content.Convert.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);      
       oAckMessage.Segment(Support.Standard.Segments.Msh.Code).Field(3).AsStringRaw = oRecivedMessage.Segment(Support.Standard.Segments.Msh.Code).Field(5).AsStringRaw;
       oAckMessage.Segment(Support.Standard.Segments.Msh.Code).Field(4).AsStringRaw = oRecivedMessage.Segment(Support.Standard.Segments.Msh.Code).Field(6).AsStringRaw;
       oAckMessage.Segment(Support.Standard.Segments.Msh.Code).Field(5).AsStringRaw = oRecivedMessage.Segment(Support.Standard.Segments.Msh.Code).Field(3).AsStringRaw;

@@ -362,7 +362,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         try
         {
           SubComponent oSubComponent = this._Parent as SubComponent;
-          oSubComponent.RemoveChild(Convert.ToInt32(this._Index));
+          oSubComponent.RemoveChild(System.Convert.ToInt32(this._Index));
         }
         catch (InvalidCastException oInvalidCastExec)
         {

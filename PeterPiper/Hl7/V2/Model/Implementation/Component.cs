@@ -301,7 +301,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         SubComponent._Parent = this;
         if (SetToDictonary(SubComponent))
           _SubComponentDictonary[Index]._Temporary = false;
-        return _SubComponentDictonary[Convert.ToInt32(SubComponent._Index)];
+        return _SubComponentDictonary[System.Convert.ToInt32(SubComponent._Index)];
       }
     }
     internal SubComponent SubComponentAppend(SubComponent SubComponent)
@@ -522,16 +522,16 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       try
       {
-        if (_SubComponentDictonary.ContainsKey(Convert.ToInt32(oSubComponent._Index)))
+        if (_SubComponentDictonary.ContainsKey(System.Convert.ToInt32(oSubComponent._Index)))
         {
-          _SubComponentDictonary[Convert.ToInt32(oSubComponent._Index)]._Temporary = true;
-          _SubComponentDictonary[Convert.ToInt32(oSubComponent._Index)]._Parent = null;
-          _SubComponentDictonary[Convert.ToInt32(oSubComponent._Index)]._Index = null;
-          _SubComponentDictonary[Convert.ToInt32(oSubComponent._Index)] = oSubComponent;
+          _SubComponentDictonary[System.Convert.ToInt32(oSubComponent._Index)]._Temporary = true;
+          _SubComponentDictonary[System.Convert.ToInt32(oSubComponent._Index)]._Parent = null;
+          _SubComponentDictonary[System.Convert.ToInt32(oSubComponent._Index)]._Index = null;
+          _SubComponentDictonary[System.Convert.ToInt32(oSubComponent._Index)] = oSubComponent;
         }
         else
         {
-          _SubComponentDictonary.Add(Convert.ToInt32(oSubComponent._Index), oSubComponent);
+          _SubComponentDictonary.Add(System.Convert.ToInt32(oSubComponent._Index), oSubComponent);
         }
         SetParent();
         return true;
@@ -583,7 +583,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         try
         {
           Field oField = this._Parent as Field;
-          oField.RemoveChild(Convert.ToInt32(this._Index));
+          oField.RemoveChild(System.Convert.ToInt32(this._Index));
         }
         catch (InvalidCastException oInvalidCastExec)
         {

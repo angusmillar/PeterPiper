@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Model.Implementation;
+using PeterPiper.Hl7.V2.Support.Content.Convert.Interface;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
@@ -15,22 +16,30 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
     protected ContentBase()
     {        
-    }    
+    }
 
-    public PeterPiper.Hl7.V2.Support.Content.DateTimeSupport DateTimeSupport
+    public IConvert Convert
     {
       get
       {
-        return new Support.Content.DateTimeSupport(this);
+        return new PeterPiper.Hl7.V2.Support.Content.Convert.Implementation.Convert(this);
       }
     }
-    public void ToBase64(byte[] item)
-    {
-      this.AsStringRaw = Support.Content.Base64.Encoder(item);
-    }
-    public byte[] FromBase64()
-    {
-      return Support.Content.Base64.Decoder(this.AsStringRaw);
-    }
+
+    //public PeterPiper.Hl7.V2.Support.Content.Convert.Implementation.DateTime DateTimeSupport
+    //{
+    //  get
+    //  {
+    //    return new Support.Content.Convert.Implementation.DateTime(this);
+    //  }
+    //}
+    //public void ToBase64(byte[] item)
+    //{
+    //  this.AsStringRaw = Support.Content.Convert.Tools.Base64Tools.Encoder(item);
+    //}
+    //public byte[] FromBase64()
+    //{
+    //  return Support.Content.Convert.Tools.Base64Tools.Decoder(this.AsStringRaw);
+    //}
   }
 }

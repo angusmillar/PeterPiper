@@ -700,16 +700,16 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       try
       {
-        if (_RepeatDictonary.ContainsKey(Convert.ToInt32(oField._Index)))
+        if (_RepeatDictonary.ContainsKey(System.Convert.ToInt32(oField._Index)))
         {
-          _RepeatDictonary[Convert.ToInt32(oField._Index)]._Temporary = true;
-          _RepeatDictonary[Convert.ToInt32(oField._Index)]._Parent = null;
-          _RepeatDictonary[Convert.ToInt32(oField._Index)]._Index = null;
-          _RepeatDictonary[Convert.ToInt32(oField._Index)] = oField;
+          _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Temporary = true;
+          _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Parent = null;
+          _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Index = null;
+          _RepeatDictonary[System.Convert.ToInt32(oField._Index)] = oField;
         }
         else
         {
-          _RepeatDictonary.Add(Convert.ToInt32(oField._Index), oField);
+          _RepeatDictonary.Add(System.Convert.ToInt32(oField._Index), oField);
         }
         SetParent();
         return true;
@@ -761,7 +761,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         try
         {
           Segment oSegment = this._Parent as Segment;
-          oSegment.RemoveChild(Convert.ToInt32(this._Index));
+          oSegment.RemoveChild(System.Convert.ToInt32(this._Index));
         }
         catch (InvalidCastException oInvalidCastExec)
         {
