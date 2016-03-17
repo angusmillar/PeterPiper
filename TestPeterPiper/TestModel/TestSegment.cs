@@ -568,6 +568,18 @@ namespace TestHl7V2
       Assert.AreEqual(4, target.FieldCount, "Field count should only be 4 ad not 25 ");
     }
 
+    /// <summary>
+    ///A test create segment with segment code only i.e "PID"
+    ///</summary>
+    [Test]
+    public void CreateSegmentWithSegmentCodeOnly()
+    {
+      string StringRaw = "OBX";
+      var target = Creator.Segment(StringRaw);
+      string actual;
+      actual = target.Code;
+      Assert.AreEqual("OBX", actual, "A test for create segment with segment code only i.e PID");
+    }
 
   }
 }

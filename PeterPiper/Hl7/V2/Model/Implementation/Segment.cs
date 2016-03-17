@@ -630,6 +630,10 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
     private string ValidateStringRaw(string StringRaw)
     {
+      if (StringRaw.Length == 3)
+      {
+        StringRaw =StringRaw += this.Delimiters.Field;
+      }
       StringRaw = ValidateSegmentCode(StringRaw);
       Char[] CharatersAllowed = { this.Delimiters.Field };
 
@@ -651,12 +655,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       Char[] CharatersAllowed = { this.Delimiters.Field };
       if (StringRaw.IndexOfAny(CharatersAllowed) < 0)
-      {
-        if (StringRaw.Length == 3)
-        {
-          return StringRaw += this.Delimiters.Field;
-        }
-        else if (StringRaw.Length == 4 && StringRaw.Substring(3, 1).ToCharArray()[0] == this.Delimiters.Field)
+      {        
+        if (StringRaw.Length == 4 && StringRaw.Substring(3, 1).ToCharArray()[0] == this.Delimiters.Field)
         {
           return StringRaw;
         }
