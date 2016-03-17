@@ -2,6 +2,8 @@
 
 Complies to a single .NET Framework 4 PeterPiper.dll
 
+[Peter Piper documentation Wiki](https://github.com/angusmillar/PeterPiper/wiki)
+
 ```C#
 //Simple example:
 using PeterPiper.Hl7.V2.Model;
