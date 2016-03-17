@@ -1,6 +1,4 @@
-**Peter Piper is an HL7 V2 Parser for .net implemented in C#**
-
-Complies to a single .NET Framework 4 PeterPiper.dll
+**Peter Piper is an HL7 V2 Parser for .NET Framework 4 implemented in C# and compiles to a single PeterPiper.dll**
 
 [Peter Piper documentation Wiki](https://github.com/angusmillar/PeterPiper/wiki)
 
