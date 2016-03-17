@@ -1,11 +1,5 @@
 # Peter Piper HL7 V2 Parser
 
-***
-
-> MSH|^~\&|~Peter Piper parsed a peck of pickled patients~A peck of pickled patients Peter Piper parsed~If Peter Piper picked a peck of pickled patients~Where's the peck of pickled patients Peter Piper parsed?
-
-***
-
 ****Peter Piper is an HL7 V2 Parser for .net implemented in C#****
 
 ```C#
@@ -21,14 +15,13 @@ string sPatientSurname = oHl7.Segment("PID").Field(5).Component(1).AsString;
 
 Having worked with HL7 V2 messaging I certainly know the pain that most implementers face. Of main concern are live interfaces outputting non-standard messages. This is the norm, not the exception. Yet, the leading V2 parsers tend to be written on the premise that all messages will be standards compliant and make working with non-standard messages difficult.
 
-Peter Piper takes a different approach. With the loss of descriptive properties and concrete validation, Peter Piper gains tremendous flexibility and simplicity. This is a design trade-off that has been taken for few reasons:
+Peter Piper takes a different approach. With the loss of descriptive properties, Peter Piper gains tremendous flexibility and simplicity. This is a design trade-off that has been taken for few reasons:
 
 * Simplicity
 * Flexibility
 * The majority of messages in the wild are not standard
-* You are the expert and it's your job to validate as required, not the parser
 
-Of course, in a perfect world, the last point would be false, but for V2 the horse has bolted and we are left to deal with what we have; a non-perfect world. If you have spent any time in V2 messages land then you will know the phrase:
+The HL7 V2 horse has bolted and we are left to deal with what we have; a non-perfect world. If you have spent any time in V2 messages land then you will know the phrase:
 > "If you have seen one HL7 V2 interface, then you have seen one HL7 V2 interface."
 
 So how does Peter Piper work? It deals with the very basics of HL7 V2 messages, the basic syntax of the message and not the archetypes or data types that are then built on top of the basics. The core parts of a V2 message are:
