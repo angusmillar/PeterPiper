@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Model.Implementation;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
@@ -95,20 +96,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        if (_ComponentDictonary.Count == 0)
-          return string.Empty;
-        StringBuilder oStringBuilder = new StringBuilder();
-        _ComponentDictonary.OrderByDescending(i => i.Key);
-        for (int i = 1; i < _ComponentDictonary.Keys.Max() + 1; i++)
-        {
-          if (_ComponentDictonary.ContainsKey(i))
-          {
-            oStringBuilder.Append(_ComponentDictonary[i].AsString);
-          }
-          if (i != _ComponentDictonary.Keys.Max())
-            oStringBuilder.Append(this.Delimiters.Component);
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(false);
       }
       set
       {
@@ -119,20 +107,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        if (_ComponentDictonary.Count == 0)
-          return string.Empty;
-        StringBuilder oStringBuilder = new StringBuilder();
-        _ComponentDictonary.OrderByDescending(i => i.Key);
-        for (int i = 1; i < _ComponentDictonary.Keys.Max() + 1; i++)
-        {
-          if (_ComponentDictonary.ContainsKey(i))
-          {
-            oStringBuilder.Append(_ComponentDictonary[i].AsStringRaw);
-          }
-          if (i != _ComponentDictonary.Keys.Max())
-            oStringBuilder.Append(this.Delimiters.Component);
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(true);
       }
       set
       {
@@ -249,13 +224,13 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public IComponent Component(int index)
     {
       if (index == 0)
-        throw new ArgumentException("Component is a one based index, zero is not a valid index");
+        throw new PeterPiperArgumentException("Component is a one based index, zero is not a valid index");
       return this.GetComponent(index);
     }
     public ISubComponent SubComponent(int index)
     {
       if (index == 0)
-        throw new ArgumentException("SubComponent is a one based index, zero is not a valid index");    
+        throw new PeterPiperArgumentException("SubComponent is a one based index, zero is not a valid index");    
       return GetSubComponent(index);
     }    
     public IContent Content(int index)
@@ -355,7 +330,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal Component ComponentInsertBefore(Component Component, int Index)
     {
       if (Index == 0)
-        throw new ArgumentOutOfRangeException("Element is a one based index, zero is not a valid index.");
+        throw new PeterPiperArgumentException("Element is a one based index, zero is not a valid index.");
 
       int ComponentInsertedAt = 0;
       //Empty Dic so just add as first itme 
@@ -472,9 +447,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return _ComponentDictonary[1].GetSubComponent(index);
       else
       {
-        //_ComponentDictonary = new Dictionary<int, Component>();
-        //_ComponentDictonary.Add(1, new Component(string.Empty, this.Delimiters, true, 1, this));
-        //return _ComponentDictonary[1].GetSubComponent(index);
         Component oComponent = new Component(string.Empty, this.Delimiters, true, 1, this);
         return oComponent.GetSubComponent(index);
       }
@@ -612,6 +584,29 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return false;
     }
 
+    //Building
+    private string GetAsStringOrAsRawString(bool RawString)
+    {
+      if (_ComponentDictonary.Count == 0)
+        return string.Empty;
+      StringBuilder oStringBuilder = new StringBuilder();
+      _ComponentDictonary.OrderByDescending(i => i.Key);
+      for (int i = 1; i < _ComponentDictonary.Keys.Max() + 1; i++)
+      {
+        if (_ComponentDictonary.ContainsKey(i))
+        {
+          if (RawString)
+            oStringBuilder.Append(_ComponentDictonary[i].AsStringRaw);
+          else
+            oStringBuilder.Append(_ComponentDictonary[i].AsString);
+        }
+        if (i != _ComponentDictonary.Keys.Max())
+          oStringBuilder.Append(this.Delimiters.Component);
+      }
+      return oStringBuilder.ToString();
+    }
+
+    //Maintenance
     internal bool SetToDictonary(Component oComponent)
     {
       try
@@ -632,7 +627,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch (Exception Exec)
       {
-        throw new ApplicationException("Error setting Component into Field Parent", Exec);
+        throw new PeterPiperException("Error setting Component into Field Parent", Exec);
       }
     }
     private void SetParent()
@@ -667,7 +662,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch
       {
-        throw new ApplicationException(String.Format("Field's Component Dictonary did not contain Component Index {0} for removal call from Component Instance", Index));
+        throw new PeterPiperException(String.Format("Field's Component dictionary did not contain Component Index {0} for removal call from Component Instance", Index));
       }
     }
     private void RemoveFromParent()
@@ -681,12 +676,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         catch (InvalidCastException oInvalidCastExec)
         {
-          throw new ApplicationException("Casting of Field's parent to Element throws Invalid Cast Exception, check innner exception for more detail", oInvalidCastExec);
+          throw new PeterPiperException("Casting of Field's parent to Element throws Invalid Cast Exception, check inner exception for more detail", oInvalidCastExec);
         }
       }
     }
 
-    //Parseing and Validation
+    //Parsing and Validation
     private Dictionary<int, Component> ParseFieldRawStringToComponent(String StringRaw, ModelSupport.ContentTypeInternal ContentTypeInternal)
     {
       //Example:  "first^Second^Third^\H\Forth bold\N\^fith&SubHere^Six";
@@ -726,7 +721,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new System.ArgumentException(String.Format("Field data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
+        throw new PeterPiperArgumentException(String.Format("Field data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
       }
       return true;
     }

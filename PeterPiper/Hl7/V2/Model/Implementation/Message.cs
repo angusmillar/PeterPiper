@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
@@ -66,7 +67,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       else
       {
-        throw new ArgumentException("The Segment instance passed in is not a MSH Segment, only a MSH Segment can be passed in on creation / instantiation of a Message");
+        throw new PeterPiperArgumentException("The Segment instance passed in is not a MSH Segment, only a MSH Segment can be passed in on creation / instantiation of a Message");
       }
     }
     internal Message(string StringRaw, bool ParseMSHSegmentOnly = false)
@@ -104,7 +105,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       else
       {
-        throw new ApplicationException("The message list passed has no content.");
+        throw new PeterPiperArgumentException("The message list passed has no content.");
       }
     }
 
@@ -137,7 +138,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       set
       {
-        throw new ArgumentException("While setting a message using AsString() could technicaly work it would make no sense to have the message's escape charaters in MSH-1 & MSH-2 re-escaped. You should be using AsStringRaw()");
+        throw new PeterPiperArgumentException("While setting a message using AsString() could technically work it would make no sense to have the message's escape charters in MSH-1 & MSH-2 re-escaped. You should be using AsStringRaw()");
       }
     }
     public override string AsStringRaw
@@ -280,7 +281,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public ISegment Segment(int index)
     {
       if (index == 0)
-        throw new ArgumentOutOfRangeException("Element is a one based index, zero is not a valid index");
+        throw new PeterPiperArgumentException("Element is a one based index, zero is not a valid index");
       return this.GetSegment(index); 
 
     }    
@@ -309,7 +310,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       if (oSeg != null)
         return oSeg;
       else
-        throw new ArgumentOutOfRangeException("There is no segment with a segment code of " + Code + " within the message. \n Perhaps you should test for the segments existence with SegmentCount first or create the segment in the message first.");      
+        throw new PeterPiperArgumentException("There is no segment with a segment code of " + Code + " within the message. \n Perhaps you should test for the segments existence with SegmentCount first or create the segment in the message first.");      
     }
     internal int CountSegment
     {
@@ -335,7 +336,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal Segment SegmentInsertBefore(Segment Segment, int Index)
     {
       if (Index == 0)
-        throw new ArgumentOutOfRangeException("Segment index is a one based index, zero in not allowed");
+        throw new PeterPiperArgumentException("Segment index is a one based index, zero in not allowed");
       ValidateSegemntAdditon(Segment);
       int SegmentInsertedAt = 0;
       //Empty Dic so just add as first itme 
@@ -387,10 +388,10 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal bool SegmentRemoveAt(int Index)
     {
       if (Index == 0)
-        throw new ArgumentOutOfRangeException("Segment index is a one based index, zero in not allowed");
+        throw new PeterPiperArgumentException("Segment index is a one based index, zero in not allowed");
       else if (Index == 1)
       {
-        throw new ArgumentException("Index one is the MSH Segment. This segment can not be removed, it can be modified or a new Message instance can be created");
+        throw new PeterPiperArgumentException("Index one is the MSH Segment. This segment can not be removed, it can be modified or a new Message instance can be created");
       }
       else if (_SegmentDictonary.Count >= Index)
       {
@@ -434,7 +435,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch (Exception Exec)
       {
-        throw new ApplicationException("Error setting Segment into Message parent", Exec);
+        throw new PeterPiperException("Error setting Segment into Message parent", Exec);
       }
     }
 
@@ -442,7 +443,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     private bool ValidateSegmentCode(string Code)
     {
       if (Code.Length != 3)
-        throw new ArgumentException("All Segment codes must be 3 characters in length.");
+        throw new PeterPiperArgumentException("All Segment codes must be 3 characters in length.");
       return true;
     }
     private Dictionary<int, Segment> ParseMessageRawStringToSegment(List<string> StringRawList)
@@ -455,7 +456,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         {
           Segment oCurrentSegment =  new Segment(Part, this.Delimiters, false, SegmentPositionCounter, this);
           if (_SegmentDictonary.Count > 0 && oCurrentSegment.Code == Support.Standard.Segments.Msh.Code)
-            throw new ArgumentException("Second MSH segment found when parseing new message. Single messages must only have one MSH segment as the first segment.");
+            throw new PeterPiperArgumentException("Second MSH segment found when parsing new message. Single messages must only have one MSH segment as the first segment.");
           _SegmentDictonary.Add(SegmentPositionCounter, oCurrentSegment);
         }
         SegmentPositionCounter++;
@@ -483,17 +484,17 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           string[] MSHSegmentFields = StringRawList[0].Split(MessagesFieldSeparator);
           if (MSHSegmentFields.Length < 12)
           {
-            throw new ArgumentException(String.Format("The passed message's MSH Segment does not have the minimum number of Fields. There must be at least 12 to allow for the Message Version Field"));
+            throw new PeterPiperArgumentException(String.Format("The passed message's MSH Segment does not have the minimum number of Fields. There must be at least 12 to allow for the Message Version Field"));
           }
         }
         else
         {
-          throw new ArgumentException(String.Format("The passed message's defined Field separator at MSH-1: '{0}' \n has not been used as the first Field separator between MSH-2 & MSH-3, found separator of: '{1}'", MessagesFieldSeparator, FirstFieldSeparatorFound));
+          throw new PeterPiperArgumentException(String.Format("The passed message's defined Field separator at MSH-1: '{0}' \n has not been used as the first Field separator between MSH-2 & MSH-3, found separator of: '{1}'", MessagesFieldSeparator, FirstFieldSeparatorFound));
         }
       }
       else
       {
-        throw new ArgumentException(String.Format("The passed message must begin with the Message Header Segment and code: '{0}'", Support.Standard.Segments.Msh.Code));
+        throw new PeterPiperArgumentException(String.Format("The passed message must begin with the Message Header Segment and code: '{0}'", Support.Standard.Segments.Msh.Code));
       }
       return true;
     }
@@ -501,11 +502,11 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       if (oSegment.IsMSH)
       {
-        throw new ArgumentException("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation");
+        throw new PeterPiperArgumentException("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation");
       }
       else if (!ValidateDelimiters(oSegment.Delimiters))
       {
-        throw new ArgumentException("The Segment instance being added to this partent Message instance has custom delimiters that are different than the parent, this is not allowed");
+        throw new PeterPiperArgumentException("The Segment instance being added to this partent Message instance has custom delimiters that are different than the parent, this is not allowed");
       }
       else
       {
@@ -519,7 +520,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         _SegmentDictonary = new Dictionary<int, Segment>();
         _SegmentDictonary.Add(1, new Segment(MessageList[0]));
         if (_SegmentDictonary[1].Code.ToUpper() != Support.Standard.Segments.Msh.Code)
-          throw new ArgumentException(String.Format("The passed message must begin with the Message Header Segment and code: '{0}'", Support.Standard.Segments.Msh.Code));
+          throw new PeterPiperArgumentException(String.Format("The passed message must begin with the Message Header Segment and code: '{0}'", Support.Standard.Segments.Msh.Code));
       }
     }
   }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
@@ -61,42 +62,43 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        string SegmentPrefix = string.Empty;
-        if (_IsMSH)
-          SegmentPrefix = string.Format("{0}", this._Code);
-        else
-          SegmentPrefix = string.Format("{0}{1}", this._Code, this.Delimiters.Field);
+        return GetAsStringOrAsRawString(false);
+        //string SegmentPrefix = string.Empty;
+        //if (_IsMSH)
+        //  SegmentPrefix = string.Format("{0}", this._Code);
+        //else
+        //  SegmentPrefix = string.Format("{0}{1}", this._Code, this.Delimiters.Field);
 
-        if (this._IsMSH && _ElementDictonary.Count == 2)
-        {
-          return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field); ;
-        }
-        else if (_ElementDictonary.Count == 0)
-        {
-          return SegmentPrefix;
-        }
-        StringBuilder oStringBuilder = new StringBuilder(SegmentPrefix);
-        _ElementDictonary.OrderByDescending(i => i.Key);
-        for (int i = 1; i < _ElementDictonary.Keys.Max() + 1; i++)
-        {
-          if (_ElementDictonary.ContainsKey(i))
-          {
-            oStringBuilder.Append(_ElementDictonary[i].AsString);
-          }
-          if (i != _ElementDictonary.Keys.Max())
-          {
-            if (_IsMSH)
-            {
-              if (i != 1)
-                oStringBuilder.Append(this.Delimiters.Field);
-            }
-            else
-            {
-              oStringBuilder.Append(this.Delimiters.Field);
-            }
-          }
-        }
-        return oStringBuilder.ToString();        
+        //if (this._IsMSH && _ElementDictonary.Count == 2)
+        //{
+        //  return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field); ;
+        //}
+        //else if (_ElementDictonary.Count == 0)
+        //{
+        //  return SegmentPrefix;
+        //}
+        //StringBuilder oStringBuilder = new StringBuilder(SegmentPrefix);
+        //_ElementDictonary.OrderByDescending(i => i.Key);
+        //for (int i = 1; i < _ElementDictonary.Keys.Max() + 1; i++)
+        //{
+        //  if (_ElementDictonary.ContainsKey(i))
+        //  {
+        //    oStringBuilder.Append(_ElementDictonary[i].AsString);
+        //  }
+        //  if (i != _ElementDictonary.Keys.Max())
+        //  {
+        //    if (_IsMSH)
+        //    {
+        //      if (i != 1)
+        //        oStringBuilder.Append(this.Delimiters.Field);
+        //    }
+        //    else
+        //    {
+        //      oStringBuilder.Append(this.Delimiters.Field);
+        //    }
+        //  }
+        //}
+        //return oStringBuilder.ToString();        
       }
       set
       {
@@ -107,47 +109,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        string SegmentPrefix = string.Empty;
-        if (_IsMSH)
-          SegmentPrefix = string.Format("{0}", this._Code);
-        else
-          SegmentPrefix = string.Format("{0}{1}", this._Code, this.Delimiters.Field);
-
-        if (this._IsMSH && _ElementDictonary.Count == 2)
-        {
-          return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field); ;
-        }
-        else if (_ElementDictonary.Count == 0)
-        {
-          return SegmentPrefix;
-        }
-        StringBuilder oStringBuilder = new StringBuilder(SegmentPrefix);
-        _ElementDictonary.OrderByDescending(i => i.Key);
-        for (int i = 1; i < _ElementDictonary.Keys.Max() + 1; i++)
-        {
-          if (_ElementDictonary.ContainsKey(i))
-          {
-            oStringBuilder.Append(_ElementDictonary[i].AsStringRaw);
-          }
-          if (i != _ElementDictonary.Keys.Max())
-          {
-            if (_IsMSH)
-            {
-              if (i != 1)
-                oStringBuilder.Append(this.Delimiters.Field);
-            }
-            else
-            {
-              oStringBuilder.Append(this.Delimiters.Field);
-            }
-          }          
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(true);
       }
       set
       {
         if (this._IsMSH || this._Index == 1)
-          throw new ArgumentException("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.");
+          throw new PeterPiperArgumentException("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.");
         value = ValidateStringRaw(value);
         _ElementDictonary = ParseSegmentRawStringToElement(value);
       }
@@ -202,27 +169,27 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public void Insert(int index, IElement item)
     {
       if (index == 0)
-        throw new ArgumentOutOfRangeException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
       ValidateItemNotInUse(item as Element);
       this.ElementInsertBefore(item as Element, index);
     }
     public void Insert(int index, IField item)
     {
       if (index == 0)
-        throw new ArgumentOutOfRangeException("Field is a one based index, zero is not a valid index.");
+        throw new PeterPiperArgumentException("Field is a one based index, zero is not a valid index.");
       ValidateItemNotInUse(item as Field);
       this.FieldInsertBefore(item as Field, index);
     }
     public void RemoveElementAt(int index)
     {
       if (index == 0)
-        throw new ArgumentOutOfRangeException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
       this.ElementRemoveAt(index);
     }
     public void RemoveFieldAt(int index)
     {
       if (index == 0)
-        throw new ArgumentOutOfRangeException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
       this.FieldRemoveAt(index);
     }
     public int ElementCount
@@ -242,13 +209,13 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public IElement Element(int index)
     {
       if (index == 0)
-        throw new ArgumentOutOfRangeException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
       return this.GetElement(index);
     }    
     public IField Field(int index)
     {
       if (Index == 0)
-        throw new ArgumentOutOfRangeException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
       return this.GetField(index);
     }    
     public ReadOnlyCollection<IElement> ElementList
@@ -334,7 +301,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
          if (_ElementDictonary.ContainsKey(Index))
            _ElementDictonary[Index].IsAccessibleElement();
       }
-      //Empty Dic so just add as first itme 
+      //Empty Dic so just add as first item 
       if (_ElementDictonary.Count == 0)
       {
         ElementInsertedAt = Index;
@@ -350,11 +317,10 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         Element._Index = ElementInsertedAt;
         Element._Parent = this;
         if (SetToDictonary(Element))
-          Element._Temporary = false;
-        //_ContentDictonary.Add(_ContentDictonary.Keys.Max() + 1, Content);
+          Element._Temporary = false;        
       }
       //Asked to insert within items already in the Dic so cycle through moving each item higher or equal up by one then just add the new item
-      //The Content Dictonary is different than all the others as it is to never have gaps between items and it is Zero based.
+      //The Content Dictionary is different than all the others as it is to never have gaps between items and it is Zero based.
       else
       {
         foreach (var item in _ElementDictonary.Reverse())
@@ -382,34 +348,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         ElementInsertedAt = Index;
       }
       return _ElementDictonary[ElementInsertedAt];
-      //int ElementInsertedAt = 0;
-      //if (_ElementDictonary.ContainsKey(Index))
-      //{
-      //  _ElementDictonary[Index].IsAccessibleElement();        
-      //  foreach (var item in _ElementDictonary.OrderBy(x => x.Key).Reverse())
-      //  {
-      //    if (item.Key >= Index)
-      //    {                       
-      //      _ElementDictonary.Remove(item.Key);
-      //      item.Value._Index++;
-      //      _ElementDictonary.Add(item.Key + 1, item.Value);           
-      //    }
-      //  }
-      //  ElementInsertedAt = Index;
-      //  Element._Index = ElementInsertedAt;
-      //  Element._Parent = this;
-      //  if (SetToDictonary(Element))
-      //    Element._Temporary = false;        
-      //}
-      //else
-      //{
-      //  ElementInsertedAt = Index;
-      //  Element._Index = ElementInsertedAt;
-      //  Element._Parent = this;
-      //  if (SetToDictonary(Element))
-      //    Element._Temporary = false;
-      //}
-      //return _ElementDictonary[ElementInsertedAt];
     }    
     internal bool ElementRemoveAt(int Index)
     {
@@ -494,6 +432,50 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       return this.ElementRemoveAt(Index);
     }
 
+    //Building
+    private string GetAsStringOrAsRawString(bool RawString)
+    {
+      string SegmentPrefix = string.Empty;
+      if (_IsMSH)
+        SegmentPrefix = string.Format("{0}", this._Code);
+      else
+        SegmentPrefix = string.Format("{0}{1}", this._Code, this.Delimiters.Field);
+
+      if (this._IsMSH && _ElementDictonary.Count == 2)
+      {
+        return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field); ;
+      }
+      else if (_ElementDictonary.Count == 0)
+      {
+        return SegmentPrefix;
+      }
+      StringBuilder oStringBuilder = new StringBuilder(SegmentPrefix);
+      _ElementDictonary.OrderByDescending(i => i.Key);
+      for (int i = 1; i < _ElementDictonary.Keys.Max() + 1; i++)
+      {
+        if (_ElementDictonary.ContainsKey(i))
+        {
+          if (RawString)
+            oStringBuilder.Append(_ElementDictonary[i].AsStringRaw);
+          else
+            oStringBuilder.Append(_ElementDictonary[i].AsString);
+        }
+        if (i != _ElementDictonary.Keys.Max())
+        {
+          if (_IsMSH)
+          {
+            if (i != 1)
+              oStringBuilder.Append(this.Delimiters.Field);
+          }
+          else
+          {
+            oStringBuilder.Append(this.Delimiters.Field);
+          }
+        }
+      }
+      return oStringBuilder.ToString();        
+    }
+
     //Maintenance
     internal bool SetToDictonary(Element oElement)
     {
@@ -515,7 +497,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch (Exception Exec)
       {
-        throw new ApplicationException("Error setting Element into Segment parent", Exec);
+        throw new PeterPiperException("Error setting Element into Segment parent", Exec);
       }
     }
     private void SetParent()
@@ -546,7 +528,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch
       {
-        throw new ApplicationException(String .Format("Segment's Element Dictonary did not contain element Index {0} for removal call from Element Instance",Index));
+        throw new PeterPiperException(String.Format("Segment's Element Dictonary did not contain element Index {0} for removal call from Element Instance", Index));
       }      
     }
 
@@ -619,12 +601,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         else
         {
-          throw new ArgumentException("MSH Segment being parsed has less than 12 Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
+          throw new PeterPiperArgumentException("MSH Segment being parsed has less than 12 Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
         }
       }
       else
       {
-        throw new ArgumentException("MSH Segment being parsed has no Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
+        throw new PeterPiperArgumentException("MSH Segment being parsed has no Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
       }
       return _ElementDictonary;
     }
@@ -639,15 +621,15 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersAllowed) < 0)
       {
-        throw new System.ArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+        throw new PeterPiperArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
       }      
       else if (StringRaw.TrimStart().Substring(3, 1) != this.Delimiters.Field.ToString())
       {
-        throw new System.ArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+        throw new PeterPiperArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
       }      
       else if (!System.Text.RegularExpressions.Regex.IsMatch(StringRaw.TrimStart().Substring(0, 3), @"^[A-Z0-9]+$"))
       {
-        throw new System.ArgumentException("Segment data must begin with a three character uppercase alpha code");
+        throw new PeterPiperArgumentException("Segment data must begin with a three character upper-case alpha code");
       }
       return StringRaw;
     }
@@ -662,14 +644,14 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         else
         {
-          throw new System.ArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+          throw new PeterPiperArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
         }
       }
       else
       {
         if (StringRaw.IndexOf(this.Delimiters.Field) != 3)
         {
-          throw new System.ArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+          throw new PeterPiperArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
         }
         else
         {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Model.Implementation;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
@@ -110,64 +111,57 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        if (_ContentDictonary.Count == 0)
-          return string.Empty;
-        StringBuilder oStringBuilder = new StringBuilder();
-        for (int i = 0; i < _ContentDictonary.Keys.Max() + 1; i++)
-        {
-          if (_ContentDictonary.ContainsKey(i))
-          {
-            if (_ContentDictonary[i].ContentType == Support.Content.ContentType.Text)
-            {
-              oStringBuilder.Append(_ContentDictonary[i].AsString);
-            }
-            else
-            {
-              // oStringBuilder.Append(this.Delimiters.Escape);
-              oStringBuilder.Append(_ContentDictonary[i].AsString);
-              // oStringBuilder.Append(this.Delimiters.Escape);
-            }
-          }
-          else
-          {
-            throw new ApplicationException("Content dictonary has non-sequential items, this is a libaray error.");
-          }
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(false);
       }
       set
       {
         this.AsStringRaw = Support.Standard.Escapes.Encode(value, this.Delimiters);
       }
     }
+
+    private string GetAsStringOrAsRawString(bool RawString)
+    {
+      if (_ContentDictonary.Count == 0)
+        return string.Empty;
+      StringBuilder oStringBuilder = new StringBuilder();
+      for (int i = 0; i < _ContentDictonary.Keys.Max() + 1; i++)
+      {
+        if (_ContentDictonary.ContainsKey(i))
+        {
+          if (_ContentDictonary[i].ContentType == Support.Content.ContentType.Text)
+          {
+            oStringBuilder.Append(_ContentDictonary[i].AsString);
+          }
+          else
+          {
+            if (RawString)
+            {
+              oStringBuilder.Append(this.Delimiters.Escape);
+              oStringBuilder.Append(_ContentDictonary[i].AsStringRaw);
+              oStringBuilder.Append(this.Delimiters.Escape);
+            }
+            else
+            {
+              //The 'Content.AsString' will return the correct string for a given escape, for instance if the escape 
+              //is ampersand '&' which is escaped generally as \T\ then AsString will return '&', yet if the escape 
+              //is a HighlightOn escape '\H\' then AsString will return empty string.
+              //Given this we are correct to call AsString as below.
+              oStringBuilder.Append(_ContentDictonary[i].AsString);              
+            }
+          }
+        }
+        else
+        {
+          throw new PeterPiperException("Content dictionary has non-sequential items, this is a library error.");
+        }
+      }
+      return oStringBuilder.ToString();
+    }
     public override string AsStringRaw
     {
       get
       {
-        if (_ContentDictonary.Count == 0)
-          return string.Empty;
-        StringBuilder oStringBuilder = new StringBuilder();
-        for (int i = 0; i < _ContentDictonary.Keys.Max() + 1; i++)
-        {
-          if (_ContentDictonary.ContainsKey(i))
-          {
-            if (_ContentDictonary[i].ContentType == Support.Content.ContentType.Text)
-            {
-              oStringBuilder.Append(_ContentDictonary[i].AsStringRaw);
-            }
-            else
-            {
-              oStringBuilder.Append(this.Delimiters.Escape);
-              oStringBuilder.Append(_ContentDictonary[i].AsStringRaw);
-              oStringBuilder.Append(this.Delimiters.Escape);
-            }
-          }
-          else
-          {
-            throw new ApplicationException("Content dictonary has non-sequential items, this is a libaray error.");
-          }
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(true);
       }
       set
       {
@@ -309,7 +303,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal Content ContentInsertBefore(Content Content, int Index)
     {
       int LastIndexUsed = 0;
-      //Empty Dic so just add as first itme 
+      //Empty dictionary so just add as first item 
       if (_ContentDictonary.Count == 0)
       {
         LastIndexUsed = 0;
@@ -318,18 +312,17 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         if (SetToDictonary(Content))
           Content._Temporary = false;
       }
-      //Asked to insert before an index larger than the largest in Dic so just add to the end
+      //Asked to insert before an index larger than the largest in dictionary so just add to the end
       else if (_ContentDictonary.Keys.Max() < Index)
       {
         LastIndexUsed = _ContentDictonary.Keys.Max() + 1;
         Content._Index = LastIndexUsed;
         Content._Parent = this;
         if (SetToDictonary(Content))
-          Content._Temporary = false;
-        //_ContentDictonary.Add(_ContentDictonary.Keys.Max() + 1, Content);
+          Content._Temporary = false;        
       }
-      //Asked to insert within items already in the Dic so cycle through moving each item higher or equal up by one then just add the new item
-      //The Content Dictonary is different than all the others as it is to never have gaps between items and it is Zero based.
+      //Asked to insert within items already in the dictionary so cycle through moving each item higher or equal up by one then just add the new item
+      //The Content dictionary is different than all the others as it is to never have gaps between items and it is Zero based.
       else
       {
         foreach (var item in _ContentDictonary.Reverse())
@@ -390,8 +383,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       try
       {
         if (_ContentDictonary.ContainsKey(System.Convert.ToInt32(oContent._Index)))
-        {
-          //this 1 line n=below is new is it ok?. Do we need to do this else where, I think so?
+        {          
           _ContentDictonary[System.Convert.ToInt32(oContent._Index)]._Temporary = true;
           _ContentDictonary[System.Convert.ToInt32(oContent._Index)]._Parent = null;
           _ContentDictonary[System.Convert.ToInt32(oContent._Index)]._Index = null;
@@ -417,7 +409,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch (Exception Exec)
       {
-        throw new ApplicationException("Error setting Content into SubComponent Parent", Exec);
+        throw new PeterPiperException("Error setting Content into SubComponent Parent", Exec);
       }
     }
     private void SetParent()
@@ -452,7 +444,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch
       {
-        throw new ApplicationException(String.Format("SubComponent's ContentDictonary Dictonary did not contain Content Index {0} for removal call from Content Instance", Index));
+        throw new PeterPiperException(String.Format("SubComponent's ContentDictonary dictionary did not contain Content Index {0} for removal call from Content Instance", Index));
       }
     }
     private void RemoveFromParent()
@@ -466,7 +458,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         catch (InvalidCastException oInvalidCastExec)
         {
-          throw new ApplicationException("Casting of SubComponent's parent to Component throws Invalid Cast Exception, check innner exception for more detail", oInvalidCastExec);
+          throw new PeterPiperException("Casting of SubComponent's parent to Component throws Invalid Cast Exception, check inner exception for more detail", oInvalidCastExec);
         }
       }
     }
@@ -477,7 +469,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     //Parsing and Validation
     private Dictionary<int, Content> ParseSubComponentRawStringToContent(String StringRaw, ModelSupport.ContentTypeInternal ContentTypeInternal)
     {
-      //Example:  "\\N\\this is not Highlighted\\H\\ This is higlighted \\N\\ This is not";
+      //Example:  "\\N\\this is not Highlighted\\H\\ This is highlighted \\N\\ This is not";
       _ContentDictonary = new Dictionary<int, Content>();
       if (ContentTypeInternal == ModelSupport.ContentTypeInternal.EncodingCharacters || ContentTypeInternal == ModelSupport.ContentTypeInternal.MainSeparator)
       {
@@ -526,7 +518,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
         string DelimitersNotAlowed = String.Format("{0}{1}{2}{3}", CharatersNotAlowed[0], CharatersNotAlowed[1], CharatersNotAlowed[2], CharatersNotAlowed[3]);
-        throw new System.ArgumentException(String.Format("SubComponent data cannot contain HL7 V2 Delimiters of : {0}", DelimitersNotAlowed));
+        throw new PeterPiperArgumentException(String.Format("SubComponent data cannot contain HL7 V2 Delimiters of : {0}", DelimitersNotAlowed));
       }
       return true;
     }

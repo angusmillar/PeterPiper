@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Model.Implementation;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
@@ -112,44 +113,19 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        if (_RepeatDictonary.Count == 0)
-          return string.Empty;
-        StringBuilder oStringBuilder = new StringBuilder();
-        _RepeatDictonary.OrderByDescending(i => i.Key);
-        for (int i = 1; i < _RepeatDictonary.Keys.Max() + 1; i++)
-        {
-          if (_RepeatDictonary.ContainsKey(i))
-          {
-            oStringBuilder.Append(_RepeatDictonary[i].AsString);
-          }
-          if (i != _RepeatDictonary.Keys.Max())
-            oStringBuilder.Append(this.Delimiters.Repeat);
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(false);
       }
       set
       {
         this.AsStringRaw = Support.Standard.Escapes.Encode(value, this.Delimiters);
       }
     }
+
     public override string AsStringRaw
     {
       get
       {
-        if (_RepeatDictonary.Count == 0)
-          return string.Empty;
-        StringBuilder oStringBuilder = new StringBuilder();
-        _RepeatDictonary.OrderByDescending(i => i.Key);
-        for (int i = 1; i < _RepeatDictonary.Keys.Max() + 1; i++)
-        {
-          if (_RepeatDictonary.ContainsKey(i))
-          {
-            oStringBuilder.Append(_RepeatDictonary[i].AsStringRaw);
-          }
-          if (i != _RepeatDictonary.Keys.Max())
-            oStringBuilder.Append(this.Delimiters.Repeat);
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(true);
       }
       set
       {
@@ -279,19 +255,19 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public IField Repeat(int index)
     {
       if (index == 0)
-        throw new ArgumentException("Repeat is a one based index, zero is not a valid index");
+        throw new PeterPiperArgumentException("Repeat is a one based index, zero is not a valid index");
       return this.GetRepeat(index);
     }
     public IComponent Component(int index)
     {
       if (index == 0)
-        throw new ArgumentException("Component is a one based index, zero is not a valid index");
+        throw new PeterPiperArgumentException("Component is a one based index, zero is not a valid index");
       return this.GetComponent(index);
     }
     public ISubComponent SubComponent(int index)
     {
       if (index == 0)
-        throw new ArgumentException("SubComponent is a one based index, zero is not a valid index");
+        throw new PeterPiperArgumentException("SubComponent is a one based index, zero is not a valid index");
       return this.GetSubComponent(index);
     }
     public IContent Content(int index)
@@ -372,7 +348,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal Field RepeatInsertBefore(Field Repeat, int Index)
     {
       if (Index == 0)
-        throw new ArgumentOutOfRangeException("Element is a one based index, zero is not a valid index.");
+        throw new PeterPiperArgumentException("Element is a one based index, zero is not a valid index.");
 
       int RepeatInsertedAt = 0;
       //Empty Dic so just add as first itme 
@@ -522,7 +498,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal Component ComponentInsertBefore(Component Component, int Index)
     {
       if (Index == 0)
-        throw new ArgumentOutOfRangeException("Element is a one based index, zero is not a valid index.");
+        throw new PeterPiperArgumentException("Element is a one based index, zero is not a valid index.");
 
       if (_RepeatDictonary.ContainsKey(1))
         return _RepeatDictonary[1].ComponentInsertBefore(Component, Index);
@@ -551,9 +527,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return _RepeatDictonary[1].GetSubComponent(index);
       else
       {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //return _RepeatDictonary[1].GetSubComponent(index);
         Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
         return oField.GetSubComponent(index);
       }
@@ -599,7 +572,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal SubComponent SubComponentInsertBefore(SubComponent SubComponent, int Index)
     {
       if (Index == 0)
-        throw new ArgumentOutOfRangeException("Element is a one based index, zero is not a valid index.");
+        throw new PeterPiperArgumentException("Element is a one based index, zero is not a valid index.");
 
       if (_RepeatDictonary.ContainsKey(1))
         return _RepeatDictonary[1].SubComponentInsertBefore(SubComponent, Index);
@@ -696,6 +669,28 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       return false;
     }
 
+    //Building
+    private string GetAsStringOrAsRawString(bool RawString)
+    {
+      if (_RepeatDictonary.Count == 0)
+        return string.Empty;
+      StringBuilder oStringBuilder = new StringBuilder();
+      _RepeatDictonary.OrderByDescending(i => i.Key);
+      for (int i = 1; i < _RepeatDictonary.Keys.Max() + 1; i++)
+      {
+        if (_RepeatDictonary.ContainsKey(i))
+        {
+          if (RawString)
+            oStringBuilder.Append(_RepeatDictonary[i].AsStringRaw);
+          else
+            oStringBuilder.Append(_RepeatDictonary[i].AsString);
+        }
+        if (i != _RepeatDictonary.Keys.Max())
+          oStringBuilder.Append(this.Delimiters.Repeat);
+      }
+      return oStringBuilder.ToString();
+    }
+
     //Maintenance
     internal bool SetToDictonary(Field oField)
     {
@@ -717,7 +712,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch (Exception Exec)
       {
-        throw new ApplicationException("Error setting Field into Element parent", Exec);
+        throw new PeterPiperException("Error setting Field into Element parent", Exec);
       }
     }
     private void SetParent()
@@ -752,7 +747,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch
       {
-        throw new ApplicationException(String.Format("Elements's Repeat Dictonary did not contain repeat Index {0} for removal call from Repeat Instance", Index));
+        throw new PeterPiperException(String.Format("Elements's Repeat dictionary did not contain repeat Index {0} for removal call from Repeat Instance", Index));
       }
     }
     private void RemoveFromParent()
@@ -766,7 +761,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         catch (InvalidCastException oInvalidCastExec)
         {
-          throw new ApplicationException("Casting of Elements parent to Segment throws Invalid Cast Exception, check innner exception for more detail", oInvalidCastExec);
+          throw new PeterPiperException("Casting of Elements parent to Segment throws Invalid Cast Exception, check inner exception for more detail", oInvalidCastExec);
         }
       }
     }
@@ -810,7 +805,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new System.ArgumentException(String.Format("Element data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
+        throw new PeterPiperArgumentException(String.Format("Element data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
       }
       return true;
     }
@@ -819,10 +814,10 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       if (this._IsMainSeparator)
       {
         StringBuilder sb = new StringBuilder();
-        sb.Append("MSH-1 contains the 'Main Separator' charater and is not accessible from the Field or Element object instance as it is critical to message construction.");
+        sb.Append("MSH-1 contains the 'Main Separator' character and is not accessible from the Field or Element object instance as it is critical to message construction.");
         sb.Append(Environment.NewLine);
         sb.Append("Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");
-        throw new ArgumentException(sb.ToString());
+        throw new PeterPiperArgumentException(sb.ToString());
       }
       else if (this._IsEncodingCharacters)
       {
@@ -830,7 +825,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         sb.Append("MSH-2 contains the 'Encoding Characters' and is not accessible from the Field or Element object instance as it is critical to message construction.");
         sb.Append(Environment.NewLine);
         sb.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
-        throw new ArgumentException(sb.ToString());
+        throw new PeterPiperArgumentException(sb.ToString());
       }
       return true;
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Model.Implementation;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
@@ -21,7 +22,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           return Support.Content.ContentType.Escape;
         else
         {
-          throw new ApplicationException(String.Format("Unknown ModelSupport.ContentTypeInternal of :{0}", _InternalContentType.ToString()));
+          throw new PeterPiperException(String.Format("Unknown ModelSupport.ContentTypeInternal of :{0}", _InternalContentType.ToString()));
         }
       }
       set
@@ -32,7 +33,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           _InternalContentType = ModelSupport.ContentTypeInternal.Escape;
         else
         {
-          throw new ApplicationException(String.Format("Unknown Support.Content.ContentType of :{0}", value.ToString()));
+          throw new PeterPiperException(String.Format("Unknown Support.Content.ContentType of :{0}", value.ToString()));
         }
       }
     }
@@ -66,7 +67,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         {
           if (ContentType == Support.Content.ContentType.Escape)
           {
-            throw new ArgumentException("Attempt to set Content as type 'Escape' yet Content String was empty. Escape type content must have data provided");
+            throw new PeterPiperException("Attempt to set Content as type 'Escape' yet Content String was empty. Escape type content must have data provided");
           }
         }
         else
@@ -110,7 +111,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         {
           if (ContentType == Support.Content.ContentType.Escape)
           {
-            throw new ArgumentException("Attempt to set Content as type 'Escape' yet Content String was empty. Escape type content must have data provided");
+            throw new PeterPiperException("Attempt to set Content as type 'Escape' yet Content String was empty. Escape type content must have data provided");
           }
         }
       }
@@ -220,7 +221,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         else
         {
-          throw new ApplicationException("Attempt to set Content as Escape Type yet no Content data given, String was empty.");
+          throw new PeterPiperException("Attempt to set Content as Escape Type yet no Content data given, String was empty.");
         }
       }
       else
@@ -367,7 +368,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         catch (InvalidCastException oInvalidCastExec)
         {
-          throw new ApplicationException("Casting of Content's parent to SubComponent throws Invalid Cast Exception, check inner exception for more detail", oInvalidCastExec);
+          throw new PeterPiperException("Casting of Content's parent to SubComponent throws Invalid Cast Exception, check inner exception for more detail", oInvalidCastExec);
         }
       }
     }
@@ -383,7 +384,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (String.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new System.ArgumentException("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.");
+        throw new PeterPiperArgumentException("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.");
       }
       return true;
     }

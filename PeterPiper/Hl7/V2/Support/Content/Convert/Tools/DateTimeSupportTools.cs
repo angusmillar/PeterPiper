@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model;
 using System.Globalization;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Support.Content.Convert.Tools
 {
@@ -42,11 +43,11 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Tools
       if (TryParseDateTimeString(Hl7DateTimeString, out result))
         return result;
       else
-        throw new FormatException(String.Format(FormatExceptionMessage, Hl7DateTimeString));
+        throw new PeterPiperArgumentException(String.Format(FormatExceptionMessage, Hl7DateTimeString));
     }
     
     /// <summary>
-    /// Returns True if a Timezone element is found in the Hl7 DateTime string.
+    /// Returns True if a Time-zone element is found in the Hl7 DateTime string.
     /// If the string passed in cannot be parsed as a dateTime then a FormatException is thrown.
     /// </summary>
     /// <param name="Hl7DateTimeString"></param>
@@ -56,12 +57,12 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Tools
       if (DateTimeSupportTools.CanParseToDateTimeOffset(Hl7DateTimeString))
         return CheckForTimezone(Hl7DateTimeString);
       else
-        throw new FormatException(String.Format(FormatExceptionMessage, Hl7DateTimeString));           
+        throw new PeterPiperArgumentException(String.Format(FormatExceptionMessage, Hl7DateTimeString));           
     }
 
     /// <summary>
-    /// Returns a Timespan that represents the timezone found in the HL7 DateTime string.
-    /// Throws a FormatException if no timezone present or if the content is empty
+    /// Returns a Timespan that represents the time zone found in the HL7 DateTime string.
+    /// Throws a FormatException if no time zone present or if the content is empty
     /// </summary>
     /// <param name="Hl7DateTimeString"></param>
     /// <returns></returns>
@@ -79,18 +80,18 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Tools
         }
         catch(Exception Exec)
         {
-          throw new FormatException(String.Format("Unable to parse timezone from HL7 Datetime string of: {0}", Hl7DateTimeString), Exec);
+          throw new PeterPiperArgumentException(String.Format("Unable to parse time-zone from HL7 date time string of: {0}", Hl7DateTimeString), Exec);
         }
       }
       else
       {
-        throw new FormatException(String.Format("No timezone present in given content. Try testing for timezone by calling 'HasTimezone' before calling 'GetTimezone'."));
+        throw new PeterPiperArgumentException(String.Format("No time-zone present in given content. Try testing for time-zone by calling 'HasTimezone' before calling 'GetTimezone'."));
       }
     }
 
     /// <summary>
-    /// Set the timezone for a give HL7 DateTime string. This will convert the datetime from the timezone present to the new timezone. 
-    /// If no timezone is present in the HL7 datetime string then it will assume that this datetime is from the new timezone and not convert.
+    /// Set the time-zone for a give HL7 DateTime string. This will convert the date time from the time-zone present to the new time zone. 
+    /// If no time-zone is present in the HL7 date time string then it will assume that this date time is from the new time zone and not convert.
     /// Will throw a FormatException if the HL7 DateTime string is no able to be parsed as a DateTimeOffset.
     /// </summary>
     /// <param name="Hl7DateTimeString"></param>
@@ -136,7 +137,7 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Tools
     }    
    
     /// <summary>
-    /// Returns the Hl7 DateTime string with or with out a timezone and to the precision given;
+    /// Returns the Hl7 DateTime string with or with out a time zone and to the precision given;
     /// </summary>
     /// <param name="WithTimezone"></param>
     /// <param name="WithPrecision"></param>
@@ -257,7 +258,7 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Tools
           else
             return TargetDateTimeOffset.ToString(String.Format("{0}{1}{2}.{3}", fDate, fHourMin, fSec, fMilliSec));
         default:
-          throw new ApplicationException("Internal error: Unsupported DateTimeprecision value of " + WithPrecision.ToString());
+          throw new PeterPiperException("Internal error: Unsupported DateTimeprecision value of " + WithPrecision.ToString());
       }
       return "";
     }

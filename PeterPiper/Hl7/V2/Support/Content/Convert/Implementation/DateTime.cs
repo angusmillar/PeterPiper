@@ -28,18 +28,18 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
     }
 
     /// <summary>
-    /// Returns a TimeSpan equal to the timezone found in the HL7 DateTime string.
-    /// Throws a formatException if no timezone is present, please test with 'HasTimezone' before calling.    
+    /// Returns a TimeSpan equal to the time-zone found in the HL7 DateTime string.
+    /// Throws a formatException if no time-zone is present, please test with 'HasTimezone' before calling.    
     /// </summary>
-    /// <returns>HL7 string representation of the timezone</returns>
+    /// <returns>HL7 string representation of the time-zone</returns>
     public TimeSpan GetTimezone()
     {
       return DateTimeSupportTools.GetTimezone(_ContentBase.AsString);
     }
 
     /// <summary>
-    /// Set the timezone for a give HL7 DateTime. This will convert the datetime from the timezone present to the new timezone. 
-    /// If no timezone is present in the HL7 datetime string then it will assume that this datetime is from the new timezone and not convert. 
+    /// Set the time-zone for a give HL7 DateTime. This will convert the date time from the time zone present to the new timezone. 
+    /// If no time zone is present in the HL7 date time string then it will assume that this date time is from the new timezone and not convert. 
     /// </summary>
     /// <param name="Timespan"></param>
     public void SetTimezone(TimeSpan Timespan)

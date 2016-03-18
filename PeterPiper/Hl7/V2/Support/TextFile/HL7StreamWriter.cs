@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Support.TextFile
 {
@@ -43,7 +44,7 @@ namespace PeterPiper.Hl7.V2.Support.TextFile
         }
         else
         {
-          throw new ApplicationException("Unknown HL7OutputStyles of '" + eHL7OutputStyle.ToString() + "' Found");
+          throw new PeterPiperArgumentException("Unknown HL7OutputStyles of '" + eHL7OutputStyle.ToString() + "' Found");
         }       
       }
     }

@@ -160,5 +160,19 @@ namespace TestHl7V2
       Assert.AreEqual('!', target.MessageDelimiters.SubComponent, "A test for MessageDelimiters");
       Assert.AreEqual('%', target.MessageDelimiters.Escape, "A test for MessageDelimiters");
     }
+
+    /// <summary>
+    ///Does Content AsString Return No Escape Characters
+    ///</summary>
+    [Test]
+    public void DoesContentAsStringReturnNoEscapeCharaters()
+    {
+      var Target = Creator.SubComponent(@"NotBold \H\Bold\N\ Not Bold");
+
+      Assert.AreEqual("NotBold Bold Not Bold", Target.AsString, "A test for AsString with escapes");
+      Assert.AreEqual(@"NotBold \H\Bold\N\ Not Bold", Target.AsStringRaw, "A test for AsRawString with escapes");      
+    }
+
+
   }
 }

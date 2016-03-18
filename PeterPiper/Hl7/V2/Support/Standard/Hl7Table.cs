@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Support.Standard
 {
@@ -67,7 +68,7 @@ namespace PeterPiper.Hl7.V2.Support.Standard
           case AcknowledgmentCodeType.CommitReject:
            return Table_0008.CommitReject;
           default:
-           throw new ArgumentException(string.Format("Unknown AcknowledgmentCodeType passed in, code was: {0}", Type.ToString()));
+           throw new PeterPiperException(string.Format("Unknown AcknowledgmentCodeType passed in, code was: {0}", Type.ToString()));
         }                 
       }
     }

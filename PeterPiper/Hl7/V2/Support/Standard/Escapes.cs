@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Implementation;
 using PeterPiper.Hl7.V2.Model.Interface;
-
+using PeterPiper.Hl7.V2.CustomException;
 namespace PeterPiper.Hl7.V2.Support.Standard
 {
   public static class Escapes
@@ -291,12 +291,12 @@ namespace PeterPiper.Hl7.V2.Support.Standard
           case EscapeType.NotAnEscape:
             return String.Empty;
           default:
-            throw new ApplicationException(String.Format("Unknown EscapeType passed into Decoder, Escapetype was: {0}", oContent.EscapeMetaData.EscapeType.ToString()));
+            throw new PeterPiperException(String.Format("Unknown EscapeType passed into Decoder, Escapetype was: {0}", oContent.EscapeMetaData.EscapeType.ToString()));
         }
       }
       else
       {
-        throw new ApplicationException(String.Format("Unknown ContentType passed into Decoder, ContentType was: {0}", oContent.ContentType.ToString()));
+        throw new PeterPiperException(String.Format("Unknown ContentType passed into Decoder, ContentType was: {0}", oContent.ContentType.ToString()));
       }
     }
 

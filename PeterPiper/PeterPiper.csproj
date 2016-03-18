@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hl7\V2\CustomException\PeterPiperArgumentException.cs" />
+    <Compile Include="Hl7\V2\CustomException\PeterPiperException.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\Component.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\Content.cs" />
     <Compile Include="Hl7\V2\Model\Creator.cs" />

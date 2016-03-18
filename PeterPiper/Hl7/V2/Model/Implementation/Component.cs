@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
@@ -107,20 +108,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        if (_SubComponentDictonary.Count == 0)
-          return string.Empty;
-        StringBuilder oStringBuilder = new StringBuilder();
-        _SubComponentDictonary.OrderByDescending(i => i.Key);
-        for (int i = 1; i < _SubComponentDictonary.Keys.Max() + 1; i++)
-        {
-          if (_SubComponentDictonary.ContainsKey(i))
-          {
-            oStringBuilder.Append(_SubComponentDictonary[i].AsString);
-          }
-          if (i != _SubComponentDictonary.Keys.Max())
-            oStringBuilder.Append(this.Delimiters.SubComponent);
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(false);
       }
       set
       {
@@ -131,20 +119,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        if (_SubComponentDictonary.Count == 0)
-          return string.Empty;
-        StringBuilder oStringBuilder = new StringBuilder();
-        _SubComponentDictonary.OrderByDescending(i => i.Key);
-        for (int i = 1; i < _SubComponentDictonary.Keys.Max() + 1; i++)
-        {
-          if (_SubComponentDictonary.ContainsKey(i))
-          {
-            oStringBuilder.Append(_SubComponentDictonary[i].AsStringRaw);
-          }
-          if (i != _SubComponentDictonary.Keys.Max())
-            oStringBuilder.Append(this.Delimiters.SubComponent);
-        }
-        return oStringBuilder.ToString();
+        return GetAsStringOrAsRawString(true);
       }
       set
       {
@@ -157,7 +132,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           _SubComponentDictonary = ParseComponentRawStringToSubComponent(value, ModelSupport.ContentTypeInternal.Unknown);
         }
       }
-    }
+    }    
     public bool IsEmpty
     {
       get
@@ -232,7 +207,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public ISubComponent SubComponent(int index)
     {
       if (index == 0)
-        throw new ArgumentException("SubComponent is a one based index, zero is not a valid index");
+        throw new PeterPiperArgumentException("SubComponent is a one based index, zero is not a valid index");
       return GetSubComponent(index);
     }
     public IContent Content(int index)
@@ -318,24 +293,14 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           SubComponent._Temporary = false;
         return _SubComponentDictonary[1];
       }
-      //-------------------------------------------
-
-      //int InsertAtIndex = 1;
-      //if (_SubComponentDictonary.Count > 0)
-      //  InsertAtIndex = _SubComponentDictonary.Keys.Max() + 1;
-      //SubComponent._Index = InsertAtIndex;
-      //SubComponent._Parent = this;
-      //SubComponent._Temporary = false;
-      //_SubComponentDictonary.Add(InsertAtIndex, SubComponent);
-      //return _SubComponentDictonary[_SubComponentDictonary.Keys.Max()];
     }
     internal SubComponent SubComponentInsertBefore(SubComponent SubComponent, int Index)
     {
       if (Index == 0)
-        throw new ArgumentOutOfRangeException("SubComponent is a one based index, zero is not a valid index.");
+        throw new PeterPiperArgumentException("SubComponent is a one based index, zero is not a valid index.");
 
       int SubComponentInsertedAt = 0;
-      //Empty Dic so just add as first itme 
+      //Empty dictionary so just add as first item 
       if (_SubComponentDictonary.Count == 0)
       {
         SubComponentInsertedAt = Index;
@@ -344,7 +309,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         if (SetToDictonary(SubComponent))
           SubComponent._Temporary = false;
       }
-      //Asked to insert before an index larger than the largest in Dic so just add to the end
+      //Asked to insert before an index larger than the largest in dictionary so just add to the end
       else if (_SubComponentDictonary.Keys.Max() < Index)
       {
         SubComponentInsertedAt = Index;
@@ -354,8 +319,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           SubComponent._Temporary = false;
         //_ContentDictonary.Add(_ContentDictonary.Keys.Max() + 1, Content);
       }
-      //Asked to insert within items already in the Dic so cycle through moving each item higher or equal up by one then just add the new item
-      //The Content Dictonary is different than all the others as it is to never have gaps between items and it is Zero based.
+      //Asked to insert within items already in the Dictionary so cycle through moving each item higher or equal up by one then just add the new item
+      //The Content dictionary is different than all the others as it is to never have gaps between items and it is Zero based.
       else
       {
         foreach (var item in _SubComponentDictonary.Reverse())
@@ -384,43 +349,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         SubComponentInsertedAt = Index;
       }
       return _SubComponentDictonary[SubComponentInsertedAt];
-
-
-
-
-
-      //----------------------------------------------------------------------
-      //int SubComponentInsertedAt = 0;
-      //if (_SubComponentDictonary.ContainsKey(Index))
-      //{
-      //  foreach (var item in _SubComponentDictonary.Reverse())
-      //  {
-      //    if (item.Key >= Index)
-      //    {
-      //      item.Value._Index++;
-      //      if (item.Key >= Index)
-      //      {
-      //        _SubComponentDictonary.Remove(item.Key);
-      //        item.Value._Index++;
-      //        _SubComponentDictonary.Add(item.Key + 1, item.Value);
-      //      }
-      //    }
-      //  }
-      //  SubComponentInsertedAt = Index;
-      //  SubComponent._Index = SubComponentInsertedAt;
-      //  SubComponent._Parent = this;
-      //  if (SetToDictonary(SubComponent))
-      //    SubComponent._Temporary = false;
-      //}
-      //else
-      //{
-      //  SubComponentInsertedAt = Index;
-      //  SubComponent._Index = SubComponentInsertedAt;
-      //  SubComponent._Parent = this;
-      //  if (SetToDictonary(SubComponent))
-      //    SubComponent._Temporary = false;
-      //}
-      //return _SubComponentDictonary[SubComponentInsertedAt];
     }    
     internal bool SubComponentRemoveAt(int Index)
     {
@@ -517,7 +445,30 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       else
         return false;
     }
+    
+    //Building
+    private string GetAsStringOrAsRawString(bool RawString)
+    {
+      if (_SubComponentDictonary.Count == 0)
+        return string.Empty;
+      StringBuilder oStringBuilder = new StringBuilder();
+      _SubComponentDictonary.OrderByDescending(i => i.Key);
+      for (int i = 1; i < _SubComponentDictonary.Keys.Max() + 1; i++)
+      {
+        if (_SubComponentDictonary.ContainsKey(i))
+        {
+          if (RawString)
+            oStringBuilder.Append(_SubComponentDictonary[i].AsStringRaw);
+          else
+            oStringBuilder.Append(_SubComponentDictonary[i].AsStringRaw);
+        }
+        if (i != _SubComponentDictonary.Keys.Max())
+          oStringBuilder.Append(this.Delimiters.SubComponent);
+      }
+      return oStringBuilder.ToString();
+    }
 
+    //Maintenance
     internal bool SetToDictonary(SubComponent oSubComponent)
     {
       try
@@ -538,7 +489,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch (Exception Exec)
       {
-        throw new ApplicationException("Error setting SubComponent into Component Parent", Exec);
+        throw new PeterPiperException("Error setting SubComponent into Component Parent", Exec);
       }
     }
     private void SetParent()
@@ -573,7 +524,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       catch
       {
-        throw new ApplicationException(String.Format("Component's SubComponent Dictonary did not contain SubComponent Index {0} for removal call from SubComponent Instance", Index));
+        throw new PeterPiperException(String.Format("Component's SubComponent dictionary did not contain SubComponent Index {0} for removal call from SubComponent Instance", Index));
       }
     }
     private void RemoveFromParent()
@@ -587,12 +538,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         catch (InvalidCastException oInvalidCastExec)
         {
-          throw new ApplicationException("Casting of Component's parent to Field throws Invalid Cast Exception, check inner exception for more detail", oInvalidCastExec);
+          throw new PeterPiperException("Casting of Component's parent to Field throws Invalid Cast Exception, check inner exception for more detail", oInvalidCastExec);
         }
       }
     }
 
-    //Parseing and Validation
+    //Parsing and Validation
     private Dictionary<int, SubComponent> ParseComponentRawStringToSubComponent(String StringRaw, ModelSupport.ContentTypeInternal ContentTypeInternal)
     {
       //Example:  "First&Second&Third\H\bold\N\&forth";
@@ -633,7 +584,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new System.ArgumentException(String.Format("Component data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
+        throw new PeterPiperArgumentException(String.Format("Component data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
       }
       return true;
     }
