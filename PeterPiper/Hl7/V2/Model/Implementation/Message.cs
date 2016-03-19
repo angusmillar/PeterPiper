@@ -138,7 +138,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       set
       {
-        throw new PeterPiperArgumentException("While setting a message using AsString() could technically work it would make no sense to have the message's escape charters in MSH-1 & MSH-2 re-escaped. You should be using AsStringRaw()");
+        throw new PeterPiperArgumentException("While setting a message using AsString() could technically work it would make no sense to have the message's escape characters in MSH-1 & MSH-2 re-escaped. You should be using AsStringRaw()");
       }
     }
     public override string AsStringRaw
@@ -506,7 +506,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       else if (!ValidateDelimiters(oSegment.Delimiters))
       {
-        throw new PeterPiperArgumentException("The Segment instance being added to this partent Message instance has custom delimiters that are different than the parent, this is not allowed");
+        throw new PeterPiperArgumentException("The Segment instance being added to this parent Message instance has custom delimiters that are different than the parent, this is not allowed");
       }
       else
       {

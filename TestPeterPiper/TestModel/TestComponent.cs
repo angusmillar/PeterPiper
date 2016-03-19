@@ -242,7 +242,8 @@ namespace TestHl7V2
       var target = Creator.Component("Hello\\R\\World\\R\\Bye&SecondComponent");
       string expected = "Hello~World~Bye&SecondComponent"; // TODO: Initialize to an appropriate value
       string actual;
-      target.AsString = expected;
+      
+      //target.AsString = expected;
       actual = target.AsString;
       Assert.AreEqual(expected, actual, "A test for ToString");
 

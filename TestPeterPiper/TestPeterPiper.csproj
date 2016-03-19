@@ -67,6 +67,7 @@
     <Compile Include="TestModel\TestHl7DateTimeSupport.cs" />
     <Compile Include="TestModel\TestHl7Reader.cs" />
     <Compile Include="TestModel\TestMessage.cs" />
+    <Compile Include="TestModel\TestPeterPiperCustomExceptions.cs" />
     <Compile Include="TestModel\TestSegment.cs" />
     <Compile Include="TestModel\TestSubComponent.cs" />
     <Compile Include="TestSchema\TestSchemaParser.cs" />

@@ -31,7 +31,7 @@ namespace TestPeterPiper.TestModel
         obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Field.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.", ae.Message);
       }
@@ -41,7 +41,7 @@ namespace TestPeterPiper.TestModel
         obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Component.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.", ae.Message);
       }
@@ -51,7 +51,7 @@ namespace TestPeterPiper.TestModel
         obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SubComponent.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.", ae.Message);
       }
@@ -61,7 +61,7 @@ namespace TestPeterPiper.TestModel
         obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Repeat.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.", ae.Message);
       }
@@ -71,7 +71,7 @@ namespace TestPeterPiper.TestModel
         obj = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString(), PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.", ae.Message);
       }
@@ -82,7 +82,7 @@ namespace TestPeterPiper.TestModel
         obj.AsString = PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
         Assert.Fail("An exception should have been thrown on setting AsString");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.", ae.Message);
       }
@@ -93,7 +93,7 @@ namespace TestPeterPiper.TestModel
         obj.AsStringRaw = PeterPiper.Hl7.V2.Support.Standard.Delimiters.Escape.ToString();
         Assert.Fail("An exception should have been thrown on setting AsString");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.", ae.Message);
       }
@@ -280,7 +280,7 @@ namespace TestPeterPiper.TestModel
         string test = oComponent.SubComponent(0).AsString;
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("SubComponent is a one based index, zero is not a valid index", ae.Message, "Exception should have been thrown on zero index for SubComponent");
       }
@@ -384,7 +384,7 @@ namespace TestPeterPiper.TestModel
         string test = oField.Component(0).AsString;
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Component is a one based index, zero is not a valid index", ae.Message, "Exception should have been thrown on zero index for Component");
       }
@@ -429,7 +429,7 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual("The SubComponent The Content", oField.AsString, ",oField.ComponentInsertBefore returned incorrect");
 
 
-      //Very intresting senario, add the same Component to two different parent fields. 
+      //Very interesting scenario, add the same Component to two different parent fields. 
       //The Parent property set to that lass parent the object was added to even though it is now contatined in both parent's ComponentList
       //This is not good but as we currently don't use the Parent property for any functional use it works. 
       //Need to review weather we even need the Parent property at all?
@@ -506,7 +506,7 @@ namespace TestPeterPiper.TestModel
         string test = oElement.Repeat(0).AsString;
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Repeat is a one based index, zero is not a valid index", ae.Message, "Exception should have been thrown on zero index for Component");
       }
@@ -651,9 +651,9 @@ namespace TestPeterPiper.TestModel
         string test = oSegment.Element(0).AsString;
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentOutOfRangeException)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
-        //Assert.AreEqual("Specified argument was out of the range of valid values./rParameter name: Element index is a one based index, zero in not allowed", ae.Message, "Exception should have been thrown on zero index for Element");
+        Assert.AreEqual("Element index is a one based index, zero in not allowed", ae.Message, "Exception should have been thrown on zero index for Element");
       }
 
       //Test Append
@@ -789,11 +789,8 @@ namespace TestPeterPiper.TestModel
   {
     [Test]
     public void TestMessageCreate()
-    {
-      
-
+    {     
       var oMessage = Creator.Message("2.3.1", "ORU", "R01");
-
 
       StringBuilder sbMessageWithTwoMSHSegments = new StringBuilder();
       sbMessageWithTwoMSHSegments.Append("MSH|^~\\&|HNAM^RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN"); sbMessageWithTwoMSHSegments.Append("\r");
@@ -803,9 +800,9 @@ namespace TestPeterPiper.TestModel
       {
         oMessage = Creator.Message(sbMessageWithTwoMSHSegments.ToString());
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
-        Assert.AreEqual("Second MSH segment found when parseing new message. Single messages must only have one MSH segment as the first segment.", ae.Message, "Exception should have been thrown in setting oMessage.AsString");
+        Assert.AreEqual("Second MSH segment found when parsing new message. Single messages must only have one MSH segment as the first segment.", ae.Message, "Exception should have been thrown in setting oMessage.AsString");
       }
 
       StringBuilder sbMessage = new StringBuilder();
@@ -826,8 +823,6 @@ namespace TestPeterPiper.TestModel
       oMessage = Creator.Message(MessageString);
       //Check parsed Message same as Original
       Assert.AreEqual(sbMessage.ToString(), oMessage.AsStringRaw, "Parsed Message is not equal to orginal message.");
-
-
 
       //test IsEmpty property
       Assert.AreEqual(true, oMessage.Segment("IN2").IsEmpty, "oMessage.Segment().IsEmpty returns the incorrect value.");
@@ -883,9 +878,9 @@ namespace TestPeterPiper.TestModel
         oMessage.AsString = MessageString;
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
-        Assert.AreEqual("While setting a message using AsString() could technicaly work it would make no sense to have the message's escape charaters in MSH-1 & MSH-2 re-escaped. You should be using AsStringRaw()", ae.Message, "Exception should have been thrown in setting oMessage.AsString");
+        Assert.AreEqual("While setting a message using AsString() could technically work it would make no sense to have the message's escape characters in MSH-1 & MSH-2 re-escaped. You should be using AsStringRaw()", ae.Message, "Exception should have been thrown in setting oMessage.AsString");
       }
       var oMesage2 = Creator.Message(MessageString);
       oMessage = oMesage2.Clone();
@@ -935,7 +930,7 @@ namespace TestPeterPiper.TestModel
       }
       else
       {
-        Assert.Fail("oMessage.RemoveSegmentAt(9) shoudl have returned True");
+        Assert.Fail("oMessage.RemoveSegmentAt(9) should have returned True");
       }
 
       var oDelim = Creator.MessageDelimiters('*', '~', '^', '&', '\\');
@@ -947,9 +942,9 @@ namespace TestPeterPiper.TestModel
         oMessage3.Add(oPIDSeg);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
-        Assert.AreEqual("The Segment instance being added to this partent Message instance has custom delimiters that are different than the parent, this is not allowed", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual("The Segment instance being added to this parent Message instance has custom delimiters that are different than the parent, this is not allowed", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -957,7 +952,7 @@ namespace TestPeterPiper.TestModel
         oMessage3.RemoveSegmentAt(1);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Index one is the MSH Segment. This segment can not be removed, it can be modified or a new Message instance can be created", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -975,7 +970,7 @@ namespace TestPeterPiper.TestModel
       sbMSH2Exception.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
 
       StringBuilder sbMSH1Exception = new StringBuilder();
-      sbMSH1Exception.Append("MSH-1 contains the 'Main Separator' charater and is not accessible from the Field or Element object instance as it is critical to message construction.");
+      sbMSH1Exception.Append("MSH-1 contains the 'Main Separator' character and is not accessible from the Field or Element object instance as it is critical to message construction.");
       sbMSH1Exception.Append(Environment.NewLine);
       sbMSH1Exception.Append("Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");
 
@@ -984,7 +979,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).Element(1).Repeat(1).Component(1).AsString = "TestData";
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -994,7 +989,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).Field(2).AsString = "TestData";
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1004,7 +999,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).RemoveElementAt(1);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1014,7 +1009,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).RemoveElementAt(2);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1024,9 +1019,9 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).Insert(1, Creator.Element("sffsfsdfAfter"));
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
-        Assert.AreEqual("MSH-1 contains the 'Main Separator' charater and is not accessible from the Field or Element object instance as it is critical to message construction." + Environment.NewLine + "Instead, you can access the read only property call 'MainSeparator' from the Message object instance.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -1034,7 +1029,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).Insert(1, Creator.Element("sffsfsdfBefore"));
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1044,7 +1039,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).Element(2).Repeat(1).AsString = "Done";
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1054,7 +1049,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).AsString = "ABC|^~\\&|AUSLAB|TRAIN|";
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1064,7 +1059,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Segment(1).AsStringRaw = "ABC|^~\\&|AUSLAB|TRAIN|";
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1076,7 +1071,7 @@ namespace TestPeterPiper.TestModel
         testSeg.AsStringRaw = "ABC|^~\\&|AUSLAB|TRAIN|";
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1087,7 +1082,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Add(NewMSH);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1097,7 +1092,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Insert(2, NewMSH);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -1107,7 +1102,7 @@ namespace TestPeterPiper.TestModel
         oMessage.Insert(1, NewMSH);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }

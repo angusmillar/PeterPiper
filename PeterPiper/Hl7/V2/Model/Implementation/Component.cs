@@ -460,7 +460,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           if (RawString)
             oStringBuilder.Append(_SubComponentDictonary[i].AsStringRaw);
           else
-            oStringBuilder.Append(_SubComponentDictonary[i].AsStringRaw);
+            oStringBuilder.Append(_SubComponentDictonary[i].AsString);
         }
         if (i != _SubComponentDictonary.Keys.Max())
           oStringBuilder.Append(this.Delimiters.SubComponent);

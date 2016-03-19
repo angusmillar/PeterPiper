@@ -155,7 +155,7 @@ namespace TestHl7V2
         target.Add(item1);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -179,7 +179,7 @@ namespace TestHl7V2
         target = Creator.Message(itemOBX);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("The Segment instance passed in is not a MSH Segment, only a MSH Segment can be passed in on creation / instantiation of a Message", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -233,7 +233,7 @@ namespace TestHl7V2
         target.Insert(index, itemMSH);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (ArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
       {
         Assert.AreEqual("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
