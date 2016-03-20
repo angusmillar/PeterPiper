@@ -535,12 +535,7 @@ namespace TestPeterPiper.TestModel
       oElement.RemoveRepeatAt(1);
       oElement.RemoveRepeatAt(1);
       Assert.AreEqual("", oElement.AsString, ",oElement.RemoveRepeatAt() returned incorrect");
-
-      ////Test InsertAfter
-      //oElement.RepeatInsertAfter(Creator.Field("First"), 100);
-      //oElement.RepeatInsertAfter(Creator.Field("Third"), 1);
-      //oElement.RepeatInsertAfter(Creator.Field("Second"), 1);
-      //Assert.AreEqual("First~Second~Third", oElement.AsString, ",oElement.RepeatInsertAfter returned incorrect");
+ 
       //Test InsertBefore
       oElement.ClearAll();
       oElement.Add(Creator.Component("The Component"));
@@ -632,18 +627,19 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual("PID-3.1.1&PID-3.1.2", oSegment.Element(3).Repeat(1).Component(1).AsStringRaw, "oSegment.Field(3).ToString() did not match Set StringRaw");
       Assert.AreEqual("PID-{3}1.2.3", oSegment.Element(1).Repeat(3).Component(2).SubComponent(3).AsStringRaw, "oSegment.Field(3).ToString() did not match Set StringRaw");
 
-      //Test inspect Element does not add Elements
+      //##Issues## This test fails, but notice the test below it does not!!!
+      ////Test inspect Field does not add fields & elements
+      //if (oSegment.Field(100).AsString == "")
+      //{
+          //Assert.AreEqual(5, oSegment.ElementCount, "oSegment.CountElement is incorrect");
+      //}
+
+      //Test inspect Element does not add Elements, so if you need to test a field 
+      //for emptiness then use Element. 
       if (oSegment.Element(100).AsString == "")
       {
         Assert.AreEqual(5, oSegment.ElementCount, "oSegment.CountElement is incorrect");
       }
-
-      //##Issues## This test fails!!!
-      ////Test inspect Field does not add fields & elements
-      //if (oSegment.Field(100).AsString == "")
-      //{
-      //  Assert.AreEqual(5, oSegment.ElementCount, "oSegment.CountElement is incorrect");
-      //}
 
       //Test zero index exception
       try
@@ -807,13 +803,13 @@ namespace TestPeterPiper.TestModel
 
       StringBuilder sbMessage = new StringBuilder();
       sbMessage.Append("MSH|^~\\&|HNAM^RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN"); sbMessage.Append("\r");
-      sbMessage.Append("PID|1|1038785005^^^QH^PT^CD&A^^\"\"|1038785005^^^QH^PT^CD&A^^\"\"~993171^^^QH^MR^PAH&A^^\"\"~343211^^^QH^MR^LOGH&A^^\"\"~43028819141^^^HIC^MC^^^10/2018~\"\"^^^DVA^VA^^\"\"~420823031C^^^HIC^PEN&9^^^31/07/2015~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|993171-PAH^^^^MR^PAH|KABONGO^KABEDI^^^MS^^C||19520725|F||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|24 Holles Street^^WATERFORD WEST^^4133||(046)927-3235^Home|(046)927-3235^Business|78|3^Widowed|2999^Other Christian, nec|1504352845^^^PAH FIN Number Alias Pool^FIN NBR|43028819141||||||0|||||N"); sbMessage.Append("\r");
-      sbMessage.Append("PV1|1|I|||||1106^JESUTHASAN^BRUNO^^^^^^PAH External ID Alias Pool^CD:369232^^^External Identifier~1106^JESUTHASAN^BRUNO^^^^^^PAH Organisation Dr Number Alias Pool^CD:369232^^^ORGANIZATION DOCTOR||1106^JESUTHASAN^BRUNO^^^^^^PAH External ID Alias Pool^CD:369232^^^External Identifier~1106^JESUTHASAN^BRUNO^^^^^^PAH Organisation Dr Number Alias Pool^CD:369232^^^ORGANIZATION DOCTOR||||||||||1504352840^^^PAH Visit ID Alias Pool^Visit Id||||||||||||||||||||PAHDHS||Active|||20141127134500"); sbMessage.Append("\r");
-      sbMessage.Append("PV2|||^jesuthasan|||||||0|||||||||||||^^294882"); sbMessage.Append("\r");
-      sbMessage.Append("IN1|1|295388^109|3060132|109||||||||20141127134612|21001231000000|||KABONGO^KABEDI^^^MS^^C|CD:158|19520725|24 HOLLES STREET^^WATERFORD WEST^^4133~~~^^^^^9106~9107^^^^^9106|||0|||||||||||||||||||||F"); sbMessage.Append("\r");
+      sbMessage.Append("PID|1|1234567890^^^QH^PT^CD&A^^\"\"|1234567890^^^QH^PT^CD&A^^\"\"~345678^^^QH^MR^PAH&A^^\"\"~010101^^^QH^MR^LOGH&A^^\"\"~00000000001^^^HIC^MC^^^10/2018~\"\"^^^DVA^VA^^\"\"~123456789C^^^HIC^PEN&9^^^31/07/2015~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|001122-PAH^^^^MR^PAH|DummySurname^DummyGiven^^^MS^^C||19520725|F||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|24 Holles Street^^WATERFORD WEST^^4133||(046)927-3235^Home|(046)927-3235^Business|78|3^Widowed|2999^Other Christian, nec|1504352845^^^PAH FIN Number Alias Pool^FIN NBR|43028819141||||||0|||||N"); sbMessage.Append("\r");
+      sbMessage.Append("PV1|1|I|||||1^SMITH^John^^^^^^PAH External ID Alias Pool^CD:369232^^^External Identifier~1106^SMITH^JOHN^^^^^^PAH Organisation Dr Number Alias Pool^CD:123456^^^ORGANIZATION DOCTOR||1106^SMITH^JOHN^^^^^^PAH External ID Alias Pool^CD:123456^^^External Identifier~1106^SMITH^JOHN^^^^^^PAH Organisation Dr Number Alias Pool^CD:123456^^^ORGANIZATION DOCTOR||||||||||1234567890^^^PAH Visit ID Alias Pool^Visit Id||||||||||||||||||||PAHDHS||Active|||20141127134500"); sbMessage.Append("\r");
+      sbMessage.Append("PV2|||^smith|||||||0|||||||||||||^^294882"); sbMessage.Append("\r");
+      sbMessage.Append("IN1|1|295388^109|3060132|109||||||||20141127134612|21001231000000|||DummySurname^DummyGiven^^^MS^^C|CD:158|19520725|1 SOMEWHERE STREET^^OVERTHERE WEST^^4133~~~^^^^^9106~9107^^^^^9106|||0|||||||||||||||||||||F"); sbMessage.Append("\r");
       sbMessage.Append("IN2|"); sbMessage.Append("\r");
-      sbMessage.Append("ORC|CA|25486076^HNAM_ORDERID|||OC||||20141208064530|127948^HAMMOND^JULIA^^^^^^PAH Prsnl ID Alias Pool^CD:369232^^^PRSNLID||1106^JESUTHASAN^BRUNO^^^^^^PAH External ID Alias Pool^CD:369232^^^External Identifier~1106^JESUTHASAN^BRUNO^^^^^^PAH Organisation Dr Number Alias Pool^CD:369232^^^ORGANIZATION DOCTOR|PAHDHS||20141208064530|CD:309780^ADMINISTRATION CANCELLATION||CD:2562^Written|127948^HAMMOND^JULIA^^^^^^PAH Prsnl ID Alias Pool^CD:369232^^^PRSNLID"); sbMessage.Append("\r");
-      sbMessage.Append("OBR|1|25486076^HNAM_ORDERID||CI EP IMPLANT Dv^CI EP Implantable Device|||||||||||Rad Type&Rad Type|1106^JESUTHASAN^BRUNO^^^^^^PAH External ID Alias Pool^CD:369232^^^External Identifier||CI14005652-PAH|PAH-CI|||||CI|||1^^0^20141205110000^^R"); sbMessage.Append("\r");
+      sbMessage.Append("ORC|CA|25486076^HNAM_ORDERID|||OC||||20141208064530|123456^DOA^JANE^^^^^^PAH Prsnl ID Alias Pool^CD:369232^^^PRSNLID||1234^SMITH^JOHN^^^^^^PAH External ID Alias Pool^CD:123456^^^External Identifier~1234^SMITH^JOHN^^^^^^PAH Organisation Dr Number Alias Pool^CD:12345^^^ORGANIZATION DOCTOR|PAHDHS||20141208064530|CD:123456^ADMINISTRATION CANCELLATION||CD:2562^Written|123456^DOA^JANE^^^^^^PAH Prsnl ID Alias Pool^CD:123456^^^PRSNLID"); sbMessage.Append("\r");
+      sbMessage.Append("OBR|1|25486076^HNAM_ORDERID||CI EP IMPLANT Dv^CI EP Implantable Device|||||||||||Rad Type&Rad Type|1234^SMITH^JOHN^^^^^^PAH External ID Alias Pool^CD:123456^^^External Identifier||CI12345678-PAH|PAH-CI|||||CI|||1^^0^20141205110000^^R"); sbMessage.Append("\r");
       sbMessage.Append("OBX|1|IS|CD:1278500^RADIOLOGY INPATIENT / OUTPATIENT||CD:1"); sbMessage.Append("\r");
       sbMessage.Append("OBX|2|IS|CD:1278500^RADIOLOGY INPATIENT / OUTPATIENT||CD:2"); sbMessage.Append("\r");
       sbMessage.Append("OBX|3|IS|CD:1278500^RADIOLOGY INPATIENT / OUTPATIENT||CD:3"); sbMessage.Append("\r");
@@ -1108,7 +1104,7 @@ namespace TestPeterPiper.TestModel
       }
 
       //Check Component List works correctly
-      oPIDSeg = Creator.Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
+      oPIDSeg = Creator.Segment("PID|1|1234567890^^^QH^PT^CD&A^^\"\"|1234567890^^^QH^PT^CD&A^^\"\"~123456^^^QH^MR^TPCH&A^^\"\"~123456^^^QH^MR^PAH&A^^\"\"~123456^^^QH^MR^IPSH&A^^\"\"~123456^^^QH^MR^LOGH&A^^\"\"~B123456^^^QH^MR^RBWH&A^^\"\"~12345678901^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|DUMMYSURNAME^DUMMYGIVEN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Where Street^^NORTH HERE^^1234||(042)242-0000^Home|(042)242-0000^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
       Counter = 1;
       foreach (var Com in oPIDSeg.Field(3).ComponentList)
       {
