@@ -40,3 +40,4 @@ So how does Peter Piper work? It deals with the very basics of HL7 V2 messages, 
 Owner:
 
 * Angus Millar: angusmillar@iinet.net.au
+Version 1.000
