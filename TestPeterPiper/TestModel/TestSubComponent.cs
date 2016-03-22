@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using NUnit.Framework;
 using PeterPiper.Hl7.V2.Model;
-using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Support;
 
 namespace TestHl7V2

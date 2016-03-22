@@ -48,22 +48,22 @@
     <Compile Include="Hl7\V2\Model\Implementation\Element.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\Field.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\ContentBase.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IEscapeData.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IMessageDelimiters.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IMessage.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IElement.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IField.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IContentBase.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IModelBase.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IComponent.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\IContent.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\ISubComponent.cs" />
-    <Compile Include="Hl7\V2\Model\Interface\ISegment.cs" />
+    <Compile Include="Hl7\V2\Model\IEscapeData.cs" />
+    <Compile Include="Hl7\V2\Model\IMessageDelimiters.cs" />
+    <Compile Include="Hl7\V2\Model\IMessage.cs" />
+    <Compile Include="Hl7\V2\Model\IElement.cs" />
+    <Compile Include="Hl7\V2\Model\IField.cs" />
+    <Compile Include="Hl7\V2\Model\IContentBase.cs" />
+    <Compile Include="Hl7\V2\Model\IModelBase.cs" />
+    <Compile Include="Hl7\V2\Model\IComponent.cs" />
+    <Compile Include="Hl7\V2\Model\IContent.cs" />
+    <Compile Include="Hl7\V2\Model\ISubComponent.cs" />
+    <Compile Include="Hl7\V2\Model\ISegment.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\Message.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\ModelBase.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\Segment.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\SubComponent.cs" />
-    <Compile Include="Hl7\V2\Model\ModelSupport\Interface\IPathDetailBase.cs" />
+    <Compile Include="Hl7\V2\Model\ModelSupport\IPathDetailBase.cs" />
     <Compile Include="Hl7\V2\Schema\Model\Cardinality.cs" />
     <Compile Include="Hl7\V2\Schema\Model\MessageSegment.cs" />
     <Compile Include="Hl7\V2\Schema\Model\MessageItemBase.cs" />
@@ -86,10 +86,10 @@
     <Compile Include="Hl7\V2\Schema\XmlParser\SchemaParser.cs" />
     <Compile Include="Hl7\V2\Schema\XmlParser\SegmentParser.cs" />
     <Compile Include="Hl7\V2\Support\Content\Convert\Implementation\Base64.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Interface\IConvert.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Interface\IDateTime.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Interface\IBase64.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Tools\Base64Tools.cs" />
+    <Compile Include="Hl7\V2\Support\Content\Convert\IConvert.cs" />
+    <Compile Include="Hl7\V2\Support\Content\Convert\IDateTime.cs" />
+    <Compile Include="Hl7\V2\Support\Content\Convert\IBase64.cs" />
+    <Compile Include="Hl7\V2\Support\Tools\Base64Tools.cs" />
     <Compile Include="Hl7\V2\Model\ModelSupport\Implementation\PathDetailFactory.cs" />
     <Compile Include="Hl7\V2\Support\Content\ContentType.cs" />
     <Compile Include="Hl7\V2\Model\ModelSupport\ContentTypeInternal.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="Hl7\V2\Support\Content\Convert\Implementation\DateTime.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\EscapeData.cs" />
     <Compile Include="Hl7\V2\Model\ModelSupport\Implementation\PathDetail.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Tools\DateTimeSupportTools.cs" />
+    <Compile Include="Hl7\V2\Support\Tools\DateTimeSupportTools.cs" />
     <Compile Include="Hl7\V2\Model\Implementation\MessageDelimiters.cs" />
     <Compile Include="Hl7\V2\Support\Standard\Acknowledgement.cs" />
     <Compile Include="Hl7\V2\Support\Standard\Delimiters.cs" />
@@ -109,7 +109,9 @@
     <Compile Include="Hl7\V2\Support\TextFile\HL7StreamWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Hl7\V2\Model\ModelSupport\Interface\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Hl7\V2\Schema\XmlParser\XMLSchemaFiles\V2_3\ACK.xsd">
       <SubType>Designer</SubType>

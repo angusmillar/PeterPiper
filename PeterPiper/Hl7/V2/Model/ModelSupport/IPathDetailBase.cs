@@ -1,5 +1,5 @@
 ﻿using System;
-namespace PeterPiper.Hl7.V2.Model.ModelSupport.Interface
+namespace PeterPiper.Hl7.V2.Model.ModelSupport
 {
   public interface IPathDetailBase
   {

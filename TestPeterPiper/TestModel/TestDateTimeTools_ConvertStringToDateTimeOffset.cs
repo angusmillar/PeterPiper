@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using PeterPiper.Hl7.V2.Support.Content.Convert.Tools;
+using PeterPiper.Hl7.V2.Support.Tools;
 using PeterPiper.Hl7.V2.Model;
 
 namespace TestPeterPiper.TestModel

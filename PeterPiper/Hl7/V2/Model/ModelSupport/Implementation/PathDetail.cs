@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PeterPiper.Hl7.V2.Model.ModelSupport
 {
-  internal class PathDetailBase : PeterPiper.Hl7.V2.Model.ModelSupport.Interface.IPathDetailBase
+  internal class PathDetailBase : PeterPiper.Hl7.V2.Model.ModelSupport.IPathDetailBase
   {
     public V2.Schema.Model.VersionsSupported MessageVersionSupported
     {

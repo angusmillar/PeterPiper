@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using PeterPiper.Hl7.V2.Model.ModelSupport.Interface;
+using PeterPiper.Hl7.V2.Model.ModelSupport;
 
-namespace PeterPiper.Hl7.V2.Model.Interface
+namespace PeterPiper.Hl7.V2.Model
 {
   public interface IModelBase
   {

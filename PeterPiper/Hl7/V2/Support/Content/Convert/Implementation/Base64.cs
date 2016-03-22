@@ -6,7 +6,7 @@ using PeterPiper.Hl7.V2.Model.Implementation;
 
 namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
 {
-  public class Base64 : PeterPiper.Hl7.V2.Support.Content.Convert.Interface.IBase64
+  public class Base64 : PeterPiper.Hl7.V2.Support.Content.Convert.IBase64
   {
     private ContentBase _ContentBase;
 
@@ -17,11 +17,11 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
 
     public void Encode(byte[] item)
     {
-      _ContentBase.AsStringRaw = Support.Content.Convert.Tools.Base64Tools.Encoder(item);
+      _ContentBase.AsStringRaw = Support.Tools.Base64Tools.Encoder(item);
     }
     public byte[] Decode()
     {
-      return Support.Content.Convert.Tools.Base64Tools.Decoder(_ContentBase.AsStringRaw);
+      return Support.Tools.Base64Tools.Decoder(_ContentBase.AsStringRaw);
     }
   }
 }

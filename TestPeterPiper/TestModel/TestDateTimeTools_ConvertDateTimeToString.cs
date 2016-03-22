@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
-using PeterPiper.Hl7.V2.Support.Content.Convert.Tools;
+using PeterPiper.Hl7.V2.Support.Tools;
 
 namespace TestPeterPiper.TestModel
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace PeterPiper.Hl7.V2.Model.Interface
+namespace PeterPiper.Hl7.V2.Model
 {
   public interface IMessageDelimiters
   {

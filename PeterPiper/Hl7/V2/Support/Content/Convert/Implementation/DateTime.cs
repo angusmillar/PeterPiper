@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Implementation;
-using PeterPiper.Hl7.V2.Support.Content.Convert.Tools;
+using PeterPiper.Hl7.V2.Support.Tools;
 
 namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
 {
-  public class DateTime : PeterPiper.Hl7.V2.Support.Content.Convert.Interface.IDateTime
+  public class DateTime : PeterPiper.Hl7.V2.Support.Content.Convert.IDateTime
   {
     private ContentBase _ContentBase;
 

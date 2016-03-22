@@ -5,7 +5,6 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using PeterPiper.Hl7.V2.Model;
-using PeterPiper.Hl7.V2.Model.Interface;
 using PeterPiper.Hl7.V2.Support;
 using NUnit.Framework;
 
@@ -75,7 +74,7 @@ namespace TestHl7V2
       TimeZone zone = TimeZone.CurrentTimeZone;
       TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
       var date = new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan);
-      target.Segment("MSH").Field(7).AsString = PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.AsString(date, true, PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
+      target.Segment("MSH").Field(7).AsString = PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.AsString(date, true, PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
       Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");      
       Assert.AreEqual(1, target.SegmentCount(), "A test for Message Constructor");
       Assert.AreEqual(true, target.IsParseMSHSegmentOnly, "A test for Message Constructor");

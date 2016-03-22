@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
@@ -24,7 +24,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       MSHTemplate.Append(this.Delimiters.Escape);
       MSHTemplate.Append(this.Delimiters.SubComponent);
       MSHTemplate.Append(this.Delimiters.Field,5);
-      MSHTemplate.Append(PeterPiper.Hl7.V2.Support.Content.Convert.Tools.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Support.Content.Convert.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli));      
+      MSHTemplate.Append(PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Support.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli));      
       MSHTemplate.Append(this.Delimiters.Field, 2);
       MSHTemplate.Append(MessageType);
       MSHTemplate.Append(this.Delimiters.Component);

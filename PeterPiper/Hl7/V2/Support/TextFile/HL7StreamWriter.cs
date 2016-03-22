@@ -53,11 +53,11 @@ namespace PeterPiper.Hl7.V2.Support.TextFile
     {
       _Write(OneMessage, eHL7OutputStyle);
     }
-    public void Write(PeterPiper.Hl7.V2.Model.Interface.IMessage oHL7, HL7OutputStyles eHL7OutputStyle)
+    public void Write(PeterPiper.Hl7.V2.Model.IMessage oHL7, HL7OutputStyles eHL7OutputStyle)
     {
       _Write(oHL7.AsStringRaw, eHL7OutputStyle);
     }
-    public void Write(List<PeterPiper.Hl7.V2.Model.Interface.IMessage> oMessageList, HL7OutputStyles eHL7OutputStyle)
+    public void Write(List<PeterPiper.Hl7.V2.Model.IMessage> oMessageList, HL7OutputStyles eHL7OutputStyle)
     {
       foreach (var oHL7 in oMessageList)
       {

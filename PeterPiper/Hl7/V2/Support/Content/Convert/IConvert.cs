@@ -1,5 +1,5 @@
 ﻿using System;
-namespace PeterPiper.Hl7.V2.Support.Content.Convert.Interface
+namespace PeterPiper.Hl7.V2.Support.Content.Convert
 {
   public interface IConvert
   {

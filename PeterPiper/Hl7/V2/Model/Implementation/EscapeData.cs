@@ -7,7 +7,7 @@ using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
-  internal class EscapeData : PeterPiper.Hl7.V2.Model.Interface.IEscapeData
+  internal class EscapeData : PeterPiper.Hl7.V2.Model.IEscapeData
   {
     public EscapeData(EscapeType EscapeType, string MetaData)
     {

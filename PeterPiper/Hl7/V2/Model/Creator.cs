@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PeterPiper.Hl7.V2.Model.Implementation;
-using PeterPiper.Hl7.V2.Model.Interface;
+using PeterPiper.Hl7.V2.Model;
 
 namespace PeterPiper.Hl7.V2.Model
 {

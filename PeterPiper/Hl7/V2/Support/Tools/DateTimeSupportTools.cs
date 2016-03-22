@@ -6,7 +6,7 @@ using PeterPiper.Hl7.V2.Model;
 using System.Globalization;
 using PeterPiper.Hl7.V2.CustomException;
 
-namespace PeterPiper.Hl7.V2.Support.Content.Convert.Tools
+namespace PeterPiper.Hl7.V2.Support.Tools
 {
   public static class  DateTimeSupportTools
   {

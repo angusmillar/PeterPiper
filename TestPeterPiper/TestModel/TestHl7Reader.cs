@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.IO;
 using PeterPiper.Hl7.V2.Support.TextFile;
 using PeterPiper.Hl7.V2.Model;
-using PeterPiper.Hl7.V2.Model.Interface;
 using NUnit.Framework;
 
 namespace TestPeterPiper.TestModel

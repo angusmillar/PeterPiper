@@ -1,6 +1,6 @@
 ﻿using System;
-using PeterPiper.Hl7.V2.Support.Content.Convert.Tools;
-namespace PeterPiper.Hl7.V2.Support.Content.Convert.Interface
+using PeterPiper.Hl7.V2.Support.Tools;
+namespace PeterPiper.Hl7.V2.Support.Content.Convert
 {
   public interface IDateTime
   {

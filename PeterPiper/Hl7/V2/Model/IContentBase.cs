@@ -1,7 +1,7 @@
 ﻿using System;
-using PeterPiper.Hl7.V2.Support.Content.Convert.Interface;
+using PeterPiper.Hl7.V2.Support.Content.Convert;
 
-namespace PeterPiper.Hl7.V2.Model.Interface
+namespace PeterPiper.Hl7.V2.Model
 {
   public interface IContentBase : IModelBase
   {
