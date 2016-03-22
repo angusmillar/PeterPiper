@@ -18,13 +18,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5CD503
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{C0CEFFBF-CB7B-461A-AB1B-D94ADED5F08B}"
 	ProjectSection(SolutionItems) = preProject
-		Element.mkd = Element.mkd
-		Home.mkd = Home.mkd
-		Message.mkd = Message.mkd
-		Segment.mkd = Segment.mkd
+		Documentation\Element.mkd = Documentation\Element.mkd
+		Documentation\Home.mkd = Documentation\Home.mkd
+		Documentation\Message.mkd = Documentation\Message.mkd
+		Documentation\Segment.mkd = Documentation\Segment.mkd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{91D0092A-C543-4926-9257-300C2A0601BC}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Images\ElementAccessImage.png = Documentation\Images\ElementAccessImage.png
+		Documentation\Images\ElementRepeatImage.png = Documentation\Images\ElementRepeatImage.png
+		Documentation\Images\ElementSegmentImage.png = Documentation\Images\ElementSegmentImage.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
