@@ -1,0 +1,229 @@
+
+**Create a new Segment**
+```C#
+//Remember to include the following using statement at the top of you source file.
+using PeterPiper.Hl7.V2.Model;
+
+//Create a new OBX segment instance as follows:
+//example: OBX|1|NM|^^^HB^Haemoglobin^GOODLAB||145|g/L^^ISO+|130-180||||F|||201504100930+1000
+var oNewOBXSegment = Creator.Segment("OBX");
+oNewOBXSegment.Field(1).AsString = "1";
+oNewOBXSegment.Field(2).AsString = "NM";
+oNewOBXSegment.Field(3).Component(4).AsString = "HB";
+oNewOBXSegment.Field(3).Component(5).AsString = "Haemoglobin";
+oNewOBXSegment.Field(3).Component(6).AsString = "GOODLAB";
+oNewOBXSegment.Field(5).AsString = "145";
+oNewOBXSegment.Field(6).Component(1).AsString = "g/L";
+oNewOBXSegment.Field(6).Component(3).AsString = "ISO+";
+oNewOBXSegment.Field(7).AsString = "130-180";
+oNewOBXSegment.Field(11).AsString = "F";
+oNewOBXSegment.Field(14).AsString = "201504100930+1000";
+      
+//Or, even just create it by parsing the whole segment as a raw string, like this
+var oNewOBXSegment = Creator.Segment("OBX|1|NM|^^^HB^Haemoglobin^GOODLAB||145|g/L^^ISO+|130-180||||F|||201504100930+1000");
+
+```
+
+*This example message will be uses the code examples that follow:*
+```
+MSH|^~\&|GOODLIS|GOODLAB|EMR|GOODHOSP|20150411102500+1000||ORU^R01^ORU_R01|300000000-1|P|2.4|||AL|NE|
+PID|1||1000003^^^GOOHOSP^MR||PatientSurname^PatientFirstname||194506241031|M|||Unit 1^111 Good Street^Brisbane^^4000^AUS^H||^PRN^PH^^^^93235615|^WPN^CP^^^^0414778341
+PV1|1|O
+ORC|RE|300001|15100003-330001|3|CM||||201504100800+1000|||DFTR^DrBSurname^DrOrdering^^^Dr^^^GOODLIS||^WPN^PH^^^^0893412041|201504100730+1000
+OBR|1|300001|15100003-330001|^^^FBE^Full Blood Count^GOODLIS|||201504100930+1000|||||||201504101100+1000||DFTR^DrBSurname^DrOrdering^^^Dr^^^GOODLIS|^WPN^PH^^^^0893412041|||||201504101115+1000||HM|F||^^^201504100800+1000^^RT|||||8003615833340784&Howser&Kara&&&Dr&&&AUSHIC
+OBX|1|NM|^^^HB^Haemoglobin^GOODLAB||145|g/L^^ISO+|130-180||||F
+OBX|2|NM|^^^RCC^Red Cell Count^GOODLAB||5.30|x10\S\12/L^^ISO+|4.50-6.50||||F
+OBX|3|NM|^^^HCT^HCT^GOODLAB||0.43|L/L^^ISO+|0.40-0.54||||F
+```
+
+**Access parts of a Segment**
+
+```C#
+//Parse a whole message into the object model from a string 
+string MessageExample = "<This would be a HL7 V2 Message with many OBX segments>"
+var oHL7 = Creator.Message(MessageExample);
+
+//TheResult variable will equal '145'
+string TheResult = oHL7.Segment("OBX").Field(5).AsString;
+
+//TheResultUnitType variable will equal 'ISO+'
+string TheResultUnitType = oHL7.Segment("OBX").Field(6).Component(3).AsString;
+
+```
+
+**Locate a Segment**
+
+Notice in the example above we did not specify which OBX segment we required. Peter Piper will always default to the first segment of the type asked for, starting from the top of the message. Below we will look at other ways to select the desired segment when there are many of the same type. 
+
+```C#
+//Parse a whole message into the object model from a string
+string MessageExample = "<This would be the example HL7 message from above>"
+var oHL7 = Creator.Message(MessageExample);
+
+//Setup some string variables to populate. 
+//We will get the Haemoglobin's result value and the HCT's normal range.
+string TheHaemoglobinResultValue = string.Empty;
+string TheHctNormalRangeValue = string.Empty;
+
+//Check there are more then zero OBX Segments in our message
+if (oHL7.SegmentCount("OBX") > 0)
+{
+  //Obtain a reference to the segments we are interested in using a lambda expression
+  var oOBXHemaglobin = oHL7.SegmentList("OBX").SingleOrDefault(x => x.Field(3).Component(4).AsString == "HB");
+  var oOBXHct = oHL7.SegmentList("OBX").SingleOrDefault(x => x.Field(3).Component(4).AsString == "HCT");
+
+  //Get the values we are interested in from the segment instances we collected above.
+  //I also check we actually found the segment with a check for null.  
+  if (oOBXHemaglobin != null)
+    TheHaemoglobinResultValue = oOBXHemaglobin.Field(5).AsString;
+  
+  if (oOBXHct != null)  
+    TheHctNormalRangeValue = oOBXHct.Field(7).AsString;
+
+  //Although not as useful we can also locate a segment via its one base index in the message
+  //This gets the sixth segment
+  oOBXHemaglobin = oHL7.Segment(6);
+
+  //This gets the egith segment
+  oOBXHct = oHL7.Segment(8);
+
+  //Or we could get the list of all the OBX segments and locate via the zero based index in the list
+  oOBXHemaglobin = oHL7.SegmentList("OBX")[0]; 
+  oOBXHct = oHL7.SegmentList("OBX")[2]    
+
+  //Or finally, you could iterate all segments looking for what you want
+  //Take note that this is a one based index so i = 1 for the loop
+  for (int i = 1; i < oHL7.SegmentCount(); i++)
+  {
+    if (oHL7.Segment(i).Code == "OBX")
+    {
+      if (oHL7.Segment(i).Field(3).Component(4).AsString == "HB")
+      {
+        TheHaemoglobinResultValue = oHL7.Segment(i).Field(5).AsString;
+      }
+    }
+  } 
+
+  //Although, of all these, I find the first example using the lambda expression the most flexible and useful 
+}
+
+```
+
+**Add a Segment**
+
+The 'Add()' method will always add the given segment to the end of the message.
+```C#
+  //Parse a whole message into the object model from a string
+  string MessageExample = "<This would be the example HL7 message from above>"
+  var oHL7 = Creator.Message(MessageExample);
+
+  //Obtain a reference to the segments we are interested in
+  var oOBXHemaglobin = oHL7.SegmentList("OBX").SingleOrDefault(x => x.Field(3).Component(4).AsString == "HB");
+
+  //Make a clone of the Hemaglobin OBX segment to a new segment instance
+  var oNewOBXSegment = oOBXHemaglobin.Clone();
+
+  //Update the segment  
+  oNewOBXSegment.Field(1).AsString = "4";
+  oNewOBXSegment.Field(2).AsString = "NM";
+  oNewOBXSegment.Field(3).Component(4).AsString = "PLAT";
+  oNewOBXSegment.Field(3).Component(5).AsString = "Platelet";
+  oNewOBXSegment.Field(5).AsString = "198";
+  oNewOBXSegment.Field(6).Component(1).AsString = "x10^9/L";
+  oNewOBXSegment.Field(7).AsString = "150-400";
+  oNewOBXSegment.Field(14).AsString = "201504111035+1000";
+
+  //Add the new Segment to the end of the message 
+  oHL7.Add(oNewOBXSegment);
+```
+
+**Insert a Segment**
+
+The 'Insert()' method allows you to place the segment anywhere in the messages by index
+
+```C#
+  //Parse a whole message into the object model from a string
+  string MessageExample = "<This would be the example HL7 message from above>"
+  var oHL7 = Creator.Message(MessageExample);
+
+  //Obtain a reference to the segments we are interested in
+  var oOBXHemaglobin = oHL7.SegmentList("OBX").SingleOrDefault(x => x.Field(3).Component(4).AsString == "HB");
+
+  //Make a clone of the Hemaglobin OBX segment to a new segment instance
+  var oNewOBXSegment = oOBXHemaglobin.Clone();
+
+  //Update the segment  
+  oNewOBXSegment.Field(1).AsString = "1";
+  oNewOBXSegment.Field(2).AsString = "NM";
+  oNewOBXSegment.Field(3).Component(4).AsString = "PLAT";
+  oNewOBXSegment.Field(3).Component(5).AsString = "Platelet";
+  oNewOBXSegment.Field(5).AsString = "198";
+  oNewOBXSegment.Field(6).Component(1).AsString = "x10^9/L";
+  oNewOBXSegment.Field(7).AsString = "150-400";
+  oNewOBXSegment.Field(14).AsString = "201504111035+1000";
+
+  //Insert the new segment at index six, the first OBX segment positon of the one based index  
+  oHL7.Insert(6, oNewOBXSegment);
+
+  //Of course, if you were to do this you would then need to 
+  //update the other segment's OBX-1 as they will have all been shuffled down
+  oHL7.Segment(7).Field(1).AsString = "2";
+  oHL7.Segment(8).Field(1).AsString = "3";
+  oHL7.Segment(9).Field(1).AsString = "4";
+```
+
+**Remove a Segment**
+
+The 'RemoveSegmentAt()' method will remove a segment at a given index in the one based index.
+```C#
+  //Parse a whole message into the object model from a string
+  string MessageExample = "<This would be the example HL7 message from above>"
+  var oHL7 = Creator.Message(MessageExample);
+
+  //This will remove the PV1 segment from the message
+  oHL7.RemoveSegmentAt(3);
+
+```
+
+**Segment Count**
+
+The 'SegmentCount()' method will return an integer count of segments. You can pass in the type of segment you wish to count or pass in nothing to get the total.
+
+```C#
+  //Parse a whole message into the object model from a string
+  string MessageExample = "<This would be the example HL7 message from above>"
+  var oHL7 = Creator.Message(MessageExample);
+
+  //TotalSegmentCount will equal eight
+  int TotalSegmentCount = oHL7.SegmentCount();
+
+  //TotalOBXSegmentCount will equal three
+  int TotalOBXSegmentCount = oHL7.SegmentCount("OBX");
+
+```
+
+**Clone a Segment**
+
+The 'Clone()' method will create a new instance of any given segment. This is important to understand when using the Add() or Insert() methods. Peter Piper will not allow you to add or insert the same instance of a segment into a message. It will throw a PeterPiperArgumentException if you try. For this reason, you must first clone the segment instance before adding or inserting, or create a new instance from scratch using, Creator.Segment("OBX");
+
+```C#
+  //Parse a whole message into the object model from a string
+  string MessageExample = "<This would be the example HL7 message from above>"
+  var oHL7 = Creator.Message(MessageExample);
+
+  //Obtain a reference to a segment from the message 
+  var oOBXHemaglobin = oHL7.SegmentList("OBX").SingleOrDefault(x => x.Field(3).Component(4).AsString == "HB");
+
+  //Any attempt to add or insert this reference will throw a PeterPiperArgumentException
+  oHL7.Add(oOBXHemaglobin) //**THIS WILL THROW AN EXCEPTION**
+  oHL7.Insert(6, oOBXHemaglobin) //**THIS WILL THROW AN EXCEPTION** 
+
+  //To avoid the exception you must clone the instance before adding or inserting
+  oHL7.Add(oOBXHemaglobin.Clone()) 
+  oHL7.Insert(6, oOBXHemaglobin.Clone())
+
+  //Or create a new segment from scratch
+  var oNewOBXSegment = Creator.Segment("OBX")
+  oHL7.Add(oNewOBXSegment) 
+
+```  
