@@ -5,6 +5,9 @@ namespace PeterPiper.Hl7.V2.Model
 {
   public interface IContentBase : IModelBase
   {
+    /// <summary>
+    /// Get access to all content converters available for this instance. 
+    /// </summary>
     IConvert Convert { get; }
   }
 }

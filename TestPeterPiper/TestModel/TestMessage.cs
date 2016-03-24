@@ -78,6 +78,25 @@ namespace TestHl7V2
       Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");      
       Assert.AreEqual(1, target.SegmentCount(), "A test for Message Constructor");
       Assert.AreEqual(true, target.IsParseMSHSegmentOnly, "A test for Message Constructor");
+
+
+      IMessage oHL7 = target.Clone();
+
+      //try
+      //{
+      //  string test1 = oHL7.
+      //  oHL7.Add(Creator.Segment("PID"));
+
+      //  oHL7.Segment("PID").Add(Creator.Element("Element1"));
+      //  oHL7.Segment("PID").Add(Creator.Element("Element2"));
+      //  oHL7.Segment("PID").Add(Creator.Field("Field3"));
+      //  oHL7.Segment("PID").Field(2).AsString = "STOMP";
+
+      //}
+      //catch(PeterPiper.Hl7.V2.CustomException.PeterPiperException Exec)
+      //{
+      //  string test = Exec.Message;
+      //}
     }
 
     /// <summary>

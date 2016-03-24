@@ -173,5 +173,19 @@ namespace TestHl7V2
     }
 
 
+    /// <summary>
+    ///Does Content AsString Return No Escape Characters
+    ///</summary>
+    [Test]
+    public void TestThatTheContentMetaDataISCorrect()
+    {
+      var Target = Creator.SubComponent(@"NotBold \H\Bold\N\ Not Bold");
+      var MetaData = Target.Content(1).EscapeMetaData;
+
+      Assert.AreEqual("H", MetaData.EscapeTypeCharater, "Is this the correct escape character string");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn, MetaData.EscapeType, "Is this the correct escape character string");
+      
+    }
+
   }
 }

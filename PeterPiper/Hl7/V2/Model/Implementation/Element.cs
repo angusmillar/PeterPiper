@@ -238,7 +238,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return this.CountComponent;
       }
     }
-    public int SubComponetCount
+    public int SubComponentCount
     {
       get
       {
@@ -549,8 +549,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       else
       {
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //return _RepeatDictonary[1].ContentSet(Content, Index);
         Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
         return oField.SubComponentSet(SubComponent, Index);
       }
@@ -561,10 +559,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return _RepeatDictonary[1].SubComponentAppend(SubComponent);
       else
       {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //_RepeatDictonary[1].SubComponentAppend(SubComponent);
-        //return _RepeatDictonary[1].GetSubComponent(1);
         Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
         return oField.SubComponentAppend(SubComponent);
       }

@@ -109,9 +109,7 @@
     <Compile Include="Hl7\V2\Support\TextFile\HL7StreamWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Hl7\V2\Model\ModelSupport\Interface\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Hl7\V2\Schema\XmlParser\XMLSchemaFiles\V2_3\ACK.xsd">
       <SubType>Designer</SubType>

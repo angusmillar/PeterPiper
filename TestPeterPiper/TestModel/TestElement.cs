@@ -97,7 +97,7 @@ namespace TestHl7V2
       var item = Creator.SubComponent("SubAdded");
       target.Add(item);
       Assert.AreEqual("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3&SubAdded^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4", target.AsStringRaw, "A test for Add 2");
-      Assert.AreEqual(4, target.SubComponetCount, "A test for Add 2");
+      Assert.AreEqual(4, target.SubComponentCount, "A test for Add 2");
     }
 
     /// <summary>
@@ -457,16 +457,16 @@ namespace TestHl7V2
     }
 
     /// <summary>
-    ///A test for SubComponetCount
+    ///A test for SubComponentCount
     ///</summary>
     [Test]
-    public void SubComponetCountTest()
+    public void SubComponentCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
       var target = Creator.Element(StringRaw);
       int actual;
-      actual = target.SubComponetCount;
-      Assert.AreEqual(3, actual, "A test for SubComponetCount");
+      actual = target.SubComponentCount;
+      Assert.AreEqual(3, actual, "A test for SubComponentCount");
     }
 
     /// <summary>
