@@ -21,7 +21,7 @@ Peter Piper takes a different approach. With the loss of descriptive properties,
 * Flexibility
 * The majority of messages in the wild are not standard
 
-The HL7 V2 horse has bolted and we are left to deal with what we have; a non-perfect world. If you have spent any time in V2 messages land then you will know the phrase:
+The HL7 V2 horse has bolted and we are left to deal with what we have; a non-perfect world. If you have spent any time in V2 message land then you will know the phrase:
 > "If you have seen one HL7 V2 interface, then you have seen one HL7 V2 interface."
 
 So how does Peter Piper work? It deals with the very basics of HL7 V2 messages, the basic syntax of the message and not the archetypes or data types that are then built on top of the basics. The core parts of a V2 message are:
