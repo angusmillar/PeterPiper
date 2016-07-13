@@ -22,7 +22,7 @@ namespace TestHl7V2
       sMSH = "MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01|0000000000000000010D|P|2.3.1|||||||en";
 
       oMsg = new System.Text.StringBuilder();
-      oMsg.Append("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en"); oMsg.Append("\r");
+      oMsg.Append("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1^AUS&&ISO^AS4700.2&&L|||||||en"); oMsg.Append("\r");
       oMsg.Append("PID|1|PA30000004|PA3000\\R\\0004^^^^MR~22222221111^^^AUSHIC^MC||QHMILLAR^AM201405191155||19730930|M||9^Not Stated|16 ULVA STREET^^BALD HILLS (4036)^^4036||0893412041||||||22222221111"); oMsg.Append("\r");
       oMsg.Append("PV1|1|I|4BT\\R\\PAH&4B Transplant (PAH)&AUSLAB^^^PAH&Princess Alexandra Hospital&AUSLAB||||BONR1\\R\\PAH^Robert Bond^^^^^^^AUSLAB^^^^DN^PAH&Princess Alexandra Hospital~460?PAH^^^^^^^^AUSLAB^^^^DN^PAH&Princess Alexandra Hospital||BONR\\R\\PAH^Bond, Robert (PAH)^^^^^^^AUSLAB^^^^DN^PAH&Princess Alexandra Hospital~460?PAH^^^^^^^^AUSLAB^^^^DN^PAH&Princess Alexandra Hospital~0362233F^^^^^^^^AUSHIC^^^^PRN|MED1\\R\\PAH^Medical 1 (PAH)|||||||||PA2711|G P Eligible|GPE|||||||||||||||||||||||201405191211"); oMsg.Append("\r");
       oMsg.Append("ORC|RE|141470000018|1202^AUSLAB||IP||^^^20140527|||||BONR1\\R\\PAH^Robert Bond^^^^^^^AUSLAB^^^^DN^PAH&Princess Alexandra Hospital~460?PAH^^^^^^^^AUSLAB^^^^DN^PAH&Princess Alexandra Hospital"); oMsg.Append("\r");
@@ -121,7 +121,7 @@ namespace TestHl7V2
     [Test]
     public void MessageConstructorTest3()
     {
-      var item = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var item = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1^AUS&&ISO^AS4700.2&&L|||||||en");
       var target = Creator.Message(item);      
       
       Assert.AreEqual(oMsg.ToString().Split('\r')[0] + '\r', target.AsStringRaw, "A test for Message Constructor");
