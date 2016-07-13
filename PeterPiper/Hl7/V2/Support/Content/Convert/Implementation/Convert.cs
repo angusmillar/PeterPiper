@@ -31,6 +31,14 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
         return new DateTime(_ContentBase);
       }
     }
-    
+
+    public IInteger Integer
+    {
+      get
+      {
+        return new Integer(_ContentBase);
+      }
+    }
+
   }
 }

@@ -65,6 +65,7 @@
     <Compile Include="TestModel\TestPeterPiperCustomExceptions.cs" />
     <Compile Include="TestModel\TestSegment.cs" />
     <Compile Include="TestModel\TestSubComponent.cs" />
+    <Compile Include="TestModel\Test_IntegerConverter.cs" />
     <Compile Include="TestSchema\TestSchemaParser.cs" />
   </ItemGroup>
   <ItemGroup>
