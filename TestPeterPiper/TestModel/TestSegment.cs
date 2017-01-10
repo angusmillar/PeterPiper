@@ -98,7 +98,7 @@ namespace TestHl7V2
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
       var target = Creator.Segment(StringRaw);
-      var expected = Creator.Segment("MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1");      
+      var expected = Creator.Segment("MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1");
       var actual = target.Clone();
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Clone");
     }
@@ -112,7 +112,7 @@ namespace TestHl7V2
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
       var target = Creator.Segment(StringRaw);
       int index = 9;
-      var expected = Creator.Element("ORM^O01^ORM_O01");      
+      var expected = Creator.Element("ORM^O01^ORM_O01");
       var actual = target.Element(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Element");
     }
@@ -126,7 +126,7 @@ namespace TestHl7V2
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
       var target = Creator.Segment(StringRaw);
       int index = 9;
-      var expected = Creator.Field("ORM^O01^ORM_O01");      
+      var expected = Creator.Field("ORM^O01^ORM_O01");
       var actual = target.Field(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Field");
     }
@@ -533,7 +533,7 @@ namespace TestHl7V2
     ///</summary>
     [Test]
     public void InspectingANonExistentField()
-    {     
+    {
       //This Commented out test case fails but the solution/workaround is to use Element() to inspect not field().
       //as it achieves the same outcome. See active test case below. 
       //The reason for this is that when generating a temp Field it 
@@ -579,6 +579,57 @@ namespace TestHl7V2
       actual = target.Code;
       Assert.AreEqual("OBX", actual, "A test for create segment with segment code only i.e PID");
     }
+
+    [Test]
+    public void HL7NullIsTrueTest()
+    {
+      string StringRaw = @"OBX|12|ST|""""|^Urine Micro WBC^AUSLAB||<  10";
+      var target = Creator.Segment(StringRaw);
+      Assert.AreEqual(true, target.Field(3).IsHL7Null, "A test for HL7 Null");
+    }
+
+    [Test]
+    public void HL7NullIsFalseTest()
+    {
+      string StringRaw = @"OBX|12|ST|ABC|^Urine Micro WBC^AUSLAB||<  10";
+      var target = Creator.Segment(StringRaw);
+      Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for HL7 Null");
+    }
+
+    [Test]
+    public void HL7NullForFieldWithComponentsThatAreNotHL7NullTest()
+    {
+      string StringRaw = @"OBX|12|ST|""""^ABC|^Urine Micro WBC^AUSLAB||<  10";
+      var target = Creator.Segment(StringRaw);
+      Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for Field NOT equal to HL7 Null");
+      Assert.AreEqual(true, target.Field(3).Component(1).IsHL7Null, "A test for Component equal to HL7 Null");
+      Assert.AreEqual(false, target.Field(3).Component(2).IsHL7Null, "A test for Component NOT equal to HL7 Null");
+    }
+
+    [Test]
+    public void HL7NullForComponentWithSubComponentsThatAreNotHL7NullTest()
+    {
+      string StringRaw = @"OBX|12|ST|""""&ABC^EFG|^Urine Micro WBC^AUSLAB||<  10";
+      var target = Creator.Segment(StringRaw);
+      Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for Field NOT equal to HL7 Null");
+      Assert.AreEqual(false, target.Field(3).Component(1).IsHL7Null, "A test for Component NOT equal to HL7 Null");
+      Assert.AreEqual(true, target.Field(3).Component(1).SubComponent(1).IsHL7Null, "A test for SubComponent equal to HL7 Null");
+      Assert.AreEqual(false, target.Field(3).Component(1).SubComponent(2).IsHL7Null, "A test for SubComponent NOT equal to HL7 Null");
+      Assert.AreEqual(false, target.Field(3).Component(2).IsHL7Null, "A test for Component NOT equal to HL7 Null");
+    }
+
+    [Test]
+    public void HL7NullForSubComponentWithContentThatAreNotHL7NullTest()
+    {
+      string StringRaw = @"OBX|12|ST|""""\.br\ABC|^Urine Micro WBC^AUSLAB||<  10";
+      var target = Creator.Segment(StringRaw);
+      Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for Field NOT equal to HL7 Null");
+      Assert.AreEqual(false, target.Field(3).Component(1).IsHL7Null, "A test for Component NOT equal to HL7 Null");
+      Assert.AreEqual(false, target.Field(3).Component(1).SubComponent(1).IsHL7Null, "A test for SubComponent equal to HL7 Null");
+      //Content has no concept of HL7Null
+      //Assert.AreEqual(false, target.Field(3).Component(1).SubComponent(1).Content(0).IsHL7Null, "A test for Component NOT equal to HL7 Null");
+    }
+
 
   }
 }

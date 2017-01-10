@@ -132,7 +132,14 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.GetComponent(1).IsHL7Null;
+        if (this.GetComponent(1).IsHL7Null)
+        {
+          if (this.ComponentCount == 1)
+          {
+            return true;
+          }
+        }
+        return false;     
       }
     }
     public void ClearAll()

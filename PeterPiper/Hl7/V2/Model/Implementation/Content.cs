@@ -10,7 +10,7 @@ using PeterPiper.Hl7.V2.CustomException;
 namespace PeterPiper.Hl7.V2.Model.Implementation
 {
   internal class Content : ContentBase, IContent
-  {    
+  {
     private ModelSupport.ContentTypeInternal _InternalContentType;
     public Support.Content.ContentType ContentType
     {
@@ -37,7 +37,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
       }
     }
-    
+
     private EscapeData _EscapeMetaData = null;
     public IEscapeData EscapeMetaData
     {
@@ -99,10 +99,10 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           _Data = String;
           if (ContentType == Support.Content.ContentType.Escape)
           {
-            _EscapeMetaData = new EscapeData(String);            
+            _EscapeMetaData = new EscapeData(String);
           }
           else
-          {            
+          {
             _EscapeMetaData = null;
           }
           SetParent();
@@ -125,7 +125,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Temporary = true;
       _Index = null;
       _Parent = null;
-      this.ContentType = Support.Content.ContentType.Text;      
+      this.ContentType = Support.Content.ContentType.Text;
       _EscapeMetaData = null;
       if (ValidateData(String))
       {
@@ -142,7 +142,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Temporary = true;
       _Index = null;
       _Parent = null;
-      this.ContentType = Support.Content.ContentType.Text;      
+      this.ContentType = Support.Content.ContentType.Text;
       _EscapeMetaData = null;
       if (ValidateData(String))
       {
@@ -164,7 +164,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Parent = null;
       this.ContentType = Support.Content.ContentType.Escape;
       _EscapeMetaData = new EscapeData(EscapeType, String.Empty);
-      _Data = _EscapeMetaData.EscapeTypeCharater.ToString();      
+      _Data = _EscapeMetaData.EscapeTypeCharater.ToString();
       SetParent();
     }
     internal Content(IEscapeData EscapeMetaData)
@@ -172,7 +172,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Temporary = true;
       _Index = null;
       _Parent = null;
-      this.ContentType = Support.Content.ContentType.Escape;      
+      this.ContentType = Support.Content.ContentType.Escape;
       _EscapeMetaData = EscapeMetaData as EscapeData;
       _Data = String.Format("{0}{1}", _EscapeMetaData.EscapeTypeCharater, _EscapeMetaData.MetaData);
       SetParent();
@@ -185,7 +185,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Parent = null;
       this.ContentType = Support.Content.ContentType.Escape;
       _EscapeMetaData = new EscapeData(EscapeType, String.Empty);
-      _Data = _EscapeMetaData.EscapeTypeCharater.ToString();      
+      _Data = _EscapeMetaData.EscapeTypeCharater.ToString();
       SetParent();
     }
 
@@ -201,12 +201,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       if (ContentTypeInternal == ModelSupport.ContentTypeInternal.EncodingCharacters)
       {
         SetDataToEncodingCharacters();
-        _EscapeMetaData = null;        
+        _EscapeMetaData = null;
       }
       else if (ContentTypeInternal == ModelSupport.ContentTypeInternal.MainSeparator)
       {
         SetDataToMainSeparator();
-        _EscapeMetaData = null;        
+        _EscapeMetaData = null;
       }
       else if (ContentTypeInternal == ModelSupport.ContentTypeInternal.Escape)
       {
@@ -215,7 +215,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           if (ValidateData(String))
           {
             _Data = String;
-            _EscapeMetaData = new EscapeData(String);            
+            _EscapeMetaData = new EscapeData(String);
           }
           SetParent();
         }
@@ -225,11 +225,11 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
       }
       else
-      {        
+      {
         if (String != String.Empty)
         {
           if (ValidateData(String))
-          {            
+          {
             _EscapeMetaData = null;
             _Data = String;
           }
@@ -244,7 +244,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Temporary = Temporary;
       _Index = Index;
       _Parent = Parent;
-      _InternalContentType = ModelSupport.ContentTypeInternal.Text;      
+      _InternalContentType = ModelSupport.ContentTypeInternal.Text;
       _EscapeMetaData = null;
       if (ValidateData(String))
       {
@@ -263,7 +263,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _Index = Index;
       _Parent = Parent;
       _InternalContentType = ModelSupport.ContentTypeInternal.Escape;
-      _EscapeMetaData = new EscapeData(EscapeType, String.Empty);      
+      _EscapeMetaData = new EscapeData(EscapeType, String.Empty);
       _Data = Support.Standard.Escapes.ResolveEscapeChararter(EscapeType).ToString();
       SetParent();
     }
@@ -275,7 +275,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       {
         return this.Delimiters;
       }
-    } 
+    }
     public IContent Clone()
     {
       return new Content(this.AsStringRaw, _InternalContentType, this.Delimiters, true, null, null);
@@ -293,11 +293,11 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       set
       {
         if (value == String.Empty)
-        {        
+        {
           this._Data = String.Empty;
           this._EscapeMetaData = null;
           this._InternalContentType = ModelSupport.ContentTypeInternal.Text;
-          this._Temporary = true;               
+          this._Temporary = true;
           RemoveFromParent();
         }
         else if (ValidateData(value))
@@ -311,11 +311,11 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return Support.Standard.Escapes.Decode(this);        
+        return Support.Standard.Escapes.Decode(this);
       }
       set
       {
-        this.AsStringRaw = Support.Standard.Escapes.Encode(value, this.Delimiters);          
+        this.AsStringRaw = Support.Standard.Escapes.Encode(value, this.Delimiters);
       }
     }
     public bool IsEmpty
@@ -326,7 +326,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         //return (this._Data == String.Empty);
       }
     }
-    public bool IsHL7Null
+    //Content has no concept of HL7Null therefore this method is internal only
+    internal bool IsHL7Null
     {
       get
       {
@@ -340,8 +341,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       _Data = String.Empty;
       RemoveFromParent();
-    }    
-        
+    }
+
     //Maintenance
     private void SetParent()
     {
