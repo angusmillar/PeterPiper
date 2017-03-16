@@ -85,10 +85,12 @@
     <Compile Include="Hl7\V2\Schema\XmlParser\MessageTypeParser.cs" />
     <Compile Include="Hl7\V2\Schema\XmlParser\SchemaParser.cs" />
     <Compile Include="Hl7\V2\Schema\XmlParser\SegmentParser.cs" />
+    <Compile Include="Hl7\V2\Support\Content\Convert\IInteger.cs" />
     <Compile Include="Hl7\V2\Support\Content\Convert\Implementation\Base64.cs" />
     <Compile Include="Hl7\V2\Support\Content\Convert\IConvert.cs" />
     <Compile Include="Hl7\V2\Support\Content\Convert\IDateTime.cs" />
     <Compile Include="Hl7\V2\Support\Content\Convert\IBase64.cs" />
+    <Compile Include="Hl7\V2\Support\Content\Convert\Implementation\Integer.cs" />
     <Compile Include="Hl7\V2\Support\Tools\Base64Tools.cs" />
     <Compile Include="Hl7\V2\Model\ModelSupport\Implementation\PathDetailFactory.cs" />
     <Compile Include="Hl7\V2\Support\Content\ContentType.cs" />

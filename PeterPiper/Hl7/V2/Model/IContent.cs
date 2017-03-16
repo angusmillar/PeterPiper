@@ -35,14 +35,7 @@ namespace PeterPiper.Hl7.V2.Model
     /// False if the content contains content.
     /// </summary>
     bool IsEmpty { get; }
-    /// <summary>
-    /// True if the content contains HL7 Null only |""|
-    /// False if the content does not contain HL7 Null only |""|
-    /// </summary>
-    bool IsHL7Null { get; }
-    /// <summary>
-    /// Return the IMessageDelimiters instance containing the Message Delimiters in use for the content. 
-    /// </summary>
+    //bool IsHL7Null { get; }
     IMessageDelimiters MessageDelimiters { get; }
     /// <summary>
     /// Get the content as an decoded string (human readable).     

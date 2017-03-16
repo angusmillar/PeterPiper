@@ -10,12 +10,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 {
   internal abstract class ContentBase : ModelBase, IContentBase
   {
-    protected ContentBase(IMessageDelimiters Delimiters) 
-      :base(Delimiters)
-    {         
+    protected ContentBase(IMessageDelimiters Delimiters)
+      : base(Delimiters)
+    {
     }
     protected ContentBase()
-    {        
+    {
     }
 
     public IConvert Convert
@@ -26,20 +26,5 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
 
-    //public PeterPiper.Hl7.V2.Support.Content.Convert.Implementation.DateTime DateTimeSupport
-    //{
-    //  get
-    //  {
-    //    return new Support.Content.Convert.Implementation.DateTime(this);
-    //  }
-    //}
-    //public void ToBase64(byte[] item)
-    //{
-    //  this.AsStringRaw = Support.Tools.Base64Tools.Encoder(item);
-    //}
-    //public byte[] FromBase64()
-    //{
-    //  return Support.Tools.Base64Tools.Decoder(this.AsStringRaw);
-    //}
   }
 }

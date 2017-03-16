@@ -142,7 +142,8 @@ namespace TestHl7V2
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw);
       Assert.AreEqual(expected.ContentType, actual.ContentType);
       Assert.AreEqual(expected.IsEmpty, actual.IsEmpty);
-      Assert.AreEqual(expected.IsHL7Null, actual.IsHL7Null);
+      //Content has no concept of HL7Null
+      //Assert.AreEqual(expected.IsHL7Null, actual.IsHL7Null);
       Assert.AreEqual(expected.EscapeMetaData.EscapeType, actual.EscapeMetaData.EscapeType);
     }
 

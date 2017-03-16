@@ -186,7 +186,14 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.GetContent(0).IsHL7Null;
+        if (this.GetContent(0).IsHL7Null)
+        {
+          if (this.ContentCount == 1)
+          {
+            return true;
+          }
+        }
+        return false;        
       }
     }
     public void ClearAll()

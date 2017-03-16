@@ -534,7 +534,7 @@ namespace TestPeterPiper.TestModel
       oElement.RemoveRepeatAt(1);
       oElement.RemoveRepeatAt(1);
       Assert.AreEqual("", oElement.AsString, ",oElement.RemoveRepeatAt() returned incorrect");
- 
+
       //Test InsertBefore
       oElement.ClearAll();
       oElement.Add(Creator.Component("The Component"));
@@ -630,7 +630,7 @@ namespace TestPeterPiper.TestModel
       ////Test inspect Field does not add fields & elements
       //if (oSegment.Field(100).AsString == "")
       //{
-          //Assert.AreEqual(5, oSegment.ElementCount, "oSegment.CountElement is incorrect");
+      //Assert.AreEqual(5, oSegment.ElementCount, "oSegment.CountElement is incorrect");
       //}
 
       //Test inspect Element does not add Elements, so if you need to test a field 
@@ -784,7 +784,7 @@ namespace TestPeterPiper.TestModel
   {
     [Test]
     public void TestMessageCreate()
-    {     
+    {
       var oMessage = Creator.Message("2.3.1", "ORU", "R01");
 
       StringBuilder sbMessageWithTwoMSHSegments = new StringBuilder();
@@ -845,7 +845,6 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(2, oMessage.Segment("PID").Element(3).Repeat(2).Component(6).SubComponentCount, "oMessage.Segment(\"PID\").Element(3).Repeat(2).Component(6).CountSubComponent returns the incorrect value.");
       Assert.AreEqual(8, oMessage.Segment("PID").Element(3).RepeatCount, "oMessage.Segment(\"PID\").Element(3).RepeatCount returns the incorrect value.");
       Assert.AreEqual("\"\"", oMessage.Segment("PID").Field(2).Component(8).AsStringRaw, "oMessage.Segment(\"PID\").Field(2).Component(8).AsStringRaw returns the incorrect value.");
-      Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).Content(0).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).Content(0).IsHL7Null returns the incorrect value.");
       Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).SubComponent(1).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).SubComponent(1).IsHL7Null returns the incorrect value.");
       Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).IsHL7Null returns the incorrect value.");
 
@@ -863,7 +862,6 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(2, oMessage.Segment("PID").Element(3).Repeat(2).Component(6).SubComponentCount, "oMessage.Segment(\"PID\").Element(3).Repeat(2).Component(6).CountSubComponent returns the incorrect value.");
       Assert.AreEqual(8, oMessage.Segment("PID").Element(3).RepeatCount, "oMessage.Segment(\"PID\").Element(3).RepeatCount returns the incorrect value.");
       Assert.AreEqual("\"\"", oMessage.Segment("PID").Field(2).Component(8).AsStringRaw, "oMessage.Segment(\"PID\").Field(2).Component(8).AsStringRaw returns the incorrect value.");
-      Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).Content(0).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).Content(0).IsHL7Null returns the incorrect value.");
       Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).SubComponent(1).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).SubComponent(1).IsHL7Null returns the incorrect value.");
       Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).IsHL7Null returns the incorrect value.");
 
@@ -887,7 +885,6 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(2, oMessage.Segment("PID").Element(3).Repeat(2).Component(6).SubComponentCount, "oMessage.Segment(\"PID\").Element(3).Repeat(2).Component(6).CountSubComponent returns the incorrect value.");
       Assert.AreEqual(8, oMessage.Segment("PID").Element(3).RepeatCount, "oMessage.Segment(\"PID\").Element(3).RepeatCount returns the incorrect value.");
       Assert.AreEqual("\"\"", oMessage.Segment("PID").Field(2).Component(8).AsStringRaw, "oMessage.Segment(\"PID\").Field(2).Component(8).AsStringRaw returns the incorrect value.");
-      Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).Content(0).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).Content(0).IsHL7Null returns the incorrect value.");
       Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).SubComponent(1).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).SubComponent(1).IsHL7Null returns the incorrect value.");
       Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).IsHL7Null returns the incorrect value.");
 

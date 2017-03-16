@@ -218,7 +218,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.GetSegment(1).GetField(12).AsString;
+        return this.GetSegment(1).GetField(12).Component(1).SubComponent(1).AsString;
       }
     }
     public string MessageControlID
