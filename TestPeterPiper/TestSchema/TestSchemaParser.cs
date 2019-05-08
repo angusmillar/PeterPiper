@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterPiper.Hl7.V2.Schema.XmlParser;
 using PeterPiper.Hl7.V2.Model;
 
@@ -12,13 +12,13 @@ using PeterPiper.Hl7.V2.Model;
 
 namespace TestPeterPiper.TestSchema
 {
-  [TestFixture]
+  [TestClass]
   public class TestSchemaParser
   {
     /// <summary>
     ///A test to load a single message & verson schema ORU^R01
     ///</summary>
-    [Test]
+    [TestMethod]
     public void TestLoadSingleMessage()
     {
 
@@ -41,7 +41,7 @@ namespace TestPeterPiper.TestSchema
     /// <summary>
     ///A test to load all 5 schemas
     ///</summary>
-    [Test]
+    [TestMethod]
     public void TestLoadAll()
     {
 
@@ -49,7 +49,7 @@ namespace TestPeterPiper.TestSchema
       Assert.AreEqual(AllVersions.Count, 5, "Should have support for 5 version found support for: " + AllVersions.Count);
     }
 
-    [Test]
+    [TestMethod]
     public void TestLoadSingleMessage2()
     {
 

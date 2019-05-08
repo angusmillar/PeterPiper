@@ -27,20 +27,21 @@ namespace PeterPiper.Hl7.V2.Support.TextFile
 
     private void _Write(string OneMessage, HL7OutputStyles eHL7OutputStyle)
     {
-      using (StreamWriter _Writer = new StreamWriter(_Path, _Append))
+      using (var stream = new FileStream(_Path, FileMode.Create, FileAccess.Write, FileShare.Read, 4096, FileOptions.SequentialScan))
+      using (var streamWriter = new StreamWriter(stream, System.Text.Encoding.UTF8, 1024, _Append))
       {
         if (eHL7OutputStyle == HL7OutputStyles.HumanReadable)
         {
           string[] SpltMessagSegments = OneMessage.Split(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SegmentTerminator);
           for (int i = 0; i < SpltMessagSegments.Length; i++)
           {
-            _Writer.Write(String.Format("{0}{1}", SpltMessagSegments[i], System.Environment.NewLine));
+            streamWriter.Write(String.Format("{0}{1}", SpltMessagSegments[i], System.Environment.NewLine));
           }          
         }
         else if (eHL7OutputStyle == HL7OutputStyles.InterfaceReadable)
         {
-          _Writer.Write(OneMessage);
-          _Writer.Write(System.Environment.NewLine);
+          streamWriter.Write(OneMessage);
+          streamWriter.Write(System.Environment.NewLine);
         }
         else
         {

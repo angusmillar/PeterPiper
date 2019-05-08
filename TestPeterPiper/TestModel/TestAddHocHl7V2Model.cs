@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestPeterPiper.TestModel
 {
-  [TestFixture]
+  [TestClass]
   public class UnitTestContentModel
   {
-    [Test]
+    [TestMethod]
+    [TestCategory("Content")]
     public void TestContentTypeCreate()
     {
       var oContent = Creator.Content("The data for a content", PeterPiper.Hl7.V2.Support.Content.ContentType.Text);
@@ -21,7 +22,8 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual("The data for a content", oContent.ToString(), "ToString Failed on get");
     }
 
-    [Test]
+    [TestMethod]
+    [TestCategory("Content")]
     public void TestContentTypeExceptions()
     {
       IContent obj = null;
@@ -99,17 +101,19 @@ namespace TestPeterPiper.TestModel
     }
   }
 
-  [TestFixture]
+  [TestClass]
   public class UnitTestSubComponentModel
   {
-    [Test]
+    [TestMethod]
+    [TestCategory("Content")]
     public void TestSubComponentCreate()
     {
       var oSubComonentWithEscapes = Creator.SubComponent("\\N\\this is not Highlighted\\H\\ This is higlighted \\N\\ This is not, this is hex  \\X0xC2\\ this is local \\Ztesttest\\ this is field \\F\\ this is Compponet \\S\\ this is SubCompoent \\T\\ repeat \\R\\ this is escape \\E\\ done ");
       var oSubComonentPlainOLDText = Creator.SubComponent("This is plan old test");
     }
 
-    [Test]
+    [TestMethod]
+    [TestCategory("Content")]
     public void TestSubComponentAddingContent()
     {
       string FullTestStringWithEscapes = "not highlighted\\H\\ Highlighted \\N\\highlighted ended \\H\\Added highlight \\N\\Added not highlight \\H\\\\N\\";
@@ -156,7 +160,8 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual("\\H\\\\.br\\This is bold textNot bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
     }
 
-    [Test]
+    [TestMethod]
+    [TestCategory("Content")]
     public void TestSubComponentSettingContent()
     {
       var oSubComp = Creator.SubComponent();
@@ -227,7 +232,8 @@ namespace TestPeterPiper.TestModel
 
     }
 
-    [Test]
+    [TestMethod]
+    [TestCategory("Content")]
     public void TestSubComponentContentCount()
     {
       var oSubComp = Creator.SubComponent("First ");
@@ -247,10 +253,11 @@ namespace TestPeterPiper.TestModel
     }
   }
 
-  [TestFixture]
+  [TestClass]
   public class UnitTestComponentModel
   {
-    [Test]
+    [TestMethod]
+    [TestCategory("Content")]
     public void TestComponentCreate()
     {
       var oComponent = Creator.Component("First&Se\\e\\cond&\\H\\Third is Bold\\n\\&forth&fith");
@@ -347,10 +354,11 @@ namespace TestPeterPiper.TestModel
     }
   }
 
-  [TestFixture]
+  [TestClass]
   public class UnitTestFieldModel
   {
-    [Test]
+    [TestMethod]
+    [TestCategory("Content")]
     public void TestFieldCreate()
     {
       //Test setting data through create
@@ -468,10 +476,10 @@ namespace TestPeterPiper.TestModel
     }
   }
 
-  [TestFixture]
+  [TestClass]
   public class UnitTestElementModel
   {
-    [Test]
+    [TestMethod]
     public void TestFieldCreate()
     {
       //Test setting data through create
@@ -592,10 +600,10 @@ namespace TestPeterPiper.TestModel
     }
   }
 
-  [TestFixture]
+  [TestClass]
   public class UnitTestSegmentModel
   {
-    [Test]
+    [TestMethod]
     public void TestFieldCreate()
     {
       //Test setting data through create
@@ -779,10 +787,10 @@ namespace TestPeterPiper.TestModel
     }
   }
 
-  [TestFixture]
+  [TestClass]
   public class UnitTestMessageModel
   {
-    [Test]
+    [TestMethod]
     public void TestMessageCreate()
     {
       var oMessage = Creator.Message("2.3.1", "ORU", "R01");

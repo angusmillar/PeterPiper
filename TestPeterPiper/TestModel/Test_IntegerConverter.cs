@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterPiper.Hl7.V2.Model;
 
 namespace TestPeterPiper.TestModel
 {
-  [TestFixture]
+  [TestClass]
   public class Test_IntegerConverter
   {
-    [Test]
+    [TestMethod]
     public void Test_Can_Convert_Int32()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|2147483647|P|2.3.1";
@@ -20,7 +20,7 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(result, 2147483647);
     }
 
-    [Test]
+    [TestMethod]
     public void Test_Can_Convert_Int()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|2147483647|P|2.3.1";
@@ -29,7 +29,7 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(result, 2147483647);
     }
 
-    [Test]
+    [TestMethod]
     public void Test_Can_Convert_Int16()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|32767|P|2.3.1";
@@ -38,7 +38,7 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(result, 32767);
     }
 
-    [Test]
+    [TestMethod]
     public void Test_Can_Convert_Int64()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|9223372036854775807|P|2.3.1";
@@ -47,7 +47,7 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(result, 9223372036854775807);
     }
 
-    [Test]
+    [TestMethod]
     public void Test_IsNumeric_True()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|9223372036854775807|P|2.3.1";
@@ -55,7 +55,7 @@ namespace TestPeterPiper.TestModel
       Assert.IsTrue(target.Element(10).Convert.Integer.IsNumeric);
     }
 
-    [Test]
+    [TestMethod]
     public void Test_IsNumeric_False()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|922abc2036854775807|P|2.3.1";
@@ -63,7 +63,7 @@ namespace TestPeterPiper.TestModel
       Assert.IsFalse(target.Element(10).Convert.Integer.IsNumeric);
     }
 
-    [Test]    
+    [TestMethod]    
     public void Test_Cannot_Convert_AlphaStirngToInt32()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|21ABC83647|P|2.3.1";
@@ -79,7 +79,7 @@ namespace TestPeterPiper.TestModel
       }     
     }
 
-    [Test]
+    [TestMethod]
     public void Test_Cannot_Convert_AlphaStirngToInt16()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|21ABC83647|P|2.3.1";
@@ -95,7 +95,7 @@ namespace TestPeterPiper.TestModel
       }
     }
 
-    [Test]
+    [TestMethod]
     public void Test_Cannot_Convert_AlphaStirngToInt64()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|21ABC83647|P|2.3.1";
@@ -111,7 +111,7 @@ namespace TestPeterPiper.TestModel
       }
     }
 
-    [Test]
+    [TestMethod]
     public void Test_Cannot_Convert_AlphaStirngToInt()
     {
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|21ABC83647|P|2.3.1";

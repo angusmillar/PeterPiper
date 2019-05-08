@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
 using System.Collections.ObjectModel;
 
 namespace TestHl7V2
 {
-  [TestFixture]
+  [TestClass]
   public class TestElement
   {
 
     public IMessageDelimiters CustomDelimiters;
 
-    [SetUp]
+    [TestInitialize]
     public void MyTestInitialize()
     {
       CustomDelimiters = Creator.MessageDelimiters('#', '@', '*', '!', '%');
@@ -26,7 +26,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Element Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ElementConstructorTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -38,7 +38,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Element Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ElementConstructorTest1()
     {
       string StringRaw = "Hello %T% World %.br%Earth!Sub2!Sub3*Comp2*Comp3@R2Hello %T% World %.br%Earth!R2Sub2!R2Sub3*R2Comp2*R2Comp3@R3@R4";
@@ -50,7 +50,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Element Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ElementConstructorTest2()
     {
       var target = Creator.Element();
@@ -61,7 +61,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -75,7 +75,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest1()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -89,7 +89,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest2()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -103,7 +103,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest3()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -117,7 +117,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ClearAll
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ClearAllTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -130,7 +130,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Clone
     ///</summary>
-    [Test]
+    [TestMethod]
     public void CloneTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -143,7 +143,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Component
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ComponentTest()
     {      
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -157,7 +157,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Content
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -173,7 +173,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -187,7 +187,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest1()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -201,7 +201,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest2()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -215,7 +215,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest4()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -229,7 +229,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveComponentAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveComponentAtTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -242,7 +242,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveContentAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveContentAtTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -255,7 +255,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveRepeatAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveRepeatAtTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -268,7 +268,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveSubComponentAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveSubComponentAtTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -281,7 +281,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Repeat
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RepeatTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -296,7 +296,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Set
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SetTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -310,7 +310,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for SubComponent
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SubComponentTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -325,7 +325,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ToString
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ToStringTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -339,7 +339,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for AsString
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsStringTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -354,7 +354,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for AsStringRaw
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsStringRawTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -370,7 +370,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ComponentCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ComponentCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -383,7 +383,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ContentCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -396,7 +396,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for IsEmpty
     ///</summary>
-    [Test]
+    [TestMethod]
     public void IsEmptyTest()
     {
       string StringRaw = "";
@@ -413,7 +413,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for IsHL7Null
     ///</summary>
-    [Test]
+    [TestMethod]
     public void IsHL7NullTest()
     {
       var target = Creator.Element(); // TODO: Initialize to an appropriate value
@@ -428,7 +428,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RepeatCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RepeatCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -441,7 +441,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RepeatList
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RepeatListTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -459,7 +459,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for SubComponentCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SubComponentCountTest()
     {
       string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
@@ -472,7 +472,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageDelimiters
     ///</summary>
-    [Test]
+    [TestMethod]
     public void DelimterAccessTest()
     {
       var target = Creator.Element("Test", CustomDelimiters);

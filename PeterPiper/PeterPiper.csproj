@@ -1,117 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{25AB1577-FF72-4F41-B1E4-5E3ADE7995EA}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterPiper</RootNamespace>
-    <AssemblyName>PeterPiper</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <!-- This project will output netstandard2.0 and net461 assemblies -->
+    <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
+    <Description>Peter Piper Parser a HL7 V2 message parser for .net</Description>
+    <Copyright>pyrohealth.net</Copyright>
+    <Authors>AngusMillar</Authors>
+    <PackageProjectUrl>https://github.com/angusmillar/PeterPiper</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/angusmillar/PeterPiper</RepositoryUrl>
+    <PackageTags>HL7 V2</PackageTags>
+    <Product>PeterPiper</Product>
+    <!--<iconUrl>https://github.com/angusmillar/PyroWeb/blob/master/src/Images/SiteIcon/PyroIcon-100.png?raw=true</iconUrl>-->
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Hl7\V2\CustomException\PeterPiperArgumentException.cs" />
-    <Compile Include="Hl7\V2\CustomException\PeterPiperException.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\Component.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\Content.cs" />
-    <Compile Include="Hl7\V2\Model\Creator.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\Element.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\Field.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\ContentBase.cs" />
-    <Compile Include="Hl7\V2\Model\IEscapeData.cs" />
-    <Compile Include="Hl7\V2\Model\IMessageDelimiters.cs" />
-    <Compile Include="Hl7\V2\Model\IMessage.cs" />
-    <Compile Include="Hl7\V2\Model\IElement.cs" />
-    <Compile Include="Hl7\V2\Model\IField.cs" />
-    <Compile Include="Hl7\V2\Model\IContentBase.cs" />
-    <Compile Include="Hl7\V2\Model\IModelBase.cs" />
-    <Compile Include="Hl7\V2\Model\IComponent.cs" />
-    <Compile Include="Hl7\V2\Model\IContent.cs" />
-    <Compile Include="Hl7\V2\Model\ISubComponent.cs" />
-    <Compile Include="Hl7\V2\Model\ISegment.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\Message.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\ModelBase.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\Segment.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\SubComponent.cs" />
-    <Compile Include="Hl7\V2\Model\ModelSupport\IPathDetailBase.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\Cardinality.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\MessageSegment.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\MessageItemBase.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\MessageSegmentGroup.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\MessageStructure.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\SegmentStructure.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\SegmentField.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\VersionSchema.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\VersionsSupported.cs" />
-    <Compile Include="Hl7\V2\Schema\Support\SchemaSupport.cs" />
-    <Compile Include="Hl7\V2\Schema\XmlParser\DataTypeParser.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\CompositeItem.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\Composite.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\Primitives.cs" />
-    <Compile Include="Hl7\V2\Schema\Model\DataTypeBase.cs" />
-    <Compile Include="Hl7\V2\Schema\XmlParser\FieldParser.cs" />
-    <Compile Include="Hl7\V2\Schema\XmlParser\HL7v2Xsd.cs" />
-    <Compile Include="Hl7\V2\Schema\XmlParser\MessageParser.cs" />
-    <Compile Include="Hl7\V2\Schema\XmlParser\MessageTypeParser.cs" />
-    <Compile Include="Hl7\V2\Schema\XmlParser\SchemaParser.cs" />
-    <Compile Include="Hl7\V2\Schema\XmlParser\SegmentParser.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\IInteger.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Implementation\Base64.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\IConvert.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\IDateTime.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\IBase64.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Implementation\Integer.cs" />
-    <Compile Include="Hl7\V2\Support\Tools\Base64Tools.cs" />
-    <Compile Include="Hl7\V2\Model\ModelSupport\Implementation\PathDetailFactory.cs" />
-    <Compile Include="Hl7\V2\Support\Content\ContentType.cs" />
-    <Compile Include="Hl7\V2\Model\ModelSupport\ContentTypeInternal.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Implementation\Convert.cs" />
-    <Compile Include="Hl7\V2\Support\Content\Convert\Implementation\DateTime.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\EscapeData.cs" />
-    <Compile Include="Hl7\V2\Model\ModelSupport\Implementation\PathDetail.cs" />
-    <Compile Include="Hl7\V2\Support\Tools\DateTimeSupportTools.cs" />
-    <Compile Include="Hl7\V2\Model\Implementation\MessageDelimiters.cs" />
-    <Compile Include="Hl7\V2\Support\Standard\Acknowledgement.cs" />
-    <Compile Include="Hl7\V2\Support\Standard\Delimiters.cs" />
-    <Compile Include="Hl7\V2\Support\Standard\Escapes.cs" />
-    <Compile Include="Hl7\V2\Support\Standard\Null.cs" />
-    <Compile Include="Hl7\V2\Support\Standard\Segments.cs" />
-    <Compile Include="Hl7\V2\Support\Standard\Hl7Table.cs" />
-    <Compile Include="Hl7\V2\Support\TextFile\Hl7StreamReader.cs" />
-    <Compile Include="Hl7\V2\Support\TextFile\HL7StreamWriter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Hl7\V2\Schema\XmlParser\XMLSchemaFiles\V2_3\ACK.xsd">
       <SubType>Designer</SubType>
@@ -2630,7 +2534,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PeterPiper.Hl7.V2.CustomException
 {
-  public class PeterPiperException : System.ApplicationException
+  public class PeterPiperException : System.Exception
   {
     public PeterPiperException()
     { 

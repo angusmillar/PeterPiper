@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using PeterPiper.Hl7.V2.Support.Content;
 
 namespace TestPeterPiper.TestModel
 {
-  [TestFixture]
+  [TestClass]
   public class TestBase64
   {
 
@@ -17,17 +17,19 @@ namespace TestPeterPiper.TestModel
     {
       get
       {
-        string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
-        UriBuilder uri = new UriBuilder(codeBase);
-        string path = Uri.UnescapeDataString(uri.Path);
-        return Path.GetDirectoryName(path);
+        
+        //string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+        //UriBuilder uri = new UriBuilder(codeBase);
+        //string path = Uri.UnescapeDataString(uri.Path);
+        //return Path.GetDirectoryName(path);
+        return @"C:\GitRepository\PeterPiper\TestPeterPiper";
       }
     }
 
     /// <summary>
     ///A test for Decoder
     ///</summary>
-    [Test]
+    [TestMethod]
     public void DecoderTest()
     {
       string path = AssemblyDirectory + "\\TestResource\\ED Data Test.zip";
@@ -48,7 +50,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for Encoder
     ///</summary>
-    [Test]
+    [TestMethod]
     public void EncoderTest()
     {
       //See decodetTest above which tests both encode and decode in one.

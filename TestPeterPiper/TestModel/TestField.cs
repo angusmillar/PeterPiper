@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
 using System.Collections.ObjectModel;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
 namespace TestHl7V2
 {
-  [TestFixture]
+  [TestClass]
   public class TestField
   {
     public IMessageDelimiters CustomDelimiters;
 
-    [SetUp]
+    [TestInitialize]
     public void MyTestInitialize()
     {
       CustomDelimiters = Creator.MessageDelimiters('#', '@', '*', '!', '%');
@@ -25,7 +25,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Field Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void FieldConstructorTest()
     {
       string StringRaw = "Field1^Field2^Field3^Field4";
@@ -37,7 +37,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Field Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void FieldConstructorTest1()
     {
       string StringRaw = "Field1*Field2*Field3*Field4";
@@ -49,7 +49,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Field Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void FieldConstructorTest2()
     {
       var target  = Creator.Field();
@@ -61,7 +61,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest()
     {
       var target  = Creator.Field("Field1^Field2^Field3^Field4");
@@ -73,7 +73,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest2()
     {
       var target  = Creator.Field("Field1.1\\.br\\Field1.2\\.br\\Field1.3^Field2^Field3^Field4");
@@ -86,7 +86,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest3()
     {
       var target  = Creator.Field("Sub1&Sub2&Sub3");
@@ -99,7 +99,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ClearAll
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ClearAllTest()
     {
       var target  = Creator.Field("Sub1&Sub2&Sub3^Comp2\\H\\");
@@ -110,7 +110,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Clone
     ///</summary>
-    [Test]
+    [TestMethod]
     public void CloneTest()
     {
       var target  = Creator.Field("Sub1&Sub2&Sub3^Comp2\\H\\Comp2.2&Sub");
@@ -124,7 +124,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Component
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ComponentTest()
     {
       var Target = Creator.Field("Sub1&Sub2&Sub3^Comp2\\H\\Comp2.2&Sub");      
@@ -138,7 +138,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Content
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentTest()
     {
       var target  = Creator.Field("Comp1\\H\\Comp1.2&Sub^Sub1&Sub2&Sub3^");
@@ -151,7 +151,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest()
     {
       var target  = Creator.Field("Sub1&Sub2&Sub4");
@@ -165,7 +165,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest1()
     {
       var target  = Creator.Field("one\\T\\two");
@@ -183,7 +183,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest3()
     {
       var target  = Creator.Field("one^two^Four");
@@ -203,7 +203,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveComponentAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveComponentAtTest()
     {
       var target  = Creator.Field("Comp1^Comp2^Comp3^Comp4");
@@ -216,7 +216,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveContentAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveContentAtTest()
     {
       var target  = Creator.Field();
@@ -235,7 +235,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveSubComponentAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveSubComponentAtTest()
     {
       var target  = Creator.Field("Sub1&Sub2&Sub3&Sub4^Comp2");
@@ -249,7 +249,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Set
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SetTest()
     {
       var target  = Creator.Field("\\H\\Cont1\\N\\Cont3\\.br\\newline&Sub1^Comp2");
@@ -263,7 +263,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Set
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SetTest1()
     {
       var target  = Creator.Field("\\H\\Cont1\\N\\Cont3\\.br\\newline&Sub2&Sub3&Sub4^Comp2");
@@ -277,7 +277,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Set
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SetTest2()
     {
       var target  = Creator.Field("\\H\\Cont1\\N\\Cont3\\.br\\newline&Sub2&Sub3&Sub4^Comp2^Comp3^Comp4");
@@ -290,7 +290,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for SubComponent
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SubComponentTest()
     {
       var target  = Creator.Field("Sub1&Sub2&Sub3&Sub4");
@@ -303,7 +303,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ToString
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ToStringTest()
     {
       var target  = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
@@ -316,7 +316,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for AsString
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsStringTest()
     {
       var target  = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
@@ -330,7 +330,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for AsStringRaw
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsStringRawTest()
     {
       var target  = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
@@ -344,7 +344,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ComponentCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ComponentCountTest()
     {
       var target  = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
@@ -356,7 +356,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ComponentList
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ComponentListTest()
     {
       var target  = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
@@ -371,7 +371,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ContentCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentCountTest()
     {
       var target  = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
@@ -383,7 +383,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for IsEmpty
     ///</summary>
-    [Test]
+    [TestMethod]
     public void IsEmptyTest()
     {
       var target  = Creator.Field();
@@ -399,7 +399,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for IsHL7Null
     ///</summary>
-    [Test]
+    [TestMethod]
     public void IsHL7NullTest()
     {
       var target  = Creator.Field("\"\"");
@@ -414,7 +414,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for SubComponentCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SubComponentCountTest()
     {
       var target  = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
@@ -426,7 +426,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageDelimiters
     ///</summary>
-    [Test]
+    [TestMethod]
     public void DelimterAccessTest()
     {
       var target  = Creator.Field("Test", CustomDelimiters);

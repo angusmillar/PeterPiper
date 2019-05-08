@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Xml.Linq;
-
+using System.Reflection;
 
 namespace PeterPiper.Hl7.V2.Schema.XmlParser
 {
@@ -160,7 +160,8 @@ namespace PeterPiper.Hl7.V2.Schema.XmlParser
       string ResourseToLoad = String.Format(EmbededResourseMask, _VersionCurrent.ToString()) + FileName;
       try
       {
-        var assembly = System.Reflection.Assembly.GetExecutingAssembly();        
+        var assembly = typeof(SchemaParser).GetTypeInfo().Assembly;
+        //var assembly = System.Reflection.Assembly.GetExecutingAssembly();        
         Stream oStream = assembly.GetManifestResourceStream(ResourseToLoad);
         xDoc = XDocument.Load(oStream);        
       }

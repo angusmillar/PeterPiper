@@ -6,17 +6,17 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestHl7V2
 {
-  [TestFixture]
+  [TestClass]
   public class TestMessage
   {
     public System.Text.StringBuilder oMsg;
     public string sMSH;
 
-    [SetUp]
+    [TestInitialize]
     public void MyTestInitialize()
     {
       sMSH = "MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01|0000000000000000010D|P|2.3.1|||||||en";
@@ -53,7 +53,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Message Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageConstructorTest()
     {
 
@@ -71,8 +71,9 @@ namespace TestHl7V2
       Assert.AreEqual("ORU_R01", target.MessageStructure, "A test for Message Constructor");
       Assert.AreEqual("2.3.1", target.MessageVersion, "A test for Message Constructor");
       //Get the time zone for where we are running now
-      TimeZone zone = TimeZone.CurrentTimeZone;
-      TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
+      //TimeZone zone = TimeZone.CurrentTimeZone;
+      //TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
+      TimeSpan TimeSpan = DateTimeOffset.Now.Offset;
       var date = new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan);
       target.Segment("MSH").Field(7).AsString = PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.AsString(date, true, PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli);
       Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");      
@@ -102,7 +103,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Message Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageConstructorTest1()
     {
       string[] MsgList = oMsg.ToString().Split('\r');
@@ -121,7 +122,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Message Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageConstructorTest2()
     {
       string MessageVersion = "2.7";
@@ -137,7 +138,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Message Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageConstructorTest3()
     {
       var item = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1^AUS&&ISO^AS4700.2&&L|||||||en");
@@ -150,8 +151,9 @@ namespace TestHl7V2
       Assert.AreEqual("ORU_R01", target.MessageStructure, "A test for Message Constructor");
       Assert.AreEqual("2.3.1", target.MessageVersion, "A test for Message Constructor");
       //Get the time zone for where we are running now
-      TimeZone zone = TimeZone.CurrentTimeZone;
-      TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
+      //TimeZone zone = TimeZone.CurrentTimeZone;
+      TimeSpan TimeSpan = DateTimeOffset.Now.Offset;
+      //TimeSpan TimeSpan = zone.GetUtcOffset(DateTime.Now);
       var date = new DateTimeOffset(2014,05,27,9,56,57,TimeSpan);
       target.Segment("MSH").Field(7).Convert.DateTime.SetDateTimeOffset(date);
       Assert.AreEqual(new DateTimeOffset(2014, 05, 27, 9, 56, 57, TimeSpan), target.MessageCreationDateTime, "A test for Message Constructor");
@@ -162,7 +164,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest1()
     {
       var item = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
@@ -187,7 +189,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ClearAll
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ClearAllTest()
     {
       IMessage target;
@@ -224,7 +226,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Clone
     ///</summary>
-    [Test]
+    [TestMethod]
     public void CloneTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -236,7 +238,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -260,7 +262,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveSegmentAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveSegmentAtTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -276,7 +278,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Segment
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SegmentTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -289,7 +291,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Segment
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SegmentTest1()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -302,7 +304,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for SegmentList
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SegmentListTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -316,7 +318,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for SegmentList
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SegmentListTest1()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -329,7 +331,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ToString
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ToStringTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -345,7 +347,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for AsString
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsStringTest()
     {
       //Message target = Creator.Message(oMsg.ToString());
@@ -361,7 +363,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for AsStringRaw
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsStringRawTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -375,7 +377,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for EscapeSequence
     ///</summary>
-    [Test]
+    [TestMethod]
     public void EscapeSequenceTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -387,7 +389,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MainSeparator
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MainSeparatorTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -399,7 +401,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageControlID
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageControlIDTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -411,7 +413,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageDelimiters
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageDelimitersTest()
     {
       var target = Creator.Message(oMsg.ToString());
@@ -427,7 +429,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageStructure
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageStructureTest()
     {
       var target  = Creator.Message(oMsg.ToString());
@@ -439,7 +441,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageTrigger
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageTriggerTest()
     {
       var target  = Creator.Message(oMsg.ToString());
@@ -451,7 +453,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageType
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageTypeTest()
     {
       var target  = Creator.Message(oMsg.ToString());
@@ -463,7 +465,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageVersion
     ///</summary>
-    [Test]
+    [TestMethod]
     public void MessageVersionTest()
     {
       var target  = Creator.Message(oMsg.ToString());
@@ -475,7 +477,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for SegmentCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SegmentCountTest()
     {
       var target  = Creator.Message(oMsg.ToString());
@@ -488,7 +490,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for PathInformation
     ///</summary>
-    [Test]
+    [TestMethod]
     public void PathInformationTest()
     {
       var target  = Creator.Message(oMsg.ToString());
@@ -503,7 +505,7 @@ namespace TestHl7V2
 
     }
 
-    [Test]
+    [TestMethod]
     public void MessageSchemaTest()
     {
       var target  = Creator.Message(oMsg.ToString());

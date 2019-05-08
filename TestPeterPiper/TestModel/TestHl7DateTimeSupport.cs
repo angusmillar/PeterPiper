@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterPiper.Hl7.V2.Model;
 
 namespace TestPeterPiper.TestModel
 {
-  [TestFixture]
+  [TestClass]
   public class TestHl7DateTimeSupport
   {
-    [Test]
+    [TestMethod]
     public void TestHasPrecision()
     {
       string HL7StandardDateTimeString = "20140225083022.5190+0800";
@@ -64,7 +64,7 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(expectedPrecision, actualPrecision);
     }
 
-    [Test]
+    [TestMethod]
     public void TestHasTimezone()
     {
       //with timezone

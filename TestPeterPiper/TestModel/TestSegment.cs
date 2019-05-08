@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
 using System.Collections.ObjectModel;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
 namespace TestHl7V2
 {
-  [TestFixture]
+  [TestClass]
   public class TestSegment
   {
     public IMessageDelimiters CustomDelimiters;
 
-    [SetUp]
+    [TestInitialize]
     public void MyTestInitialize()
     {
       CustomDelimiters = Creator.MessageDelimiters('#', '@', '*', '!', '%');
     }
 
 
-    [Test]
+    [TestMethod]
     public void SegmentConstructorTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -34,7 +34,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Segment Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void SegmentConstructorTest1()
     {
       //'#', '@', '*', '!', '%'
@@ -47,7 +47,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest1()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -60,7 +60,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Add
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AddTest2()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -74,7 +74,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ClearAll
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ClearAllTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -93,7 +93,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Clone
     ///</summary>
-    [Test]
+    [TestMethod]
     public void CloneTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -106,7 +106,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Element
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ElementTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -120,7 +120,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Field
     ///</summary>
-    [Test]
+    [TestMethod]
     public void FieldTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -134,7 +134,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest()
     {
       System.Text.StringBuilder sbMSH1Exception = new System.Text.StringBuilder();
@@ -179,7 +179,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Insert
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InsertTest1()
     {
       System.Text.StringBuilder sbMSH1Exception = new System.Text.StringBuilder();
@@ -223,7 +223,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveElementAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveElementAtTest()
     {
       System.Text.StringBuilder sbMSH1Exception = new System.Text.StringBuilder();
@@ -278,7 +278,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for RemoveFieldAt
     ///</summary>
-    [Test]
+    [TestMethod]
     public void RemoveFieldAtTest()
     {
       System.Text.StringBuilder sbMSH1Exception = new System.Text.StringBuilder();
@@ -332,7 +332,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ToString
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ToStringTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -346,7 +346,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for AsString
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsStringTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -376,7 +376,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for AsStringRaw
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsStringRawTest()
     {
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
@@ -406,7 +406,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Code
     ///</summary>
-    [Test]
+    [TestMethod]
     public void CodeTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
@@ -419,7 +419,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ElementCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ElementCountTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
@@ -433,7 +433,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ElementList
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ElementListTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
@@ -456,7 +456,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for FieldCount
     ///</summary>
-    [Test]
+    [TestMethod]
     public void FieldCountTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
@@ -469,7 +469,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for IsEmpty
     ///</summary>
-    [Test]
+    [TestMethod]
     public void IsEmptyTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
@@ -484,7 +484,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for PathInformation
     ///</summary>
-    [Test]
+    [TestMethod]
     public void PathInformationTest()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||oneC^TwoC^One&Two~one2C^Two2C^One2&Two2|||201405270956|RB^PATH QLD Central^AUSLAB";
@@ -515,7 +515,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageDelimiters
     ///</summary>
-    [Test]
+    [TestMethod]
     public void DelimterAccessTest()
     {
       //'#', '@', '*', '!', '%'
@@ -531,7 +531,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for inspecting a non-existent element, should not then add that element in output. 
     ///</summary>
-    [Test]
+    [TestMethod]
     public void InspectingANonExistentField()
     {
       //This Commented out test case fails but the solution/workaround is to use Element() to inspect not field().
@@ -570,7 +570,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test create segment with segment code only i.e "PID"
     ///</summary>
-    [Test]
+    [TestMethod]
     public void CreateSegmentWithSegmentCodeOnly()
     {
       string StringRaw = "OBX";
@@ -580,7 +580,7 @@ namespace TestHl7V2
       Assert.AreEqual("OBX", actual, "A test for create segment with segment code only i.e PID");
     }
 
-    [Test]
+    [TestMethod]
     public void HL7NullIsTrueTest()
     {
       string StringRaw = @"OBX|12|ST|""""|^Urine Micro WBC^AUSLAB||<  10";
@@ -588,7 +588,7 @@ namespace TestHl7V2
       Assert.AreEqual(true, target.Field(3).IsHL7Null, "A test for HL7 Null");
     }
 
-    [Test]
+    [TestMethod]
     public void HL7NullIsFalseTest()
     {
       string StringRaw = @"OBX|12|ST|ABC|^Urine Micro WBC^AUSLAB||<  10";
@@ -596,7 +596,7 @@ namespace TestHl7V2
       Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for HL7 Null");
     }
 
-    [Test]
+    [TestMethod]
     public void HL7NullForFieldWithComponentsThatAreNotHL7NullTest()
     {
       string StringRaw = @"OBX|12|ST|""""^ABC|^Urine Micro WBC^AUSLAB||<  10";
@@ -606,7 +606,7 @@ namespace TestHl7V2
       Assert.AreEqual(false, target.Field(3).Component(2).IsHL7Null, "A test for Component NOT equal to HL7 Null");
     }
 
-    [Test]
+    [TestMethod]
     public void HL7NullForComponentWithSubComponentsThatAreNotHL7NullTest()
     {
       string StringRaw = @"OBX|12|ST|""""&ABC^EFG|^Urine Micro WBC^AUSLAB||<  10";
@@ -618,7 +618,7 @@ namespace TestHl7V2
       Assert.AreEqual(false, target.Field(3).Component(2).IsHL7Null, "A test for Component NOT equal to HL7 Null");
     }
 
-    [Test]
+    [TestMethod]
     public void HL7NullForSubComponentWithContentThatAreNotHL7NullTest()
     {
       string StringRaw = @"OBX|12|ST|""""\.br\ABC|^Urine Micro WBC^AUSLAB||<  10";

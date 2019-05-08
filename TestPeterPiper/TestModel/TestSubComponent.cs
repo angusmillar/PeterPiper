@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
 
 namespace TestHl7V2
 {
-    [TestFixture]
+    [TestClass]
   public class TestSubComponent
   {
       public IMessageDelimiters CustomDelimiters;
 
-      [SetUp]
+      [TestInitialize]
       public void MyTestInitialize()
       {
         CustomDelimiters = Creator.MessageDelimiters('#', '@', '*', '!', '%');
       }
 
-      [Test]
+      [TestMethod]
       public void SubComponentConstructorTest()
       {
         string StringRaw = "Content1%T%Content1";
@@ -33,7 +33,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for SubComponent Constructor
       ///</summary>
-      [Test]
+      [TestMethod]
       public void SubComponentConstructorTest1()
       {
         var target = Creator.SubComponent();
@@ -44,7 +44,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for SubComponent Constructor
       ///</summary>
-      [Test]
+      [TestMethod]
       public void SubComponentConstructorTest2()
       {
         string StringRaw = "Content1\\H\\Content2Bold\\N\\Content3";
@@ -57,7 +57,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for Add
       ///</summary>
-      [Test]
+      [TestMethod]
       public void AddTest()
       {
         var target = Creator.SubComponent();
@@ -72,7 +72,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for ClearAll
       ///</summary>
-      [Test]
+      [TestMethod]
       public void ClearAllTest()
       {
         var target = Creator.SubComponent("Hello \\E\\ World");
@@ -84,7 +84,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for Clone
       ///</summary>
-      [Test]
+      [TestMethod]
       public void CloneTest()
       {
         var target = Creator.SubComponent("Hello World");
@@ -97,7 +97,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for Content
       ///</summary>
-      [Test]
+      [TestMethod]
       public void ContentTest()
       {
         var target = Creator.SubComponent("Hello \\T\\ World");
@@ -110,7 +110,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for Insert
       ///</summary>
-      [Test]
+      [TestMethod]
       public void InsertTest1()
       {
         var target = Creator.SubComponent("Hello "); // TODO: Initialize to an appropriate value
@@ -123,7 +123,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for RemoveContentAt
       ///</summary>
-      [Test]
+      [TestMethod]
       public void RemoveContentAtTest()
       {
         var target = Creator.SubComponent("Hello \\T\\ World");
@@ -135,7 +135,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for Set
       ///</summary>
-      [Test]
+      [TestMethod]
       public void SetTest()
       {
         var target = Creator.SubComponent("Hello \\F\\ World");
@@ -148,7 +148,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for ToString
       ///</summary>
-      [Test]
+      [TestMethod]
       public void ToStringTest()
       {
         var target = Creator.SubComponent("Hello \\F\\ World");
@@ -162,7 +162,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for AsString
       ///</summary>
-      [Test]
+      [TestMethod]
       public void AsStringTest()
       {
         var target = Creator.SubComponent("Hello \\F\\ World");
@@ -175,7 +175,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for AsStringRaw
       ///</summary>
-      [Test]
+      [TestMethod]
       public void AsStringRawTest()
       {
         var target = Creator.SubComponent("Hello \\F\\ World");
@@ -190,7 +190,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for ContentCount
       ///</summary>
-      [Test]
+      [TestMethod]
       public void ContentCountTest()
       {
         var target = Creator.SubComponent("Hello \\F\\ World");
@@ -202,7 +202,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for ContentList
       ///</summary>
-      [Test]
+      [TestMethod]
       public void ContentListTest()
       {
         var target = Creator.SubComponent("Hello \\F\\ World");
@@ -217,7 +217,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for IsEmpty
       ///</summary>
-      [Test]
+      [TestMethod]
       public void IsEmptyTest()
       {
         var target = Creator.SubComponent();
@@ -233,7 +233,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for IsHL7Null
       ///</summary>
-      [Test]
+      [TestMethod]
       public void IsHL7NullTest()
       {
         var target = Creator.SubComponent(PeterPiper.Hl7.V2.Support.Standard.Null.HL7Null); // TODO: Initialize to an appropriate value
@@ -248,7 +248,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for PathInformation
       ///</summary>
-      [Test]
+      [TestMethod]
       public void PathInformationTest()
       {
         var target = Creator.SubComponent("Hello \\F\\ World");
@@ -263,7 +263,7 @@ namespace TestHl7V2
       /// <summary>
       ///A test for MessageDelimiters
       ///</summary>
-      [Test]
+      [TestMethod]
       public void DelimterAccessTest()
       {
         string StringRaw = "Content1%T%Content1";

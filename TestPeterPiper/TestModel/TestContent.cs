@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support.Standard;
 using PeterPiper.Hl7.V2.Support;
@@ -11,18 +11,19 @@ using PeterPiper.Hl7.V2.Support.Content;
 
 namespace TestHl7V2
 {
-  [TestFixture]
+  [TestClass]
   public class TestContent
   {
     public IMessageDelimiters CustomDelimiters;
 
-    [SetUp]
+    [TestInitialize]
     public void Setup()
     {
       CustomDelimiters = Creator.MessageDelimiters('#', '@', '*', '!', '%'); 
     }
 
-    [Test]
+    
+
     public void ContentConstructorTest1()
     {
       var EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
@@ -34,7 +35,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Content Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentConstructorTest2()
     {
       var EscapeMetaData = Creator.EscapeData(EscapeType.SkipVerticalSpaces, "+10");
@@ -45,7 +46,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Content Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentConstructorTest3()
     {
       string String = "Q5555";
@@ -61,7 +62,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Content Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentConstructorTest4()
     {
       string String = "Hello World";
@@ -76,7 +77,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Content Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentConstructorTest5()
     {
       string String = "Hello World";
@@ -91,7 +92,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Content Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentConstructorTest6()
     {
       EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
@@ -104,7 +105,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Content Constructor
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ContentConstructorTest7()
     {
       string String = "Hello World";
@@ -118,7 +119,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for ClearAll
     ///</summary>
-    [Test]
+    [TestMethod]
     public void ClearAllTest()
     {
       EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine;
@@ -131,7 +132,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for Clone
     ///</summary>
-    [Test]
+    [TestMethod]
     public void CloneTest()
     {
       EscapeType EscapeType = PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOff;
@@ -150,7 +151,7 @@ namespace TestHl7V2
     /// <summary>
     ///A test for MessageDelimiters
     ///</summary>
-    [Test]
+    [TestMethod]
     public void DelimterAccessTest()
     {
       var target = Creator.Content("Test", ContentType.Text, CustomDelimiters);            
@@ -164,7 +165,7 @@ namespace TestHl7V2
     /// <summary>
     ///Does Content AsString Return No Escape Characters
     ///</summary>
-    [Test]
+    [TestMethod]
     public void DoesContentAsStringReturnNoEscapeCharaters()
     {
       var Target = Creator.SubComponent(@"NotBold \H\Bold\N\ Not Bold");
@@ -177,7 +178,7 @@ namespace TestHl7V2
     /// <summary>
     ///Does Content AsString Return No Escape Characters
     ///</summary>
-    [Test]
+    [TestMethod]
     public void TestThatTheContentMetaDataISCorrect()
     {
       var Target = Creator.SubComponent(@"NotBold \H\Bold\N\ Not Bold");

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.Support;
 using PeterPiper.Hl7.V2.Support.Tools;
 
 namespace TestPeterPiper.TestModel
 {
-  [TestFixture]
+  [TestClass]
   public class TestDateTimeTools_ConvertDateTimeToString
   {
     DateTimeOffset oDateTimeOffSet = new DateTimeOffset(2014, 02, 25, 10, 30, 22, 519, new TimeSpan(+10, 0, 0));     
     
-    [SetUp]
+    [TestInitialize]
     public void MyTestInitialize()
     {     
     }
@@ -23,7 +23,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for AsDate
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsDateTest()
     {
       string expected = "20140225"; 
@@ -36,7 +36,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for AsDate
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsDateTest1()
     {
       
@@ -50,7 +50,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for AsDateHourMin
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsDateHourMinTest()
     {
       string expected = "201402251030";
@@ -63,7 +63,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for AsDateHourMin
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsDateHourMinTest1()
     {         
       string expected = "201402250830+0800";
@@ -76,7 +76,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for AsDateHourMinSec
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsDateHourMinSecTest()
     {
       string expected = "20140225103022";
@@ -89,7 +89,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for AsDateHourMinSec
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsDateHourMinSecTest1()
     {      
       string expected = "20140225083022+0800";
@@ -102,7 +102,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for AsDateHourMinSecMilli
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsDateHourMinSecMilliTest()
     {
       string expected = "20140225103022.5190";
@@ -115,7 +115,7 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for AsDateHourMinSecMilli
     ///</summary>
-    [Test]
+    [TestMethod]
     public void AsDateHourMinSecMilliTest1()
     {      
       string expected = "20140225083022.5190+0800";
