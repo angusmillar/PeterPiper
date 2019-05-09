@@ -1,27 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterPiper", "PeterPiper\PeterPiper.csproj", "{25AB1577-FF72-4F41-B1E4-5E3ADE7995EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeterPiper", "PeterPiper\PeterPiper.csproj", "{25AB1577-FF72-4F41-B1E4-5E3ADE7995EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC3C1D92-FBF7-4E87-B3A3-29E0CD2A3BCE}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
 		PeterPiper.vsmdi = PeterPiper.vsmdi
+		README.md = README.md
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPeterPiper", "TestPeterPiper\TestPeterPiper.csproj", "{1DE12433-6E94-441E-82CC-23429D0FD443}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPeterPiper", "TestPeterPiper\TestPeterPiper.csproj", "{1DE12433-6E94-441E-82CC-23429D0FD443}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5CD5037E-59DB-452E-9C00-8436BBEC399C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{C0CEFFBF-CB7B-461A-AB1B-D94ADED5F08B}"
 	ProjectSection(SolutionItems) = preProject
-		Documentation\Element.mkd = Documentation\Element.mkd
-		Documentation\Home.mkd = Documentation\Home.mkd
-		Documentation\Message.mkd = Documentation\Message.mkd
-		Documentation\Segment.mkd = Documentation\Segment.mkd
+		0. Introduction.mkd = 0. Introduction.mkd
+		Documentation\1. Message.mkd = Documentation\1. Message.mkd
+		Documentation\2. Segment.mkd = Documentation\2. Segment.mkd
+		Documentation\3. Element.mkd = Documentation\3. Element.mkd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{91D0092A-C543-4926-9257-300C2A0601BC}"
@@ -51,6 +52,9 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{91D0092A-C543-4926-9257-300C2A0601BC} = {C0CEFFBF-CB7B-461A-AB1B-D94ADED5F08B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D7C202E-61B2-401A-A98B-933D7D4B4DFA}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = PeterPiper.vsmdi

@@ -1,3 +1,14 @@
+***This example message will be used in the code examples that follow:***
+```
+MSH|^~\&|GOODLIS|GOODLAB|EMR|GOODHOSP|20150411102500+1000||ORU^R01^ORU_R01|300000000-1|P|2.4|||AL|NE|
+PID|1||1000003^^^GOOHOSP^MR~89898989^^^NationalId^NI||PatientSurname^PatientFirstname||194506241031|M|||Unit 1^111 Good Street^Brisbane^^4000^AUS^H||^PRN^PH^^^^93235615|^WPN^CP^^^^0414778341
+PV1|1|O
+ORC|RE|300001|15100003-330001|3|CM||||201504100800+1000|||DFTR^DrBSurname^DrOrdering^^^Dr^^^GOODLIS||^WPN^PH^^^^0893412041|201504100730+1000
+OBR|1|300001|15100003-330001|^^^FBE^Full Blood Count^GOODLIS|||201504100930+1000|||||||201504101100+1000||DFTR^DrBSurname^DrOrdering^^^Dr^^^GOODLIS|^WPN^PH^^^^0893412041|||||201504101115+1000||HM|F||^^^201504100800+1000^^RT|||||8003615833340784&Howser&Kara&&&Dr&&&AUSHIC
+OBX|1|NM|^^^HB^Haemoglobin^GOODLAB||145|g/L^^ISO+|130-180||||F
+OBX|2|NM|^^^RCC^Red Cell Count^GOODLAB||5.30|x10\S\12/L^^ISO+|4.50-6.50||||F
+OBX|3|NM|^^^HCT^HCT^GOODLAB||0.43|L/L^^ISO+|0.40-0.54||||F
+```
 
 **Create a new Segment**
 ```C#
@@ -22,18 +33,6 @@ oNewOBXSegment.Field(14).AsString = "201504100930+1000";
 //Or, even just create it by parsing the whole segment as a raw string, like this
 var oNewOBXSegment = Creator.Segment("OBX|1|NM|^^^HB^Haemoglobin^GOODLAB||145|g/L^^ISO+|130-180||||F|||201504100930+1000");
 
-```
-
-*This example message will be uses the code examples that follow:*
-```
-MSH|^~\&|GOODLIS|GOODLAB|EMR|GOODHOSP|20150411102500+1000||ORU^R01^ORU_R01|300000000-1|P|2.4|||AL|NE|
-PID|1||1000003^^^GOOHOSP^MR||PatientSurname^PatientFirstname||194506241031|M|||Unit 1^111 Good Street^Brisbane^^4000^AUS^H||^PRN^PH^^^^93235615|^WPN^CP^^^^0414778341
-PV1|1|O
-ORC|RE|300001|15100003-330001|3|CM||||201504100800+1000|||DFTR^DrBSurname^DrOrdering^^^Dr^^^GOODLIS||^WPN^PH^^^^0893412041|201504100730+1000
-OBR|1|300001|15100003-330001|^^^FBE^Full Blood Count^GOODLIS|||201504100930+1000|||||||201504101100+1000||DFTR^DrBSurname^DrOrdering^^^Dr^^^GOODLIS|^WPN^PH^^^^0893412041|||||201504101115+1000||HM|F||^^^201504100800+1000^^RT|||||8003615833340784&Howser&Kara&&&Dr&&&AUSHIC
-OBX|1|NM|^^^HB^Haemoglobin^GOODLAB||145|g/L^^ISO+|130-180||||F
-OBX|2|NM|^^^RCC^Red Cell Count^GOODLAB||5.30|x10\S\12/L^^ISO+|4.50-6.50||||F
-OBX|3|NM|^^^HCT^HCT^GOODLAB||0.43|L/L^^ISO+|0.40-0.54||||F
 ```
 
 **Access parts of a Segment**
