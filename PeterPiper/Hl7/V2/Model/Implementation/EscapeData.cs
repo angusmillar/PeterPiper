@@ -12,7 +12,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public EscapeData(EscapeType EscapeType, string MetaData)
     {
       if (EscapeType == EscapeType.NotAnEscape)
-        throw new PeterPiperArgumentException(String.Format("EscapeMetaData's EscapeType argument can not be set to '{0}', maybe you should choose '{1}'", EscapeType.NotAnEscape.ToString(), EscapeType.Unknown.ToString()));
+        throw new PeterPiperException(String.Format("EscapeMetaData's EscapeType argument can not be set to '{0}', maybe you should choose '{1}'", EscapeType.NotAnEscape.ToString(), EscapeType.Unknown.ToString()));
       this._EscapeType = EscapeType;
       this._EscapeTypeCharater = Escapes.ResolveEscapeChararter(_EscapeType);
       this._MetaData = MetaData;
@@ -20,7 +20,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public EscapeData(string ContentEscapeString)
     {
       if (ContentEscapeString == String.Empty)
-        throw new PeterPiperArgumentException("EscapeMetaData supplied string was empty, this is not allowed.");
+        throw new PeterPiperException("EscapeMetaData supplied string was empty, this is not allowed.");
 
       this._EscapeType = Escapes.ResolveEscapeType(ContentEscapeString);
       if (_EscapeType != EscapeType.Unknown)

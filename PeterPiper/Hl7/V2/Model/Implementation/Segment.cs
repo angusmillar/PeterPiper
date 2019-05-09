@@ -114,7 +114,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       set
       {
         if (this._IsMSH || this._Index == 1)
-          throw new PeterPiperArgumentException("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.");
+          throw new PeterPiperException("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.");
         value = ValidateStringRaw(value);
         _ElementDictonary = ParseSegmentRawStringToElement(value);
       }
@@ -169,27 +169,27 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public void Insert(int index, IElement item)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
       ValidateItemNotInUse(item as Element);
       this.ElementInsertBefore(item as Element, index);
     }
     public void Insert(int index, IField item)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("Field is a one based index, zero is not a valid index.");
+        throw new PeterPiperException("Field is a one based index, zero is not a valid index.");
       ValidateItemNotInUse(item as Field);
       this.FieldInsertBefore(item as Field, index);
     }
     public void RemoveElementAt(int index)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
       this.ElementRemoveAt(index);
     }
     public void RemoveFieldAt(int index)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
       this.FieldRemoveAt(index);
     }
     public int ElementCount
@@ -209,13 +209,13 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public IElement Element(int index)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
       return this.GetElement(index);
     }    
     public IField Field(int index)
     {
       if (Index == 0)
-        throw new PeterPiperArgumentException("Element index is a one based index, zero in not allowed");
+        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
       return this.GetField(index);
     }    
     public ReadOnlyCollection<IElement> ElementList
@@ -601,12 +601,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         else
         {
-          throw new PeterPiperArgumentException("MSH Segment being parsed has less than 12 Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
+          throw new PeterPiperException("MSH Segment being parsed has less than 12 Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
         }
       }
       else
       {
-        throw new PeterPiperArgumentException("MSH Segment being parsed has no Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
+        throw new PeterPiperException("MSH Segment being parsed has no Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
       }
       return _ElementDictonary;
     }
@@ -621,15 +621,15 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersAllowed) < 0)
       {
-        throw new PeterPiperArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+        throw new PeterPiperException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
       }      
       else if (StringRaw.TrimStart().Substring(3, 1) != this.Delimiters.Field.ToString())
       {
-        throw new PeterPiperArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+        throw new PeterPiperException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
       }      
       else if (!System.Text.RegularExpressions.Regex.IsMatch(StringRaw.TrimStart().Substring(0, 3), @"^[A-Z0-9]+$"))
       {
-        throw new PeterPiperArgumentException("Segment data must begin with a three character upper-case alpha code");
+        throw new PeterPiperException("Segment data must begin with a three character upper-case alpha code");
       }
       return StringRaw;
     }
@@ -644,14 +644,14 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         }
         else
         {
-          throw new PeterPiperArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+          throw new PeterPiperException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
         }
       }
       else
       {
         if (StringRaw.IndexOf(this.Delimiters.Field) != 3)
         {
-          throw new PeterPiperArgumentException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+          throw new PeterPiperException(String.Format("Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
         }
         else
         {

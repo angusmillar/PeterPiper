@@ -13,26 +13,14 @@ namespace TestPeterPiper.TestModel
   public class TestBase64
   {
 
-    public static string AssemblyDirectory
-    {
-      get
-      {
-        
-        //string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
-        //UriBuilder uri = new UriBuilder(codeBase);
-        //string path = Uri.UnescapeDataString(uri.Path);
-        //return Path.GetDirectoryName(path);
-        return @"C:\GitRepository\PeterPiper\TestPeterPiper";
-      }
-    }
-
     /// <summary>
     ///A test for Decoder
     ///</summary>
     [TestMethod]
     public void DecoderTest()
     {
-      string path = AssemblyDirectory + "\\TestResource\\ED Data Test.zip";
+      string path = Support.PathSupport.AssemblyDirectory + @"\TestResource\ED Data Test.zip";
+      
       string NewPath = String.Empty;
       byte[] item = File.ReadAllBytes(path);
       byte[] expected = null;

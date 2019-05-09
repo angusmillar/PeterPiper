@@ -43,7 +43,7 @@ namespace PeterPiper.Hl7.V2.Support.Tools
       if (TryParseDateTimeString(Hl7DateTimeString, out result))
         return result;
       else
-        throw new PeterPiperArgumentException(String.Format(FormatExceptionMessage, Hl7DateTimeString));
+        throw new PeterPiperException(String.Format(FormatExceptionMessage, Hl7DateTimeString));
     }
     
     /// <summary>
@@ -57,7 +57,7 @@ namespace PeterPiper.Hl7.V2.Support.Tools
       if (DateTimeSupportTools.CanParseToDateTimeOffset(Hl7DateTimeString))
         return CheckForTimezone(Hl7DateTimeString);
       else
-        throw new PeterPiperArgumentException(String.Format(FormatExceptionMessage, Hl7DateTimeString));           
+        throw new PeterPiperException(String.Format(FormatExceptionMessage, Hl7DateTimeString));           
     }
 
     /// <summary>
@@ -80,12 +80,12 @@ namespace PeterPiper.Hl7.V2.Support.Tools
         }
         catch(Exception Exec)
         {
-          throw new PeterPiperArgumentException(String.Format("Unable to parse time-zone from HL7 date time string of: {0}", Hl7DateTimeString), Exec);
+          throw new PeterPiperException(String.Format("Unable to parse time-zone from HL7 date time string of: {0}", Hl7DateTimeString), Exec);
         }
       }
       else
       {
-        throw new PeterPiperArgumentException(String.Format("No time-zone present in given content. Try testing for time-zone by calling 'HasTimezone' before calling 'GetTimezone'."));
+        throw new PeterPiperException(String.Format("No time-zone present in given content. Try testing for time-zone by calling 'HasTimezone' before calling 'GetTimezone'."));
       }
     }
 

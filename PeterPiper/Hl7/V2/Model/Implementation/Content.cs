@@ -385,7 +385,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (String.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new PeterPiperArgumentException("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.");
+        throw new PeterPiperException("Content data cannot contain HL7 V2 Delimiters, maybe you should be using 'AsStringRaw' if you are trying to insert already escaped data.");
       }
       return true;
     }

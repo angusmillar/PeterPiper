@@ -255,19 +255,19 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public IField Repeat(int index)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("Repeat is a one based index, zero is not a valid index");
+        throw new PeterPiperException("Repeat is a one based index, zero is not a valid index");
       return this.GetRepeat(index);
     }
     public IComponent Component(int index)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("Component is a one based index, zero is not a valid index");
+        throw new PeterPiperException("Component is a one based index, zero is not a valid index");
       return this.GetComponent(index);
     }
     public ISubComponent SubComponent(int index)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("SubComponent is a one based index, zero is not a valid index");
+        throw new PeterPiperException("SubComponent is a one based index, zero is not a valid index");
       return this.GetSubComponent(index);
     }
     public IContent Content(int index)
@@ -348,7 +348,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal Field RepeatInsertBefore(Field Repeat, int Index)
     {
       if (Index == 0)
-        throw new PeterPiperArgumentException("Element is a one based index, zero is not a valid index.");
+        throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
 
       int RepeatInsertedAt = 0;
       //Empty Dic so just add as first itme 
@@ -498,7 +498,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal Component ComponentInsertBefore(Component Component, int Index)
     {
       if (Index == 0)
-        throw new PeterPiperArgumentException("Element is a one based index, zero is not a valid index.");
+        throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
 
       if (_RepeatDictonary.ContainsKey(1))
         return _RepeatDictonary[1].ComponentInsertBefore(Component, Index);
@@ -566,7 +566,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal SubComponent SubComponentInsertBefore(SubComponent SubComponent, int Index)
     {
       if (Index == 0)
-        throw new PeterPiperArgumentException("Element is a one based index, zero is not a valid index.");
+        throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
 
       if (_RepeatDictonary.ContainsKey(1))
         return _RepeatDictonary[1].SubComponentInsertBefore(SubComponent, Index);
@@ -799,7 +799,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new PeterPiperArgumentException(String.Format("Element data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
+        throw new PeterPiperException(String.Format("Element data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
       }
       return true;
     }
@@ -811,7 +811,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         sb.Append("MSH-1 contains the 'Main Separator' character and is not accessible from the Field or Element object instance as it is critical to message construction.");
         sb.Append(Environment.NewLine);
         sb.Append("Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");
-        throw new PeterPiperArgumentException(sb.ToString());
+        throw new PeterPiperException(sb.ToString());
       }
       else if (this._IsEncodingCharacters)
       {
@@ -819,7 +819,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         sb.Append("MSH-2 contains the 'Encoding Characters' and is not accessible from the Field or Element object instance as it is critical to message construction.");
         sb.Append(Environment.NewLine);
         sb.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
-        throw new PeterPiperArgumentException(sb.ToString());
+        throw new PeterPiperException(sb.ToString());
       }
       return true;
     }

@@ -14,31 +14,18 @@ namespace TestPeterPiper.TestModel
   public class TestHl7Reader
   {
 
-    //public static string AssemblyDirectory
-    //{
-    //  get
-    //  {
-    //    string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
-    //    UriBuilder uri = new UriBuilder(codeBase);
-    //    string path = Uri.UnescapeDataString(uri.Path);
-    //    return Path.GetDirectoryName(path);
-    //  }
-    //}
-
     /// <summary>
     ///A test for Hl7Reader Constructor
     ///</summary>
-    //[TestMethod]
-    //public void Hl7ReaderConstructorTest()
-    //{
-    //  string path = AssemblyDirectory;
+    [TestMethod]
+    public void Hl7ReaderConstructorTest()
+    {
 
-      
-    //  path = AssemblyDirectory + @"\TestResource\TestSetOfMsg.dat";
-      
+      string path = Support.PathSupport.AssemblyDirectory + @"\TestResource\TestSetOfMsg.dat";
 
-    //  Hl7StreamReader target = new Hl7StreamReader(path);
-    //}
+      Hl7StreamReader target = new Hl7StreamReader(path);
+      target.Close();
+    }
 
     /// <summary>
     ///A test for Hl7Reader Constructor
@@ -66,40 +53,42 @@ namespace TestPeterPiper.TestModel
     /// <summary>
     ///A test for Read
     ///</summary>
-    //[TestMethod]
-    //public void ReadTest()
-    //{
-    //  string path = AssemblyDirectory;      
-    //  string readpath = path + "\\TestResource\\TestSetOfMsg.dat";
-    //  string writepath = path + "\\TestResource\\TestSetOfMsg2.dat";
+    [TestMethod]
+    public void ReadTest()
+    {
+      
+      string readpath = Support.PathSupport.AssemblyDirectory + "\\TestResource\\TestSetOfMsg.dat";
+      string writepath = Support.PathSupport.AssemblyDirectory + "\\TestResource\\TestSetOfMsg2.dat";
+      if (File.Exists(writepath))
+        File.Delete(writepath);
 
-    //  Hl7StreamReader reader = new Hl7StreamReader(readpath);
-    //  HL7StreamWriter writer = new HL7StreamWriter(writepath, true);
-    //  List<IMessage> oMessageList = new List<IMessage>();
-    //  string actual;
-    //  while ((actual = reader.Read()) != null)
-    //  {
-    //    var oHl7 = Creator.Message(actual);
-    //    Assert.IsTrue(oHl7.SegmentCount() > 1);
-    //    oMessageList.Add(oHl7);
-    //    writer.Write(oHl7, HL7StreamWriter.HL7OutputStyles.InterfaceReadable);
-    //  }
-    //  reader.Close();
+      Hl7StreamReader reader = new Hl7StreamReader(readpath);
+      HL7StreamWriter writer = new HL7StreamWriter(writepath, true);
+      List<IMessage> oMessageList = new List<IMessage>();
+      string actual;
+      while ((actual = reader.Read()) != null)
+      {
+        var oHl7 = Creator.Message(actual);
+        Assert.IsTrue(oHl7.SegmentCount() > 1);
+        oMessageList.Add(oHl7);
+        writer.Write(oHl7, HL7StreamWriter.HL7OutputStyles.InterfaceReadable);
+      }
+      reader.Close();
 
-    //  reader = new Hl7StreamReader(writepath);
-    //  int counter = 0;
-    //  while ((actual = reader.Read()) != null)
-    //  {
-    //    var oHl7 = Creator.Message(actual);
-    //    if (!oMessageList[counter].AsStringRaw.Equals(oHl7.AsStringRaw))
-    //    {
-    //      Assert.Fail("The Hl7 Message read in does not match the hl7 message written out and back in again by the Hl7StreamWriter and Hl7StreamReader.");
-    //    }
-    //    counter++;
-    //  }
-    //  reader.Close();
-    //  File.Delete(writepath);
-    //}
+      reader = new Hl7StreamReader(writepath);
+      int counter = 0;
+      while ((actual = reader.Read()) != null)
+      {
+        var oHl7 = Creator.Message(actual);
+        if (!oMessageList[counter].AsStringRaw.Equals(oHl7.AsStringRaw))
+        {
+          Assert.Fail("The Hl7 Message read in does not match the hl7 message written out and back in again by the Hl7StreamWriter and Hl7StreamReader.");
+        }
+        counter++;
+      }
+      reader.Close();
+      File.Delete(writepath);
+    }
 
 
   }

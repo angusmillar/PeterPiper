@@ -3,14 +3,14 @@
   <PropertyGroup>
     <!-- This project will output netstandard2.0 and net461 assemblies -->
     <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
-    <Description>Peter Piper Parser a HL7 V2 message parser for .net</Description>
+    <Description>Peter Piper Parser is a HL7 V2 message parser for .net</Description>
     <Copyright>pyrohealth.net</Copyright>
     <Authors>AngusMillar</Authors>
     <PackageProjectUrl>https://github.com/angusmillar/PeterPiper</PackageProjectUrl>
     <RepositoryUrl>https://github.com/angusmillar/PeterPiper</RepositoryUrl>
     <PackageTags>HL7 V2</PackageTags>
     <Product>PeterPiper</Product>
-    <!--<iconUrl>https://github.com/angusmillar/PyroWeb/blob/master/src/Images/SiteIcon/PyroIcon-100.png?raw=true</iconUrl>-->
+    <iconUrl>https://github.com/angusmillar/PyroWeb/blob/master/src/Images/SiteIcon/PyroIcon-100.png?raw=true</iconUrl>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
     <Version>1.0.0</Version>

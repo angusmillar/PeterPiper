@@ -525,7 +525,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
         string DelimitersNotAlowed = String.Format("{0}{1}{2}{3}", CharatersNotAlowed[0], CharatersNotAlowed[1], CharatersNotAlowed[2], CharatersNotAlowed[3]);
-        throw new PeterPiperArgumentException(String.Format("SubComponent data cannot contain HL7 V2 Delimiters of : {0}", DelimitersNotAlowed));
+        throw new PeterPiperException(String.Format("SubComponent data cannot contain HL7 V2 Delimiters of : {0}", DelimitersNotAlowed));
       }
       return true;
     }

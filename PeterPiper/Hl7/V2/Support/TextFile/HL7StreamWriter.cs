@@ -27,26 +27,32 @@ namespace PeterPiper.Hl7.V2.Support.TextFile
 
     private void _Write(string OneMessage, HL7OutputStyles eHL7OutputStyle)
     {
-      using (var stream = new FileStream(_Path, FileMode.Create, FileAccess.Write, FileShare.Read, 4096, FileOptions.SequentialScan))
-      using (var streamWriter = new StreamWriter(stream, System.Text.Encoding.UTF8, 1024, _Append))
+      var Mode = FileMode.Create;
+      if (_Append)
+        Mode = FileMode.Append;
+
+      using (var stream = new FileStream(_Path, Mode, FileAccess.Write, FileShare.Read, 4096, FileOptions.SequentialScan))
       {
-        if (eHL7OutputStyle == HL7OutputStyles.HumanReadable)
+        using (var streamWriter = new StreamWriter(stream, System.Text.Encoding.UTF8, 1024, false))
         {
-          string[] SpltMessagSegments = OneMessage.Split(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SegmentTerminator);
-          for (int i = 0; i < SpltMessagSegments.Length; i++)
+          if (eHL7OutputStyle == HL7OutputStyles.HumanReadable)
           {
-            streamWriter.Write(String.Format("{0}{1}", SpltMessagSegments[i], System.Environment.NewLine));
-          }          
+            string[] SpltMessagSegments = OneMessage.Split(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SegmentTerminator);
+            for (int i = 0; i < SpltMessagSegments.Length; i++)
+            {
+              streamWriter.Write(String.Format("{0}{1}", SpltMessagSegments[i], System.Environment.NewLine));
+            }
+          }
+          else if (eHL7OutputStyle == HL7OutputStyles.InterfaceReadable)
+          {
+            streamWriter.Write(OneMessage);
+            streamWriter.Write(System.Environment.NewLine);
+          }
+          else
+          {
+            throw new PeterPiperException("Unknown HL7OutputStyles of '" + eHL7OutputStyle.ToString() + "' Found");
+          }
         }
-        else if (eHL7OutputStyle == HL7OutputStyles.InterfaceReadable)
-        {
-          streamWriter.Write(OneMessage);
-          streamWriter.Write(System.Environment.NewLine);
-        }
-        else
-        {
-          throw new PeterPiperArgumentException("Unknown HL7OutputStyles of '" + eHL7OutputStyle.ToString() + "' Found");
-        }       
       }
     }
     

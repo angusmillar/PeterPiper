@@ -214,7 +214,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public ISubComponent SubComponent(int index)
     {
       if (index == 0)
-        throw new PeterPiperArgumentException("SubComponent is a one based index, zero is not a valid index");
+        throw new PeterPiperException("SubComponent is a one based index, zero is not a valid index");
       return GetSubComponent(index);
     }
     public IContent Content(int index)
@@ -304,7 +304,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal SubComponent SubComponentInsertBefore(SubComponent SubComponent, int Index)
     {
       if (Index == 0)
-        throw new PeterPiperArgumentException("SubComponent is a one based index, zero is not a valid index.");
+        throw new PeterPiperException("SubComponent is a one based index, zero is not a valid index.");
 
       int SubComponentInsertedAt = 0;
       //Empty dictionary so just add as first item 
@@ -591,7 +591,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new PeterPiperArgumentException(String.Format("Component data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
+        throw new PeterPiperException(String.Format("Component data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
       }
       return true;
     }

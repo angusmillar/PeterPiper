@@ -157,7 +157,7 @@ namespace TestHl7V2
         target.Insert(1, item);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -167,7 +167,7 @@ namespace TestHl7V2
         target.Insert(2, item);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -201,7 +201,7 @@ namespace TestHl7V2
         target.Insert(1, item);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -211,7 +211,7 @@ namespace TestHl7V2
         target.Insert(2, item);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
@@ -244,7 +244,7 @@ namespace TestHl7V2
         target.RemoveElementAt(0);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual("Element index is a one based index, zero in not allowed", ae.Message, "A test for RemoveElementAt");
       }
@@ -254,7 +254,7 @@ namespace TestHl7V2
         target.RemoveElementAt(1);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching", "A test for RemoveElementAt");
       }
@@ -264,7 +264,7 @@ namespace TestHl7V2
         target.RemoveElementAt(2);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching", "A test for RemoveElementAt");
       }
@@ -299,7 +299,7 @@ namespace TestHl7V2
         target.RemoveFieldAt(0);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual("Element index is a one based index, zero in not allowed", ae.Message, "A test for RemoveElementAt");
       }
@@ -309,7 +309,7 @@ namespace TestHl7V2
         target.RemoveFieldAt(1);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching", "A test for RemoveElementAt");
       }
@@ -319,7 +319,7 @@ namespace TestHl7V2
         target.RemoveFieldAt(2);
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching", "A test for RemoveElementAt");
       }
@@ -358,7 +358,7 @@ namespace TestHl7V2
         target.AsString = expected;
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching", "A test for AsString");
       }
@@ -388,7 +388,7 @@ namespace TestHl7V2
         target.AsStringRaw = expected;
         Assert.Fail("An exception should have been thrown");
       }
-      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperArgumentException ae)
+      catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching", "A test for AsString");
       }
