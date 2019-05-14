@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- This project will output netstandard2.0 and net461 assemblies -->
     <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
-    <Description>Peter Piper Parser is a HL7 V2 message parser for .net</Description>
+    <Description>HL7 V2 message parser for .NET Core and .NET Framework</Description>
     <Copyright>pyrohealth.net</Copyright>
     <Authors>AngusMillar</Authors>
     <PackageProjectUrl>https://github.com/angusmillar/PeterPiper/tree/Release</PackageProjectUrl>
