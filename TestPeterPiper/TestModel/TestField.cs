@@ -354,6 +354,18 @@ namespace TestHl7V2
     }
 
     /// <summary>
+    ///A test for ComponentCount
+    ///</summary>
+    [TestMethod]
+    public void Component_HasComponents()
+    {
+      var target = Creator.Field("Comp1^Comp2^Comp3");
+      bool actual;
+      actual = target.HasComponents;
+      Assert.IsTrue(actual, "HasComponents should be True");
+    }
+
+    /// <summary>
     ///A test for ComponentList
     ///</summary>
     [TestMethod]
@@ -378,6 +390,30 @@ namespace TestHl7V2
       int actual;
       actual = target.ContentCount;
       Assert.AreEqual(5, actual, "A test for AsStringRaw");
+    }
+
+    /// <summary>
+    ///A test for HasContets
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContets_True()
+    {
+      var target = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
+      bool actual;
+      actual = target.HasContents;
+      Assert.IsTrue(actual, "A test for HasContents should be True");
+    }
+
+    /// <summary>
+    ///A test for HasContets
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContets_False()
+    {
+      var target = Creator.Field("&Sub2&Sub3^Comp2^Comp3");
+      bool actual;
+      actual = target.HasContents;
+      Assert.IsFalse(actual, "A test for HasContents should be False");
     }
 
     /// <summary>
@@ -421,6 +457,30 @@ namespace TestHl7V2
       int actual;
       actual = target.SubComponentCount;
       Assert.AreEqual(3, actual, "A test for SubComponentCount");
+    }
+
+    /// <summary>
+    ///A test for HasSubComponents
+    ///</summary>
+    [TestMethod]
+    public void SubComponent_HasSubComponets_True()
+    {
+      var target = Creator.Field("SubOne&SubTwo&SubThree^Comp2^Comp3");
+      bool actual;
+      actual = target.HasSubComponents;
+      Assert.IsTrue(actual, "A test for HasSubComponents");
+    }
+
+    /// <summary>
+    ///A test for HasSubComponents
+    ///</summary>
+    [TestMethod]
+    public void SubComponent_HasSubComponets_Flase()
+    {
+      var target = Creator.Field("^Two^three");
+      bool actual;
+      actual = target.HasSubComponents;
+      Assert.IsFalse(actual, "A test for HasSubComponents");
     }
 
     /// <summary>

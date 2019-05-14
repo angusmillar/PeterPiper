@@ -53,6 +53,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// </summary>
     int ComponentCount { get; }
     /// <summary>
+    /// Returns the True is the total component count of the first field repeat in the element is greater than zero
+    /// </summary>
+    bool HasComponents { get; }
+    /// <summary>
     /// Returns the content instance at the given index of the first component's first subcomponent of the first field repeat in the element
     /// Content always uses a zero based index
     /// </summary>
@@ -63,6 +67,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// Returns the total content count of the first component's first subcomponent of the first field repeat in the element
     /// </summary>
     int ContentCount { get; }
+    /// <summary>
+    /// Returns True if the total content count of the first component's first subcomponent of the first field repeat in the element is greater than 1
+    /// </summary>
+    bool HasContents { get; }
     /// <summary>
     /// Insert a component at the given index into the first repeat in the element
     /// Uses a one based index
@@ -141,6 +149,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// </summary>
     int RepeatCount { get; }
     /// <summary>
+    /// Returns the total field repeat count of the element
+    /// </summary>
+    bool HasRepeats { get; }
+    /// <summary>
     /// Returns a collection of all repeat fields in the element
     /// </summary>
     System.Collections.ObjectModel.ReadOnlyCollection<IField> RepeatList { get; }
@@ -169,6 +181,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// Returns the total subcomponent count from the first component of the first repeat field in the element
     /// </summary>
     int SubComponentCount { get; }
+    /// <summary>
+    /// Returns the True is the total SubComponent count of the first field repeat in the element is greater than zero
+    /// </summary>
+    bool HasSubComponents { get; }
     /// <summary>
     /// Get the whole element as an decoded string (human readable) 
     /// </summary>

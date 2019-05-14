@@ -38,6 +38,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// </summary>
     int ContentCount { get; }
     /// <summary>
+    /// Returns True is the total content count of the subcomponent is greater then 1. 
+    /// </summary>
+    bool HasContents { get; }
+    /// <summary>
     /// Returns a collection of all Content in the subcomponent.
     /// </summary>
     System.Collections.ObjectModel.ReadOnlyCollection<IContent> ContentList { get; }

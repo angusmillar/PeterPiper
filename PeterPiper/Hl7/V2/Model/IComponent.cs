@@ -43,6 +43,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// </summary>
     int ContentCount { get; }
     /// <summary>
+    /// Returns True if the total content count of the first subcomponent of the component is greater than 1. 
+    /// </summary>
+    bool HasContents { get; }
+    /// <summary>
     /// Insert content at the given index into the first subcomponent of the component.
     /// Content always uses a zero based index.
     /// /// </summary>
@@ -107,6 +111,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// Returns the total subcomponent count of the component.
     /// </summary>
     int SubComponentCount { get; }
+    /// <summary>
+    /// Returns True if the total subcomponent count of the component is greater than 1.
+    /// </summary>
+    bool HasSubComponents { get; }
     /// <summary>
     /// Returns a collection of all subcomponents in the component.
     /// </summary>

@@ -394,6 +394,33 @@ namespace TestHl7V2
     }
 
     /// <summary>
+    ///A test for HasContent
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContent_True()
+    {
+      string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
+      var target = Creator.Element(StringRaw);
+      bool actual;
+      actual = target.HasContents;
+      Assert.IsTrue(actual, "A test for HasContentCount shoudl be True");
+    }
+    /// <summary>
+    ///A test for HasContent
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContent_False()
+    {
+      //Note Repeat 1 is empty
+      string StringRaw = "~R2~R3~R4";
+      var target = Creator.Element(StringRaw);
+      bool actual;
+      actual = target.HasContents;
+      Assert.IsFalse(actual, "A test for HasContentCount should be False");
+    }
+
+
+    /// <summary>
     ///A test for IsEmpty
     ///</summary>
     [TestMethod]
@@ -439,6 +466,83 @@ namespace TestHl7V2
     }
 
     /// <summary>
+    ///A test for HasRepeats
+    ///</summary>
+    [TestMethod]
+    public void Repeat_HasRepeats_Many()
+    {
+      string StringRaw = "One~Two~Three~Four";
+      var target = Creator.Element(StringRaw);
+      bool actual;
+      actual = target.HasRepeats;
+      Assert.IsTrue(actual, "Element HasRepeats should be True.");
+    }
+
+    /// <summary>
+    ///A test for HasRepeats
+    ///</summary>
+    [TestMethod]
+    public void Repeat_HasRepeats_OneOnly()
+    {
+      string StringRaw = "One";
+      var target = Creator.Element(StringRaw);
+      bool actual;
+      actual = target.HasRepeats;
+      Assert.IsTrue(actual, "Element HasRepeats should be True.");
+    }
+
+    /// <summary>
+    ///A test for HasRepeats
+    ///</summary>
+    [TestMethod]
+    public void Repeat_HasRepeats_None()
+    {
+      string StringRaw = "PID|hello||Hello";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.Element(2).HasRepeats;
+      Assert.IsFalse(actual, "Element HasRepeats should be False.");
+    }
+
+    /// <summary>
+    ///A test for HasComponents
+    ///</summary>
+    [TestMethod]
+    public void FirstRepeat_HasComponents()
+    {
+      string StringRaw = "PID|helloOne^helloTwo||Hello";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.Element(1).HasComponents;
+      Assert.IsTrue(actual, "First Element Repeats HasComponets should be true");
+    }
+
+    /// <summary>
+    ///A test for HasComponents
+    ///</summary>
+    [TestMethod]
+    public void FirstRepeat_HasComponents_False()
+    {
+      string StringRaw = "PID||Hello|Hello";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.Element(1).HasComponents;
+      Assert.IsFalse(actual, "First Element Repeats HasComponets should be true");
+    }
+
+    /// <summary>
+    ///A test for HasComponents
+    ///</summary>
+    [TestMethod]
+    public void FirstRepeat_HasComponents_True()
+    {
+      string StringRaw = "PID|One&Two|Hello|Hello";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.Element(1).HasComponents;
+      Assert.IsTrue(actual, "First Element Repeats HasComponets should be true");
+    }
+    /// <summary>
     ///A test for RepeatList
     ///</summary>
     [TestMethod]
@@ -469,6 +573,31 @@ namespace TestHl7V2
       Assert.AreEqual(3, actual, "A test for SubComponentCount");
     }
 
+    /// <summary>
+    ///A test for SubComponentCount
+    ///</summary>
+    [TestMethod]
+    public void SubComponent_HasSubComponent_True()
+    {
+      string StringRaw = "SubOne&SubTwo2&SubThree^CompTwo^CompThree~R2~R3~R4";
+      var target = Creator.Element(StringRaw);
+      bool actual;
+      actual = target.HasSubComponents;
+      Assert.IsTrue(actual, "Element should have HasSubComponents equals True");
+    }
+
+    /// <summary>
+    ///A test for SubComponentCount
+    ///</summary>
+    [TestMethod]
+    public void SubComponent_HasSubComponent_False()
+    {
+      string StringRaw = "PID||Stuff|Stuff";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.Element(1).HasSubComponents;
+      Assert.IsFalse(actual, "Element should have HasSubComponents equals False");
+    }
     /// <summary>
     ///A test for MessageDelimiters
     ///</summary>

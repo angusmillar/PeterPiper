@@ -231,6 +231,13 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return this.CountRepeat;
       }
     }
+    public bool HasRepeats
+    {
+      get
+      {
+        return this.CountRepeat > 0;
+      }
+    }
     public int ComponentCount
     {
       get
@@ -238,6 +245,15 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return this.CountComponent;
       }
     }
+    public bool HasComponents
+    {
+      get
+      {
+        return this.CountComponent > 0;
+      }
+    }
+
+
     public int SubComponentCount
     {
       get
@@ -245,11 +261,25 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return this.CountSubComponet;
       }
     }
+    public bool HasSubComponents
+    {
+      get
+      {
+        return this.CountSubComponet > 0;
+      }
+    }
     public int ContentCount
     {
       get
       {
         return this.CountContent;
+      }
+    }
+    public bool HasContents
+    {
+      get
+      {
+        return this.CountContent > 0;
       }
     }
     public IField Repeat(int index)
@@ -799,7 +829,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new PeterPiperException(String.Format("Element data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
+        string ErrorChars = string.Join(" or ", CharatersNotAlowed);
+        throw new PeterPiperException($"Element data cannot contain HL7 V2 Delimiters of : {ErrorChars}");
       }
       return true;
     }

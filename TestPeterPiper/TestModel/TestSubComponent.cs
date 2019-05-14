@@ -199,10 +199,33 @@ namespace TestHl7V2
         Assert.AreEqual(3, actual);
       }
 
-      /// <summary>
-      ///A test for ContentList
-      ///</summary>
-      [TestMethod]
+    /// <summary>
+    ///A test for HasContent
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContent_True()    {
+      var target = Creator.Component("Hello \\F\\ World&Two");
+      bool actual;
+      actual = target.SubComponent(1).HasContents;
+      Assert.IsTrue(actual, "HasContent should be True for SubComponent");
+    }
+
+    /// <summary>
+    ///A test for HasContent
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContent_False()
+    {
+      var target = Creator.Component("&Two");
+      bool actual;
+      actual = target.SubComponent(1).HasContents;
+      Assert.IsFalse(actual, "HasContent should be False for SubComponent");
+    }
+
+    /// <summary>
+    ///A test for ContentList
+    ///</summary>
+    [TestMethod]
       public void ContentListTest()
       {
         var target = Creator.SubComponent("Hello \\F\\ World");

@@ -934,7 +934,7 @@ namespace TestPeterPiper.TestModel
       }
 
       var oDelim = Creator.MessageDelimiters('*', '~', '^', '&', '\\');
-      var oMSHSeg = Creator.Segment("MSH*^~\\&*AUSLAB*QHPS*EGATE-Atomic*CITEC*20140804143827**ORU^R01*000000000000005EVT6P*P*2.3.1*", oDelim);
+      var oMSHSeg = Creator.Segment("MSH*^~\\&*SUPERLIS*QHPS*EGATE-Atomic*CITEC*20140804143827**ORU^R01*000000000000005EVT6P*P*2.3.1*", oDelim);
       var oMessage3 = Creator.Message(oMSHSeg);
       var oPIDSeg = Creator.Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
       try
@@ -1046,7 +1046,7 @@ namespace TestPeterPiper.TestModel
 
       try
       {
-        oMessage.Segment(1).AsString = "ABC|^~\\&|AUSLAB|TRAIN|";
+        oMessage.Segment(1).AsString = "ABC|^~\\&|SUPERLIS|TRAIN|";
         Assert.Fail("An exception should have been thrown");
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
@@ -1056,7 +1056,7 @@ namespace TestPeterPiper.TestModel
 
       try
       {
-        oMessage.Segment(1).AsStringRaw = "ABC|^~\\&|AUSLAB|TRAIN|";
+        oMessage.Segment(1).AsStringRaw = "ABC|^~\\&|SUPERLIS|TRAIN|";
         Assert.Fail("An exception should have been thrown");
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
@@ -1067,8 +1067,8 @@ namespace TestPeterPiper.TestModel
       try
       {
         var testSeg = Creator.Segment("BAD");
-        testSeg.AsStringRaw = "MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1";
-        testSeg.AsStringRaw = "ABC|^~\\&|AUSLAB|TRAIN|";
+        testSeg.AsStringRaw = "MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1";
+        testSeg.AsStringRaw = "ABC|^~\\&|SUPERLIS|TRAIN|";
         Assert.Fail("An exception should have been thrown");
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
@@ -1076,7 +1076,7 @@ namespace TestPeterPiper.TestModel
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
-      var NewMSH = Creator.Segment("MSH|^~\\&|AUSLAB|TRAIN|EGATE-Atomic^prjAuslabIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
+      var NewMSH = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
       try
       {
         oMessage.Add(NewMSH);

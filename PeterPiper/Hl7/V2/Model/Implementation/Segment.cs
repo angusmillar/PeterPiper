@@ -199,11 +199,25 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return this.CountElement;
       }
     }
+    public bool HasElements
+    {
+      get
+      {
+        return this.CountElement > 1;
+      }
+    }
     public int FieldCount
     {
       get
       {
         return this.CountField;
+      }
+    }
+    public bool HasFields
+    {
+      get
+      {
+        return this.CountField > 1;
       }
     }
     public IElement Element(int index)

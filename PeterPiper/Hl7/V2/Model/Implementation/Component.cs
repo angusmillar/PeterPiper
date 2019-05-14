@@ -204,11 +204,25 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return this.CountSubComponent;
       }
     }
+    public bool HasSubComponents
+    {
+      get
+      {
+        return this.CountSubComponent > 0;
+      }
+    }
     public int ContentCount
     {
       get
       {
         return this.CountContent;
+      }
+    }
+    public bool HasContents
+    {
+      get
+      {
+        return this.CountContent > 0;
       }
     }
     public ISubComponent SubComponent(int index)
@@ -591,7 +605,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
       {
-        throw new PeterPiperException(String.Format("Component data cannot contain HL7 V2 Delimiters of : {0}", CharatersNotAlowed));
+        string ErrorChars = string.Join(" or ", CharatersNotAlowed);
+        throw new PeterPiperException($"Component data cannot contain HL7 V2 Delimiters of : {ErrorChars}");
       }
       return true;
     }

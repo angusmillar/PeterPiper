@@ -47,6 +47,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// </summary>
     int ElementCount { get; }
     /// <summary>
+    /// Returns True is the total element count in the segment is greater than 1 
+    /// </summary>
+    bool HasElements { get; }
+    /// <summary>
     /// Returns a Read Only Collection of all elements in the segment
     /// </summary>
     System.Collections.ObjectModel.ReadOnlyCollection<IElement> ElementList { get; }
@@ -61,6 +65,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// Returns the total field count in the segment 
     /// </summary>
     int FieldCount { get; }
+    /// <summary>
+    /// Returns True is the total field count in the segment is greater than 1 
+    /// </summary>
+    bool HasFields { get; }
     /// <summary>
     /// Insert a element into the segment at a given index
     /// Index is a one based index

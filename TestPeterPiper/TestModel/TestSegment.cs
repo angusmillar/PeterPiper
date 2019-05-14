@@ -366,10 +366,10 @@ namespace TestHl7V2
       actual = target.AsString;
       Assert.AreEqual(expected, actual, "A test for AsString");
 
-      StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       target = Creator.Segment(StringRaw);
       actual = target.AsString;
-      expected = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10^6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      expected = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10^6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       Assert.AreEqual(expected, actual, "A test for AsString");
     }
 
@@ -396,10 +396,10 @@ namespace TestHl7V2
       actual = target.AsStringRaw;
       Assert.AreEqual(expected, actual, "A test for AsStringRaw");
 
-      StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       target = Creator.Segment(StringRaw);
       actual = target.AsStringRaw;
-      expected = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      expected = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       Assert.AreEqual(expected, actual, "A test for AsStringRaw");
     }
 
@@ -409,7 +409,7 @@ namespace TestHl7V2
     [TestMethod]
     public void CodeTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       string actual;
       actual = target.Code;
@@ -422,7 +422,7 @@ namespace TestHl7V2
     [TestMethod]
     public void ElementCountTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       int actual;
       actual = target.ElementCount;
@@ -431,12 +431,38 @@ namespace TestHl7V2
     }
 
     /// <summary>
+    ///A test for HasElements
+    ///</summary>
+    [TestMethod]
+    public void Element_HasElements_True()
+    {
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.HasElements;
+      Assert.IsTrue(actual, "A test for HasElements should be True");
+    }
+
+    /// <summary>
+    ///A test for HasElements
+    ///</summary>
+    [TestMethod]
+    public void Element_HasElements_False()
+    {
+      string StringRaw = "OBX|";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.HasElements;
+      Assert.IsFalse(actual, "A test for HasElements should be False");
+    }
+
+    /// <summary>
     ///A test for ElementList
     ///</summary>
     [TestMethod]
     public void ElementListTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       ReadOnlyCollection<IElement> actual;
       actual = target.ElementList;
@@ -459,11 +485,37 @@ namespace TestHl7V2
     [TestMethod]
     public void FieldCountTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       int actual;
       actual = target.FieldCount;
       Assert.AreEqual(15, actual, "A test for FieldCount");
+    }
+
+    /// <summary>
+    ///A test for HasField
+    ///</summary>
+    [TestMethod]
+    public void Field_HasField_True()
+    {
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.HasFields;
+      Assert.IsTrue(actual, "A test for HasField should be True");
+    }
+
+    /// <summary>
+    ///A test for HasField
+    ///</summary>
+    [TestMethod]
+    public void Field_HasField_False()
+    {
+      string StringRaw = "OBX|";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.HasFields;
+      Assert.IsFalse(actual, "A test for HasField should be False");
     }
 
     /// <summary>
@@ -472,7 +524,7 @@ namespace TestHl7V2
     [TestMethod]
     public void IsEmptyTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^AUSLAB";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       bool actual;
       actual = target.IsEmpty;
@@ -487,7 +539,7 @@ namespace TestHl7V2
     [TestMethod]
     public void PathInformationTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^AUSLAB||<  10|x10\\S\\6/L|< 10|N|||oneC^TwoC^One&Two~one2C^Two2C^One2&Two2|||201405270956|RB^PATH QLD Central^AUSLAB";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||oneC^TwoC^One&Two~one2C^Two2C^One2&Two2|||201405270956|RB^PATH QLD Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       Assert.AreEqual("OBX", target.PathDetail.PathBrief, "A test for PathInformation 1");
       Assert.AreEqual("Segment: OBX", target.PathDetail.PathVerbos, "A test for PathInformation 2");
@@ -583,7 +635,7 @@ namespace TestHl7V2
     [TestMethod]
     public void HL7NullIsTrueTest()
     {
-      string StringRaw = @"OBX|12|ST|""""|^Urine Micro WBC^AUSLAB||<  10";
+      string StringRaw = @"OBX|12|ST|""""|^Urine Micro WBC^SUPERLIS||<  10";
       var target = Creator.Segment(StringRaw);
       Assert.AreEqual(true, target.Field(3).IsHL7Null, "A test for HL7 Null");
     }
@@ -591,7 +643,7 @@ namespace TestHl7V2
     [TestMethod]
     public void HL7NullIsFalseTest()
     {
-      string StringRaw = @"OBX|12|ST|ABC|^Urine Micro WBC^AUSLAB||<  10";
+      string StringRaw = @"OBX|12|ST|ABC|^Urine Micro WBC^SUPERLIS||<  10";
       var target = Creator.Segment(StringRaw);
       Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for HL7 Null");
     }
@@ -599,7 +651,7 @@ namespace TestHl7V2
     [TestMethod]
     public void HL7NullForFieldWithComponentsThatAreNotHL7NullTest()
     {
-      string StringRaw = @"OBX|12|ST|""""^ABC|^Urine Micro WBC^AUSLAB||<  10";
+      string StringRaw = @"OBX|12|ST|""""^ABC|^Urine Micro WBC^SUPERLIS||<  10";
       var target = Creator.Segment(StringRaw);
       Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for Field NOT equal to HL7 Null");
       Assert.AreEqual(true, target.Field(3).Component(1).IsHL7Null, "A test for Component equal to HL7 Null");
@@ -609,7 +661,7 @@ namespace TestHl7V2
     [TestMethod]
     public void HL7NullForComponentWithSubComponentsThatAreNotHL7NullTest()
     {
-      string StringRaw = @"OBX|12|ST|""""&ABC^EFG|^Urine Micro WBC^AUSLAB||<  10";
+      string StringRaw = @"OBX|12|ST|""""&ABC^EFG|^Urine Micro WBC^SUPERLIS||<  10";
       var target = Creator.Segment(StringRaw);
       Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for Field NOT equal to HL7 Null");
       Assert.AreEqual(false, target.Field(3).Component(1).IsHL7Null, "A test for Component NOT equal to HL7 Null");
@@ -621,7 +673,7 @@ namespace TestHl7V2
     [TestMethod]
     public void HL7NullForSubComponentWithContentThatAreNotHL7NullTest()
     {
-      string StringRaw = @"OBX|12|ST|""""\.br\ABC|^Urine Micro WBC^AUSLAB||<  10";
+      string StringRaw = @"OBX|12|ST|""""\.br\ABC|^Urine Micro WBC^SUPERLIS||<  10";
       var target = Creator.Segment(StringRaw);
       Assert.AreEqual(false, target.Field(3).IsHL7Null, "A test for Field NOT equal to HL7 Null");
       Assert.AreEqual(false, target.Field(3).Component(1).IsHL7Null, "A test for Component NOT equal to HL7 Null");

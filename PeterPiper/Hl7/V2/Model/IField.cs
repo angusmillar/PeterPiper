@@ -48,6 +48,9 @@ namespace PeterPiper.Hl7.V2.Model
     /// </summary>
     int ComponentCount { get; }
     /// <summary>
+    /// Returns True if the component count is greater than one    /// </summary>
+    bool HasComponents { get; }
+    /// <summary>
     /// Returns a collection of all components in the field
     /// </summary>
     System.Collections.ObjectModel.ReadOnlyCollection<IComponent> ComponentList { get; }
@@ -62,6 +65,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// Returns the total content count of the first component's first subcomponent of the field
     /// </summary>
     int ContentCount { get; }
+    /// <summary>
+    /// Returns true is the total content count of the first component's first subcomponent of the field is greater than 1
+    /// </summary>
+    bool HasContents { get; }
     /// <summary>
     /// Insert a component at the given index into the field
     /// Uses a one based index
@@ -148,6 +155,10 @@ namespace PeterPiper.Hl7.V2.Model
     /// Returns the total subcomponent count from the first component of the field
     /// </summary>
     int SubComponentCount { get; }
+    /// <summary>
+    /// Returns the total subcomponent count from the first component of the field
+    /// </summary>
+    bool HasSubComponents { get; }
     /// <summary>
     /// Get the whole field as an decoded string (human readable)     
     /// </summary>

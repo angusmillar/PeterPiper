@@ -227,6 +227,13 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return this.CountContent;
       }
     }
+    public bool HasContents
+    {
+      get
+      {
+        return this.CountContent > 0;
+      }
+    }
     public IContent Content(int index)
     {
       return this.GetContent(index);
