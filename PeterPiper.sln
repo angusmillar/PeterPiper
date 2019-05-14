@@ -7,15 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeterPiper", "PeterPiper\Pe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC3C1D92-FBF7-4E87-B3A3-29E0CD2A3BCE}"
 	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		PeterPiper.vsmdi = PeterPiper.vsmdi
 		README.md = README.md
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPeterPiper", "TestPeterPiper\TestPeterPiper.csproj", "{1DE12433-6E94-441E-82CC-23429D0FD443}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5CD5037E-59DB-452E-9C00-8436BBEC399C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
