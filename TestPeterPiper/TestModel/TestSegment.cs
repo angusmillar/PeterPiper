@@ -366,10 +366,10 @@ namespace TestHl7V2
       actual = target.AsString;
       Assert.AreEqual(expected, actual, "A test for AsString");
 
-      StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       target = Creator.Segment(StringRaw);
       actual = target.AsString;
-      expected = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10^6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      expected = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10^6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       Assert.AreEqual(expected, actual, "A test for AsString");
     }
 
@@ -396,10 +396,10 @@ namespace TestHl7V2
       actual = target.AsStringRaw;
       Assert.AreEqual(expected, actual, "A test for AsStringRaw");
 
-      StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       target = Creator.Segment(StringRaw);
       actual = target.AsStringRaw;
-      expected = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      expected = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       Assert.AreEqual(expected, actual, "A test for AsStringRaw");
     }
 
@@ -409,7 +409,7 @@ namespace TestHl7V2
     [TestMethod]
     public void CodeTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       string actual;
       actual = target.Code;
@@ -422,7 +422,7 @@ namespace TestHl7V2
     [TestMethod]
     public void ElementCountTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       int actual;
       actual = target.ElementCount;
@@ -436,7 +436,7 @@ namespace TestHl7V2
     [TestMethod]
     public void Element_HasElements_True()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       bool actual;
       actual = target.HasElements;
@@ -462,7 +462,7 @@ namespace TestHl7V2
     [TestMethod]
     public void ElementListTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       ReadOnlyCollection<IElement> actual;
       actual = target.ElementList;
@@ -485,7 +485,7 @@ namespace TestHl7V2
     [TestMethod]
     public void FieldCountTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       int actual;
       actual = target.FieldCount;
@@ -498,7 +498,7 @@ namespace TestHl7V2
     [TestMethod]
     public void Field_HasField_True()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       bool actual;
       actual = target.HasFields;
@@ -524,7 +524,7 @@ namespace TestHl7V2
     [TestMethod]
     public void IsEmptyTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       bool actual;
       actual = target.IsEmpty;
@@ -539,7 +539,7 @@ namespace TestHl7V2
     [TestMethod]
     public void PathInformationTest()
     {
-      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||oneC^TwoC^One&Two~one2C^Two2C^One2&Two2|||201405270956|RB^PATH QLD Central^SUPERLIS";
+      string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||oneC^TwoC^One&Two~one2C^Two2C^One2&Two2|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
       Assert.AreEqual("OBX", target.PathDetail.PathBrief, "A test for PathInformation 1");
       Assert.AreEqual("Segment: OBX", target.PathDetail.PathVerbos, "A test for PathInformation 2");

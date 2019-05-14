@@ -1067,7 +1067,7 @@ namespace TestPeterPiper.TestModel
       try
       {
         var testSeg = Creator.Segment("BAD");
-        testSeg.AsStringRaw = "MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1";
+        testSeg.AsStringRaw = "MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1";
         testSeg.AsStringRaw = "ABC|^~\\&|SUPERLIS|TRAIN|";
         Assert.Fail("An exception should have been thrown");
       }
@@ -1076,7 +1076,7 @@ namespace TestPeterPiper.TestModel
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
-      var NewMSH = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
+      var NewMSH = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
       try
       {
         oMessage.Add(NewMSH);

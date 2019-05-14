@@ -19,33 +19,33 @@ namespace TestHl7V2
     [TestInitialize]
     public void MyTestInitialize()
     {
-      sMSH = "MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140527095657||ORU^R01|0000000000000000010D|P|2.3.1|||||||en";
+      sMSH = "MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140527095657||ORU^R01|0000000000000000010D|P|2.3.1|||||||en";
 
       oMsg = new System.Text.StringBuilder();
-      oMsg.Append("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1^AUS&&ISO^AS4700.2&&L|||||||en"); oMsg.Append("\r");
+      oMsg.Append("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1^AUS&&ISO^AS4700.2&&L|||||||en"); oMsg.Append("\r");
       oMsg.Append("PID|1|PA30000004|PA3000\\R\\0004^^^^MR~22222221111^^^AUSHIC^MC||QHMILLAR^AM201405191155||19730930|M||9^Not Stated|16 ULVA STREET^^BALD HILLS (4036)^^4036||0893412041||||||22222221111"); oMsg.Append("\r");
       oMsg.Append("PV1|1|I|4BT\\R\\PAH&4B Transplant (PAH)&SUPERLIS^^^PAH&Princess Alexandra Hospital&SUPERLIS||||BONR1\\R\\PAH^Robert Bond^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital~460?PAH^^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital||BONR\\R\\PAH^Bond, Robert (PAH)^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital~460?PAH^^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital~0362233F^^^^^^^^AUSHIC^^^^PRN|MED1\\R\\PAH^Medical 1 (PAH)|||||||||PA2711|G P Eligible|GPE|||||||||||||||||||||||201405191211"); oMsg.Append("\r");
       oMsg.Append("ORC|RE|141470000018|1202^SUPERLIS||IP||^^^20140527|||||BONR1\\R\\PAH^Robert Bond^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital~460?PAH^^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital"); oMsg.Append("\r");
       oMsg.Append("OBR|1|141470000018|1202^SUPERLIS|URINE^Urine M/C/S^SUPERLIS||20140527|201405270900|||4BT\\R\\PAH^4B Transplant (PAH)^^^^^^^SUPERLIS^^^^CWARD^PAH&Princess Alexandra Hospital~PAH^Princess Alexandra Hospital^^^^^^^SUPERLIS^^^^CCENT^PAH&Princess Alexandra Hospital||||201405270901|URINE&Urine&SUPERLIS|BONR1\\R\\PAH^Robert Bond^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital~460?PAH^^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital||||||201405270956||MB|F||^^^20140527"); oMsg.Append("\r");
-      oMsg.Append("OBX|1|CE|MSTAT^Micro Report Status^SUPERLIS||COM^COMPLETE^SUPERLIS|||H|||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|2|CE|UCENT^Urine Centrifuged^SUPERLIS||CENT^Centrifuged^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|3|CE|UCRY3^Urine Crystals 3^SUPERLIS||UNID^Unidentified ^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|4|CE|UCRY2^Urine Crystals 2^SUPERLIS||UNID^Unidentified ^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|5|CE|UCRY1^Urine Crystals 1^SUPERLIS||NCRYS^No Crystals Seen^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|6|NM|UWBCC^Urine WBC Casts^SUPERLIS||0|/lpf|||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|7|NM|UHYC^Urine Hyaline Casts^SUPERLIS||0|/lpf|||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|8|NM|UGRANC^Urine Granular Casts^SUPERLIS||0|/lpf|||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|9|NM|URBCC^Urine RBC Casts^SUPERLIS||0|/lpf|||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|10|CE|UEPI^Urine Micro Epi's^SUPERLIS||G50^> 50^SUPERLIS|x10\\S\\6/L|||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|11|NM|URBC^Urine Micro RBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|13|CE|CULT1^Culture Comment Line 1^SUPERLIS||MSF^Mixed skin flora^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|14|TX|MICCOM^Comment ^SUPERLIS||this is a ieMR test comment 1~this is a ieMR test commment 2||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|15|CE|UAMA^Ur Antimicrobial Activity^SUPERLIS||ND^Not Detected^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|16|CE|ORG^Organism^SUPERLIS|1|ESCCES^E. coli (ESBL Producer)^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
-      oMsg.Append("OBX|17|ST|QUANT^Quantifier^SUPERLIS|1|2+||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|1|CE|MSTAT^Micro Report Status^SUPERLIS||COM^COMPLETE^SUPERLIS|||H|||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|2|CE|UCENT^Urine Centrifuged^SUPERLIS||CENT^Centrifuged^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|3|CE|UCRY3^Urine Crystals 3^SUPERLIS||UNID^Unidentified ^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|4|CE|UCRY2^Urine Crystals 2^SUPERLIS||UNID^Unidentified ^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|5|CE|UCRY1^Urine Crystals 1^SUPERLIS||NCRYS^No Crystals Seen^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|6|NM|UWBCC^Urine WBC Casts^SUPERLIS||0|/lpf|||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|7|NM|UHYC^Urine Hyaline Casts^SUPERLIS||0|/lpf|||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|8|NM|UGRANC^Urine Granular Casts^SUPERLIS||0|/lpf|||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|9|NM|URBCC^Urine RBC Casts^SUPERLIS||0|/lpf|||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|10|CE|UEPI^Urine Micro Epi's^SUPERLIS||G50^> 50^SUPERLIS|x10\\S\\6/L|||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|11|NM|URBC^Urine Micro RBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|13|CE|CULT1^Culture Comment Line 1^SUPERLIS||MSF^Mixed skin flora^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|14|TX|MICCOM^Comment ^SUPERLIS||this is a EMR test comment 1~this is a EMR test commment 2||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|15|CE|UAMA^Ur Antimicrobial Activity^SUPERLIS||ND^Not Detected^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|16|CE|ORG^Organism^SUPERLIS|1|ESCCES^E. coli (ESBL Producer)^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|17|ST|QUANT^Quantifier^SUPERLIS|1|2+||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
       oMsg.Append("OBR|2|141470000018|1202^SUPERLIS|SENS^Sensitivity Panel^SUPERLIS||20140527|201405270900|||4BT\\R\\PAH^4B Transplant (PAH)^^^^^^^SUPERLIS^^^^CWARD^PAH&Princess Alexandra Hospital~PAH^Princess Alexandra Hospital^^^^^^^SUPERLIS^^^^CCENT^PAH&Princess Alexandra Hospital||||201405270901|URINE&Urine&SUPERLIS|BONR1\\R\\PAH^Robert Bond^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital~460?PAH^^^^^^^^SUPERLIS^^^^DN^PAH&Princess Alexandra Hospital||||||201405270954||MB|P||^^^20140527"); oMsg.Append("\r");
-      oMsg.Append("OBX|1|TX|CULCOM^Culture Comment^SUPERLIS||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^SUPERLIS"); oMsg.Append("\r");
+      oMsg.Append("OBX|1|TX|CULCOM^Culture Comment^SUPERLIS||Sens EMR test comment 1~Sens EMR comment line 2||||||R|||201405270954|RB^PATH XXX Central^SUPERLIS"); oMsg.Append("\r");
     }
 
     /// <summary>
@@ -159,7 +159,7 @@ namespace TestHl7V2
     [TestMethod]
     public void MessageConstructorTest3()
     {
-      var item = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1^AUS&&ISO^AS4700.2&&L|||||||en");
+      var item = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1^AUS&&ISO^AS4700.2&&L|||||||en");
       var target = Creator.Message(item);      
       
       Assert.AreEqual(oMsg.ToString().Split('\r')[0] + '\r', target.AsStringRaw, "A test for Message Constructor");
@@ -185,9 +185,9 @@ namespace TestHl7V2
     [TestMethod]
     public void AddTest1()
     {
-      var item = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var item = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
       var target = Creator.Message(item);
-      var item1 = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var item1 = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
       try
       {
         target.Add(item1);
@@ -198,7 +198,7 @@ namespace TestHl7V2
         Assert.AreEqual("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
-      item1 = Creator.Segment("OBX|1|TX|CULCOM^Culture Comment^SUPERLIS||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^SUPERLIS");
+      item1 = Creator.Segment("OBX|1|TX|CULCOM^Culture Comment^SUPERLIS||Sens EMR test comment 1~Sens EMR comment line 2||||||R|||201405270954|RB^PATH XXX Central^SUPERLIS");
       target.Add(item1);
       Assert.AreEqual("Culture Comment", target.Segment(2).Field(3).Component(2).AsString, "A test for Add");
       Assert.AreEqual(2, target.SegmentCount(), "A test for Add");
@@ -211,7 +211,7 @@ namespace TestHl7V2
     public void ClearAllTest()
     {
       IMessage target;
-      var itemOBX = Creator.Segment("OBX|1|TX|CULCOM^Culture Comment^SUPERLIS||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^SUPERLIS");
+      var itemOBX = Creator.Segment("OBX|1|TX|CULCOM^Culture Comment^SUPERLIS||Sens EMR test comment 1~Sens EMR comment line 2||||||R|||201405270954|RB^PATH XXX Central^SUPERLIS");
       try
       {
         target = Creator.Message(itemOBX);
@@ -221,7 +221,7 @@ namespace TestHl7V2
       {
         Assert.AreEqual("The Segment instance passed in is not a MSH Segment, only a MSH Segment can be passed in on creation / instantiation of a Message", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
-      var itemMSH = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var itemMSH = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
       target = Creator.Message(itemMSH);
       target.ClearAll();
       Assert.AreEqual(2, target.Segment(1).ElementCount, "A test for ClearAll");
@@ -237,7 +237,7 @@ namespace TestHl7V2
       Assert.AreEqual(2, target.Segment(1).FieldCount, "A test for ClearAll");
       Assert.AreEqual("MSH|^~\\&|", target.Segment(1).AsStringRaw, "A test for ClearAll");
       Assert.AreEqual("MSH|^~\\&|", target.Segment(1).AsString, "A test for ClearAll");
-      Assert.AreEqual("OBX|1|TX|CULCOM^Culture Comment^SUPERLIS||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^SUPERLIS", target.Segment(2).AsStringRaw, "A test for ClearAll");
+      Assert.AreEqual("OBX|1|TX|CULCOM^Culture Comment^SUPERLIS||Sens EMR test comment 1~Sens EMR comment line 2||||||R|||201405270954|RB^PATH XXX Central^SUPERLIS", target.Segment(2).AsStringRaw, "A test for ClearAll");
 
     }
 
@@ -261,11 +261,11 @@ namespace TestHl7V2
     {
       var target = Creator.Message(oMsg.ToString());
       int index = 2;
-      var itemOBX = Creator.Segment("OBX|99|TX|CULCOM^Culture Comment^SUPERLIS||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^SUPERLIS");
+      var itemOBX = Creator.Segment("OBX|99|TX|CULCOM^Culture Comment^SUPERLIS||Sens EMR test comment 1~Sens EMR comment line 2||||||R|||201405270954|RB^PATH XXX Central^SUPERLIS");
       target.Insert(index, itemOBX);
-      Assert.AreEqual("OBX|99|TX|CULCOM^Culture Comment^SUPERLIS||Sens ieMR test comment 1~Sens ieMR comment line 2||||||R|||201405270954|RB^PATH QLD Central^SUPERLIS", target.Segment(2).AsStringRaw, "A test for Insert");
+      Assert.AreEqual("OBX|99|TX|CULCOM^Culture Comment^SUPERLIS||Sens EMR test comment 1~Sens EMR comment line 2||||||R|||201405270954|RB^PATH XXX Central^SUPERLIS", target.Segment(2).AsStringRaw, "A test for Insert");
 
-      var itemMSH = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|ieMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
+      var itemMSH = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140527095657||ORU^R01^ORU_R01|0000000000000000010D|P|2.3.1|||||||en");
       try
       {
         target.Insert(index, itemMSH);
@@ -303,7 +303,7 @@ namespace TestHl7V2
       string Code = "OBX";
       var expected = Creator.Segment(Code);      
       var actual = target.Segment(Code);
-      Assert.AreEqual("OBX|1|CE|MSTAT^Micro Report Status^SUPERLIS||COM^COMPLETE^SUPERLIS|||H|||F|||201405270956|RB^PATH QLD Central^SUPERLIS", actual.AsStringRaw, "A test for Segment");
+      Assert.AreEqual("OBX|1|CE|MSTAT^Micro Report Status^SUPERLIS||COM^COMPLETE^SUPERLIS|||H|||F|||201405270956|RB^PATH XXX Central^SUPERLIS", actual.AsStringRaw, "A test for Segment");
     }
 
     /// <summary>
@@ -314,7 +314,7 @@ namespace TestHl7V2
     {
       var target = Creator.Message(oMsg.ToString());
       int index = 6; // TODO: Initialize to an appropriate value
-      var expected = Creator.Segment("OBX|1|CE|MSTAT^Micro Report Status^SUPERLIS||COM^COMPLETE^SUPERLIS|||H|||F|||201405270956|RB^PATH QLD Central^SUPERLIS");      
+      var expected = Creator.Segment("OBX|1|CE|MSTAT^Micro Report Status^SUPERLIS||COM^COMPLETE^SUPERLIS|||H|||F|||201405270956|RB^PATH XXX Central^SUPERLIS");      
       var actual = target.Segment(index);
       Assert.AreEqual(expected.AsStringRaw, actual.AsStringRaw, "A test for Segment");
     }
@@ -330,7 +330,7 @@ namespace TestHl7V2
       ReadOnlyCollection<ISegment> actual;
       actual = target.SegmentList(Code);
       Assert.AreEqual(18, actual.Count, "A test for SegmentList");
-      Assert.AreEqual("OBX|5|CE|UCRY1^Urine Crystals 1^SUPERLIS||NCRYS^No Crystals Seen^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS", actual[4].AsStringRaw, "A test for SegmentList");
+      Assert.AreEqual("OBX|5|CE|UCRY1^Urine Crystals 1^SUPERLIS||NCRYS^No Crystals Seen^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS", actual[4].AsStringRaw, "A test for SegmentList");
     }
 
     /// <summary>
@@ -343,7 +343,7 @@ namespace TestHl7V2
       ReadOnlyCollection<ISegment> actual;
       actual = target.SegmentList();
       Assert.AreEqual(24, actual.Count, "A test for SegmentList");
-      Assert.AreEqual("OBX|5|CE|UCRY1^Urine Crystals 1^SUPERLIS||NCRYS^No Crystals Seen^SUPERLIS||||||F|||201405270956|RB^PATH QLD Central^SUPERLIS", actual[9].AsStringRaw, "A test for SegmentList 2");
+      Assert.AreEqual("OBX|5|CE|UCRY1^Urine Crystals 1^SUPERLIS||NCRYS^No Crystals Seen^SUPERLIS||||||F|||201405270956|RB^PATH XXX Central^SUPERLIS", actual[9].AsStringRaw, "A test for SegmentList 2");
     }
 
     /// <summary>
