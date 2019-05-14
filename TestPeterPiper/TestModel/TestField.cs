@@ -357,12 +357,36 @@ namespace TestHl7V2
     ///A test for ComponentCount
     ///</summary>
     [TestMethod]
-    public void Component_HasComponents()
+    public void Component_HasComponents_Many()
     {
       var target = Creator.Field("Comp1^Comp2^Comp3");
       bool actual;
       actual = target.HasComponents;
       Assert.IsTrue(actual, "HasComponents should be True");
+    }
+
+    /// <summary>
+    ///A test for ComponentCount
+    ///</summary>
+    [TestMethod]
+    public void Component_HasComponents_One()
+    {
+      var target = Creator.Field("Comp1");
+      bool actual;
+      actual = target.HasComponents;
+      Assert.IsFalse(actual, "HasComponents should be False");
+    }
+
+    /// <summary>
+    ///A test for ComponentCount
+    ///</summary>
+    [TestMethod]
+    public void Component_HasComponents_None()
+    {
+      var target = Creator.Field("");
+      bool actual;
+      actual = target.HasComponents;
+      Assert.IsFalse(actual, "HasComponents should be False");
     }
 
     /// <summary>
@@ -396,11 +420,11 @@ namespace TestHl7V2
     ///A test for HasContets
     ///</summary>
     [TestMethod]
-    public void Content_HasContets_True()
+    public void Content_HasContents_Many()
     {
       var target = Creator.Field("Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3");
       bool actual;
-      actual = target.HasContents;
+      actual = target.Component(1).HasContents;
       Assert.IsTrue(actual, "A test for HasContents should be True");
     }
 
@@ -408,11 +432,23 @@ namespace TestHl7V2
     ///A test for HasContets
     ///</summary>
     [TestMethod]
-    public void Content_HasContets_False()
+    public void Content_HasContets_One()
     {
-      var target = Creator.Field("&Sub2&Sub3^Comp2^Comp3");
+      var target = Creator.Field("Hello&Sub2&Sub3^Comp2^Comp3");
       bool actual;
-      actual = target.HasContents;
+      actual = target.Component(1).HasContents;
+      Assert.IsFalse(actual, "A test for HasContents should be False");
+    }
+
+    /// <summary>
+    ///A test for HasContets
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContets_None()
+    {
+      var target = Creator.Field("^Comp2^Comp3");
+      bool actual;
+      actual = target.Component(1).HasContents;
       Assert.IsFalse(actual, "A test for HasContents should be False");
     }
 
@@ -463,24 +499,36 @@ namespace TestHl7V2
     ///A test for HasSubComponents
     ///</summary>
     [TestMethod]
-    public void SubComponent_HasSubComponets_True()
+    public void SubComponent_HasSubComponets_Many()
     {
-      var target = Creator.Field("SubOne&SubTwo&SubThree^Comp2^Comp3");
+      var target = Creator.Field("SubOne&SubTwo&SubThree^Comp2");
       bool actual;
       actual = target.HasSubComponents;
-      Assert.IsTrue(actual, "A test for HasSubComponents");
+      Assert.IsTrue(actual, "A test for HasSubComponents True");
     }
 
     /// <summary>
     ///A test for HasSubComponents
     ///</summary>
     [TestMethod]
-    public void SubComponent_HasSubComponets_Flase()
+    public void SubComponent_HasSubComponets_One()
     {
-      var target = Creator.Field("^Two^three");
+      var target = Creator.Field("SubOne^Comp2");
       bool actual;
       actual = target.HasSubComponents;
-      Assert.IsFalse(actual, "A test for HasSubComponents");
+      Assert.IsFalse(actual, "A test for HasSubComponents False");
+    }
+
+    /// <summary>
+    ///A test for HasSubComponents
+    ///</summary>
+    [TestMethod]
+    public void SubComponent_HasSubComponets_None()
+    {
+      var target = Creator.Field("^Comp2");
+      bool actual;
+      actual = target.HasSubComponents;
+      Assert.IsFalse(actual, "A test for HasSubComponents False");
     }
 
     /// <summary>

@@ -449,7 +449,7 @@ namespace TestHl7V2
     [TestMethod]
     public void Element_HasElements_False()
     {
-      string StringRaw = "OBX|";
+      string StringRaw = "OBX|one";
       var target = Creator.Segment(StringRaw);
       bool actual;
       actual = target.HasElements;
@@ -496,7 +496,7 @@ namespace TestHl7V2
     ///A test for HasField
     ///</summary>
     [TestMethod]
-    public void Field_HasField_True()
+    public void Field_HasFields_Many_True()
     {
       string StringRaw = "OBX|12|ST|UWBC^Urine Micro WBC^SUPERLIS||<  10|x10\\S\\6/L|< 10|N|||F|||201405270956|RB^PATH XXX Central^SUPERLIS";
       var target = Creator.Segment(StringRaw);
@@ -507,9 +507,23 @@ namespace TestHl7V2
 
     /// <summary>
     ///A test for HasField
+    ///Note there is only one Field from it does not have many Fields!
     ///</summary>
     [TestMethod]
-    public void Field_HasField_False()
+    public void Field_HasFields_One_True()
+    {
+      string StringRaw = "OBX|12";
+      var target = Creator.Segment(StringRaw);
+      bool actual;
+      actual = target.HasFields;
+      Assert.IsFalse(actual, "A test for HasField should be True");
+    }
+
+    /// <summary>
+    ///A test for HasField
+    ///</summary>
+    [TestMethod]
+    public void Field_HasFields_False()
     {
       string StringRaw = "OBX|";
       var target = Creator.Segment(StringRaw);

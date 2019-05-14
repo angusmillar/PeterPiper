@@ -218,7 +218,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.CountComponent > 0;
+        return this.CountComponent > 1;
       }
     }
     public int SubComponentCount
@@ -232,7 +232,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.CountSubComponent > 0;
+        return this.CountSubComponent > 1;
       }
     }
     public int ContentCount
@@ -246,7 +246,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.CountContent > 0;
+        return this.CountContent > 1;
       }
     }
     public IComponent Component(int index)

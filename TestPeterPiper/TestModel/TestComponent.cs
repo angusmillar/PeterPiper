@@ -282,7 +282,7 @@ namespace TestHl7V2
     ///A test for HasContents
     ///</summary>
     [TestMethod]
-    public void Content_HasContents_True()
+    public void Content_HasContents_Many()
     {
       var target = Creator.Segment("PID|Hello\\R\\World\\R\\Bye^CompTwo|Stuff|");
       bool actual;
@@ -294,14 +294,26 @@ namespace TestHl7V2
     ///A test for HasContents
     ///</summary>
     [TestMethod]
-    public void Content_HasContents_False()
+    public void Content_HasContents_One()
+    {
+      var target = Creator.Segment("PID|Hello World Bye^CompTwo|Stuff|");
+      bool actual;
+      actual = target.Field(1).Component(1).HasContents;
+      Assert.IsFalse(actual, "A test for HasContents should be False");
+    }
+
+    /// <summary>
+    ///A test for HasContents
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContents_None()
     {
       var target = Creator.Segment("PID|^CompTwo|Stuff|");
       bool actual;
       actual = target.Field(1).Component(1).HasContents;
       Assert.IsFalse(actual, "A test for HasContents should be False");
     }
-
+    
     /// <summary>
     ///A test for IsEmpty
     ///</summary>
@@ -348,7 +360,7 @@ namespace TestHl7V2
     ///A test for HasSubComponents
     ///</summary>
     [TestMethod]
-    public void SubComponent_HasSubComponents_True()
+    public void SubComponent_HasSubComponents_Many()
     {
       var target = Creator.Segment("PID|one&two&three&four|stuff");
       bool actual;
@@ -360,13 +372,26 @@ namespace TestHl7V2
     ///A test for HasSubComponents
     ///</summary>
     [TestMethod]
-    public void SubComponent_HasSubComponents_False()
+    public void SubComponent_HasSubComponents_One()
     {
-      var target = Creator.Segment("PID||stuff");
+      var target = Creator.Segment("PID|one|stuff");
       bool actual;
       actual = target.Field(1).Component(1).HasSubComponents;
       Assert.IsFalse(actual, "A test for HasSubComponents should be False");
     }
+
+
+    /// <summary>
+    ///A test for HasSubComponents
+    ///</summary>
+    [TestMethod]
+    public void SubComponent_HasSubComponents_None()
+    {
+      var target = Creator.Segment("PID|^two|stuff");
+      bool actual;
+      actual = target.Field(1).Component(1).HasSubComponents;
+      Assert.IsFalse(actual, "A test for HasSubComponents should be False");
+    }    
 
     /// <summary>
     ///A test for SubComponentList

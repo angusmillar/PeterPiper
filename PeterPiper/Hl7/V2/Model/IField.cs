@@ -48,7 +48,8 @@ namespace PeterPiper.Hl7.V2.Model
     /// </summary>
     int ComponentCount { get; }
     /// <summary>
-    /// Returns True if the component count is greater than one    /// </summary>
+    /// Returns True if the component count is greater than one    
+    /// /// </summary>
     bool HasComponents { get; }
     /// <summary>
     /// Returns a collection of all components in the field

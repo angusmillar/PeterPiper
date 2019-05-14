@@ -397,25 +397,37 @@ namespace TestHl7V2
     ///A test for HasContent
     ///</summary>
     [TestMethod]
-    public void Content_HasContent_True()
+    public void Content_HasContent_Many()
     {
-      string StringRaw = "Hello \\T\\ World \\.br\\Earth&Sub2&Sub3^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
+      string StringRaw = "Hello \\T\\ World \\.br\\Earth^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
       var target = Creator.Element(StringRaw);
       bool actual;
-      actual = target.HasContents;
-      Assert.IsTrue(actual, "A test for HasContentCount shoudl be True");
+      actual = target.Repeat(1).Component(1).HasContents;
+      Assert.IsTrue(actual, "A test for HasContentCount should be True");
     }
     /// <summary>
     ///A test for HasContent
     ///</summary>
     [TestMethod]
-    public void Content_HasContent_False()
+    public void Content_HasContent_One()
     {
-      //Note Repeat 1 is empty
-      string StringRaw = "~R2~R3~R4";
+      string StringRaw = "Hello World Earth^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
       var target = Creator.Element(StringRaw);
       bool actual;
-      actual = target.HasContents;
+      actual = target.Repeat(1).Component(1).HasContents;
+      Assert.IsFalse(actual, "A test for HasContentCount should be False");
+    }
+
+    /// <summary>
+    ///A test for HasContent
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContent_None()
+    {
+      string StringRaw = "^Comp2^Comp3~R2Hello \\T\\ World \\.br\\Earth&R2Sub2&R2Sub3^R2Comp2^R2Comp3~R3~R4";
+      var target = Creator.Element(StringRaw);
+      bool actual;
+      actual = target.Repeat(1).Component(1).HasContents;
       Assert.IsFalse(actual, "A test for HasContentCount should be False");
     }
 
@@ -488,7 +500,7 @@ namespace TestHl7V2
       var target = Creator.Element(StringRaw);
       bool actual;
       actual = target.HasRepeats;
-      Assert.IsTrue(actual, "Element HasRepeats should be True.");
+      Assert.IsFalse(actual, "Element HasRepeats should be False.");
     }
 
     /// <summary>
@@ -540,7 +552,7 @@ namespace TestHl7V2
       var target = Creator.Segment(StringRaw);
       bool actual;
       actual = target.Element(1).HasComponents;
-      Assert.IsTrue(actual, "First Element Repeats HasComponets should be true");
+      Assert.IsFalse(actual, "First Element Repeats HasComponets should be False");
     }
     /// <summary>
     ///A test for RepeatList

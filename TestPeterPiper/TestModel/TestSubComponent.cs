@@ -203,8 +203,9 @@ namespace TestHl7V2
     ///A test for HasContent
     ///</summary>
     [TestMethod]
-    public void Content_HasContent_True()    {
-      var target = Creator.Component("Hello \\F\\ World&Two");
+    public void Content_HasContent_Many()
+    {
+      var target = Creator.Component("Hello \\F\\ World \\T\\Earth&Two");
       bool actual;
       actual = target.SubComponent(1).HasContents;
       Assert.IsTrue(actual, "HasContent should be True for SubComponent");
@@ -214,14 +215,26 @@ namespace TestHl7V2
     ///A test for HasContent
     ///</summary>
     [TestMethod]
-    public void Content_HasContent_False()
+    public void Content_HasContent_One()
+    {
+      var target = Creator.Component("Hello World Earth&Two");
+      bool actual;
+      actual = target.SubComponent(1).HasContents;
+      Assert.IsFalse(actual, "HasContent should be False for SubComponent");
+    }
+
+    /// <summary>
+    ///A test for HasContent
+    ///</summary>
+    [TestMethod]
+    public void Content_HasContent_None()
     {
       var target = Creator.Component("&Two");
       bool actual;
       actual = target.SubComponent(1).HasContents;
       Assert.IsFalse(actual, "HasContent should be False for SubComponent");
     }
-
+    
     /// <summary>
     ///A test for ContentList
     ///</summary>

@@ -231,7 +231,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.CountContent > 0;
+        return this.CountContent > 1;
       }
     }
     public IContent Content(int index)

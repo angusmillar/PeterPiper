@@ -235,7 +235,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.CountRepeat > 0;
+        return this.CountRepeat > 1;
       }
     }
     public int ComponentCount
@@ -249,7 +249,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.CountComponent > 0;
+        return this.CountComponent > 1;
       }
     }
 
@@ -265,7 +265,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.CountSubComponet > 0;
+        return this.CountSubComponet > 1;
       }
     }
     public int ContentCount
@@ -279,7 +279,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       get
       {
-        return this.CountContent > 0;
+        return this.CountContent > 1;
       }
     }
     public IField Repeat(int index)
