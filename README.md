@@ -1,8 +1,10 @@
-## Peter Piper is a HL7 V2.x parser for .NET Core & .NET Framework, available on [Nuget.org](https://www.nuget.org/packages/HealthIdentifiers.Identifiers/)
+## |Peter Piper Parser| is a HL7 V2.x parser for .NET Core & .NET Framework, available on [Nuget.org](https://www.nuget.org/packages/HealthIdentifiers.Identifiers/)
 
 Compatible with .NET Core V1.0 & .NET Framework V4.6 
 
-Below is a quick reference guide of the uses of Peter Piper. The full documentation can be found at [Peter Piper documentation Wiki](https://github.com/angusmillar/PeterPiper/wiki)
+> **MSH**|^~\\&|**Peter Piper** parsed a peck of pickled patients\~A peck of pickled patients **Peter Piper** parsed\~If **Peter Piper** picked a peck of pickled patients\~Where's the peck of pickled patients **Peter Piper** parsed?
+
+Below is a quick reference guide of the uses of Peter Piper. 
 
 ## **Parse any HL7 V2.x message**
 
@@ -40,47 +42,28 @@ IMessage oHL7 = Creator.Message(MessageVersion, MessageType, MessageTrigger);
 //Or
 
 IMessage oHL7 = Creator.Message(@"MSH|^~\&|||||||ADT^A01|||2.4|");
+
+//Output the finished message:
+
+string FinalMessage = oHL7.AsRawString;
+
 ```
 
-## **Add a new Segment:**
-
+## **Add or Insert a Segment:**
 ```C#
 using PeterPiper.Hl7.V2.Model;
-using PeterPiper.Hl7.V2.Support.Tools;
 
-string MessageVersion = "2.4";
-string MessageType = "ADT";
-string MessageTrigger = "A01";
+IMessage oHL7 = Creator.Message("2.4", "ADT", "A01");
 
-IMessage oHL7 = Creator.Message(MessageVersion, MessageType, MessageTrigger);
+ISegment oPID = Creator.Segment("PID");
+ISegment oEVN = Creator.Segment("EVN");
+oHL7.Add(oEVN); //Will add to the end of the message
+oHL7.Add(oPID); //Will add to the end of the message
 
-//Create a new PID Segment
-ISegment PIDSeg = Creator.Segment("PID");
+//Or
 
-//Add the patient name
-PIDSeg.Field(5).Component(1).AsString = "Dow";
-PIDSeg.Field(5).Component(2).AsString = "John";
-
-//Add the patient Date Of Birth
-var DateOfBirth = new DateTimeOffset(1985, 09, 30, 0, 0, 0, new TimeSpan(10, 0, 0));
-bool IncludeTimeZone = false;
-var DateTimePrecision = DateTimeSupportTools.DateTimePrecision.Date;
-PIDSeg.Field(7).Convert.DateTime.SetDateTimeOffset(DateOfBirth, IncludeTimeZone, DateTimePrecision);
-// We could have also done this:
-// PIDSeg.Field(7).AsString = "20190930";
-
-//Add the patient gender
-PIDSeg.Field(8).AsString = "M";
-
-//Add the new Segment to the Message
-oHL7.Add(PIDSeg);
-
-//Output the whole message
-string CompletedMessage = oHL7.AsStringRaw;
-
-// The CompletedMessage will be as follows:
-// MSH|^~\&|||||20190510110902.5055+1000||ADT^A01|5e911c99-5b30-451f-93d3-51baa1958785|P|2.4|||AL|NE
-// PID|||||Dow^John||19850930|M
+oHL7.Insert(2, oPID); //Will insert at index 2 in the message segment list (1 based index)
+oHL7.Insert(3, oPID); //Will insert at index 3 in the message segment list (1 based index)
 
 ```
 
@@ -91,17 +74,11 @@ using PeterPiper.Hl7.V2.Model;
 
 // Given a message oHL7 with the example PID Segment:
 // PID|1||PA30000004^^^AcmeHealth^MR~22222221111^^^AUSHIC^MC~WA123456B^^^AUSDVA^DVG~8003608833357361^^^AUSHIC^NI||Dow^John||19850930|M
-
-string PatientDateOfBirth = oHL7.Segment("PID").Field(7).AsString;
-
-// or, as this is a date we can do this to get a typed DateTimeOffSet:
-if (oHL7.Segment("PID").Field(7).Convert.DateTime.CanParseToDateTimeOffset)
-{
-  DateTimeOffset DateOfBirth = oHL7.Segment("PID").Field(7).Convert.DateTime.GetDateTimeOffset();
-}
+ 
+string PatientSex = oHL7.Segment("PID").Field(8).AsString;
 
 ```
-## **Accessing Element Field repeats:**
+## **Accessing Repeats:**
 
 ```C#
 using System.Linq;
@@ -110,10 +87,23 @@ using PeterPiper.Hl7.V2.Model;
 // Given a message oHL7 with the example PID Segment:
 // PID|1||PA30000004^^^AcmeHealth^MR~22222221111^^^AUSHIC^MC~WA123456B^^^AUSDVA^DVG~8003608833357361^^^AUSHIC^NI||Dow^John||19850930|M
 
-IField AcmeMRNRepeat = oHL7.Segment("PID").Element(3).RepeatList.SingleOrDefault(x => x.Component(4).AsString == "AcmeHealth");
+//The following 3 examples all achieve the same outcome.
+
+//'.Field()' is just short hand for the first repeat
+IField AcmeMRNRepeat = oHL7.Segment("PID").Field(3);
+
+//Or
+
+//'.Element()' provides access to the repeating Fields via the '.Repeat()' method
+AcmeMRNRepeat = oHL7.Segment("PID").Element(3).Repeat(1)
+
+//Or
+
+//We can also use .NET Linq to select from the list of repeats
+AcmeMRNRepeat = oHL7.Segment("PID").Element(3).RepeatList.SingleOrDefault(x => x.Component(4).AsString == "AcmeHealth");
 if (AcmeMRNRepeat != null)
 {
-  string AcmeMRNValue = AcmeMRNRepeat.Component(1).AsString;
+  string AcmeHealthMRNValue = AcmeMRNRepeat.Component(1).AsString;
 }
 ```
 
@@ -140,6 +130,69 @@ using PeterPiper.Hl7.V2.Model;
 string PrincipalResultInterpreterFamilyName = oHL7.Segment("OBR").Field(32).Component(1).SubComponent(2).AsString;
 string PrincipalResultInterpreterGivenName = oHL7.Segment("OBR").Field(5).Component(1).SubComponent(3).AsString;
 ```
+## **Setting Fields:**
+
+```C#
+using PeterPiper.Hl7.V2.Model;
+
+// Given a message oHL7 with the example PID Segment:
+// PID|1||PA30000004^^^AcmeHealth^MR~22222221111^^^AUSHIC^MC~WA123456B^^^AUSDVA^DVG~8003608833357361^^^AUSHIC^NI||Dow^John||19850930|M
+ 
+oHL7.Segment("PID").Field(8).AsString = "F";
+
+```
+## **Setting Repeats:**
+
+```C#
+using System.Linq;
+using PeterPiper.Hl7.V2.Model;
+
+// Given a message oHL7 with the example PID Segment:
+// PID|1||PA30000004^^^AcmeHealth^MR~22222221111^^^AUSHIC^MC~WA123456B^^^AUSDVA^DVG~8003608833357361^^^AUSHIC^NI||Dow^John||19850930|M
+
+//The following 3 examples all achieve the same outcome.
+
+//'.Field()' is just short hand for the first repeat
+oHL7.Segment("PID").Field(3).Component(1) = "PA30000005";
+
+//Or
+
+//'.Element()' provides access to the repeating Fields via the '.Repeat()' method
+oHL7.Segment("PID").Element(3).Repeat(1).Component(1) = "PA30000005";
+
+//Or
+
+//We can also use .NET Linq to select from the list of repeats
+AcmeMRNRepeat = oHL7.Segment("PID").Element(3).RepeatList.SingleOrDefault(x => x.Component(4).AsString == "AcmeHealth");
+if (AcmeMRNRepeat != null)
+{
+  AcmeMRNRepeat.Component(1).AsString = "PA30000005";
+}
+```
+
+## **Setting Components:**
+
+```C#
+using PeterPiper.Hl7.V2.Model;
+
+// Given a message oHL7 with the example PID Segment:
+// PID|1||PA30000004^^^AcmeHealth^MR~22222221111^^^AUSHIC^MC~WA123456B^^^AUSDVA^DVG~8003608833357361^^^AUSHIC^NI||Dow^John||19850930|M
+
+oHL7.Segment("PID").Field(5).Component(1).AsString = "Smith"
+oHL7.Segment("PID").Field(5).Component(2).AsString = "Bob";
+```
+
+## **Setting SubComponents:**
+
+```C#
+using PeterPiper.Hl7.V2.Model;
+
+// Given a message oHL7 with the example OBR Segment:
+// OBR|1|112233|15P000005|26604007^Complete blood count^SCT||||||||||||||||||201504101115+1000||HM|F|||||||DRPRIH&DrSurname&PrincipalResultInterpreterHaem&&&DR
+
+oHL7.Segment("OBR").Field(32).Component(1).SubComponent(2).AsString = "NewSurname";
+oHL7.Segment("OBR").Field(5).Component(1).SubComponent(3).AsString = "NewGivenName";
+```
 
 ## **Convenience Methods on IMessage**
 
@@ -148,14 +201,52 @@ using PeterPiper.Hl7.V2.Model;
 
 IMessage oHL7= Creator.Message("[Any HL7 V2.x message as a string]");
 
-string MessageControlID = oHL7.MessageControlID;
 DateTimeOffset MessageCreationDateTime = oHL7.MessageCreationDateTime;
+string MessageControlID = oHL7.MessageControlID;
 string MessageType = oHL7.MessageType;
 string MessageTrigger = oHL7.MessageTrigger;
 string MessageStructure = oHL7.MessageStructure;      
 string MessageVersion = oHL7.MessageVersion;      
 
 ```
+
+## **HasElements, HasFields, HasRepeats, HasComponents, HasSubComponents and HasContents :**
+
+```C#
+using PeterPiper.Hl7.V2.Model;
+
+// Given a message oHL7 with the example PID Segment:
+// PID|1||PA30000004^^^AcmeHealth^MR~22222221111^^^AUS\T\HIC^MC|123^^^NamespaceID&UniversalID&UniversalIdType|Dow^John||19850930|M
+                                       //Equals: 1
+// HasElements and HasFields are alway equal to each other.
+// The difference between an Element and a Field is what they contain. Elements contains a list of repeating fields where Field 
+// is always the first Field repeat. So that is, oHL7.Segment("PID").Element(3).Repeat(1) is equal to oHL7.Segment("PID").Field(3)   
+bool HasElements = oHL7.Segment("PID").HasElements;                                  //Equals: True
+bool HasFields = oHL7.Segment("PID").HasFields;                                      //Equals: True
+bool HasRepeats = oHL7.Segment("PID").Element(3).HasRepeats;                         //Equals: True
+bool HasComponents = oHL7.Segment("PID").Field(5).HasComponents;                     //Equals: True
+bool HasSubComponents = oHL7.Segment("PID").Field(4).Component(4).HasSubComponents;  //Equals: True
+//Content is the parts between the HL7 escapes, so below is 1=AUS, 2=T, 3=HIC from the string 'AUS\T\HIC' which when unescaped is AUS&HIC
+//See Escaping for more info 
+bool HasContents = oHL7.Segment("PID").Element(3).Repeat(2).Component(4).HasContents;//Equals: True
+
+// However, given a message oHL7 with the very simple example PID Segment of:
+// PID|1
+
+bool HasElements = oHL7.Segment("PID").HasElements;                                  //Equals: False
+bool HasFields = oHL7.Segment("PID").HasFields;                                      //Equals: False
+
+// And, given a message oHL7 with the example PID Segment:
+// PID|1||PA30000004^^^AcmeHealth^MR|123^^^NamespaceID|Dow||19850930|M
+
+bool HasRepeats = oHL7.Segment("PID").Element(3).HasRepeats;                         //Equals: False
+bool HasComponents = oHL7.Segment("PID").Field(5).HasComponents;                     //Equals: False
+bool HasSubComponents = oHL7.Segment("PID").Field(4).Component(4).HasSubComponents;  //Equals: False
+
+//And of course an empty item is also False, for example PID-100 is empty
+bool HasComponents = oHL7.Segment("PID").Field(100).HasComponents;                   //Equals: False
+```
+
 
 ## **Field, Element, Repeat, Component, SubComponent and Content counts:**
 
@@ -192,7 +283,7 @@ using PeterPiper.Hl7.V2.Model;
 // if they are to be copied from one place to another.  
 
 // ISegment MsgOnePIDSegment = oHL71.Segment("PID");
-// oHL72.Insert(3, MsgOnePIDSegment);
+// oHL72.Insert(3, MsgOnePIDSegment); //would throw a PeterPiperException
 
 // However, there are .Clone() methods for use on each Peter Piper item.
 // Here are a set of working examples:
@@ -228,7 +319,7 @@ oHL72.Segment("PID").Field(5).Insert(3, SomeContent);
 ```
 
 
-## **Adding, Inserting and Removing Items**
+## **Adding, Inserting and Removing (Segments, Fields, Repeats, Components, SubComponents and Content)**
 
 ```C#
 using PeterPiper.Hl7.V2.Model;
@@ -246,12 +337,12 @@ NewPyroIdentifier.Component(5).AsString = "MR";
 //PID-3 = |PA30000004^^^AcmeHealth^MR~22222221111^^^AUSHIC^MC~WA123456B^^^AUSDVA^DVG~8003608833357361^^^AUSHIC^NI~123456^^^PyroHealth^MR|
 oHL7.Segment("PID").Element(3).Add(NewPyroIdentifier);
 
-//Remove repeats in position two (one based index) of the list of repeats in PID-3, done twice to remove two
+//Remove repeats in position two (one based index) of the list of repeats in PID-3, done twice to remove two instances
 //PID-3 = |PA30000004^^^AcmeHealth^MR~8003608833357361^^^AUSHIC^NI~123456^^^PyroHealth^MR|
 oHL7.Segment("PID").Element(3).RemoveRepeatAt(2);
 oHL7.Segment("PID").Element(3).RemoveRepeatAt(2);
 
-//Create another new Field instance for another new identifer
+//Create another new Field instance for another identifer
 IField NewMillarIdentifier = Creator.Field();
 NewMillarIdentifier.Component(1).AsString = "654321";
 NewMillarIdentifier.Component(4).AsString = "MillarHealth";
@@ -261,8 +352,8 @@ NewMillarIdentifier.Component(5).AsString = "MR";
 //PID-3 = |PA30000004^^^AcmeHealth^MR~654321^^^MillarHealth^MR~8003608833357361^^^AUSHIC^NI~123456^^^PyroHealth^MR|
 oHL7.Segment("PID").Element(3).Insert(2, NewMillarIdentifier);
 
-// The same Add, Insert and Remove methods are available for all items, 
-// here are a few contrived examples of inserting and removing:
+// The same Add, Insert and Remove methods are available for all items (Segments, Fields, Repeats, Components, SubComponents and Content), 
+// Here are a few contrived examples of inserting and removing:
 
 //Segments
 oHL7.Insert(3, Creator.Segment("PID"));
@@ -287,7 +378,34 @@ oHL7.Segment("PID").Field(5).Component(2).AsString = "PatientGivenName";
 oHL7.Segment("PID").Field(5).Component(15).SubComponent(2).AsString = "Weird Stuff";
 
 ```
+## **HL7 Null & Empty items:**
+* HL7 Null which is represented by ```|""|``` indicates that the source system is flagging to the receiving system to delete any data it previous received for this item.   
+* An empty item represented by ```||``` indicates nothing at all, the source system has nothing to say about this item.
+```C#
+using PeterPiper.Hl7.V2.Model;
 
+// Given a message oHL7 with the example OBR Segment:
+// OBR|1||""|Rhubarb^SerumRhubarb^L||||||||||||||||||201504101115+1000||HM|F
+
+// IsEmpty = False
+bool IsEmpty = oHL7.Segment("OBR").Field(1).IsEmpty;
+
+// IsEmpty = True
+bool IsEmpty = oHL7.Segment("OBR").Field(2).IsEmpty;
+
+// IsEmpty = False
+bool IsEmpty = oHL7.Segment("OBR").Field(3).IsEmpty;
+
+// IsHL7Null = False
+bool IsHL7Null = oHL7.Segment("OBR").Field(1).IsHL7Null;
+
+// IsHL7Null = False
+bool IsHL7Null = oHL7.Segment("OBR").Field(2).IsHL7Null;
+
+// IsHL7Null = True
+bool IsHL7Null = oHL7.Segment("OBR").Field(3).IsHL7Null;
+
+```
 
 ## **Escaping**
 
@@ -381,42 +499,6 @@ string x4 = oHL7.Segment("OBR").Field(4).AsString;
 // easier to remember '.AsString' and 'AsRawString' than remember '.ToString()' and 'AsRawString'.     
 
 ```
-## **Custom HL7 V2 Escape Characters**
-```C#
-
-using PeterPiper.Hl7.V2.Model;
-using PeterPiper.Hl7.V2.Support.Tools;
-
-// It is legal in HL7 V2.x to use completely different escape sequences in the HL7 V2 message. 
-// This is instead of the typical escape sequences of '|^~\&'. 
-// To do so you would set the sequences you wish to use in the MSH-1 and MSH-2 Fields.
-// PeterPiper can also handle these custom escape sequences characters as per the examples below.
-// However, I highly advise you avoid this behavior as very few systems can coupe with it.
-
-//My new custom escape sequences characters
-char FieldChar = '!';
-char RepeatChar = '%';
-char ComponentChar = '*';
-char SubComponentChar = '@';
-char EscapeChar = '#';
-IMessageDelimiters MessageDelimiters = Creator.MessageDelimiters(FieldChar, RepeatChar, ComponentChar, SubComponentChar, EscapeChar);
-
-// A message instance using my custom escape sequences
-IMessage oHL7 = Creator.Message("MSH!*%#@!SendApp!SendFacility!RecApp!RecFacility!20140527095657!!ORU*R01!0000000000000000010D!P!2.3.1");
-// A new Segment also using the same custom escape sequences
-// Notice that when using custom escape sequences you must always provide the IMessageDelimiters object 
-// when creating new segments. 
-ISegment oSeg = Creator.Segment("PID!!!!!Dow*John!!19850930!M", MessageDelimiters);
-oHL7.Add(oSeg);
-
-//Given an already parsed message you can the IMessageDelimiters that is it currently using as follows:
-IMessageDelimiters ThisMessagesDelimiters = target.MessageDelimiters;
-
-//As I said earlier, I doubt you will every use this functionality in the real world.
-
-```
-
-
 
 ## **The Convert extension methods: Integer, DateTimeOffset, Base64**
 
@@ -478,6 +560,170 @@ SomeDataAsAByteArray = oHL71.Segment("OBX").Field(5).Convert.Base64.Decode();
 
 ```
 
+## **Working with Content**
+Peter Piper has a concept of Content. Content is the data between HL7 escapes within an item. For instance if we had a Field with the following data which was correctly escaped as:
+
+```|Cats\T\Dogs\~\Monkeys\S\Cows\E\Mice\.br\Shark|``` 
+
+Which when unescaped would be the string: 
+
+"```Cats&Dogs~Monkeys^Cows\Mice```
+
+```Shark```" 
+
+Then with the Peter Piper model we can inspect this data as an array of Content using the following contrived example.
+
+```C#
+
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support.Content;
+using PeterPiper.Hl7.V2.Support.Standard;
+
+//Create a PID segment 
+ISegment oPID = Creator.Segment(@"PID|Cats\T\Dogs\T\Monkeys\T\Cows|");
+
+//Output to the console the raw string as seen in the HL7 message
+Console.WriteLine($"The raw string is {oHL7.Segment("PID").Field(1).AsRawString}");
+
+//Loop through each Content using ContentCount
+for (int i = 0; i < oHL7.Segment("PID").Field(1).ContentCount; i++)
+{
+  //Check wether this Content if of type 'Text' or 'Escape'
+  if (oHL7.Segment("PID").Field(1).Content(i).ContentType == ContentType.Text)
+  {
+    //If type 'Text' output to the console that text
+    Console.WriteLine($"The Content at index {i.ToString()} is the text: {oHL7.Segment("PID").Field(1).Content(i).AsString}");
+  }
+  //If type 'Escape' then switch on the enum of all EscapeTypes and output the name of that EscapeType
+  else if (oHL7.Segment("PID").Field(1).Content(i).ContentType == ContentType.Escape)
+  {
+    Console.Write($"The Content at index {i.ToString()} is an escape of type: ");
+      EscapeType ThisContentType = oHL7.Segment("PID").Field(1).Content(i).EscapeMetaData.EscapeType;
+      switch (ThisContentType)
+      {
+        case EscapeType.Field:              
+          Console.Write(ThisContentType.ToString()); 
+          break;
+        case EscapeType.Repeat:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.Component:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.SubComponent:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.Escape:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.HighlightOn:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.HighlightOff:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.LocallyDefined:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.HexadecimalData:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.NewLine:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.SkipVerticalSpaces:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.WordWrapOn:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.WordWrapOff:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.Indent:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.TempIndent:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.SkipSpacesToRight:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.CenterNextLine:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.Unknown:
+          Console.Write(ThisContentType.ToString());
+          break;
+        case EscapeType.NotAnEscape:
+          Console.Write(ThisContentType.ToString());
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+//Which would output to the console as follows:
+
+// The raw string is Cats\T\Dogs\~\Monkeys\S\Cows\E\Mice\.br\Shark
+// The Content at index 0 is the text: Cats
+// The Content at index 1 is an escape of type: SubComponent
+// The Content at index 2 is the text: Dogs
+// The Content at index 3 is an escape of type: Repeat
+// The Content at index 4 is the text: Monkeys
+// The Content at index 5 is an escape of type: Component
+// The Content at index 6 is the text: Cows
+// The Content at index 7 is an escape of type: Escape
+// The Content at index 8 is the text: Mice
+// The Content at index 9 is an escape of type: NewLine
+// The Content at index 10 is the text: Shark
+
+
+// As I hope you can see this is a powerful way to manipulate and manage escapes within HL7 V2 message. 
+// We could detect strings that are highlighted or find the NewLine breaks.
+
+```
+
+## **Custom HL7 V2 Escape Characters**
+```C#
+
+using PeterPiper.Hl7.V2.Model;
+using PeterPiper.Hl7.V2.Support.Tools;
+
+// It is legal in HL7 V2.x to use completely different escape sequences in the HL7 V2 message. 
+// This is instead of the typical escape sequences of '|^~\&'. 
+// To do so you would set the sequences you wish to use in the MSH-1 and MSH-2 Fields.
+// PeterPiper can also handle these custom escape sequences characters as per the examples below.
+// However, I highly advise you avoid this behavior as very few systems can coupe with it.
+
+//My new custom escape sequences characters
+char FieldChar = '!';
+char RepeatChar = '%';
+char ComponentChar = '*';
+char SubComponentChar = '@';
+char EscapeChar = '#';
+IMessageDelimiters MessageDelimiters = Creator.MessageDelimiters(FieldChar, RepeatChar, ComponentChar, SubComponentChar, EscapeChar);
+
+// A message instance using my custom escape sequences
+IMessage oHL7 = Creator.Message("MSH!*%#@!SendApp!SendFacility!RecApp!RecFacility!20140527095657!!ORU*R01!0000000000000000010D!P!2.3.1");
+// A new Segment also using the same custom escape sequences
+// Notice that when using custom escape sequences you must always provide the IMessageDelimiters object 
+// when creating new segments. 
+ISegment oSeg = Creator.Segment("PID!!!!!Dow*John!!19850930!M", MessageDelimiters);
+oHL7.Add(oSeg);
+
+//Given an already parsed message you can the IMessageDelimiters that is it currently using as follows:
+IMessageDelimiters ThisMessagesDelimiters = target.MessageDelimiters;
+
+//As I said earlier, I doubt you will every use this functionality in the real world.
+
+```
+
+## **Some general notes**
+* Segment(), Element(), Repeat(), Field(), Component(), and SubComponent() are all one based indexes
+* Content() is the only zero based index
+* When a message is ready to send, perhaps to an interface or system, use oHL7.AsRawString to export the message. 
 
 Owner:
 
