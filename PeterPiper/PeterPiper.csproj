@@ -6,13 +6,13 @@
     <Description>Peter Piper Parser is a HL7 V2 message parser for .net</Description>
     <Copyright>pyrohealth.net</Copyright>
     <Authors>AngusMillar</Authors>
-    <PackageProjectUrl>https://github.com/angusmillar/PeterPiper</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/angusmillar/PeterPiper</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/angusmillar/PeterPiper/tree/Release</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/angusmillar/PeterPiper/tree/Release</RepositoryUrl>
     <PackageTags>HL7V2 hl7-parser dotnetcore HL7 V2 PeterPiper hl7-writer health integration</PackageTags>
     <Product>HL7 V2 Message Parser PeterPiper</Product>    
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
-    <Version>1.0.0</Version>
+    <FileVersion>1.0.1.1</FileVersion>
+    <Version>1.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
