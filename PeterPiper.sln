@@ -17,21 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPeterPiper", "TestPeter
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5CD5037E-59DB-452E-9C00-8436BBEC399C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{C0CEFFBF-CB7B-461A-AB1B-D94ADED5F08B}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\0. Introduction.mkd = Documentation\0. Introduction.mkd
-		Documentation\1. Message.mkd = Documentation\1. Message.mkd
-		Documentation\2. Segment.mkd = Documentation\2. Segment.mkd
-		Documentation\3. Element.mkd = Documentation\3. Element.mkd
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{91D0092A-C543-4926-9257-300C2A0601BC}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Images\ElementAccessImage.png = Documentation\Images\ElementAccessImage.png
-		Documentation\Images\ElementRepeatImage.png = Documentation\Images\ElementRepeatImage.png
-		Documentation\Images\ElementSegmentImage.png = Documentation\Images\ElementSegmentImage.png
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,9 +34,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{91D0092A-C543-4926-9257-300C2A0601BC} = {C0CEFFBF-CB7B-461A-AB1B-D94ADED5F08B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4D7C202E-61B2-401A-A98B-933D7D4B4DFA}
