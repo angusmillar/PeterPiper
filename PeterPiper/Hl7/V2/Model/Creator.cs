@@ -9,6 +9,32 @@ namespace PeterPiper.Hl7.V2.Model
 {
   public static class Creator
   {
+    
+    public static IFile File(ISegment FileHeaderSegment, ISegment FileTrailerSegment, List<IBatch> BatchList)
+    {
+      throw new NotImplementedException();
+      //return new Batch(BatchHeaderSegment, BatchTrailerSegment, MessageList);
+    }
+    public static IFile File(string StringRaw)
+    {
+      throw new NotImplementedException();
+      //return new Batch(BatchHeaderSegment, BatchTrailerSegment, MessageList);
+    }
+    
+    public static IBatch Batch(ISegment BatchHeaderSegment, List<IMessage> MessageList, ISegment BatchTrailerSegment)
+    {
+      return new Batch(BatchHeaderSegment, MessageList, BatchTrailerSegment);
+    }
+    
+    public static IBatch Batch(ISegment BatchHeaderSegment, List<IMessage> MessageList)
+    {
+      return new Batch(BatchHeaderSegment, MessageList);
+    }
+    public static IBatch Batch(string StringRaw)
+    {
+      return new Batch(StringRaw);
+    }
+    
     public static IMessage Message(ISegment Segment)
     {
       return new Message(Segment);

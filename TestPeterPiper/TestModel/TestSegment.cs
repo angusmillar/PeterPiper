@@ -29,6 +29,7 @@ namespace TestHl7V2
       string StringRaw = "MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1";
       var target = Creator.Segment(StringRaw);
       Assert.AreEqual("MSH|^~\\&|||||20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1", target.AsStringRaw, "A test for Segment Constructor");
+      Assert.AreEqual("MSH", target.Code, "A test for Segment Code");
     }
 
     /// <summary>
