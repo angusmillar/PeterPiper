@@ -5,99 +5,91 @@ namespace PeterPiper.Hl7.V2.Model
   public interface IFile 
   {
     /// <summary>
-    /// The Batch Header (BHS) Segment. 
+    /// Get or Set the File Header (FHS) Segment. 
     /// </summary>
     /// <param name="item"></param>
     ISegment FileHeader { get; set; }
     
     /// <summary>
-    /// The Batch Trailer (BTS) Segment. 
+    /// Get or Set the File Trailer (BTS) Segment. 
     /// </summary>
     /// <param name="item"></param>
     ISegment FileTrailer { get; set; }
     
     /// <summary>
-    /// Add a segment to the end of the message. 
+    /// Add a Batch to the end of the File batch list. 
     /// </summary>
     /// <param name="item"></param>
-    void Add(IBatch item);
+    void AddBatch(IBatch item);
+    
     /// <summary>
-    /// Get the whole message as an decoded string (un-escaped), generally not useful! 
+    /// Get the whole File as an decoded string (un-escaped), generally not useful! 
     /// </summary>
-    string AsString { get; set; }
+    string AsString { get; }
+    
     /// <summary>
-    /// Get the whole message as an encoded string. 
+    /// Get the whole File as an HL7 encoded string. 
     /// </summary>
-    string AsStringRaw { get; set; }
+    string AsStringRaw { get; }
+    
     /// <summary>
-    /// Will clear the whole message and leave you with 'MSH|^~\&|'.
+    /// Will clear the whole File, all Batches, FTS Segment and leaves you with a FHS Segment consisting of 'FHS|^~\&|'.
     /// </summary>
     void ClearAll();
+    
     /// <summary>
-    /// Clone the current messages as a new instance.
+    /// Clone the current File as a new instance.
     /// </summary>
     /// <returns></returns>
     IFile Clone();
+    
     /// <summary>
-    /// Returns a string containing the escape sequences in use for the message.
-    /// defaults to '^~\&' unless a custom escape sequences is given on message creation.
+    /// Returns a string containing the escape sequences in use for the File.
+    /// defaults to '^~\&' unless a custom escape sequences is given on File BHS Segment creation.
     /// </summary>
     string EscapeSequence { get; }
+    
     /// <summary>
-    /// Insert a segment into the message at a given index.
-    /// Index is a one based index.
+    /// Insert a Batch into the File at a given index.
+    /// Index is a zero based.
     /// </summary>
     /// <param name="index"></param>
     /// <param name="item"></param>
-    void Insert(int index, IBatch item);
+    void InsertBatch(int index, IBatch item);
+    
     /// <summary>
     /// Returns the Main delimiters in use between fields / Elements.
-    /// Defaults as '|' unless a custom escape sequences was given on message creation.
+    /// Defaults as '|' unless a custom escape sequences was given on File BHS Segment creation.
     /// </summary>
     string MainSeparator { get; }
+    
     /// <summary>
-    /// Returns the Message Creation Date & Time from MSH-7 as a DateTimeOffset.
-    /// </summary>
-    DateTimeOffset FileCreationDateTime { get; }
-    /// <summary>
-    /// Return the IMessageDelimiters instance containing the Message Delimiters in use for the message.  
+    /// Return the IMessageDelimiters instance containing the Message Delimiters in use for the File.  
     /// </summary>
     IMessageDelimiters MessageDelimiters { get; }
+    
     /// <summary>
-    /// Remove a segment from the message at a given index.
+    /// Remove a Batch from the File at a given zero based index.
     /// Uses a one based index.
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    bool RemoveBatchAt(int index);
+    void RemoveBatchAt(int index);
+    
     /// <summary>
-    /// Returns the ISegment instance for the given index in the message.
-    /// Uses a one based index.
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    IBatch Batch(int index);
-    /// <summary>
-    /// Returns the ISegment instance for first segment found to have the 
-    /// given 3 character segment code in the message
-    /// </summary>
-    /// <param name="Code"></param>
-    /// <returns></returns>
-    IBatch Batch(string Code);
-    /// <summary>
-    /// Returns a total count of segments in the message
+    /// Returns a total count of Batches in the File
     /// </summary>
     /// <returns></returns>
     int BatchCount();
     
     /// <summary>
-    /// Returns a Read Only Collection of all segments in the message
+    /// Returns a Read Only Collection of all Batches in the File
     /// </summary>
     /// <returns></returns>
     System.Collections.ObjectModel.ReadOnlyCollection<IBatch> BatchList();
     
     /// <summary>
-    /// Get the whole message as an decoded string (un-escaped), generally not useful! 
+    /// Get the whole Batch as an decoded string (un-escaped), generally not useful! 
     /// </summary>
     /// <returns></returns>
     string ToString();

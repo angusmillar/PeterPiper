@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Model.Implementation
@@ -235,7 +234,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return _ParseMSHSegmentOnly;
       }
     }
-    
     public DateTimeOffset MessageCreationDateTime
     {
       get
@@ -321,7 +319,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
     internal Segment SegmentAppend(Segment Segment)
     {
-      ValidateSegemntAdditon(Segment);
+      ValidateSegmentAddition(Segment);
       
       int InsertAtIndex = 1;
       if (_SegmentDictonary.Count > 0)
@@ -337,7 +335,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     {
       if (Index == 0)
         throw new PeterPiperException("Segment index is a one based index, zero in not allowed");
-      ValidateSegemntAdditon(Segment);
+      ValidateSegmentAddition(Segment);
       int SegmentInsertedAt = 0;
       //Empty Dic so just add as first itme 
       // Does this check if the first segment is a MSH??
@@ -465,31 +463,14 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
     private bool ValidateStringRaw(List<string> StringRawList)
     {
-      if (StringRawList[0].Substring(0, 3).ToUpper() == Support.Standard.Segments.Msh.Code)
+      string FirstSegment = StringRawList[0];
+      if (IsSegmentCode(FirstSegment, Support.Standard.Segments.Msh.Code))
       {
-        char MessagesFieldSeparator = Convert.ToChar(StringRawList[0].Substring(3, 1));
-        char MessagesComponentSeparator = Convert.ToChar(StringRawList[0].Substring(4, 1));
-        char MessagesRepeatSeparator = Convert.ToChar(StringRawList[0].Substring(5, 1));
-        char MessagesEscapeSeparator = Convert.ToChar(StringRawList[0].Substring(6, 1));
-        char MessagesSubComponentSeparator = Convert.ToChar(StringRawList[0].Substring(7, 1));
-        char FirstFieldSeparatorFound = Convert.ToChar(StringRawList[0].Substring(8, 1));
-        if (FirstFieldSeparatorFound == MessagesFieldSeparator)
+        this.Delimiters = ExtractDelimitersFromStringRaw(FirstSegment);
+        string[] mshSegmentFields = StringRawList[0].Split(this.Delimiters.Field);
+        if (mshSegmentFields.Length < 12)
         {
-          this.Delimiters = new MessageDelimiters(MessagesFieldSeparator,
-                                                            MessagesRepeatSeparator,
-                                                            MessagesComponentSeparator,
-                                                            MessagesSubComponentSeparator,
-                                                            MessagesEscapeSeparator);
-
-          string[] MSHSegmentFields = StringRawList[0].Split(MessagesFieldSeparator);
-          if (MSHSegmentFields.Length < 12)
-          {
-            throw new PeterPiperException(String.Format("The passed message's MSH Segment does not have the minimum number of Fields. There must be at least 12 to allow for the Message Version Field"));
-          }
-        }
-        else
-        {
-          throw new PeterPiperException(String.Format("The passed message's defined Field separator at MSH-1: '{0}' \n has not been used as the first Field separator between MSH-2 & MSH-3, found separator of: '{1}'", MessagesFieldSeparator, FirstFieldSeparatorFound));
+          throw new PeterPiperException(String.Format("The passed message's {0} Segment does not have the minimum number of Fields. There must be at least 12 to allow for the Message Version Field", Support.Standard.Segments.Msh.Code));
         }
       }
       else
@@ -498,19 +479,15 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
       return true;
     }
-    private bool ValidateSegemntAdditon(Segment oSegment)
+    private void ValidateSegmentAddition(Segment oSegment)
     {
       if (oSegment.IsMSH)
       {
         throw new PeterPiperException("An MSH Segment can not be added to a Message instance, it must be provided on Message instance creation / instantiation");
       }
-      else if (!ValidateDelimiters(oSegment.Delimiters))
+      if (!ValidateDelimiters(oSegment.Delimiters))
       {
         throw new PeterPiperException("The Segment instance being added to this parent Message instance has custom delimiters that are different than the parent, this is not allowed");
-      }
-      else
-      {
-        return true;
       }
     }
     private void ParseMshSegmentOnly(List<string> MessageList)
@@ -523,5 +500,35 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           throw new PeterPiperException(String.Format("The passed message must begin with the Message Header Segment and code: '{0}'", Support.Standard.Segments.Msh.Code));
       }
     }
+    
+    internal static MessageDelimiters ExtractDelimitersFromStringRaw(string StringRaw)
+    {
+      string segmentCode = StringRaw.Substring(0, 2);
+      char fieldSeparator = Convert.ToChar(StringRaw.Substring(3, 1));
+      char componentSeparator = Convert.ToChar(StringRaw.Substring(4, 1));
+      char repeatSeparator = Convert.ToChar(StringRaw.Substring(5, 1));
+      char escapeSeparator = Convert.ToChar(StringRaw.Substring(6, 1));
+      char subComponentSeparator = Convert.ToChar(StringRaw.Substring(7, 1));
+      char FirstFieldSeparatorFound = Convert.ToChar(StringRaw.Substring(8, 1));
+      if (FirstFieldSeparatorFound == fieldSeparator)
+      {
+        return new MessageDelimiters(fieldSeparator,
+                                     repeatSeparator, 
+                                     componentSeparator,
+                                     subComponentSeparator, 
+                                     escapeSeparator);
+      }
+      else
+      {
+        throw new PeterPiperException(String.Format(
+                                        "The passed message's defined Field separator at {0}-1: '{1}' \n has not been used as the first Field separator between {0}-2 & {0}-3, found separator of: '{2}'",
+                                        segmentCode, fieldSeparator, FirstFieldSeparatorFound));
+      }
+    }
+    internal static bool IsSegmentCode(string segmentRawString, string code)
+    {
+      return (segmentRawString.Substring(0, 3).ToUpper() == code);
+    }
+    
   }
 }

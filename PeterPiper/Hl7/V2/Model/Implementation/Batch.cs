@@ -10,28 +10,35 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public class Batch : IBatch
     {
         private MessageDelimiters _Delimiters;
-        private List<Message> _MessageList = new List<Message>();
+        private readonly List<Message> _MessageList = new List<Message>();
         private ISegment _BatchHeader;
         private ISegment _BatchTrailer;
 
-        internal Batch(string StringRaw)
+        internal Batch(string stringRaw)
         {
-            List<string> BatchSegmentList = StringRaw.Split(Support.Standard.Delimiters.SegmentTerminator).ToList();
+            List<string> BatchSegmentList = stringRaw.Split(Support.Standard.Delimiters.SegmentTerminator).ToList();
             if (!BatchSegmentList.Any())
             {
                 throw new PeterPiperException(String.Format("The passed batch must begin with the Batch Header Segment and code: '{0}'", Support.Standard.Segments.Bhs.Code));
             }
 
-            string BHSSegmentStringRaw = BatchSegmentList.First();
-            if (ValidateBHSSegmentStringRaw(BHSSegmentStringRaw))
+            string bhsSegmentStringRaw = BatchSegmentList.First();
+            if (Implementation.Message.IsSegmentCode(bhsSegmentStringRaw, Support.Standard.Segments.Bhs.Code))
             {
-                _BatchHeader = new Segment(BHSSegmentStringRaw);
-                BatchSegmentList.Remove(BHSSegmentStringRaw);
+                this.Delimiters = Implementation.Message.ExtractDelimitersFromStringRaw(bhsSegmentStringRaw);
+                _BatchHeader = new Segment(bhsSegmentStringRaw, this.Delimiters);
+                BatchSegmentList.Remove(bhsSegmentStringRaw);
+                
+            }
+            else
+            {
+                throw new PeterPiperException(String.Format("The passed message must begin with the Batch Header Segment and code: '{0}'", Support.Standard.Segments.Bhs.Code));
             }
 
-            if (IsSegmentCode(BatchSegmentList.Last(), Support.Standard.Segments.Bts.Code))
+            if (Implementation.Message.IsSegmentCode(BatchSegmentList.Last(), Support.Standard.Segments.Bts.Code))
             {
-                _BatchTrailer = new Segment(BatchSegmentList.Last(), BatchHeader.MessageDelimiters);
+                _BatchTrailer = new Segment(BatchSegmentList.Last(), this._Delimiters);
+                BatchSegmentList.Remove(BatchSegmentList.Last());
             }
 
             List<List<string>> MessageSegmentList = GetMessageSegmentList(BatchSegmentList);
@@ -55,26 +62,74 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
                 }
             }
         }
-        internal Batch(ISegment BatchHeaderSegment, List<IMessage> messageList, ISegment BatchTrailerSegment)
+        internal Batch(List<string> segmentStringRawList, MessageDelimiters messageDelimiters)
         {
-            if (!IsSegmentCode(BatchHeaderSegment.Code, Support.Standard.Segments.Bhs.Code))
+            this._Delimiters = messageDelimiters;
+            List<string> BatchSegmentList = segmentStringRawList;
+            if (!BatchSegmentList.Any())
             {
-                throw new PeterPiperException(String.Format("The provided Batch Header Segment (BHS) has the incorrect code of {0}", BatchHeaderSegment.Code));
+                throw new PeterPiperException(String.Format("The passed batch must begin with the Batch Header Segment and code: '{0}'", Support.Standard.Segments.Bhs.Code));
             }
-
-            if (!IsSegmentCode(BatchTrailerSegment.Code, Support.Standard.Segments.Bts.Code))
-            {
-                throw new PeterPiperException(String.Format("The provided Batch Trailer Segment (BTS) has the incorrect code of {0}", BatchTrailerSegment.Code));
-            }
-
-            _Delimiters = BatchHeaderSegment.MessageDelimiters as MessageDelimiters;
-            _BatchHeader = BatchHeaderSegment;
             
-            if (!ValidateDelimiters(BatchTrailerSegment.MessageDelimiters))
+            string bhsSegmentStringRaw = BatchSegmentList.First();
+            if (Implementation.Message.IsSegmentCode(bhsSegmentStringRaw, Support.Standard.Segments.Bhs.Code))
+            {
+                _BatchHeader = new Segment(bhsSegmentStringRaw, messageDelimiters);
+                BatchSegmentList.Remove(bhsSegmentStringRaw);
+                
+            }
+            else
+            {
+                throw new PeterPiperException(String.Format("The passed message must begin with the Batch Header Segment and code: '{0}'", Support.Standard.Segments.Bhs.Code));
+            }
+            
+            if (Implementation.Message.IsSegmentCode(BatchSegmentList.Last(), Support.Standard.Segments.Bts.Code))
+            {
+                _BatchTrailer = new Segment(BatchSegmentList.Last(), this._Delimiters);
+                BatchSegmentList.Remove(BatchSegmentList.Last());
+            }
+
+            List<List<string>> MessageSegmentList = GetMessageSegmentList(BatchSegmentList);
+            for (int i = 0; i < MessageSegmentList.Count; i++)
+            {
+                try
+                {
+                    Message Message = new Message(MessageSegmentList[i]);
+                    try
+                    {
+                        this.AddMessage(Message);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new PeterPiperException(String.Format("Message {i} in the Batch is using different HL7 message delimiters to its parent BHS Segment, this is not allowed.", i), e);
+                    }
+                }
+                catch (PeterPiperException peterPiperException)
+                {
+                    throw new PeterPiperException(String.Format("Message {i} in the Batch was unable to be parsed.", i), peterPiperException);
+                }
+            }
+        }
+        internal Batch(ISegment batchHeaderSegment, List<IMessage> messageList, ISegment batchTrailerSegment)
+        {
+            if (!Implementation.Message.IsSegmentCode(batchHeaderSegment.Code, Support.Standard.Segments.Bhs.Code))
+            {
+                throw new PeterPiperException(String.Format("The provided Batch Header Segment (BHS) has the incorrect code of {0}", batchHeaderSegment.Code));
+            }
+
+            if (!Implementation.Message.IsSegmentCode(batchTrailerSegment.Code, Support.Standard.Segments.Bts.Code))
+            {
+                throw new PeterPiperException(String.Format("The provided Batch Trailer Segment (BTS) has the incorrect code of {0}", batchTrailerSegment.Code));
+            }
+
+            _Delimiters = batchHeaderSegment.MessageDelimiters as MessageDelimiters;
+            _BatchHeader = batchHeaderSegment;
+            
+            if (!ValidateDelimiters(batchTrailerSegment.MessageDelimiters))
             {
                 throw new PeterPiperException("The provided Batch Trailer Segment (BTS) has different HL7 Delimiters than used by the Batch Header Segment (BHS), this is not allowed.");
             }
-            _BatchTrailer = BatchTrailerSegment;
+            _BatchTrailer = batchTrailerSegment;
 
             for (int i = 0; i < messageList.Count; i++)
             {
@@ -88,15 +143,15 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
                 }
             }
         }
-        internal Batch(ISegment BatchHeaderSegment, List<IMessage> messageList)
+        internal Batch(ISegment batchHeaderSegment, List<IMessage> messageList)
         {
-            if (!IsSegmentCode(BatchHeaderSegment.Code, Support.Standard.Segments.Bhs.Code))
+            if (!Implementation.Message.IsSegmentCode(batchHeaderSegment.Code, Support.Standard.Segments.Bhs.Code))
             {
-                throw new PeterPiperException(String.Format("The provided Batch Header Segment (BHS) has the incorrect code of {0}", BatchHeaderSegment.Code));
+                throw new PeterPiperException(String.Format("The provided Batch Header Segment (BHS) has the incorrect code of {0}", batchHeaderSegment.Code));
             }
 
-            _Delimiters = BatchHeaderSegment.MessageDelimiters as MessageDelimiters;
-            _BatchHeader = BatchHeaderSegment;
+            _Delimiters = batchHeaderSegment.MessageDelimiters as MessageDelimiters;
+            _BatchHeader = batchHeaderSegment;
 
             for (int i = 0; i < messageList.Count; i++)
             {
@@ -110,16 +165,21 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
                 }
             }
         }
-
-        internal Batch(ISegment BatchHeaderSegment)
+        internal Batch(ISegment batchHeaderSegment)
         {
-            if (!IsSegmentCode(BatchHeaderSegment.Code, Support.Standard.Segments.Bhs.Code))
+            if (!Implementation.Message.IsSegmentCode(batchHeaderSegment.Code, Support.Standard.Segments.Bhs.Code))
             {
-                throw new PeterPiperException(String.Format("The provided Batch Header Segment (BHS) has the incorrect code of {0}", BatchHeaderSegment.Code));
+                throw new PeterPiperException(String.Format("The provided Batch Header Segment (BHS) has the incorrect code of {0}", batchHeaderSegment.Code));
             }
 
-            _Delimiters = BatchHeaderSegment.MessageDelimiters as MessageDelimiters;
-            BatchHeader = BatchHeaderSegment;
+            _Delimiters = batchHeaderSegment.MessageDelimiters as MessageDelimiters;
+            BatchHeader = batchHeaderSegment;
+        }
+        
+        internal Batch()
+        {
+            _BatchHeader = new Segment(Support.Standard.Segments.Bhs.Code + Support.Standard.Delimiters.Field);
+            _Delimiters = BatchHeader.MessageDelimiters as MessageDelimiters;
         }
         
         public ISegment BatchHeader
@@ -127,7 +187,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
             get => _BatchHeader;
             set
             {
-                if (!IsSegmentCode(value.Code, Support.Standard.Segments.Bhs.Code))
+                if (!Implementation.Message.IsSegmentCode(value.Code, Support.Standard.Segments.Bhs.Code))
                 {
                     throw new PeterPiperException(String.Format("The provided Batch Header Segment (BHS) has the incorrect code of {0}", value.Code));
                 }
@@ -155,6 +215,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
             }
         }
 
+        
         private bool ValidateDelimiters(IMessageDelimiters DelimitersToCompaire)
         {
             if (_Delimiters.Field != DelimitersToCompaire.Field)
@@ -168,7 +229,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
             if (_Delimiters.Escape != DelimitersToCompaire.Escape)
                 return false;
             return true;
-            ;
         }
         private static List<List<string>> GetMessageSegmentList(List<string> BatchSegmentList)
         {
@@ -179,17 +239,17 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
                 if (SegmentList is null)
                 {
                     SegmentList = new List<string>();
-                    if (IsSegmentCode(Segment, Support.Standard.Segments.Msh.Code))
+                    if (Implementation.Message.IsSegmentCode(Segment, Support.Standard.Segments.Msh.Code))
                     {
                         SegmentList.Add(Segment);
                     }
                     else
                     {
-                        throw new PeterPiperException(String.Format("The third Segment of a Batch passed must begin with the Message Header Segment and code: '{0}'",
+                        throw new PeterPiperException(String.Format("The second Segment of a Batch passed must begin with the Message Header Segment and code: '{0}'",
                             Support.Standard.Segments.Msh.Code));
                     }
                 }
-                else if (IsSegmentCode(Segment, Support.Standard.Segments.Msh.Code))
+                else if (Implementation.Message.IsSegmentCode(Segment, Support.Standard.Segments.Msh.Code))
                 {
                     MessageSegmentList.Add(SegmentList);
                     SegmentList = new List<string>();
@@ -261,7 +321,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         {
             List<IMessage> ClonedMessageList = new List<IMessage>();
             _MessageList.ForEach(x => ClonedMessageList.Add(x.Clone() as IMessage));
-            return new Batch(BatchHeaderSegment: BatchHeader.Clone(), messageList: ClonedMessageList, BatchTrailerSegment: BatchTrailer.Clone());
+            return new Batch(batchHeaderSegment: BatchHeader.Clone(), messageList: ClonedMessageList, batchTrailerSegment: BatchTrailer.Clone());
         }
 
         public string EscapeSequence
@@ -273,7 +333,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         {
             get { return String.Format("{0}", this.Delimiters.Field); }
         }
-
+        
         public IMessageDelimiters MessageDelimiters
         {
             get { return _Delimiters; }
@@ -314,41 +374,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         {
             return _MessageList.Select(i => i as IMessage).ToList().AsReadOnly();
         }
-        private bool ValidateBHSSegmentStringRaw(string StringRaw)
-        {
-            if (StringRaw.Substring(0, 3).ToUpper() == Support.Standard.Segments.Bhs.Code)
-            {
-                char MessagesFieldSeparator = Convert.ToChar(StringRaw.Substring(3, 1));
-                char MessagesComponentSeparator = Convert.ToChar(StringRaw.Substring(4, 1));
-                char MessagesRepeatSeparator = Convert.ToChar(StringRaw.Substring(5, 1));
-                char MessagesEscapeSeparator = Convert.ToChar(StringRaw.Substring(6, 1));
-                char MessagesSubComponentSeparator = Convert.ToChar(StringRaw.Substring(7, 1));
-                char FirstFieldSeparatorFound = Convert.ToChar(StringRaw.Substring(8, 1));
-                if (FirstFieldSeparatorFound == MessagesFieldSeparator)
-                {
-                    this.Delimiters = new MessageDelimiters(MessagesFieldSeparator,
-                        MessagesRepeatSeparator,
-                        MessagesComponentSeparator,
-                        MessagesSubComponentSeparator,
-                        MessagesEscapeSeparator);
-                }
-                else
-                {
-                    throw new PeterPiperException(String.Format(
-                        "The passed message's defined Field separator at BHS-1: '{0}' \n has not been used as the first Field separator between BHS-2 & BHS-3, found separator of: '{1}'",
-                        MessagesFieldSeparator, FirstFieldSeparatorFound));
-                }
-            }
-            else
-            {
-                throw new PeterPiperException(String.Format("The passed message must begin with the Batch Header Segment and code: '{0}'", Support.Standard.Segments.Bhs.Code));
-            }
 
-            return true;
-        }
-        private static bool IsSegmentCode(string segmentRawString, string code)
-        {
-            return (segmentRawString.Substring(0, 3).ToUpper() == code);
-        }
     }
 }

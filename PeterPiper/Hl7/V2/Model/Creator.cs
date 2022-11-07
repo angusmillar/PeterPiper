@@ -10,15 +10,29 @@ namespace PeterPiper.Hl7.V2.Model
   public static class Creator
   {
     
-    public static IFile File(ISegment FileHeaderSegment, ISegment FileTrailerSegment, List<IBatch> BatchList)
+    public static IFile File(ISegment FileHeaderSegment, List<IBatch> BatchList, ISegment FileTrailerSegment)
     {
-      throw new NotImplementedException();
-      //return new Batch(BatchHeaderSegment, BatchTrailerSegment, MessageList);
+      return new File(FileHeaderSegment, BatchList, FileTrailerSegment);
     }
+    
+    public static IFile File(ISegment FileHeaderSegment, List<IBatch> BatchList)
+    {
+      return new File(FileHeaderSegment, BatchList);
+    }
+    
+    public static IFile File(ISegment FileHeaderSegment)
+    {
+      return new File(FileHeaderSegment);
+    }
+    
     public static IFile File(string StringRaw)
     {
-      throw new NotImplementedException();
-      //return new Batch(BatchHeaderSegment, BatchTrailerSegment, MessageList);
+      return new File(StringRaw);
+    }
+    
+    public static IFile File()
+    {
+      return new File();
     }
     
     public static IBatch Batch(ISegment BatchHeaderSegment, List<IMessage> MessageList, ISegment BatchTrailerSegment)
@@ -30,9 +44,20 @@ namespace PeterPiper.Hl7.V2.Model
     {
       return new Batch(BatchHeaderSegment, MessageList);
     }
+    
+    public static IBatch Batch(ISegment BatchHeaderSegment)
+    {
+      return new Batch(BatchHeaderSegment);
+    }
+    
     public static IBatch Batch(string StringRaw)
     {
       return new Batch(StringRaw);
+    }
+    
+    public static IBatch Batch()
+    {
+      return new Batch();
     }
     
     public static IMessage Message(ISegment Segment)
