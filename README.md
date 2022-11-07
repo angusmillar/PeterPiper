@@ -719,6 +719,146 @@ IMessageDelimiters ThisMessagesDelimiters = target.MessageDelimiters;
 //As I said earlier, I doubt you will every use this functionality in the real world.
 
 ```
+## **HL7 Batches & Files**
+HL7 messages can be sent or received as a Batch of messages, where a Batch as many Messages. 
+Furthermore, many Batches can be sent or received as a File, where a File contains many Batches.
+
+### **HL7 Batch**
+A HL7 Batch consists of a Batch Header Segment (BHS) and optionally a Batch Trailer Segment (BTS). 
+Between these two segments many HL7 Messages may be placed where each new message begins with its own MSH segment.
+Note that BHS and MSH encoding characters  '|^~\&' must all align within the Batch, however you can use custom encoding characters if required.
+```C#
+//Given the following Batch message example containing three HL7 Messages:
+//BHS|^~\\&|SendingApp|SendingFacility|ReceivingApp|ReceivingFacility|20141208064531|Security|Name/ID|Comment|Control ID|Reference File Control ID
+//MSH|^~\\&|||||20141208064525||ORM^O01^ORM_O01|0001|P|2.4
+//PID|1||A000001|||Smith^John
+//PV1|1|I
+//ORC|1|000001|11111|GroupNumber1
+//OBR|1|000001|11111|Test^Testing^L
+//MSH|^~\\&|||||20141208064526||ORM^O01^ORM_O01|0002|P|2.4
+//PID|1||A000002|||Smith^Jane
+//PV1|1|I
+//ORC|1|000002|22222|GroupNumber2
+//OBR|1|000002|22222|Test^Testing^L
+//MSH|^~\\&|||||20141208064527||ORM^O01^ORM_O01|0003|P|2.4
+//PID|1||A000003|||Smith^Mary
+//PV1|1|I
+//ORC|1|000003|33333|GroupNumber3
+//OBR|1|000003|33333|Test^Testing^L
+//BTS|BatchMessageCount|BatchComment|BatchTotals
+ 
+using PeterPiper.Hl7.V2.Model;
+
+string MyHL7BatchMessage  = "[The example Batch message seen above]";
+
+IBatch oBatch =  Creator.Batch(MyHL7BatchMessage);
+
+int TotalMessageCount = oBatch.MessageCount(); //Will equal 3
+
+string SendingFac = oBatch.BatchHeader.Field(4).AsString; //Will equal SendingFacility
+
+string BatchMsgCount = oBatch.BatchTrailer.Field(1).AsString; //Will equal BatchMessageCount
+
+//Itierate through the messges in the Batch
+foreach (IMessage oHL7 in oBatch.MessageList())
+{
+  string PateintFamilyName = oHL7.Segment("PID").Field(5).Component(1).AsString;
+}
+  
+IMessage NewHL7Message =  Creator.Message("[A HL7 Message String]");
+
+oBatch.AddMessage(NewHL7Message); //Will add the HL7 mesage to the end of the Batch's Message list
+
+oBatch.RemoveMessageAt(oBatch.MessageCount()); //Will remove a message at a give zero based index
+
+oBatch.InsertMessage(NewHL7Message, 2); //Will insert a message at a give zero based index
+  
+IBatch ClonedBatch = oBatch.Clone(); //Will deep clone the entire Batch, and all its messages, all to a new instances
+   
+ClonedBatch.ClearAll(); //Will remove all messages from ther batch, all elements from the BHS segment and null the BTS segment  
+
+```
+
+### **HL7 File**
+A HL7 File consists of a File Header Segment (FHS) and optionally a File Trailer Segment (FTS).
+Between these two segments many HL7 Batches BHS, BTS segments may be placed where each new Batch begins with its own BHS segment.
+Note that FHS, BHS and MSH encoding characters  '|^~\&' must all align within the File, however you can use custom encoding characters if required.   
+```C#
+//Given the following File message example containing two Batches each with three HL7 Messages:
+//FHS|^~\\&|FileSendingApp|FileSendingFacility|ReceivingApp|ReceivingFacility|20141208064531|Security|SmithFamily|Comment|F001|Reference File Control ID
+//BHS|^~\\&|SendingApp|SendingFacility|ReceivingApp|ReceivingFacility|20141208064531|Security|Name/ID|Comment|B001|Reference File Control ID
+//MSH|^~\\&|||||20141208064525||ORM^O01^ORM_O01|0001|P|2.4
+//PID|1||A000001|||Smith^John
+//PV1|1|I
+//ORC|1|000001|11111|GroupNumber1
+//OBR|1|000001|11111|Test^Testing^L
+//MSH|^~\\&|||||20141208064526||ORM^O01^ORM_O01|0002|P|2.4
+//PID|1||A000002|||Smith^Jane
+//PV1|1|I
+//ORC|1|000002|22222|GroupNumber2
+//OBR|1|000002|22222|Test^Testing^L
+//MSH|^~\\&|||||20141208064527||ORM^O01^ORM_O01|0003|P|2.4
+//PID|1||A000003|||Smith^Mary
+//PV1|1|I
+//ORC|1|000003|33333|GroupNumber3
+//OBR|1|000003|33333|Test^Testing^L
+//BTS|BatchMessageCount|BatchComment|3
+//BHS|^~\\&|SendingApp|SendingFacility|ReceivingApp|ReceivingFacility|20141208064531|Security|JonesFamily|Comment|B002|Reference File Control ID
+//MSH|^~\\&|||||20141208064528||ORM^O01^ORM_O01|0004|P|2.4
+//PID|1||A000004|||Jones^Bob
+//PV1|1|I
+//ORC|1|000004|44444|GroupNumber4
+//OBR|1|000004|44444|Test^Testing^L
+//MSH|^~\\&|||||20141208064529||ORM^O01^ORM_O01|0005|P|2.4
+//PID|1||A000005|||Jones^Anne
+//PV1|1|I
+//ORC|1|000005|55555|GroupNumber5
+//OBR|1|000005|55555|Test^Testing^L
+//MSH|^~\\&|||||20141208064530||ORM^O01^ORM_O01|0006|P|2.4
+//PID|1||A000006|||Smith^Jill
+//PV1|1|I
+//ORC|1|000006|66666|GroupNumber6
+//OBR|1|000006|66666|Test^Testing^L
+//BTS|BatchMessageCount|BatchComment|3
+//FTS|2|BatchComment
+ 
+using PeterPiper.Hl7.V2.Model;
+
+string MyHL7FileMessage  = "[The example File message seen above]";
+
+IFile oFile = Creator.File(MyHL7FileMessage);
+
+int TotalBatchCount = oFile.BatchCount(); //Will equal 2
+
+string SendingFac = oFile.FileHeader.Field(4).AsString; //Will equal 'FileSendingFacility'
+
+string FileBatchCount = oFile.FileTrailer.Field(1).AsString; //Will equal 2
+
+//Itierate through the Batches in the File
+foreach (IBatch oBatch in oFile.BatchList())
+{
+  //Itierate through the HL7 mesages in the File's Batch
+  foreach (IBatch oHL7 in oBatch.MessageList())
+  {
+    string PateintFamilyName = oHL7.Segment("PID").Field(5).Component(1).AsString;
+  }  
+}
+  
+IBatch NewBatch =  Creator.Batch("[A HL7 Batch String]");
+
+oFile.AddBatch(NewBatch); //Will add the new HL7 Batch to the end of the File's Batch list
+
+oFile.RemoveBatchAt(oFile.BatchCount()); //Will remove a batch at a give zero based index
+
+oFile.InsertBatch(NewBatch, 2); //Will insert a Batch at a give zero based index
+  
+IFile ClonedFile = oFile.Clone(); //Will deep clone the entire File, and all its Batches, and their HL7 Messages, all to a new instances
+   
+ClonedFile.ClearAll(); //Will remove all Batches from the File, all elements from the FHS segment and null the FTS segment  
+
+```
+
+
 
 ## **Some general notes**
 * Segment(), Element(), Repeat(), Field(), Component(), and SubComponent() are all one based indexes
