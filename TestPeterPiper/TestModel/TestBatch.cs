@@ -235,7 +235,7 @@ namespace TestHl7V2
                               TestBatch.MessageString + "\r" + 
                               TestBatch.BtsSegmentString;
       
-      IFile file = Creator.File(batchStringRaw);
+      IBatch file = Creator.Batch(batchStringRaw);
     }
   }
 }
