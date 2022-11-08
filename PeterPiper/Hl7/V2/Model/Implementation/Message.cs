@@ -14,7 +14,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
     //Creator Factory used Constructors
     internal Message(string MessageVersion, string MessageType, string MessageTrigger, string MessageControlID = "<GUID>", string MessageStructure = "")
-    {      
+    {
       //need to validate version and message types somewhat.
       StringBuilder MSHTemplate = new StringBuilder(Support.Standard.Segments.Msh.Code);
       MSHTemplate.Append(this.Delimiters.Field);
@@ -22,8 +22,8 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       MSHTemplate.Append(this.Delimiters.Repeat);
       MSHTemplate.Append(this.Delimiters.Escape);
       MSHTemplate.Append(this.Delimiters.SubComponent);
-      MSHTemplate.Append(this.Delimiters.Field,5);
-      MSHTemplate.Append(PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Support.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli));      
+      MSHTemplate.Append(this.Delimiters.Field, 5);
+      MSHTemplate.Append(PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, Support.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSecMilli));
       MSHTemplate.Append(this.Delimiters.Field, 2);
       MSHTemplate.Append(MessageType);
       MSHTemplate.Append(this.Delimiters.Component);
@@ -46,10 +46,10 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       MSHTemplate.Append("AL");
       MSHTemplate.Append(this.Delimiters.Field);
       MSHTemplate.Append("NE");
-      
-      _SegmentDictonary = new Dictionary<int, Segment>();      
-      _SegmentDictonary.Add(1, new Segment(MSHTemplate.ToString(),this.Delimiters,false,1,this));
-      
+
+      _SegmentDictonary = new Dictionary<int, Segment>();
+      _SegmentDictonary.Add(1, new Segment(MSHTemplate.ToString(), this.Delimiters, false, 1, this));
+
     }
     internal Message(ISegment item)
       : base(item.MessageDelimiters)
@@ -70,7 +70,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
     internal Message(string StringRaw, bool ParseMSHSegmentOnly = false)
-    {      
+    {
       List<string> MessageList = StringRaw.Split(Support.Standard.Delimiters.SegmentTerminator).ToList();
       if (ParseMSHSegmentOnly)
       {
@@ -133,7 +133,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
             oStringBuilder.Append(Support.Standard.Delimiters.SegmentTerminator);
           }
         }
-        return oStringBuilder.ToString();        
+        return oStringBuilder.ToString();
       }
       set
       {
@@ -169,11 +169,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     }
     public void ClearAll()
     {
-      Segment oMSH = _SegmentDictonary[1].Clone() as Segment;      
-      _SegmentDictonary = new Dictionary<int, Segment>();           
+      Segment oMSH = _SegmentDictonary[1].Clone() as Segment;
+      _SegmentDictonary = new Dictionary<int, Segment>();
       _SegmentDictonary.Add(1, oMSH);
-      _SegmentDictonary[1].ClearAll(); ;
-      
+      _SegmentDictonary[1].ClearAll();
+      ;
+
     }
     public string EscapeSequence
     {
@@ -247,7 +248,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       {
         return this.Delimiters;
       }
-    }    
+    }
     public void Add(ISegment item)
     {
       ValidateItemNotInUse(item as Segment);
@@ -261,32 +262,32 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     public bool RemoveSegmentAt(int index)
     {
       return this.SegmentRemoveAt(index);
-    }    
+    }
     public int SegmentCount(string Code)
     {
-      ValidateSegmentCode(Code);            
-      return _SegmentDictonary.Count(x => x.Value.Code == Code);            
+      ValidateSegmentCode(Code);
+      return _SegmentDictonary.Count(x => x.Value.Code == Code);
     }
     public int SegmentCount()
     {
       return this.CountSegment;
-    }   
+    }
     public ISegment Segment(string Code)
     {
       ValidateSegmentCode(Code);
       return GetSegment(Code);
-    }    
+    }
     public ISegment Segment(int index)
     {
       if (index == 0)
         throw new PeterPiperException("Element is a one based index, zero is not a valid index");
-      return this.GetSegment(index); 
+      return this.GetSegment(index);
 
-    }    
+    }
     public ReadOnlyCollection<ISegment> SegmentList(string Code)
     {
-      ValidateSegmentCode(Code);      
-      return _SegmentDictonary.OrderBy(x => x.Key).Select(i => i.Value as ISegment).ToList().Where(x => x.Code == Code).ToList().AsReadOnly();      
+      ValidateSegmentCode(Code);
+      return _SegmentDictonary.OrderBy(x => x.Key).Select(i => i.Value as ISegment).ToList().Where(x => x.Code == Code).ToList().AsReadOnly();
     }
     public ReadOnlyCollection<ISegment> SegmentList()
     {
@@ -300,15 +301,15 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return _SegmentDictonary[index];
       else
         return null;
-    }    
+    }
     internal Segment GetSegment(string Code)
     {
-      ValidateSegmentCode(Code);      
+      ValidateSegmentCode(Code);
       Segment oSeg = _SegmentDictonary.FirstOrDefault(i => i.Value.Code.ToUpper() == Code.ToUpper()).Value;
       if (oSeg != null)
         return oSeg;
       else
-        throw new PeterPiperException("There is no segment with a segment code of " + Code + " within the message. \n Perhaps you should test for the segments existence with SegmentCount first or create the segment in the message first.");      
+        throw new PeterPiperException("There is no segment with a segment code of " + Code + " within the message. \n Perhaps you should test for the segments existence with SegmentCount first or create the segment in the message first.");
     }
     internal int CountSegment
     {
@@ -320,7 +321,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal Segment SegmentAppend(Segment Segment)
     {
       ValidateSegmentAddition(Segment);
-      
+
       int InsertAtIndex = 1;
       if (_SegmentDictonary.Count > 0)
         InsertAtIndex = _SegmentDictonary.Keys.Max() + 1;
@@ -330,7 +331,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _SegmentDictonary.Add(InsertAtIndex, Segment);
       //No need to set the parent as there is non at te moment.
       return _SegmentDictonary[_SegmentDictonary.Keys.Max()];
-    }    
+    }
     internal Segment SegmentInsertBefore(Segment Segment, int Index)
     {
       if (Index == 0)
@@ -366,7 +367,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
             item.Value._Index++;
             if (_SegmentDictonary.ContainsKey(item.Key + 1))
             {
-              
+
               _SegmentDictonary[item.Key + 1] = item.Value;
             }
             else
@@ -414,7 +415,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         return false;
       }
     }
-    
+
     //Maintenance
     internal bool SetContent(Segment oSegment)
     {
@@ -452,7 +453,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       {
         if (Part != string.Empty)
         {
-          Segment oCurrentSegment =  new Segment(Part, this.Delimiters, false, SegmentPositionCounter, this);
+          Segment oCurrentSegment = new Segment(Part, this.Delimiters, false, SegmentPositionCounter, this);
           if (_SegmentDictonary.Count > 0 && oCurrentSegment.Code == Support.Standard.Segments.Msh.Code)
             throw new PeterPiperException("Second MSH segment found when parsing new message. Single messages must only have one MSH segment as the first segment.");
           _SegmentDictonary.Add(SegmentPositionCounter, oCurrentSegment);
@@ -500,35 +501,38 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
           throw new PeterPiperException(String.Format("The passed message must begin with the Message Header Segment and code: '{0}'", Support.Standard.Segments.Msh.Code));
       }
     }
-    
+
     internal static MessageDelimiters ExtractDelimitersFromStringRaw(string StringRaw)
     {
-      string segmentCode = StringRaw.Substring(0, 2);
+      string segmentCode = StringRaw.Substring(0, 3);
       char fieldSeparator = Convert.ToChar(StringRaw.Substring(3, 1));
       char componentSeparator = Convert.ToChar(StringRaw.Substring(4, 1));
       char repeatSeparator = Convert.ToChar(StringRaw.Substring(5, 1));
       char escapeSeparator = Convert.ToChar(StringRaw.Substring(6, 1));
       char subComponentSeparator = Convert.ToChar(StringRaw.Substring(7, 1));
-      char FirstFieldSeparatorFound = Convert.ToChar(StringRaw.Substring(8, 1));
-      if (FirstFieldSeparatorFound == fieldSeparator)
+
+      if (IsSegmentCode(StringRaw, Support.Standard.Segments.Msh.Code))
       {
-        return new MessageDelimiters(fieldSeparator,
-                                     repeatSeparator, 
-                                     componentSeparator,
-                                     subComponentSeparator, 
-                                     escapeSeparator);
+        char FirstFieldSeparatorFound = Convert.ToChar(StringRaw.Substring(8, 1));
+        if (FirstFieldSeparatorFound != fieldSeparator)
+        {
+          throw new PeterPiperException(String.Format(
+                                          "The passed message's defined Field separator at MSH-1: '{1}' \n has not been used as the first Field separator between MSH-2 & MSH-3, found separator of: '{2}'",
+                                          segmentCode, fieldSeparator, FirstFieldSeparatorFound));
+        }
       }
-      else
-      {
-        throw new PeterPiperException(String.Format(
-                                        "The passed message's defined Field separator at {0}-1: '{1}' \n has not been used as the first Field separator between {0}-2 & {0}-3, found separator of: '{2}'",
-                                        segmentCode, fieldSeparator, FirstFieldSeparatorFound));
-      }
+
+      return new MessageDelimiters(fieldSeparator,
+                                   repeatSeparator,
+                                   componentSeparator,
+                                   subComponentSeparator,
+                                   escapeSeparator);
+
     }
     internal static bool IsSegmentCode(string segmentRawString, string code)
     {
       return (segmentRawString.Substring(0, 3).ToUpper() == code);
     }
-    
+
   }
 }

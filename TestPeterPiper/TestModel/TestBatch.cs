@@ -225,5 +225,17 @@ namespace TestHl7V2
       var target = GetTestBatchFromObjectConstructorThree();
       Assert.AreEqual("^~\\&", target.EscapeSequence, "A test RemoveMessageAt on Batch");
     }
+    
+    [TestMethod]
+    public void TestBhsWithNoElements()
+    {
+      string batchStringRaw = "BHS|^~\\&" + "\r" +
+                              TestBatch.MessageString + "\r" + 
+                              TestBatch.MessageString + "\r" + 
+                              TestBatch.MessageString + "\r" + 
+                              TestBatch.BtsSegmentString;
+      
+      IFile file = Creator.File(batchStringRaw);
+    }
   }
 }
