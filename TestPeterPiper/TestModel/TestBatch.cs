@@ -122,7 +122,7 @@ namespace TestHl7V2
     public void BatchConstructorAsObjectsZeroTest()
     {
       var target = GetTestBatchFromObjectConstructorZero();
-      Assert.AreEqual("BHS|^~\\&|", target.BatchHeader.AsStringRaw, "A test for Batch Constructor Zero");
+      Assert.AreEqual("BHS|^~\\&", target.BatchHeader.AsStringRaw, "A test for Batch Constructor Zero");
       Assert.AreEqual(0, target.MessageCount(), "A test for Batch Constructor Zero");
       Assert.IsNull(target.BatchTrailer, "A test for Batch Constructor Zero");
     }
@@ -236,6 +236,16 @@ namespace TestHl7V2
                               TestBatch.BtsSegmentString;
       
       IBatch file = Creator.Batch(batchStringRaw);
+    }
+    
+    [TestMethod]
+    public void TestBhsSegmentRoundTrip()
+    {
+      string bhsMinimalSegmentString = "BHS|^~\\&";
+      ISegment bhsSegment = Creator.Segment(bhsMinimalSegmentString);
+      string bhsSegmentStringTarget = bhsSegment.AsStringRaw;
+      Assert.AreEqual(bhsMinimalSegmentString, bhsSegmentStringTarget);
+
     }
   }
 }

@@ -186,7 +186,7 @@ namespace TestHl7V2
     public void FileConstructorAsObjectsZero()
     {
       var target = GetTestFileFromObjectConstructorZero();
-      Assert.AreEqual("FHS|^~\\&|", target.FileHeader.AsStringRaw, "A test for File Constructor Zero");
+      Assert.AreEqual("FHS|^~\\&", target.FileHeader.AsStringRaw, "A test for File Constructor Zero");
       Assert.AreEqual(0, target.BatchCount(), "A test for File Constructor Zero");
       Assert.IsNull(target.FileTrailer, "A test for File Constructor Zero");
     }
@@ -267,6 +267,7 @@ namespace TestHl7V2
     [TestMethod]
     public void TestFshWithNoElements()
     {
+      //Prepare
       string StringRaw = "FHS|^~\\&" + "\r" +
                          TestFile.BhsSegmentString + "\r" +
                          TestFile.MessageString +"\r" +
@@ -276,6 +277,46 @@ namespace TestHl7V2
                          TestFile.FtsSegmentString;
 
       IFile file = Creator.File(StringRaw);
+    }
+    
+    [TestMethod]
+    public void TestFshWithNoElements2()
+    {
+      
+      ISegment test = Creator.Segment("FHS|^~\\&");
+      string testout = test.AsStringRaw;
+      
+      //Prepare
+      var oMsg = new System.Text.StringBuilder();
+      oMsg.Append("FHS|^~\\&\r");
+      oMsg.Append("BHS|^~\\&\r");
+      
+      oMsg.Append("MSH|^~\\&|EnsembleHL7|ISC|Mock|GTU00000|202211081829||ACK^O01|bfd263629619489bbf685d08cb77500e|P|2.4\r");
+      oMsg.Append("MSA|AA|bfd263629619489bbf685d08cb77500e\r");
+      
+      oMsg.Append("MSH|^~\\&|EnsembleHL7|ISC|Mock|GTU00000|202211081829||ACK^O01|25d315c94cb9423b9d406c7cda4782f4|P|2.4\r");
+      oMsg.Append("MSA|AE|25d315c94cb9423b9d406c7cda4782f4|This is my test error message\r");
+
+      oMsg.Append("MSH|^~\\&|EnsembleHL7|ISC|Mock|GTU00000|202211081829||ACK^O01|90e438772728424080481336d8771053|P|2.4\r");
+      oMsg.Append("MSA|AA|90e438772728424080481336d8771053\r");
+      
+      oMsg.Append("BTS|3\r");
+      oMsg.Append("FTS|1");
+
+      IFile hl7FileAckMessage = Creator.File(oMsg.ToString());
+      string x = hl7FileAckMessage.AsStringRaw;
+      
+      hl7FileAckMessage = Creator.File(x);
+    }
+    
+    [TestMethod]
+    public void TestFshSegmentRoundTrip()
+    {
+      string fshMinimalSegmentString = "FHS|^~\\&";
+      ISegment fshSegment = Creator.Segment(fshMinimalSegmentString);
+      string fshSegmentStringTarget = fshSegment.AsStringRaw;
+      Assert.AreEqual(fshMinimalSegmentString, fshSegmentStringTarget);
+
     }
     
   }

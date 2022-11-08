@@ -252,11 +252,12 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         StringBuilder sb = new StringBuilder();
         sb.Append(FileHeader.AsStringRaw);
         sb.Append(Support.Standard.Delimiters.SegmentTerminator);
-        _BatchList.ForEach(Msg => sb.Append(Msg.AsStringRaw));
+        _BatchList.ForEach(batch => sb.Append(batch.AsStringRaw));
         if (FileTrailer != null)
         {
-          sb.AppendLine(FileTrailer.AsStringRaw);
-          sb.Append(Support.Standard.Delimiters.SegmentTerminator);
+          //sb.Append(Support.Standard.Delimiters.SegmentTerminator);
+          sb.Append(FileTrailer.AsStringRaw);
+          //sb.Append(Support.Standard.Delimiters.SegmentTerminator);
         }
 
         return sb.ToString();

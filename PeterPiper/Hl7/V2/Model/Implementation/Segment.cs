@@ -431,8 +431,20 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (IsHeaderSegment() && _ElementDictonary.Count == 2)
       {
-        return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field);
+        if (_IsMSH)
+        {
+          return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field);  
+        }
+        else
+        {
+          return string.Format("{0}{1}{2}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw);
+        }
       }
+      
+      // if (IsHeaderSegment() && _ElementDictonary.Count == 2)
+      // {
+      //   return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field);
+      // }
 
       if (_ElementDictonary.Count == 0)
       {

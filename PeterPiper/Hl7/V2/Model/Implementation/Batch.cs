@@ -302,7 +302,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
                 _MessageList.ForEach(Msg => sb.Append(Msg.AsStringRaw));
                 if (BatchTrailer != null)
                 {
-                    sb.AppendLine(BatchTrailer.AsStringRaw);
+                    sb.Append(BatchTrailer.AsStringRaw);
                     sb.Append(Support.Standard.Delimiters.SegmentTerminator);
                 }
 
