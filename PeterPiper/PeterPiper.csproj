@@ -14,8 +14,8 @@
     <FileVersion>1.0.1.1</FileVersion>
     <Version>1.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>1.0.2</PackageVersion>
-    <PackageReleaseNotes>Added support for HL7 File &amp; Batch parseing </PackageReleaseNotes>
+    <PackageVersion>1.0.3</PackageVersion>
+    <PackageReleaseNotes>Bug fix introduced i last release: Index and length must refer to a location within the string. The libaray was incorectly parseing the Segment code only gettig the first two char not three char</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Hl7\V2\Schema\XmlParser\XMLSchemaFiles\V2_3\ACK.xsd">
