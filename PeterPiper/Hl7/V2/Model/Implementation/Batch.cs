@@ -17,6 +17,11 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         internal Batch(string stringRaw)
         {
             List<string> BatchSegmentList = stringRaw.Split(Support.Standard.Delimiters.SegmentTerminator).ToList();
+            if (string.IsNullOrWhiteSpace(BatchSegmentList.Last()))
+            {
+                BatchSegmentList.Remove(BatchSegmentList.Last());
+            }
+            
             if (!BatchSegmentList.Any())
             {
                 throw new PeterPiperException(String.Format("The passed batch must begin with the Batch Header Segment and code: '{0}'", Support.Standard.Segments.Bhs.Code));
@@ -25,10 +30,9 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
             string bhsSegmentStringRaw = BatchSegmentList.First();
             if (Implementation.Message.IsSegmentCode(bhsSegmentStringRaw, Support.Standard.Segments.Bhs.Code))
             {
-                this.Delimiters = Implementation.Message.ExtractDelimitersFromStringRaw(bhsSegmentStringRaw);
-                _BatchHeader = new Segment(bhsSegmentStringRaw, this.Delimiters);
+                this._Delimiters = Implementation.Message.ExtractDelimitersFromStringRaw(bhsSegmentStringRaw);
+                _BatchHeader = new Segment(bhsSegmentStringRaw, this._Delimiters, true, null, null);
                 BatchSegmentList.Remove(bhsSegmentStringRaw);
-                
             }
             else
             {
@@ -37,7 +41,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
             if (Implementation.Message.IsSegmentCode(BatchSegmentList.Last(), Support.Standard.Segments.Bts.Code))
             {
-                _BatchTrailer = new Segment(BatchSegmentList.Last(), this._Delimiters);
+                _BatchTrailer = new Segment(BatchSegmentList.Last(), this._Delimiters, true, null, null);
                 BatchSegmentList.Remove(BatchSegmentList.Last());
             }
 

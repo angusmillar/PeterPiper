@@ -282,10 +282,6 @@ namespace TestHl7V2
     [TestMethod]
     public void TestFshWithNoElements2()
     {
-      
-      ISegment test = Creator.Segment("FHS|^~\\&");
-      string testout = test.AsStringRaw;
-      
       //Prepare
       var oMsg = new System.Text.StringBuilder();
       oMsg.Append("FHS|^~\\&\r");
@@ -301,7 +297,7 @@ namespace TestHl7V2
       oMsg.Append("MSA|AA|90e438772728424080481336d8771053\r");
       
       oMsg.Append("BTS|3\r");
-      oMsg.Append("FTS|1");
+      oMsg.Append("FTS|1\r");
 
       IFile hl7FileAckMessage = Creator.File(oMsg.ToString());
       string x = hl7FileAckMessage.AsStringRaw;

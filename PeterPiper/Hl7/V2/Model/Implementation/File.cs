@@ -17,17 +17,22 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
     internal File(string StringRaw)
     {
       List<string> FileSegmentList = StringRaw.Split(Support.Standard.Delimiters.SegmentTerminator).ToList();
+      if (string.IsNullOrWhiteSpace(FileSegmentList.Last()))
+      {
+        FileSegmentList.Remove(FileSegmentList.Last());
+      }
+      
       if (!FileSegmentList.Any())
       {
         throw new PeterPiperException(String.Format("The passed file must begin with the File Header Segment and code: '{0}'", Support.Standard.Segments.Fhs.Code));
       }
 
-      string FHSSegmentStringRaw = FileSegmentList.First();
-      if (Message.IsSegmentCode(FHSSegmentStringRaw, Support.Standard.Segments.Fhs.Code))
+      string fhsSegmentStringRaw = FileSegmentList.First();
+      if (Message.IsSegmentCode(fhsSegmentStringRaw, Support.Standard.Segments.Fhs.Code))
       {
-        this.Delimiters = Implementation.Message.ExtractDelimitersFromStringRaw(FHSSegmentStringRaw);
-        _FileHeader = new Segment(FHSSegmentStringRaw, this._Delimiters);
-        FileSegmentList.Remove(FHSSegmentStringRaw);
+        this._Delimiters = Implementation.Message.ExtractDelimitersFromStringRaw(fhsSegmentStringRaw);
+        _FileHeader = new Segment(fhsSegmentStringRaw, this._Delimiters, true, null, null);
+        FileSegmentList.Remove(fhsSegmentStringRaw);
 
       }
       else
@@ -37,7 +42,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
 
       if (Message.IsSegmentCode(FileSegmentList.Last(), Support.Standard.Segments.Fts.Code))
       {
-        _FileTrailer = new Segment(FileSegmentList.Last(), FileHeader.MessageDelimiters);
+        _FileTrailer = new Segment(FileSegmentList.Last(), this._Delimiters, true, null, null);
         FileSegmentList.Remove(FileSegmentList.Last());
       }
 
@@ -133,8 +138,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       _FileHeader = new Segment(Support.Standard.Segments.Fhs.Code + Support.Standard.Delimiters.Field);
       _Delimiters = _FileHeader.MessageDelimiters as MessageDelimiters;
     }
-
-
+    
     public ISegment FileHeader
     {
       get => _FileHeader;
@@ -153,7 +157,6 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
         _FileHeader = value;
       }
     }
-
     public ISegment FileTrailer
     {
       get => _FileTrailer;

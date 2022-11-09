@@ -14,8 +14,8 @@
     <FileVersion>1.0.1.1</FileVersion>
     <Version>1.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>1.0.4</PackageVersion>
-    <PackageReleaseNotes>Bug fix , was outputtig extra field seperator for BSH and FHS segments </PackageReleaseNotes>
+    <PackageVersion>1.0.5</PackageVersion>
+    <PackageReleaseNotes>Bug fix , for File and Batch parsing </PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Hl7\V2\Schema\XmlParser\XMLSchemaFiles\V2_3\ACK.xsd">
