@@ -12,7 +12,7 @@
     <FileVersion>1.0.1.1</FileVersion>
     <Version>1.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>1.0.5</PackageVersion>
+    <PackageVersion>7.0.0</PackageVersion>
     <PackageReleaseNotes>Update for .NET 7</PackageReleaseNotes>
     <TargetFramework>net7.0</TargetFramework>
     <LangVersion>11</LangVersion>
