@@ -13,11 +13,11 @@ namespace TestPeterPiper.Support
     {
       get
       {
-        string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+        string codeBase = System.Reflection.Assembly.GetExecutingAssembly().Location;
         UriBuilder uri = new UriBuilder(codeBase);
         string path = Uri.UnescapeDataString(uri.Path);
         var DirInfo = new DirectoryInfo(path);
-        return DirInfo.Parent.FullName; ;
+        return DirInfo.Parent!.FullName; ;
       }
     }
   }

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <!-- This project will output netstandard2.0 and net461 assemblies -->
-    <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
     <Description>HL7 V2 message parser for .NET Core and .NET Framework</Description>
     <Copyright>pyrohealth.net</Copyright>
     <Authors>AngusMillar</Authors>
@@ -16,6 +15,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageVersion>1.0.5</PackageVersion>
     <PackageReleaseNotes>Bug fix , for File and Batch parsing </PackageReleaseNotes>
+    <TargetFramework>net7.0</TargetFramework>
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Hl7\V2\Schema\XmlParser\XMLSchemaFiles\V2_3\ACK.xsd">

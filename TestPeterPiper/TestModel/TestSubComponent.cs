@@ -51,7 +51,7 @@ namespace TestHl7V2
         var target = Creator.SubComponent(StringRaw);
         Assert.AreEqual(5, target.ContentCount, "SubComponentConstructorTest3()");
         Assert.AreEqual(PeterPiper.Hl7.V2.Support.Content.ContentType.Escape, target.Content(1).ContentType, "SubComponentConstructorTest3()");
-        Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Escapes.HighlightStart.ToString(), target.Content(1).EscapeMetaData.EscapeTypeCharater, "SubComponentConstructorTest3()");
+        Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Escapes.HighlightStart.ToString(), target.Content(1).EscapeMetaData.EscapeTypeCharacter, "SubComponentConstructorTest3()");
       }
 
       /// <summary>
@@ -65,7 +65,7 @@ namespace TestHl7V2
         var item2 = Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine);
         target.Add(item1);
         target.Add(item2);
-        Assert.AreEqual(".br", target.Content(1).EscapeMetaData.EscapeTypeCharater, "AddTest() 1");
+        Assert.AreEqual(".br", target.Content(1).EscapeMetaData.EscapeTypeCharacter, "AddTest() 1");
         Assert.AreEqual("Hello World", target.Content(0).AsString, "AddTest() 1");
       }
 

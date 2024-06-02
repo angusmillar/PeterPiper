@@ -1,31 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace PeterPiper.Hl7.V2.Schema.Model;
 
-namespace PeterPiper.Hl7.V2.Schema.Model
+public class CompositeItem
 {
-  public class CompositeItem
-  {
-    private string _Description;
-    public string Description
-    {
-      get { return _Description; }
-      set { _Description = value; }
-    }
+  public string Description { get; set; }
 
-    private int _Hl7TableIndex;
-    public int Hl7TableIndex
-    {
-      get { return _Hl7TableIndex; }
-      set { _Hl7TableIndex = value; }
-    }
+  public int Hl7TableIndex { get; set; }
 
-    private DataTypeBase _Type;
-    public DataTypeBase Type
-    {
-      get { return _Type; }
-      set { _Type = value; }
-    }
-  }
+  public DataTypeBase Type { get; set; }
 }

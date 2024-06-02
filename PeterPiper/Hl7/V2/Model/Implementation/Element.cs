@@ -3,857 +3,809 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
-using PeterPiper.Hl7.V2.Model.Implementation;
 using PeterPiper.Hl7.V2.CustomException;
 
-namespace PeterPiper.Hl7.V2.Model.Implementation
+namespace PeterPiper.Hl7.V2.Model.Implementation;
+
+internal class Element : ContentBase, IElement
 {
-  internal class Element : ContentBase, IElement
-  {
-    internal bool _IsMainSeparator = false;
-    internal bool _IsEncodingCharacters = false;
+    internal bool IsMainSeparator = false;
+    internal bool IsEncodingCharacters = false;
 
     private Dictionary<int, Field> _RepeatDictonary;
 
     //Creator Factory used Constructors
     internal Element()
     {
-      _RepeatDictonary = new Dictionary<int, Field>();
-      _Temporary = true;
-      _Index = null;
-      _Parent = null;
+        _RepeatDictonary = new Dictionary<int, Field>();
+        _Temporary = true;
+        _Index = null;
+        _Parent = null;
     }
-    internal Element(IMessageDelimiters CustomDelimiters)
-      : base(CustomDelimiters)
-    {
-      _RepeatDictonary = new Dictionary<int, Field>();
-      _Temporary = true;
-      _Index = null;
-      _Parent = null;
-    }
-    internal Element(string StringRaw)
-    {
-      _Temporary = true;
-      _Index = null;
-      _Parent = null;
 
-      if (ValidateStringRaw(StringRaw))
-      {
-        _RepeatDictonary = ParseElementRawStringToRepeat(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
-      }
-    }
-    internal Element(string StringRaw, IMessageDelimiters CustomDelimiters)
-      : base(CustomDelimiters)
+    internal Element(IMessageDelimiters customDelimiters)
+        : base(customDelimiters)
     {
-      _Temporary = true;
-      _Index = null;
-      _Parent = null;
+        _RepeatDictonary = new Dictionary<int, Field>();
+        _Temporary = true;
+        _Index = null;
+        _Parent = null;
+    }
 
-      if (ValidateStringRaw(StringRaw))
-      {
-        _RepeatDictonary = ParseElementRawStringToRepeat(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
-      }
+    internal Element(string stringRaw)
+    {
+        _Temporary = true;
+        _Index = null;
+        _Parent = null;
+
+        if (ValidateStringRaw(stringRaw))
+        {
+            _RepeatDictonary = ParseElementRawStringToRepeat(stringRaw, ModelSupport.ContentTypeInternal.Unknown);
+        }
+    }
+
+    internal Element(string stringRaw, IMessageDelimiters customDelimiters)
+        : base(customDelimiters)
+    {
+        _Temporary = true;
+        _Index = null;
+        _Parent = null;
+
+        if (ValidateStringRaw(stringRaw))
+        {
+            _RepeatDictonary = ParseElementRawStringToRepeat(stringRaw, ModelSupport.ContentTypeInternal.Unknown);
+        }
     }
 
     //Only internal Constructors
-    internal Element(Field Field, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
-      : base(CustomDelimiters)
+    internal Element(Field field, MessageDelimiters customDelimiters, bool temporary, int? index, ModelBase parent)
+        : base(customDelimiters)
     {
-      ValidateItemNotInUse(Field);
-      _Temporary = Temporary;
-      _Index = Index;
-      _Parent = Parent;
-      _RepeatDictonary = new Dictionary<int, Field>();
-      Field._Parent = this;
-      _RepeatDictonary.Add(1, Field);
-
+        ValidateItemNotInUse(field);
+        _Temporary = temporary;
+        _Index = index;
+        _Parent = parent;
+        _RepeatDictonary = new Dictionary<int, Field>();
+        field._Parent = this;
+        _RepeatDictonary.Add(1, field);
     }
-    internal Element(string StringRaw, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
-      : base(CustomDelimiters)
-    {
-      _Temporary = Temporary;
-      _Index = Index;
-      _Parent = Parent;
 
-      if (ValidateStringRaw(StringRaw))
-      {
-        _RepeatDictonary = ParseElementRawStringToRepeat(StringRaw, ModelSupport.ContentTypeInternal.Unknown);
-      }
+    internal Element(string stringRaw, MessageDelimiters customDelimiters, bool temporary, int? index, ModelBase parent)
+        : base(customDelimiters)
+    {
+        _Temporary = temporary;
+        _Index = index;
+        _Parent = parent;
+
+        if (ValidateStringRaw(stringRaw))
+        {
+            _RepeatDictonary = ParseElementRawStringToRepeat(stringRaw, ModelSupport.ContentTypeInternal.Unknown);
+        }
     }
-    internal Element(ModelSupport.ContentTypeInternal ContentTypeInternal, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
-      : base(CustomDelimiters)
-    {
-      _Temporary = Temporary;
-      _Index = Index;
-      _Parent = Parent;
-      _IsMainSeparator = (ContentTypeInternal == ModelSupport.ContentTypeInternal.MainSeparator);
-      _IsEncodingCharacters = (ContentTypeInternal == ModelSupport.ContentTypeInternal.EncodingCharacters);
 
-      _RepeatDictonary = ParseElementRawStringToRepeat(string.Empty, ContentTypeInternal);
+    internal Element(ModelSupport.ContentTypeInternal contentTypeInternal, MessageDelimiters customDelimiters,
+        bool temporary, int? index, ModelBase parent)
+        : base(customDelimiters)
+    {
+        _Temporary = temporary;
+        _Index = index;
+        _Parent = parent;
+        IsMainSeparator = (contentTypeInternal == ModelSupport.ContentTypeInternal.MainSeparator);
+        IsEncodingCharacters = (contentTypeInternal == ModelSupport.ContentTypeInternal.EncodingCharacters);
+
+        _RepeatDictonary = ParseElementRawStringToRepeat(string.Empty, contentTypeInternal);
     }
 
     //Instance access
-    public IMessageDelimiters MessageDelimiters
-    {
-      get
-      {
-        return this.Delimiters;
-      }
-    } 
+    public IMessageDelimiters MessageDelimiters => Delimiters;
+
     public IElement Clone()
     {
-      return new Element(this.AsStringRaw, this.Delimiters, true, null, null);
+        return new Element(AsStringRaw, Delimiters, true, null, null);
     }
+
     public override string ToString()
     {
-      return this.AsString;
+        return AsString;
     }
+
     public override string AsString
     {
-      get
-      {
-        return GetAsStringOrAsRawString(false);
-      }
-      set
-      {
-        this.AsStringRaw = Support.Standard.Escapes.Encode(value, this.Delimiters);
-      }
+        get => GetAsStringOrAsRawString(false);
+        set => AsStringRaw = Support.Standard.Escapes.Encode(value, Delimiters);
     }
 
     public override string AsStringRaw
     {
-      get
-      {
-        return GetAsStringOrAsRawString(true);
-      }
-      set
-      {
-        if (value == String.Empty)
+        get => GetAsStringOrAsRawString(true);
+        set
         {
-          RemoveFromParent();
+            if (value == String.Empty)
+            {
+                RemoveFromParent();
+            }
+            else if (ValidateStringRaw(value))
+            {
+                _RepeatDictonary = ParseElementRawStringToRepeat(value, ModelSupport.ContentTypeInternal.Unknown);
+            }
         }
-        else if (ValidateStringRaw(value))
-        {
-          _RepeatDictonary = ParseElementRawStringToRepeat(value, ModelSupport.ContentTypeInternal.Unknown);
-        }
-      }
     }
-    public bool IsEmpty
-    {
-      get
-      {
-        return (_RepeatDictonary.Count == 0);
-      }
-    }
-    public bool IsHL7Null
-    {
-      get
-      {
-        return this.GetRepeat(1).IsHL7Null;
-      }
-    }
+
+    public bool IsEmpty => (_RepeatDictonary.Count == 0);
+
+    public bool IsHL7Null => GetRepeat(1).IsHL7Null;
+
     public void ClearAll()
     {
-      _RepeatDictonary.Clear();
-      RemoveFromParent();
+        _RepeatDictonary.Clear();
+        RemoveFromParent();
     }
+
     public void Set(int index, IContent item)
     {
-      this.ContentSet(item as Content, index);
+        ContentSet(item as Content, index);
     }
+
     public void Set(int index, ISubComponent item)
     {
-      this.SubComponentSet(item as SubComponent, index);
+        SubComponentSet(item as SubComponent, index);
     }
+
     public void Add(IField item)
     {
-      ValidateItemNotInUse(item as Field);
-      this.RepeatAppend(item as Field);
+        ValidateItemNotInUse(item as Field);
+        RepeatAppend(item as Field);
     }
+
     public void Add(IComponent item)
     {
-      var Component = item as Component;
-      ValidateItemNotInUse(Component);
-      this.ComponentAppend(Component);
+        var Component = item as Component;
+        ValidateItemNotInUse(Component);
+        ComponentAppend(Component);
     }
+
     public void Add(ISubComponent item)
     {
-      ValidateItemNotInUse(item as SubComponent);
-      this.SubComponentAppend(item as SubComponent);
+        ValidateItemNotInUse(item as SubComponent);
+        SubComponentAppend(item as SubComponent);
     }
+
     public void Add(IContent item)
     {
-      ValidateItemNotInUse(item as Content);
-      this.ContentAppend(item as Content);
+        ValidateItemNotInUse(item as Content);
+        ContentAppend(item as Content);
     }
+
     public void Insert(int index, IField item)
     {
-      ValidateItemNotInUse(item as Field);
-      this.RepeatInsertBefore(item as Field, index);
+        ValidateItemNotInUse(item as Field);
+        RepeatInsertBefore(item as Field, index);
     }
+
     public void Insert(int index, IComponent item)
     {
-      var Component = item as Component;
-      ValidateItemNotInUse(Component);
-      this.ComponentInsertBefore(Component, index);
+        var Component = item as Component;
+        ValidateItemNotInUse(Component);
+        ComponentInsertBefore(Component, index);
     }
+
     public void Insert(int index, ISubComponent item)
     {
-      ValidateItemNotInUse(item as SubComponent);
-      this.SubComponentInsertBefore(item as SubComponent, index);
+        ValidateItemNotInUse(item as SubComponent);
+        SubComponentInsertBefore(item as SubComponent, index);
     }
+
     public void Insert(int index, IContent item)
     {
-      ValidateItemNotInUse(item as Content);
-      this.ContentInsertBefore(item as Content, index);
+        ValidateItemNotInUse(item as Content);
+        ContentInsertBefore(item as Content, index);
     }
+
     public void RemoveRepeatAt(int index)
     {
-      this.RepeatRemoveAt(index);
+        RepeatRemoveAt(index);
     }
+
     public void RemoveComponentAt(int index)
     {
-      this.ComponentRemoveAt(index);
+        ComponentRemoveAt(index);
     }
+
     public void RemoveSubComponentAt(int index)
     {
-      this.SubComponentRemoveAt(index);
+        SubComponentRemoveAt(index);
     }
+
     public void RemoveContentAt(int index)
     {
-      this.ContentRemoveAt(index);
-    }
-    public int RepeatCount
-    {
-      get
-      {
-        return this.CountRepeat;
-      }
-    }
-    public bool HasRepeats
-    {
-      get
-      {
-        return this.CountRepeat > 1;
-      }
-    }
-    public int ComponentCount
-    {
-      get
-      {
-        return this.CountComponent;
-      }
-    }
-    public bool HasComponents
-    {
-      get
-      {
-        return this.CountComponent > 1;
-      }
+        ContentRemoveAt(index);
     }
 
+    public int RepeatCount => CountRepeat;
 
-    public int SubComponentCount
-    {
-      get
-      {
-        return this.CountSubComponet;
-      }
-    }
-    public bool HasSubComponents
-    {
-      get
-      {
-        return this.CountSubComponet > 1;
-      }
-    }
-    public int ContentCount
-    {
-      get
-      {
-        return this.CountContent;
-      }
-    }
-    public bool HasContents
-    {
-      get
-      {
-        return this.CountContent > 1;
-      }
-    }
+    public bool HasRepeats => CountRepeat > 1;
+
+    public int ComponentCount => CountComponent;
+
+    public bool HasComponents => CountComponent > 1;
+
+    public int SubComponentCount => CountSubComponet;
+
+    public bool HasSubComponents => CountSubComponet > 1;
+
+    public int ContentCount => CountContent;
+
+    public bool HasContents => CountContent > 1;
+
     public IField Repeat(int index)
     {
-      if (index == 0)
-        throw new PeterPiperException("Repeat is a one based index, zero is not a valid index");
-      return this.GetRepeat(index);
+        if (index == 0)
+            throw new PeterPiperException("Repeat is a one based index, zero is not a valid index");
+        return GetRepeat(index);
     }
+
     public IComponent Component(int index)
     {
-      if (index == 0)
-        throw new PeterPiperException("Component is a one based index, zero is not a valid index");
-      return this.GetComponent(index);
+        if (index == 0)
+            throw new PeterPiperException("Component is a one based index, zero is not a valid index");
+        return GetComponent(index);
     }
+
     public ISubComponent SubComponent(int index)
     {
-      if (index == 0)
-        throw new PeterPiperException("SubComponent is a one based index, zero is not a valid index");
-      return this.GetSubComponent(index);
+        if (index == 0)
+            throw new PeterPiperException("SubComponent is a one based index, zero is not a valid index");
+        return GetSubComponent(index);
     }
+
     public IContent Content(int index)
     {
-      return this.GetContent(index);
+        return GetContent(index);
     }
+
     public ReadOnlyCollection<IField> RepeatList
     {
-      get
-      {
-        List<IField> oNewList = new List<IField>();
-        int Counter = 1;
-        foreach (var item in _RepeatDictonary.OrderBy(x => x.Key))
+        get
         {
-          if (item.Key != Counter)
-          {
-            while (Counter != item.Key)
+            List<IField> oNewList = new();
+            int Counter = 1;
+            foreach (var item in _RepeatDictonary.OrderBy(x => x.Key))
             {
-              oNewList.Add(new Field(string.Empty, this.Delimiters, true, Counter, this));
-              Counter++;
+                if (item.Key != Counter)
+                {
+                    while (Counter != item.Key)
+                    {
+                        oNewList.Add(new Field(string.Empty, Delimiters, true, Counter, this));
+                        Counter++;
+                    }
+
+                    oNewList.Add(item.Value);
+                    Counter++;
+                }
+                else
+                {
+                    oNewList.Add(item.Value);
+                    Counter++;
+                }
             }
-            oNewList.Add(item.Value);
-            Counter++;
-          }
-          else
-          {
-            oNewList.Add(item.Value);
-            Counter++;
-          }
+
+            return oNewList.AsReadOnly();
         }
-        return oNewList.AsReadOnly();
-      }
     }
 
     //Field / Repeat    
     internal Field GetRepeat(int index)
     {
-      IsAccessibleElement();
-      if (_RepeatDictonary.ContainsKey(index))
-        return _RepeatDictonary[index];
-      else
-        return new Field(string.Empty, this.Delimiters, true, index, this);
+        IsAccessibleElement();
+        if (_RepeatDictonary.TryGetValue(index, out var repeat))
+        {
+            return repeat;
+        }
+
+        return new Field(string.Empty, Delimiters, true, index, this);
     }
+
     internal int CountRepeat
     {
-      get
-      {
-        if (_RepeatDictonary.Count > 0)
-          return _RepeatDictonary.Keys.Max();
-        else
-          return 0;
-      }
-    }
-    internal Field RepeatAppend(Field Repeat)
-    {
-      if (_RepeatDictonary.Count > 0)
-      {
-        return RepeatInsertBefore(Repeat, _RepeatDictonary.Keys.Max() + 1);
-      }
-      else
-      {
-        Repeat._Index = 1;
-        Repeat._Parent = this;
-        if (SetToDictonary(Repeat))
-          Repeat._Temporary = false;
-        return _RepeatDictonary[1];
-      }
-      //----------------------------------------------------
-      //int InsertAtIndex = 1;
-      //if (_RepeatDictonary.Count > 0)
-      //  InsertAtIndex = _RepeatDictonary.Keys.Max() + 1;
-      //Repeat._Index = InsertAtIndex;
-      //Repeat._Parent = this;
-      //Repeat._Temporary = false;
-      //_RepeatDictonary.Add(InsertAtIndex, Repeat);
-      //return _RepeatDictonary[_RepeatDictonary.Keys.Max()];
-    }
-    internal Field RepeatInsertBefore(Field Repeat, int Index)
-    {
-      if (Index == 0)
-        throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
-
-      int RepeatInsertedAt = 0;
-      //Empty Dic so just add as first itme 
-      if (_RepeatDictonary.Count == 0)
-      {
-        RepeatInsertedAt = Index;
-        Repeat._Index = RepeatInsertedAt;
-        Repeat._Parent = this;
-        if (SetToDictonary(Repeat))
-          Repeat._Temporary = false;
-      }
-      //Asked to insert before an index larger than the largest in Dic so just add to the end
-      else if (_RepeatDictonary.Keys.Max() < Index)
-      {
-        RepeatInsertedAt = Index;
-        Repeat._Index = RepeatInsertedAt;
-        Repeat._Parent = this;
-        if (SetToDictonary(Repeat))
-          Repeat._Temporary = false;
-        //_ContentDictonary.Add(_ContentDictonary.Keys.Max() + 1, Content);
-      }
-      //Asked to insert within items already in the Dic so cycle through moving each item higher or equal up by one then just add the new item
-      //The Content Dictonary is different than all the others as it is to never have gaps between items and it is Zero based.
-      else
-      {
-        foreach (var item in _RepeatDictonary.Reverse())
+        get
         {
-          if (item.Key >= Index)
-          {
-            item.Value._Index++;
-            if (_RepeatDictonary.ContainsKey(item.Key + 1))
+            if (_RepeatDictonary.Count > 0)
             {
-              _RepeatDictonary.Remove(item.Key);
-              _RepeatDictonary[item.Key + 1] = item.Value;
+                return _RepeatDictonary.Keys.Max();
             }
-            else
-            {
-              _RepeatDictonary.Remove(item.Key);
-              _RepeatDictonary.Add(item.Key + 1, item.Value);
-            }
-          }
+
+            return 0;
         }
-        Repeat._Index = Index;
-        Repeat._Parent = this;
-        SetParent();
-        Repeat._Temporary = false;
-        _RepeatDictonary[Index] = Repeat;
-        RepeatInsertedAt = Index;
-      }
-      return _RepeatDictonary[RepeatInsertedAt];
-      
-      //int RepeatInsertedAt = 0;
-      //if (_RepeatDictonary.ContainsKey(Index))
-      //{
-      //  foreach (var item in _RepeatDictonary.Reverse())
-      //  {
-      //    if (item.Key >= Index)
-      //    {
-      //      item.Value._Index++;
-      //      if (item.Key >= Index)
-      //      {
-      //        _RepeatDictonary.Remove(item.Key);
-      //        item.Value._Index++;
-      //        _RepeatDictonary.Add(item.Key + 1, item.Value);
-      //      }
-      //    }
-      //  }
-      //  RepeatInsertedAt = Index;
-      //  Repeat._Index = RepeatInsertedAt;
-      //  Repeat._Parent = this;
-      //  if (SetToDictonary(Repeat))
-      //    Repeat._Temporary = false;        
-      //}
-      //else
-      //{
-      //  RepeatInsertedAt = Index;
-      //  Repeat._Index = RepeatInsertedAt;
-      //  Repeat._Parent = this;
-      //  if (SetToDictonary(Repeat))
-      //    Repeat._Temporary = false;
-      //}
-      //return _RepeatDictonary[RepeatInsertedAt];
     }
-    internal bool RepeatRemoveAt(int Index)
+
+    internal Field RepeatAppend(Field repeat)
     {
-      if (_RepeatDictonary.ContainsKey(Index))
-      {
+        if (_RepeatDictonary.Count > 0)
+        {
+            return RepeatInsertBefore(repeat, _RepeatDictonary.Keys.Max() + 1);
+        }
+
+        repeat._Index = 1;
+        repeat._Parent = this;
+        if (SetToDictonary(repeat))
+        {
+            repeat._Temporary = false;
+        }
+
+        return _RepeatDictonary[1];
+    }
+
+    internal Field RepeatInsertBefore(Field repeat, int index)
+    {
+        if (index == 0)
+        {
+            throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
+        }
+
+        int RepeatInsertedAt;
+        //Empty Dic so just add as first item 
+        if (_RepeatDictonary.Count == 0)
+        {
+            RepeatInsertedAt = index;
+            repeat._Index = RepeatInsertedAt;
+            repeat._Parent = this;
+            if (SetToDictonary(repeat))
+                repeat._Temporary = false;
+        }
+        //Asked to insert before an index larger than the largest in Dic so just add to the end
+        else if (_RepeatDictonary.Keys.Max() < index)
+        {
+            RepeatInsertedAt = index;
+            repeat._Index = RepeatInsertedAt;
+            repeat._Parent = this;
+            if (SetToDictonary(repeat))
+                repeat._Temporary = false;
+            //_ContentDictonary.Add(_ContentDictonary.Keys.Max() + 1, Content);
+        }
+        //Asked to insert within items already in the Dic so cycle through moving each item higher or equal up by one then just add the new item
+        //The Content Dictonary is different than all the others as it is to never have gaps between items and it is Zero based.
+        else
+        {
+            foreach (var item in _RepeatDictonary.Reverse())
+            {
+                if (item.Key >= index)
+                {
+                    item.Value._Index++;
+                    if (_RepeatDictonary.ContainsKey(item.Key + 1))
+                    {
+                        _RepeatDictonary.Remove(item.Key);
+                        _RepeatDictonary[item.Key + 1] = item.Value;
+                    }
+                    else
+                    {
+                        _RepeatDictonary.Remove(item.Key);
+                        _RepeatDictonary.Add(item.Key + 1, item.Value);
+                    }
+                }
+            }
+
+            repeat._Index = index;
+            repeat._Parent = this;
+            SetParent();
+            repeat._Temporary = false;
+            _RepeatDictonary[index] = repeat;
+            RepeatInsertedAt = index;
+        }
+
+        return _RepeatDictonary[RepeatInsertedAt];
+    }
+
+    internal bool RepeatRemoveAt(int index)
+    {
+        if (!_RepeatDictonary.ContainsKey(index))
+        {
+            return false;
+        }
+
         Dictionary<int, Field> oNewDic = new Dictionary<int, Field>();
         foreach (var item in _RepeatDictonary)
         {
-          if (item.Key < Index)
-          {
-            oNewDic.Add(item.Key, item.Value);
-          }
-          else if (item.Key > Index)
-          {
-            item.Value._Index--;
-            oNewDic.Add(item.Key - 1, item.Value);
-          }
+            if (item.Key < index)
+            {
+                oNewDic.Add(item.Key, item.Value);
+            }
+            else if (item.Key > index)
+            {
+                item.Value._Index--;
+                oNewDic.Add(item.Key - 1, item.Value);
+            }
         }
+
         _RepeatDictonary = oNewDic;
         if (_RepeatDictonary.Count == 0)
-          RemoveFromParent();
+        {
+            RemoveFromParent();
+        }
+
         return true;
-      }
-      return false;
     }
 
     //Component    
     internal Component GetComponent(int index)
     {
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].GetComponent(index);
-      else
-      {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //return _RepeatDictonary[1].GetComponent(index);
-        Field oField =  new Field(string.Empty, this.Delimiters, true, 1, this);
-        return oField.GetComponent(index); 
-      }
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.GetComponent(index);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
+        return oField.GetComponent(index);
     }
+
     internal int CountComponent
     {
-      get
-      {
-        if (_RepeatDictonary.ContainsKey(1))
-          return _RepeatDictonary[1].CountComponent;
-        else
-          return 0;
-      }
-    }
-    internal Component ComponentAppend(Component Component)
-    {
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].ComponentAppend(Component);
-      else
-      {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //_RepeatDictonary[1].ComponentAppend(Component);
-        //return _RepeatDictonary[1].GetComponent(1);
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
-        return oField.ComponentAppend(Component);
-      }
-    }
-    internal Component ComponentInsertBefore(Component Component, int Index)
-    {
-      if (Index == 0)
-        throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
+        get
+        {
+            if (_RepeatDictonary.TryGetValue(1, out var value))
+            {
+                return value.CountComponent;
+            }
 
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].ComponentInsertBefore(Component, Index);
-      else
-      {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, Index, this));
-        //_RepeatDictonary[1].ComponentInsertBefore(Component, Index);
-        //return _RepeatDictonary[1].GetComponent(Index);
-        Field oField = new Field(string.Empty, this.Delimiters, true, Index, this);
-        return oField.ComponentInsertBefore(Component, Index);
-      }
+            return 0;
+        }
     }
-    internal bool ComponentRemoveAt(int Index)
+
+    internal Component ComponentAppend(Component component)
     {
-      if (_RepeatDictonary.ContainsKey(Index))      
-        return _RepeatDictonary[1].ComponentRemoveAt(Index);
-      else
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.ComponentAppend(component);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
+        return oField.ComponentAppend(component);
+    }
+
+    internal Component ComponentInsertBefore(Component component, int index)
+    {
+        if (index == 0)
+        {
+            throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
+        }
+
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.ComponentInsertBefore(component, index);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, index, this);
+        return oField.ComponentInsertBefore(component, index);
+    }
+
+    internal bool ComponentRemoveAt(int index)
+    {
+        if (_RepeatDictonary.ContainsKey(index))
+        {
+            return _RepeatDictonary[1].ComponentRemoveAt(index);
+        }
+
         return false;
     }
 
     //SubComponent    
     internal SubComponent GetSubComponent(int index)
     {
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].GetSubComponent(index);
-      else
-      {
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
+        if (_RepeatDictonary.ContainsKey(1))
+        {
+            return _RepeatDictonary[1].GetSubComponent(index);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
         return oField.GetSubComponent(index);
-      }
     }
+
     internal int CountSubComponet
     {
-      get
-      {
-        if (_RepeatDictonary.ContainsKey(1))
-          return _RepeatDictonary[1].CountSubComponent;
-        else
-          return 0;
-      }
-    }
-    internal SubComponent SubComponentSet(SubComponent SubComponent, int Index)
-    {
-      if (_RepeatDictonary.ContainsKey(1))
-      {
-        return _RepeatDictonary[1].SubComponentSet(SubComponent, Index);
-      }
-      else
-      {
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
-        return oField.SubComponentSet(SubComponent, Index);
-      }
-    }
-    internal SubComponent SubComponentAppend(SubComponent SubComponent)
-    {
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].SubComponentAppend(SubComponent);
-      else
-      {
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
-        return oField.SubComponentAppend(SubComponent);
-      }
-    }
-    internal SubComponent SubComponentInsertBefore(SubComponent SubComponent, int Index)
-    {
-      if (Index == 0)
-        throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
+        get
+        {
+            if (_RepeatDictonary.TryGetValue(1, out Field value))
+            {
+                return value.CountSubComponent;
+            }
 
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].SubComponentInsertBefore(SubComponent, Index);
-      else
-      {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //_RepeatDictonary[1].SubComponentInsertBefore(SubComponent, Index);
-        //return _RepeatDictonary[1].GetSubComponent(Index);
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
-        return oField.SubComponentInsertBefore(SubComponent, Index);
-      }
+            return 0;
+        }
     }
-    internal bool SubComponentRemoveAt(int Index)
+
+    internal SubComponent SubComponentSet(SubComponent subComponent, int index)
     {
-      if (_RepeatDictonary.ContainsKey(Index))
-      {
-        return _RepeatDictonary[1].SubComponentRemoveAt(Index);
-      }
-      return false;
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.SubComponentSet(subComponent, index);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
+        return oField.SubComponentSet(subComponent, index);
+    }
+
+    internal SubComponent SubComponentAppend(SubComponent subComponent)
+    {
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.SubComponentAppend(subComponent);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
+        return oField.SubComponentAppend(subComponent);
+    }
+
+    internal SubComponent SubComponentInsertBefore(SubComponent subComponent, int index)
+    {
+        if (index == 0)
+        {
+            throw new PeterPiperException("Element is a one based index, zero is not a valid index.");
+        }
+
+        if (_RepeatDictonary.ContainsKey(1))
+        {
+            return _RepeatDictonary[1].SubComponentInsertBefore(subComponent, index);
+        }
+
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
+        return oField.SubComponentInsertBefore(subComponent, index);
+    }
+
+    internal bool SubComponentRemoveAt(int index)
+    {
+        if (_RepeatDictonary.ContainsKey(index))
+        {
+            return _RepeatDictonary[1].SubComponentRemoveAt(index);
+        }
+
+        return false;
     }
 
     //Content        
     internal Content GetContent(int index)
     {
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].GetContent(index);
-      else
-      {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //return _RepeatDictonary[1].GetContent(index);
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.GetContent(index);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
         return oField.GetContent(index);
-      }
     }
+
     internal int CountContent
     {
-      get
-      {
-        if (_RepeatDictonary.ContainsKey(1))
-          return _RepeatDictonary[1].CountContent;
-        else
-          return 0;
-      }
+        get
+        {
+            if (_RepeatDictonary.TryGetValue(1, out Field value))
+            {
+                return value.CountContent;
+            }
+
+            return 0;
+        }
     }
-    internal Content ContentSet(Content Content, int Index)
+
+    internal Content ContentSet(Content content, int index)
     {
-      if (_RepeatDictonary.ContainsKey(1))
-      {
-        return _RepeatDictonary[1].ContentSet(Content, Index);
-      }
-      else
-      {
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //return _RepeatDictonary[1].ContentSet(Content, Index);
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
-        return oField.ContentSet(Content, Index);
-      }
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.ContentSet(content, index);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
+        return oField.ContentSet(content, index);
     }
-    internal Content ContentAppend(Content Content)
+
+    internal Content ContentAppend(Content content)
     {
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].ContentAppend(Content);
-      else
-      {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //_RepeatDictonary[1].ContentAppend(Content);
-        //return _RepeatDictonary[1].GetContent(0);
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
-        return oField.ContentAppend(Content);
-      }
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.ContentAppend(content);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
+        return oField.ContentAppend(content);
     }
-    internal Content ContentInsertBefore(Content Content, int Index)
+
+    internal Content ContentInsertBefore(Content content, int index)
     {
-      if (_RepeatDictonary.ContainsKey(1))
-        return _RepeatDictonary[1].ContentInsertBefore(Content, Index);
-      else
-      {
-        //_RepeatDictonary = new Dictionary<int, Field>();
-        //_RepeatDictonary.Add(1, new Field(string.Empty, this.Delimiters, true, 1, this));
-        //return _RepeatDictonary[1].GetContent(0);
-        Field oField = new Field(string.Empty, this.Delimiters, true, 1, this);
+        if (_RepeatDictonary.TryGetValue(1, out Field value))
+        {
+            return value.ContentInsertBefore(content, index);
+        }
+
+        Field oField = new Field(string.Empty, Delimiters, true, 1, this);
         return oField.GetContent(0);
-      }
     }
-    internal bool ContentRemoveAt(int Index)
+
+    internal bool ContentRemoveAt(int index)
     {
-      if (_RepeatDictonary.ContainsKey(Index))
-      {
-        return _RepeatDictonary[1].ContentRemoveAt(Index);
-      }
-      return false;
+        if (_RepeatDictonary.ContainsKey(index))
+        {
+            return _RepeatDictonary[1].ContentRemoveAt(index);
+        }
+
+        return false;
     }
 
     //Building
-    private string GetAsStringOrAsRawString(bool RawString)
+    private string GetAsStringOrAsRawString(bool rawString)
     {
-      if (_RepeatDictonary.Count == 0)
-        return string.Empty;
-      StringBuilder oStringBuilder = new StringBuilder();
-      _RepeatDictonary.OrderByDescending(i => i.Key);
-      for (int i = 1; i < _RepeatDictonary.Keys.Max() + 1; i++)
-      {
-        if (_RepeatDictonary.ContainsKey(i))
+        if (_RepeatDictonary.Count == 0)
+            return string.Empty;
+        StringBuilder oStringBuilder = new StringBuilder();
+        _RepeatDictonary.OrderByDescending(i => i.Key);
+        for (int i = 1; i < _RepeatDictonary.Keys.Max() + 1; i++)
         {
-          if (RawString)
-            oStringBuilder.Append(_RepeatDictonary[i].AsStringRaw);
-          else
-            oStringBuilder.Append(_RepeatDictonary[i].AsString);
+            if (_RepeatDictonary.ContainsKey(i))
+            {
+                if (rawString)
+                    oStringBuilder.Append(_RepeatDictonary[i].AsStringRaw);
+                else
+                    oStringBuilder.Append(_RepeatDictonary[i].AsString);
+            }
+
+            if (i != _RepeatDictonary.Keys.Max())
+                oStringBuilder.Append(Delimiters.Repeat);
         }
-        if (i != _RepeatDictonary.Keys.Max())
-          oStringBuilder.Append(this.Delimiters.Repeat);
-      }
-      return oStringBuilder.ToString();
+
+        return oStringBuilder.ToString();
     }
 
     //Maintenance
     internal bool SetToDictonary(Field oField)
     {
-      try
-      {
-        if (_RepeatDictonary.ContainsKey(System.Convert.ToInt32(oField._Index)))
-        {
-          _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Temporary = true;
-          _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Parent = null;
-          _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Index = null;
-          _RepeatDictonary[System.Convert.ToInt32(oField._Index)] = oField;
-        }
-        else
-        {
-          _RepeatDictonary.Add(System.Convert.ToInt32(oField._Index), oField);
-        }
-        SetParent();
-        return true;
-      }
-      catch (Exception Exec)
-      {
-        throw new PeterPiperException("Error setting Field into Element parent", Exec);
-      }
-    }
-    private void SetParent()
-    {
-      if (this._Temporary)
-      {
-        if (this._Parent is Segment)
-        {
-          Segment oSegment = this._Parent as Segment;
-          if (oSegment.SetToDictonary(this))
-          {
-            this._Temporary = false;
-          }
-        }
-      }
-    }
-    internal void RemoveChild(int Index)
-    {
-      try
-      {
-        if (_RepeatDictonary.ContainsKey(Index))
-        {
-          _RepeatDictonary[Index]._Temporary = true;
-          _RepeatDictonary[Index]._Index = null;
-          _RepeatDictonary[Index]._Parent = null;
-        }
-        _RepeatDictonary.Remove(Index);
-        if (_RepeatDictonary.Count == 0)
-        {
-          RemoveFromParent();
-        }
-      }
-      catch
-      {
-        throw new PeterPiperException(String.Format("Elements's Repeat dictionary did not contain repeat Index {0} for removal call from Repeat Instance", Index));
-      }
-    }
-    private void RemoveFromParent()
-    {
-      if (this._Index != null)
-      {
         try
         {
-          Segment oSegment = this._Parent as Segment;
-          oSegment.RemoveChild(System.Convert.ToInt32(this._Index));
+            if (_RepeatDictonary.ContainsKey(System.Convert.ToInt32(oField._Index)))
+            {
+                _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Temporary = true;
+                _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Parent = null;
+                _RepeatDictonary[System.Convert.ToInt32(oField._Index)]._Index = null;
+                _RepeatDictonary[System.Convert.ToInt32(oField._Index)] = oField;
+            }
+            else
+            {
+                _RepeatDictonary.Add(System.Convert.ToInt32(oField._Index), oField);
+            }
+
+            SetParent();
+            return true;
         }
-        catch (InvalidCastException oInvalidCastExec)
+        catch (Exception Exec)
         {
-          throw new PeterPiperException("Casting of Elements parent to Segment throws Invalid Cast Exception, check inner exception for more detail", oInvalidCastExec);
+            throw new PeterPiperException("Error setting Field into Element parent", Exec);
         }
-      }
+    }
+
+    private void SetParent()
+    {
+        if (_Temporary)
+        {
+            if (_Parent is Segment oSegment)
+            {
+                if (oSegment.SetToDictonary(this))
+                {
+                    _Temporary = false;
+                }
+            }
+        }
+    }
+
+    internal void RemoveChild(int index)
+    {
+        try
+        {
+            if (_RepeatDictonary.ContainsKey(index))
+            {
+                _RepeatDictonary[index]._Temporary = true;
+                _RepeatDictonary[index]._Index = null;
+                _RepeatDictonary[index]._Parent = null;
+            }
+
+            _RepeatDictonary.Remove(index);
+            if (_RepeatDictonary.Count == 0)
+            {
+                RemoveFromParent();
+            }
+        }
+        catch
+        {
+            throw new PeterPiperException(
+                $"Element's Repeat dictionary did not contain repeat Index {index} for removal");
+        }
+    }
+
+    private void RemoveFromParent()
+    {
+        if (_Index != null)
+        {
+            if (_Parent is Segment oSegment)
+            {
+                oSegment.RemoveChild(System.Convert.ToInt32(_Index));
+                return;
+            }
+
+            throw new PeterPiperException(
+                "Casting of Elements parent to Segment throws Invalid Cast Exception, check inner exception for more detail");
+        }
     }
 
     //Parsing and Validation
-    private Dictionary<int, Field> ParseElementRawStringToRepeat(String StringRaw, ModelSupport.ContentTypeInternal ContentTypeInternal)
+    private Dictionary<int, Field> ParseElementRawStringToRepeat(String stringRaw,
+        ModelSupport.ContentTypeInternal contentTypeInternal)
     {
-      //Example:  "First1^Second1^Third1^~First2^Second2&\\H\\Second22\\N\\^Third2";
-      _RepeatDictonary = new Dictionary<int, Field>();
-      if (ContentTypeInternal == ModelSupport.ContentTypeInternal.EncodingCharacters || ContentTypeInternal == ModelSupport.ContentTypeInternal.MainSeparator)
-      {
-        _RepeatDictonary.Add(1, new Field(ContentTypeInternal, this.Delimiters, false, 1, this));
-      }
-      else
-      {
-        if (StringRaw.Contains(this.Delimiters.Repeat))
+        //Example:  "First1^Second1^Third1^~First2^Second2&\\H\\Second22\\N\\^Third2";
+        _RepeatDictonary = new Dictionary<int, Field>();
+        if (contentTypeInternal == ModelSupport.ContentTypeInternal.EncodingCharacters ||
+            contentTypeInternal == ModelSupport.ContentTypeInternal.MainSeparator)
         {
-          string[] ElementParts = StringRaw.Split(this.Delimiters.Repeat);
-          int RepeatPositionCounter = 1;
-          foreach (string Part in ElementParts)
-          {
-            if (Part != string.Empty)
-            {
-              //_RepeatDictonary.Add(RepeatPositionCounter, new Field(Part, this.Delimiters, false, RepeatPositionCounter, this));
-              new Field(Part, this.Delimiters, true, RepeatPositionCounter, this);
-            }
-            RepeatPositionCounter++;
-          }
+            _RepeatDictonary.Add(1, new Field(contentTypeInternal, Delimiters, false, 1, this));
         }
         else
         {
-          //_RepeatDictonary.Add(1, new Field(StringRaw, this.Delimiters, false, 1, this));
-          new Field(StringRaw, this.Delimiters, true, 1, this);
-        }
-      }
-      return _RepeatDictonary;
-    }
-    private bool ValidateStringRaw(string StringRaw)
-    {
-      Char[] CharatersNotAlowed = { this.Delimiters.Field };
+            if (stringRaw.Contains(Delimiters.Repeat))
+            {
+                string[] ElementParts = stringRaw.Split(Delimiters.Repeat);
+                int RepeatPositionCounter = 1;
+                foreach (string Part in ElementParts)
+                {
+                    if (Part != string.Empty)
+                    {
+                        //_RepeatDictonary.Add(RepeatPositionCounter, new Field(Part, this.Delimiters, false, RepeatPositionCounter, this));
+                        new Field(Part, Delimiters, true, RepeatPositionCounter, this);
+                    }
 
-      if (StringRaw.IndexOfAny(CharatersNotAlowed) != -1)
-      {
-        string ErrorChars = string.Join(" or ", CharatersNotAlowed);
-        throw new PeterPiperException($"Element data cannot contain HL7 V2 Delimiters of : {ErrorChars}");
-      }
-      return true;
+                    RepeatPositionCounter++;
+                }
+            }
+            else
+            {
+                //_RepeatDictonary.Add(1, new Field(StringRaw, this.Delimiters, false, 1, this));
+                new Field(stringRaw, Delimiters, true, 1, this);
+            }
+        }
+
+        return _RepeatDictonary;
     }
+
+    private bool ValidateStringRaw(string stringRaw)
+    {
+        Char[] CharactersNotAllowed = {Delimiters.Field};
+
+        if (stringRaw.IndexOfAny(CharactersNotAllowed) != -1)
+        {
+            string ErrorChars = string.Join(" or ", CharactersNotAllowed);
+            throw new PeterPiperException($"Element data cannot contain HL7 V2 Delimiters of : {ErrorChars}");
+        }
+
+        return true;
+    }
+
     internal bool IsAccessibleElement()
     {
-      if (this._IsMainSeparator)
-      {
-        StringBuilder sb = new StringBuilder();
-        sb.Append("MSH-1 contains the 'Main Separator' character and is not accessible from the Field or Element object instance as it is critical to message construction.");
-        sb.Append(Environment.NewLine);
-        sb.Append("Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");
-        throw new PeterPiperException(sb.ToString());
-      }
-      else if (this._IsEncodingCharacters)
-      {
-        StringBuilder sb = new StringBuilder();
-        sb.Append("MSH-2 contains the 'Encoding Characters' and is not accessible from the Field or Element object instance as it is critical to message construction.");
-        sb.Append(Environment.NewLine);
-        sb.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
-        throw new PeterPiperException(sb.ToString());
-      }
-      return true;
-    }
-  }
+        if (IsMainSeparator)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(
+                "MSH-1 contains the 'Main Separator' character and is not accessible from the Field or Element object instance as it is critical to message construction.");
+            sb.Append(Environment.NewLine);
+            sb.Append(
+                "Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");
+            throw new PeterPiperException(sb.ToString());
+        } 
+        if (IsEncodingCharacters)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(
+                "MSH-2 contains the 'Encoding Characters' and is not accessible from the Field or Element object instance as it is critical to message construction.");
+            sb.Append(Environment.NewLine);
+            sb.Append(
+                "Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
+            throw new PeterPiperException(sb.ToString());
+        }
 
+        return true;
+    }
 }

@@ -1,230 +1,226 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PeterPiper.Hl7.V2.Model.Implementation;
-using PeterPiper.Hl7.V2.Model;
 
-namespace PeterPiper.Hl7.V2.Model
+namespace PeterPiper.Hl7.V2.Model;
+
+public static class Creator
 {
-  public static class Creator
-  {
-    
-    public static IFile File(ISegment FileHeaderSegment, List<IBatch> BatchList, ISegment FileTrailerSegment)
+    public static IFile File(ISegment fileHeaderSegment, List<IBatch> batchList, ISegment fileTrailerSegment)
     {
-      return new File(FileHeaderSegment, BatchList, FileTrailerSegment);
+        return new File(fileHeaderSegment, batchList, fileTrailerSegment);
     }
-    
-    public static IFile File(ISegment FileHeaderSegment, List<IBatch> BatchList)
+
+    public static IFile File(ISegment fileHeaderSegment, List<IBatch> batchList)
     {
-      return new File(FileHeaderSegment, BatchList);
+        return new File(fileHeaderSegment, batchList);
     }
-    
-    public static IFile File(ISegment FileHeaderSegment)
+
+    public static IFile File(ISegment fileHeaderSegment)
     {
-      return new File(FileHeaderSegment);
+        return new File(fileHeaderSegment);
     }
-    
-    public static IFile File(string StringRaw)
+
+    public static IFile File(string stringRaw)
     {
-      return new File(StringRaw);
+        return new File(stringRaw);
     }
-    
+
     public static IFile File()
     {
-      return new File();
+        return new File();
     }
-    
-    public static IBatch Batch(ISegment BatchHeaderSegment, List<IMessage> MessageList, ISegment BatchTrailerSegment)
+
+    public static IBatch Batch(ISegment batchHeaderSegment, List<IMessage> messageList, ISegment batchTrailerSegment)
     {
-      return new Batch(BatchHeaderSegment, MessageList, BatchTrailerSegment);
+        return new Batch(batchHeaderSegment, messageList, batchTrailerSegment);
     }
-    
-    public static IBatch Batch(ISegment BatchHeaderSegment, List<IMessage> MessageList)
+
+    public static IBatch Batch(ISegment batchHeaderSegment, List<IMessage> messageList)
     {
-      return new Batch(BatchHeaderSegment, MessageList);
+        return new Batch(batchHeaderSegment, messageList);
     }
-    
-    public static IBatch Batch(ISegment BatchHeaderSegment)
+
+    public static IBatch Batch(ISegment batchHeaderSegment)
     {
-      return new Batch(BatchHeaderSegment);
+        return new Batch(batchHeaderSegment);
     }
-    
-    public static IBatch Batch(string StringRaw)
+
+    public static IBatch Batch(string stringRaw)
     {
-      return new Batch(StringRaw);
+        return new Batch(stringRaw);
     }
-    
+
     public static IBatch Batch()
     {
-      return new Batch();
-    }
-    
-    public static IMessage Message(ISegment Segment)
-    {
-      return new Message(Segment);
+        return new Batch();
     }
 
-    public static IMessage Message(String StringRaw, bool ParseMSHSegmentOnly = false)
+    public static IMessage Message(ISegment segment)
     {
-      return new Message(StringRaw, ParseMSHSegmentOnly);
+        return new Message(segment);
     }
 
-    public static IMessage Message(List<String> Collection, bool ParseMSHSegmentOnly = false)
+    public static IMessage Message(String stringRaw, bool parseMSHSegmentOnly = false)
     {
-      return new Message(Collection, ParseMSHSegmentOnly);
+        return new Message(stringRaw, parseMSHSegmentOnly);
     }
 
-    public static IMessage Message(string MessageVersion, string MessageType, string MessageTrigger, string MessageControlID = "<GUID>", string MessageStructure = "")
+    public static IMessage Message(List<String> collection, bool parseMSHSegmentOnly = false)
     {
-      return new Message(MessageVersion, MessageType, MessageTrigger, MessageControlID, MessageStructure);
+        return new Message(collection, parseMSHSegmentOnly);
     }
 
-    public static ISegment Segment(String StringRaw)
+    public static IMessage Message(string messageVersion, string messageType, string messageTrigger,
+        string messageControlID = "<GUID>", string messageStructure = "")
     {
-      return new Segment(StringRaw);
+        return new Message(messageVersion, messageType, messageTrigger, messageControlID, messageStructure);
     }
 
-    public static ISegment Segment(String StringRaw, IMessageDelimiters CustomDelimiters)
+    public static ISegment Segment(String stringRaw)
     {
-      return new Segment(StringRaw, CustomDelimiters);
+        return new Segment(stringRaw);
+    }
+
+    public static ISegment Segment(String stringRaw, IMessageDelimiters customDelimiters)
+    {
+        return new Segment(stringRaw, customDelimiters);
     }
 
     public static IElement Element()
     {
-      return new Element();
+        return new Element();
     }
 
-    public static IElement Element(String StringRaw)
+    public static IElement Element(String stringRaw)
     {
-      return new Element(StringRaw);
+        return new Element(stringRaw);
     }
 
-    public static IElement Element(IMessageDelimiters CustomDelimiters)
+    public static IElement Element(IMessageDelimiters customDelimiters)
     {
-      return new Element(CustomDelimiters);
+        return new Element(customDelimiters);
     }
 
-    public static IElement Element(String StringRaw, IMessageDelimiters CustomDelimiters)
+    public static IElement Element(String stringRaw, IMessageDelimiters customDelimiters)
     {
-      return new Element(StringRaw, CustomDelimiters);
+        return new Element(stringRaw, customDelimiters);
     }
 
     public static IField Field()
     {
-      return new Field();
+        return new Field();
     }
 
-    public static IField Field(string StringRaw)
+    public static IField Field(string stringRaw)
     {
-      return new Field(StringRaw);
+        return new Field(stringRaw);
     }
 
-    public static IField Field(IMessageDelimiters CustomDelimiters)
+    public static IField Field(IMessageDelimiters customDelimiters)
     {
-      return new Field(CustomDelimiters);
+        return new Field(customDelimiters);
     }
 
-    public static IField Field(string StringRaw, IMessageDelimiters CustomDelimiters)
+    public static IField Field(string stringRaw, IMessageDelimiters customDelimiters)
     {
-      return new Field(StringRaw, CustomDelimiters);
+        return new Field(stringRaw, customDelimiters);
     }
 
     public static IComponent Component()
     {
-      return new Component();
+        return new Component();
     }
 
-    public static IComponent Component(string StringRaw)
+    public static IComponent Component(string stringRaw)
     {
-      return new Component(StringRaw);
+        return new Component(stringRaw);
     }
 
-    public static IComponent Component(IMessageDelimiters CustomDelimiters)
+    public static IComponent Component(IMessageDelimiters customDelimiters)
     {
-      return new Component(CustomDelimiters);
+        return new Component(customDelimiters);
     }
 
-    public static IComponent Component(string StringRaw, IMessageDelimiters CustomDelimiters)
+    public static IComponent Component(string stringRaw, IMessageDelimiters customDelimiters)
     {
-      return new Component(StringRaw, CustomDelimiters);
+        return new Component(stringRaw, customDelimiters);
     }
 
     public static ISubComponent SubComponent()
     {
-      return new SubComponent();
+        return new SubComponent();
     }
 
-    public static ISubComponent SubComponent(string StringRaw)
+    public static ISubComponent SubComponent(string stringRaw)
     {
-      return new SubComponent(StringRaw);
+        return new SubComponent(stringRaw);
     }
 
-    public static ISubComponent SubComponent(IMessageDelimiters CustomDelimiters)
+    public static ISubComponent SubComponent(IMessageDelimiters customDelimiters)
     {
-      return new SubComponent(CustomDelimiters);
+        return new SubComponent(customDelimiters);
     }
 
-    public static ISubComponent SubComponent(string StringRaw, IMessageDelimiters CustomDelimiters)
+    public static ISubComponent SubComponent(string stringRaw, IMessageDelimiters customDelimiters)
     {
-      return new SubComponent(StringRaw, CustomDelimiters);
+        return new SubComponent(stringRaw, customDelimiters);
     }
 
-    public static IContent Content(string String)
+    public static IContent Content(string @string)
     {
-      return new Content(String);
+        return new Content(@string);
     }
 
-    public static IContent Content(string String, Support.Content.ContentType ContentType)
+    public static IContent Content(string @string, Support.Content.ContentType contentType)
     {
-      return new Content(String, ContentType);
+        return new Content(@string, contentType);
     }
 
-    public static IContent Content(string String, Support.Content.ContentType ContentType, IMessageDelimiters CustomDelimiters)
+    public static IContent Content(string @string, Support.Content.ContentType contentType,
+        IMessageDelimiters customDelimiters)
     {
-      return new Content(String, ContentType, CustomDelimiters);
+        return new Content(@string, contentType, customDelimiters);
     }
 
-    public static IContent Content(string String, IMessageDelimiters CustomDelimiters)
+    public static IContent Content(string @string, IMessageDelimiters customDelimiters)
     {
-      return new Content(String, CustomDelimiters);
+        return new Content(@string, customDelimiters);
     }
 
-    public static IContent Content(Support.Standard.EscapeType EscapeType)
+    public static IContent Content(Support.Standard.EscapeType escapeType)
     {
-      return new Content(EscapeType);
+        return new Content(escapeType);
     }
 
-    public static IContent Content(IEscapeData EscapeMetaData)
+    public static IContent Content(IEscapeData escapeMetaData)
     {
-      return new Content(EscapeMetaData);
+        return new Content(escapeMetaData);
     }
 
-    public static IContent Content(Support.Standard.EscapeType EscapeType, IMessageDelimiters CustomDelimiters)
+    public static IContent Content(Support.Standard.EscapeType escapeType, IMessageDelimiters customDelimiters)
     {
-      return new Content(EscapeType, CustomDelimiters);
+        return new Content(escapeType, customDelimiters);
     }
 
     public static IMessageDelimiters MessageDelimiters()
     {
-      return new MessageDelimiters();
+        return new MessageDelimiters();
     }
 
-    public static IMessageDelimiters MessageDelimiters(char Field, char Repeat, char Component, char SubComponent, char Escape)
+    public static IMessageDelimiters MessageDelimiters(char field, char repeat, char component, char subComponent,
+        char escape)
     {
-      return new MessageDelimiters(Field, Repeat, Component, SubComponent, Escape);
+        return new MessageDelimiters(field, repeat, component, subComponent, escape);
     }
 
-    public static IEscapeData EscapeData(string ContentEscapeString)
+    public static IEscapeData EscapeData(string contentEscapeString)
     {
-      return new EscapeData(ContentEscapeString);
+        return new EscapeData(contentEscapeString);
     }
 
-    public static IEscapeData EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType EscapeType, string MetaData)
+    public static IEscapeData EscapeData(PeterPiper.Hl7.V2.Support.Standard.EscapeType escapeType, string metaData)
     {
-      return new EscapeData(EscapeType, MetaData);
+        return new EscapeData(escapeType, metaData);
     }
-
-
-  }
 }

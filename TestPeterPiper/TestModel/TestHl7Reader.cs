@@ -63,7 +63,7 @@ namespace TestPeterPiper.TestModel
         File.Delete(writepath);
 
       Hl7StreamReader reader = new Hl7StreamReader(readpath);
-      HL7StreamWriter writer = new HL7StreamWriter(writepath, true);
+      Hl7StreamWriter writer = new Hl7StreamWriter(writepath, true);
       List<IMessage> oMessageList = new List<IMessage>();
       string actual;
       while ((actual = reader.Read()) != null)
@@ -71,7 +71,7 @@ namespace TestPeterPiper.TestModel
         var oHl7 = Creator.Message(actual);
         Assert.IsTrue(oHl7.SegmentCount() > 1);
         oMessageList.Add(oHl7);
-        writer.Write(oHl7, HL7StreamWriter.HL7OutputStyles.InterfaceReadable);
+        writer.Write(oHl7, Hl7StreamWriter.Hl7OutputStyles.InterfaceReadable);
       }
       reader.Close();
 

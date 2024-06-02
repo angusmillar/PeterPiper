@@ -1,10 +1,9 @@
-﻿using System;
-namespace PeterPiper.Hl7.V2.Support.Content.Convert
+﻿
+namespace PeterPiper.Hl7.V2.Support.Content.Convert;
+
+public interface IConvert
 {
-  public interface IConvert
-  {
-    IBase64 Base64 { get; }
-    IDateTime DateTime { get; }
-    IInteger Integer { get; }
-  }
+  IBase64 Base64 { get; }
+  IDateTime DateTime { get; }
+  IInteger Integer { get; }
 }

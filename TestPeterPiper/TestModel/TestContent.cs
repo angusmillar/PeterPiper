@@ -54,7 +54,7 @@ namespace TestHl7V2
       var target = Creator.Content(String, ContentType, CustomDelimiters);
       Assert.AreEqual("Q5555", target.AsStringRaw, "Content Constructor test failed");
       Assert.AreEqual("5555", target.EscapeMetaData.MetaData, "Content Constructor test failed");
-      Assert.AreEqual("Q", target.EscapeMetaData.EscapeTypeCharater, "Content Constructor test failed");
+      Assert.AreEqual("Q", target.EscapeMetaData.EscapeTypeCharacter, "Content Constructor test failed");
       Assert.AreEqual(EscapeType.Unknown, target.EscapeMetaData.EscapeType, "Content Constructor test failed");
       Assert.AreEqual(false, target.EscapeMetaData.IsFormattingCommand, "Content Constructor test failed");
     }
@@ -184,7 +184,7 @@ namespace TestHl7V2
       var Target = Creator.SubComponent(@"NotBold \H\Bold\N\ Not Bold");
       var MetaData = Target.Content(1).EscapeMetaData;
 
-      Assert.AreEqual("H", MetaData.EscapeTypeCharater, "Is this the correct escape character string");
+      Assert.AreEqual("H", MetaData.EscapeTypeCharacter, "Is this the correct escape character string");
       Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn, MetaData.EscapeType, "Is this the correct escape character string");
       
     }

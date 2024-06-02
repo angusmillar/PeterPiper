@@ -349,7 +349,7 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual("Mater Hospital\\Q4568\\new line\\.sp+5\\", oComponent.AsStringRaw, ",oComponent.AsStringRaw returned incorrect");
       Assert.AreEqual(true, oComponent.Content(3).EscapeMetaData.IsFormattingCommand, ",.Content(3).EscapeMetaData.IsFormattingCommand returned incorrect");
       Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.SkipVerticalSpaces, oComponent.Content(3).EscapeMetaData.EscapeType, "oComponent.Content(3).EscapeMetaData.EscapeType returned incorrect");
-      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Escapes.SkipVerticalSpaces, oComponent.Content(3).EscapeMetaData.EscapeTypeCharater, ",oComponent.Content(3).EscapeMetaData.EscapeTypeCharater returned incorrect");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.Escapes.SkipVerticalSpaces, oComponent.Content(3).EscapeMetaData.EscapeTypeCharacter, ",oComponent.Content(3).EscapeMetaData.EscapeTypeCharater returned incorrect");
       Assert.AreEqual("+5", oComponent.Content(3).EscapeMetaData.MetaData, ",.Content(3).EscapeMetaData.MetaData returned incorrect");
     }
   }

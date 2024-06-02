@@ -1,31 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PeterPiper.Hl7.V2.Model.Implementation;
 using PeterPiper.Hl7.V2.Support.Tools;
 
-namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
-{
-  public class DateTime : PeterPiper.Hl7.V2.Support.Content.Convert.IDateTime
-  {
-    private ContentBase _ContentBase;
+namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation;
 
-    internal DateTime(ContentBase ContentBase)
+public class DateTime : IDateTime
+{
+    private readonly ContentBase _ContentBase;
+
+    internal DateTime(ContentBase contentBase)
     {
-      _ContentBase = ContentBase;
+        _ContentBase = contentBase;
     }
 
     /// <summary>
     /// Returns True is the HL7 DateTime has a timezone present.     
     /// </summary>
-    public bool HasTimezone
-    {
-      get
-      {
-        return DateTimeSupportTools.HasTimezone(_ContentBase.AsString);
-      }
-    }
+    public bool HasTimezone => DateTimeSupportTools.HasTimezone(_ContentBase.AsString);
 
     /// <summary>
     /// Returns a TimeSpan equal to the time-zone found in the HL7 DateTime string.
@@ -34,17 +25,17 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
     /// <returns>HL7 string representation of the time-zone</returns>
     public TimeSpan GetTimezone()
     {
-      return DateTimeSupportTools.GetTimezone(_ContentBase.AsString);
+        return DateTimeSupportTools.GetTimezone(_ContentBase.AsString);
     }
 
     /// <summary>
     /// Set the time-zone for a give HL7 DateTime. This will convert the date time from the time zone present to the new timezone. 
     /// If no time zone is present in the HL7 date time string then it will assume that this date time is from the new timezone and not convert. 
     /// </summary>
-    /// <param name="Timespan"></param>
-    public void SetTimezone(TimeSpan Timespan)
+    /// <param name="timespan"></param>
+    public void SetTimezone(TimeSpan timespan)
     {
-      _ContentBase.AsString = DateTimeSupportTools.SetTimezone(_ContentBase.AsString, Timespan);
+        _ContentBase.AsString = DateTimeSupportTools.SetTimezone(_ContentBase.AsString, timespan);
     }
 
     /// <summary>
@@ -54,19 +45,13 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
     /// <returns></returns>
     public DateTimeSupportTools.DateTimePrecision GetPrecision()
     {
-      return DateTimeSupportTools.GetPrecision(_ContentBase.AsString);
+        return DateTimeSupportTools.GetPrecision(_ContentBase.AsString);
     }
 
     /// <summary>
     /// Returns true if the given string can be parsed to a DateTimeOffset data type
     /// </summary>
-    public bool CanParseToDateTimeOffset
-    {
-      get
-      {
-        return DateTimeSupportTools.CanParseToDateTimeOffset(_ContentBase.AsString);
-      }
-    }
+    public bool CanParseToDateTimeOffset => DateTimeSupportTools.CanParseToDateTimeOffset(_ContentBase.AsString);
 
     /// <summary>
     /// Returns a DateTimeOffset if the HL7 datetime string can be parsed as a DateTimeOffset.
@@ -75,7 +60,7 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
     /// <returns></returns>
     public DateTimeOffset GetDateTimeOffset()
     {
-      return DateTimeSupportTools.AsDateTimeOffSet(_ContentBase.AsString);
+        return DateTimeSupportTools.AsDateTimeOffSet(_ContentBase.AsString);
     }
 
     /// <summary>
@@ -83,23 +68,26 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
     /// Will also set the HL7 dateTime timezone if 'HasTimezone' is set to true [Defaults to True.
     /// Will set the HL7 dateTime string Precision to the 'DateTimePrecision' given [Defaults to DateHourMinSec].
     /// </summary>
-    /// <param name="DateTimeOffset"></param>
-    /// <param name="HasTimezone"></param>
-    /// <param name="DateTimePrecision"></param>
-    public void SetDateTimeOffset(DateTimeOffset DateTimeOffset, bool HasTimezone = true, DateTimeSupportTools.DateTimePrecision DateTimePrecision = DateTimeSupportTools.DateTimePrecision.DateHourMinSec)
+    /// <param name="dateTimeOffset"></param>
+    /// <param name="hasTimezone"></param>
+    /// <param name="dateTimePrecision"></param>
+    public void SetDateTimeOffset(DateTimeOffset dateTimeOffset, bool hasTimezone = true,
+        DateTimeSupportTools.DateTimePrecision dateTimePrecision =
+            DateTimeSupportTools.DateTimePrecision.DateHourMinSec)
     {
-      _ContentBase.AsString = DateTimeSupportTools.AsString(DateTimeOffset, HasTimezone, DateTimePrecision);
+        _ContentBase.AsString = DateTimeSupportTools.AsString(dateTimeOffset, hasTimezone, dateTimePrecision);
     }
 
     /// <summary>
     /// Returns the HL7 DateTime string set with the timezone and Precision given 
     /// </summary>
-    /// <param name="WithTimezone"></param>
-    /// <param name="WithPrecision"></param>
+    /// <param name="withTimezone"></param>
+    /// <param name="withPrecision"></param>
     /// <returns></returns>
-    public string AsString(bool WithTimezone, DateTimeSupportTools.DateTimePrecision WithPrecision)
+    public string AsString(bool withTimezone, DateTimeSupportTools.DateTimePrecision withPrecision)
     {
-      return DateTimeSupportTools.AsString(DateTimeSupportTools.AsDateTimeOffSet(_ContentBase.AsString), WithTimezone, WithPrecision);
+        return DateTimeSupportTools.AsString(DateTimeSupportTools.AsDateTimeOffSet(_ContentBase.AsString), withTimezone,
+            withPrecision);
     }
 
     /// <summary>
@@ -108,8 +96,6 @@ namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
     /// <returns></returns>
     public string AsString()
     {
-      return _ContentBase.AsString;
-      //return Hl7DateTimeSupport.AsString(Hl7DateTimeSupport.AsDateTimeOffSet(_ContentBase.AsString), Hl7DateTimeSupport.HasTimezone(_ContentBase.AsString), Hl7DateTimeSupport.GetPrecision(_ContentBase.AsString));
+        return _ContentBase.AsString;
     }
-  }
 }

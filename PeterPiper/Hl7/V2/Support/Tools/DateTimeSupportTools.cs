@@ -1,270 +1,289 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PeterPiper.Hl7.V2.Model;
 using System.Globalization;
 using PeterPiper.Hl7.V2.CustomException;
 
 namespace PeterPiper.Hl7.V2.Support.Tools
 {
-  public static class  DateTimeSupportTools
-  {
-    #region Private Properties
-        
-    private static string FormatExceptionMessage = "The Content does not match the allowed HL7 Standard datetime formats. Found: '{0}',  Allowed Format: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ].";    
-    private static string[] formats = new string[] { "yyyy", "yyyyMM", "yyyyMMdd", "yyyyMMddHH", "yyyyMMddHHmm", "yyyyMMddHHmmss",
-                                              "yyyyzzzzz", "yyyyMMzzzzz", "yyyyMMddzzzzz", "yyyyMMddHHzzzzz", "yyyyMMddHHmmzzzzz", "yyyyMMddHHmmsszzzzz",
-                                              "yyyyMMddHHmmss.f", "yyyyMMddHHmmss.ff", "yyyyMMddHHmmss.fff", "yyyyMMddHHmmss.ffff", "yyyyMMddHHmmss.ffffzzzzz",
-                                              "yyyyMMddHHmmss.fzzzzz", "yyyyMMddHHmmss.ffzzzzz", "yyyyMMddHHmmss.fffzzzzz", "yyyyMMddHHmmss.ffffzzzzz"};
-    #endregion
-
-    #region Public Properties
-
-    public enum DateTimePrecision { None, Year, YearMonth, Date, DateHourMin, DateHourMinSec, DateHourMinSecMilli };
-    
-    #endregion
-
-    #region Constructor
-    
-    #endregion
-
-    #region Public Methods
-
-    /// <summary>
-    /// Returns a DateTimeOffset for the Hl7 DateTime string passed in.
-    /// If the string passed in can not be parsed as a dateTime then a FormatException is thrown.
-    /// </summary>
-    /// <param name="Hl7DateTimeString"></param>
-    /// <returns></returns>
-    public static DateTimeOffset AsDateTimeOffSet(string Hl7DateTimeString)
+    public static class DateTimeSupportTools
     {
-      DateTimeOffset result;
-      if (TryParseDateTimeString(Hl7DateTimeString, out result))
-        return result;
-      else
-        throw new PeterPiperException(String.Format(FormatExceptionMessage, Hl7DateTimeString));
-    }
-    
-    /// <summary>
-    /// Returns True if a Time-zone element is found in the Hl7 DateTime string.
-    /// If the string passed in cannot be parsed as a dateTime then a FormatException is thrown.
-    /// </summary>
-    /// <param name="Hl7DateTimeString"></param>
-    /// <returns></returns>
-    public static bool HasTimezone(string Hl7DateTimeString)
-    {
-      if (DateTimeSupportTools.CanParseToDateTimeOffset(Hl7DateTimeString))
-        return CheckForTimezone(Hl7DateTimeString);
-      else
-        throw new PeterPiperException(String.Format(FormatExceptionMessage, Hl7DateTimeString));           
-    }
+        private const string FormatExceptionMessage = "The Content does not match the allowed HL7 Standard datetime formats. Found: '{0}',  Allowed Format: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ].";
 
-    /// <summary>
-    /// Returns a Timespan that represents the time zone found in the HL7 DateTime string.
-    /// Throws a FormatException if no time zone present or if the content is empty
-    /// </summary>
-    /// <param name="Hl7DateTimeString"></param>
-    /// <returns></returns>
-    public static TimeSpan GetTimezone(string Hl7DateTimeString)
-    {
-      if (DateTimeSupportTools.HasTimezone(Hl7DateTimeString))
-      {
-        char[] TimeZomeDelimiter = { '+', '-' };
-        try
+        private static readonly string[] Formats =
         {
-          var TimeZoneString = Hl7DateTimeString.Substring(Hl7DateTimeString.LastIndexOfAny(TimeZomeDelimiter), Hl7DateTimeString.Length - Hl7DateTimeString.LastIndexOfAny(TimeZomeDelimiter));
-          int Hours = System.Convert.ToInt32(TimeZoneString.Substring(0, 3));
-          int min = System.Convert.ToInt32(TimeZoneString.Substring(3, 2));
-          return new TimeSpan(Hours, min, 0);
+            "yyyy", "yyyyMM", "yyyyMMdd", "yyyyMMddHH", "yyyyMMddHHmm", "yyyyMMddHHmmss",
+            "yyyyzzzzz", "yyyyMMzzzzz", "yyyyMMddzzzzz", "yyyyMMddHHzzzzz", "yyyyMMddHHmmzzzzz", "yyyyMMddHHmmsszzzzz",
+            "yyyyMMddHHmmss.f", "yyyyMMddHHmmss.ff", "yyyyMMddHHmmss.fff", "yyyyMMddHHmmss.ffff",
+            "yyyyMMddHHmmss.ffffzzzzz",
+            "yyyyMMddHHmmss.fzzzzz", "yyyyMMddHHmmss.ffzzzzz", "yyyyMMddHHmmss.fffzzzzz", "yyyyMMddHHmmss.ffffzzzzz"
+        };
+
+        public enum DateTimePrecision
+        {
+            None,
+            Year,
+            YearMonth,
+            Date,
+            DateHourMin,
+            DateHourMinSec,
+            DateHourMinSecMilli
+        };
+
+        /// <summary>
+        /// Returns a DateTimeOffset for the Hl7 DateTime string passed in.
+        /// If the string passed in can not be parsed as a dateTime then a FormatException is thrown.
+        /// </summary>
+        /// <param name="Hl7DateTimeString"></param>
+        /// <returns></returns>
+        public static DateTimeOffset AsDateTimeOffSet(string Hl7DateTimeString)
+        {
+            if (TryParseDateTimeString(Hl7DateTimeString, out var result))
+            {
+                return result;
+            }
+
+            throw new PeterPiperException(string.Format(FormatExceptionMessage, Hl7DateTimeString));
         }
-        catch(Exception Exec)
+
+        /// <summary>
+        /// Returns True if a Time-zone element is found in the Hl7 DateTime string.
+        /// If the string passed in cannot be parsed as a dateTime then a FormatException is thrown.
+        /// </summary>
+        /// <param name="Hl7DateTimeString"></param>
+        /// <returns></returns>
+        public static bool HasTimezone(string Hl7DateTimeString)
         {
-          throw new PeterPiperException(String.Format("Unable to parse time-zone from HL7 date time string of: {0}", Hl7DateTimeString), Exec);
+            if (CanParseToDateTimeOffset(Hl7DateTimeString))
+            {
+                return CheckForTimezone(Hl7DateTimeString);
+            }
+
+            throw new PeterPiperException(string.Format(FormatExceptionMessage, Hl7DateTimeString));
         }
-      }
-      else
-      {
-        throw new PeterPiperException(String.Format("No time-zone present in given content. Try testing for time-zone by calling 'HasTimezone' before calling 'GetTimezone'."));
-      }
-    }
 
-    /// <summary>
-    /// Set the time-zone for a give HL7 DateTime string. This will convert the date time from the time-zone present to the new time zone. 
-    /// If no time-zone is present in the HL7 date time string then it will assume that this date time is from the new time zone and not convert.
-    /// Will throw a FormatException if the HL7 DateTime string is no able to be parsed as a DateTimeOffset.
-    /// </summary>
-    /// <param name="Hl7DateTimeString"></param>
-    /// <param name="Timespan"></param>
-    /// <returns></returns>
-    public static string SetTimezone(string Hl7DateTimeString, TimeSpan Timespan)
-    {
-      if (DateTimeSupportTools.HasTimezone(Hl7DateTimeString))
-      {
-        var DateTime = DateTimeSupportTools.AsDateTimeOffSet(Hl7DateTimeString);
-        DateTime = DateTime.ToOffset(Timespan);
-        return DateTimeSupportTools.AsString(DateTime, true, DateTimeSupportTools.GetPrecision(Hl7DateTimeString));
-      }
-      else
-      {
-        return Hl7DateTimeString + String.Format("{0:+00;-00}{1:00}", Timespan.Hours, Timespan.Minutes);
-      }
-    }
-
-    /// <summary>
-    /// Returns the Precision found in the Hl7 DateTime string passed in. 
-    /// If the string passed in cannot be parsed as a HL7 dateTime string then a FormatException is thrown.
-    /// </summary>
-    /// <param name="Hl7DateTimeString"></param>
-    /// <returns></returns>
-    public static DateTimePrecision GetPrecision(string Hl7DateTimeString)
-    {
-      if (DateTimeSupportTools.CanParseToDateTimeOffset(Hl7DateTimeString))
-        return CalculateDateTimePrecision(Hl7DateTimeString);
-      else
-        return DateTimePrecision.None;
-    }
-
-    /// <summary>
-    /// Returns True if the Hl7 DateTime string can be parsed to a DateTimeOffset, or False if unable;
-    /// </summary>
-    /// <param name="Hl7DateTimeString"></param>
-    /// <returns></returns>
-    public static bool CanParseToDateTimeOffset(string Hl7DateTimeString)
-    {
-      DateTimeOffset result;
-      return TryParseDateTimeString(Hl7DateTimeString, out result);   
-    }    
-   
-    /// <summary>
-    /// Returns the Hl7 DateTime string with or with out a time zone and to the precision given;
-    /// </summary>
-    /// <param name="WithTimezone"></param>
-    /// <param name="WithPrecision"></param>
-    /// <returns></returns>
-    public static string AsString(DateTimeOffset DateTimeOffSet, bool WithTimezone, DateTimePrecision WithPrecision)
-    {
-      return GetDateTimeOffSetAsHl7String(DateTimeOffSet, WithTimezone, WithPrecision);      
-    }
-
-    #endregion
-
-    #region Private Methods
-
-    private static bool TryParseDateTimeString(string DateTimeString, out DateTimeOffset result)
-    {
-      if (DateTimeString.Length < 4)
-      {
-        result = DateTimeOffset.MinValue;
-        return false;
-      }
-      IFormatProvider provider = CultureInfo.InvariantCulture.DateTimeFormat;
-      if (DateTimeOffset.TryParseExact(DateTimeString, formats, provider, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out result))
-        return true;
-      else
-        return false;
-    }
-
-    private static bool CheckForTimezone(string DateTimeString)
-    {
-      char[] TimeZomeDelimiter = { '+', '-' };
-      if (DateTimeString.IndexOfAny(TimeZomeDelimiter) > 0)
-        return true;
-      else
-        return false;
-    }
-    
-    private static DateTimePrecision CalculateDateTimePrecision(string DateTimeString)
-    {
-      char[] MilliSecondsDelimiter = { '.' };
-      char[] TimeZomeDelimiter = { '+', '-' };
-      string TempDateTimeString = DateTimeString;
-      if ((TempDateTimeString.IndexOfAny(TimeZomeDelimiter) > 0))
-      {
-        TempDateTimeString = TempDateTimeString.Remove(TempDateTimeString.LastIndexOfAny(TimeZomeDelimiter));
-      }
-
-      if (TempDateTimeString.IndexOfAny(MilliSecondsDelimiter) > 0)
-      {
-        return DateTimePrecision.DateHourMinSecMilli;
-      }
-      else
-      {
-        switch (TempDateTimeString.Length)
+        /// <summary>
+        /// Returns a Timespan that represents the time zone found in the HL7 DateTime string.
+        /// Throws a FormatException if no time zone present or if the content is empty
+        /// </summary>
+        /// <param name="Hl7DateTimeString"></param>
+        /// <returns></returns>
+        public static TimeSpan GetTimezone(string Hl7DateTimeString)
         {
-          case 4:
-            return DateTimePrecision.Year;            
-          case 6:
-            return DateTimePrecision.YearMonth;            
-          case 8:
-            return DateTimePrecision.Date;            
-          case 12:
-            return DateTimePrecision.DateHourMin;            
-          case 14:
-            return DateTimePrecision.DateHourMinSec;                     
-          default:
+            if (HasTimezone(Hl7DateTimeString))
+            {
+                char[] TimeZoneDelimiter = {'+', '-'};
+                try
+                {
+                    var TimeZoneString = Hl7DateTimeString.Substring(
+                        Hl7DateTimeString.LastIndexOfAny(TimeZoneDelimiter),
+                        Hl7DateTimeString.Length - Hl7DateTimeString.LastIndexOfAny(TimeZoneDelimiter));
+                    int Hours = System.Convert.ToInt32(TimeZoneString.Substring(0, 3));
+                    int min = System.Convert.ToInt32(TimeZoneString.Substring(3, 2));
+                    return new TimeSpan(Hours, min, 0);
+                }
+                catch (Exception Exec)
+                {
+                    throw new PeterPiperException(
+                        $"Unable to parse time-zone from HL7 date time string of: {Hl7DateTimeString}",
+                        Exec);
+                }
+            }
+
+            throw new PeterPiperException(
+                "No time-zone present in given content. Try testing for time-zone by calling 'HasTimezone' before calling 'GetTimezone'.");
+        }
+
+        /// <summary>
+        /// Set the time-zone for a give HL7 DateTime string. This will convert the date time from the time-zone present to the new time zone. 
+        /// If no time-zone is present in the HL7 date time string then it will assume that this date time is from the new time zone and not convert.
+        /// Will throw a FormatException if the HL7 DateTime string is no able to be parsed as a DateTimeOffset.
+        /// </summary>
+        /// <param name="Hl7DateTimeString"></param>
+        /// <param name="timespan"></param>
+        /// <returns></returns>
+        public static string SetTimezone(string Hl7DateTimeString, TimeSpan timespan)
+        {
+            if (HasTimezone(Hl7DateTimeString))
+            {
+                var DateTime = AsDateTimeOffSet(Hl7DateTimeString);
+                DateTime = DateTime.ToOffset(timespan);
+                return AsString(DateTime, true, GetPrecision(Hl7DateTimeString));
+            }
+
+            return Hl7DateTimeString + $"{timespan.Hours:+00;-00}{timespan.Minutes:00}";
+        }
+
+        /// <summary>
+        /// Returns the Precision found in the Hl7 DateTime string passed in. 
+        /// If the string passed in cannot be parsed as a HL7 dateTime string then a FormatException is thrown.
+        /// </summary>
+        /// <param name="Hl7DateTimeString"></param>
+        /// <returns></returns>
+        public static DateTimePrecision GetPrecision(string Hl7DateTimeString)
+        {
+            if (CanParseToDateTimeOffset(Hl7DateTimeString))
+            {
+                return CalculateDateTimePrecision(Hl7DateTimeString);
+            }
+
             return DateTimePrecision.None;
-        }                  
-      }          
+        }
+
+        /// <summary>
+        /// Returns True if the Hl7 DateTime string can be parsed to a DateTimeOffset, or False if unable;
+        /// </summary>
+        /// <param name="Hl7DateTimeString"></param>
+        /// <returns></returns>
+        public static bool CanParseToDateTimeOffset(string Hl7DateTimeString)
+        {
+            return TryParseDateTimeString(Hl7DateTimeString, out _);
+        }
+
+        /// <summary>
+        /// Returns the Hl7 DateTime string with or with out a time zone and to the precision given;
+        /// </summary>
+        /// <param name="dateTimeOffSet"></param>
+        /// <param name="withTimezone"></param>
+        /// <param name="withPrecision"></param>
+        /// <returns></returns>
+        public static string AsString(DateTimeOffset dateTimeOffSet, bool withTimezone, DateTimePrecision withPrecision)
+        {
+            return GetDateTimeOffSetAsHl7String(dateTimeOffSet, withTimezone, withPrecision);
+        }
+
+        private static bool TryParseDateTimeString(string dateTimeString, out DateTimeOffset result)
+        {
+            if (dateTimeString.Length < 4)
+            {
+                result = DateTimeOffset.MinValue;
+                return false;
+            }
+
+            IFormatProvider provider = CultureInfo.InvariantCulture.DateTimeFormat;
+            if (DateTimeOffset.TryParseExact(dateTimeString, Formats, provider,
+                    DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out result))
+            {
+                return true;
+            }
+
+
+            return false;
+        }
+
+        private static bool CheckForTimezone(string dateTimeString)
+        {
+            char[] TimeZomeDelimiter = {'+', '-'};
+            if (dateTimeString.IndexOfAny(TimeZomeDelimiter) > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static DateTimePrecision CalculateDateTimePrecision(string dateTimeString)
+        {
+            char[] milliSecondsDelimiter = {'.'};
+            char[] timeZoneDelimiter = {'+', '-'};
+            string tempDateTimeString = dateTimeString;
+            if ((tempDateTimeString.IndexOfAny(timeZoneDelimiter) > 0))
+            {
+                tempDateTimeString = tempDateTimeString.Remove(tempDateTimeString.LastIndexOfAny(timeZoneDelimiter));
+            }
+
+            if (tempDateTimeString.IndexOfAny(milliSecondsDelimiter) > 0)
+            {
+                return DateTimePrecision.DateHourMinSecMilli;
+            }
+
+            switch (tempDateTimeString.Length)
+            {
+                case 4:
+                    return DateTimePrecision.Year;
+                case 6:
+                    return DateTimePrecision.YearMonth;
+                case 8:
+                    return DateTimePrecision.Date;
+                case 12:
+                    return DateTimePrecision.DateHourMin;
+                case 14:
+                    return DateTimePrecision.DateHourMinSec;
+                default:
+                    return DateTimePrecision.None;
+            }
+        }
+
+        private static string GetDateTimeOffSetAsHl7String(DateTimeOffset targetDateTimeOffset, bool withTimezone,
+            DateTimePrecision withPrecision)
+        {
+            const string fYear = "yyyy";
+            const string fYearMonth = "yyyyMM";
+            const string fDate = "yyyyMMdd";
+            const string fHourMin = "HHmm";
+            const string fSec = "ss";
+            const string fMilliSec = "ffff";
+            const string fTimeZone = "zzzz";
+
+            switch (withPrecision)
+            {
+                case DateTimePrecision.None:
+                    break;
+                case DateTimePrecision.Year:
+                    if (withTimezone)
+                    {
+                        return targetDateTimeOffset.ToString($"{fYear}{fTimeZone}").Replace(":", "");
+                    }
+
+                    return targetDateTimeOffset.ToString(fYear);
+
+                case DateTimePrecision.YearMonth:
+                    if (withTimezone)
+                    {
+                        return targetDateTimeOffset.ToString($"{fYearMonth}{fTimeZone}")
+                            .Replace(":", "");
+                    }
+
+                    return targetDateTimeOffset.ToString(fYearMonth);
+
+                case DateTimePrecision.Date:
+                    if (withTimezone)
+                    {
+                        return targetDateTimeOffset.ToString($"{fDate}{fTimeZone}").Replace(":", "");
+                    }
+
+                    return targetDateTimeOffset.ToString(fDate);
+
+                case DateTimePrecision.DateHourMin:
+                    if (withTimezone)
+                    {
+                        return targetDateTimeOffset.ToString($"{fDate}{fHourMin}{fTimeZone}").Replace(":", "");
+                    }
+
+                    return targetDateTimeOffset.ToString($"{fDate}{fHourMin}");
+
+                case DateTimePrecision.DateHourMinSec:
+                    if (withTimezone)
+                    {
+                        return targetDateTimeOffset
+                            .ToString($"{fDate}{fHourMin}{fSec}{fTimeZone}").Replace(":", "");
+                    }
+
+                    return targetDateTimeOffset.ToString($"{fDate}{fHourMin}{fSec}");
+
+                case DateTimePrecision.DateHourMinSecMilli:
+                    if (withTimezone)
+                    {
+                        return targetDateTimeOffset
+                            .ToString($"{fDate}{fHourMin}{fSec}.{fMilliSec}{fTimeZone}").Replace(":", "");
+                    }
+
+                    return targetDateTimeOffset.ToString($"{fDate}{fHourMin}{fSec}.{fMilliSec}");
+                
+                default:
+                    throw new PeterPiperException("Internal error: Unsupported DateTimePrecision value of " +
+                                                  withPrecision);
+            }
+
+            return "";
+        }
     }
-
-    private static string GetDateTimeOffSetAsHl7String(DateTimeOffset TargetDateTimeOffset,  bool WithTimezone, DateTimePrecision WithPrecision)
-    {      
-      string fYear = "yyyy";
-      string fYearMonth = "yyyyMM";
-      string fDate = "yyyyMMdd";
-      string fHourMin = "HHmm";
-      string fSec = "ss";
-      string fMilliSec = "ffff";
-      string fTimeZone = "zzzz";
-
-      switch (WithPrecision)
-      {
-        case DateTimePrecision.None:
-          break;
-        case DateTimePrecision.Year:
-          if (WithTimezone)
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}", fYear, fTimeZone)).Replace(":", "");
-          else
-            return TargetDateTimeOffset.ToString(String.Format("{0}", fYear));
-
-        case DateTimePrecision.YearMonth:
-          if (WithTimezone)
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}", fYearMonth, fTimeZone)).Replace(":", "");
-          else
-            return TargetDateTimeOffset.ToString(String.Format("{0}", fYearMonth));
-
-        case DateTimePrecision.Date:
-          if (WithTimezone)
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}", fDate, fTimeZone)).Replace(":", "");
-          else
-            return TargetDateTimeOffset.ToString(String.Format("{0}", fDate));
-
-        case DateTimePrecision.DateHourMin:
-          if (WithTimezone)
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}{2}", fDate, fHourMin, fTimeZone)).Replace(":", "");
-          else
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}", fDate, fHourMin));
-
-        case DateTimePrecision.DateHourMinSec:
-          if (WithTimezone)
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}{2}{3}", fDate, fHourMin, fSec, fTimeZone)).Replace(":", "");
-          else
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}{2}", fDate, fHourMin, fSec));
-
-        case DateTimePrecision.DateHourMinSecMilli:
-          if (WithTimezone)
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}{2}.{3}{4}", fDate, fHourMin, fSec, fMilliSec, fTimeZone)).Replace(":", "");
-          else
-            return TargetDateTimeOffset.ToString(String.Format("{0}{1}{2}.{3}", fDate, fHourMin, fSec, fMilliSec));
-        default:
-          throw new PeterPiperException("Internal error: Unsupported DateTimeprecision value of " + WithPrecision.ToString());
-      }
-      return "";
-    }
-
-    #endregion
-    
-  }
-
 }

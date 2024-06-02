@@ -1,40 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PeterPiper.Hl7.V2;
+﻿namespace PeterPiper.Hl7.V2.Schema.Support;
 
-namespace PeterPiper.Hl7.V2.Schema.Support
+public class SchemaSupport
 {
-  public class SchemaSupport
-  {
-    private  Schema.Model.VersionSchema _CurrentSchema = null;
-    public Schema.Model.VersionSchema CurrentSchema
-    {
-      get { return _CurrentSchema; }
-      set { _CurrentSchema = value; }
-    }
+  public Model.VersionSchema CurrentSchema { get; set; } = null;
 
-    public void LoadSchema(PeterPiper.Hl7.V2.Model.IMessage oMsg)
+  public void LoadSchema(PeterPiper.Hl7.V2.Model.IMessage oMsg)
+  {
+    LoadSchema(oMsg.MessageVersion, oMsg.MessageType, oMsg.MessageTrigger);
+  }
+  public void LoadSchema(string messageVersion, string messageType, string messageTrigger)
+  {
+    var oMessageVersion = Model.Version.GetVersionFromString(messageVersion);
+    if (oMessageVersion != Model.VersionsSupported.NotSupported)
     {
-      this.LoadSchema(oMsg.MessageVersion, oMsg.MessageType, oMsg.MessageTrigger);
-    }
-    public void LoadSchema(string MessageVersion, string MessageType, string MessageTrigger)
-    {
-      var oMessageVersion = Model.Version.GetVersionFromString(MessageVersion);
-      if (oMessageVersion != Model.VersionsSupported.NotSupported)
+      if (CurrentSchema == null)
       {
-        if (_CurrentSchema == null)
-        {
-          _CurrentSchema = V2.Schema.XmlParser.SchemaParser.LoadSingleMessage(V2.Schema.Model.Version.GetVersionFromString(MessageVersion), MessageType.ToUpper(), MessageTrigger.ToUpper());
-        }
+        CurrentSchema = XmlParser.SchemaParser.LoadSingleMessage(Model.Version.GetVersionFromString(messageVersion), messageType.ToUpper(), messageTrigger.ToUpper());
+      }
+      else
+      {
+        if (CurrentSchema.Version == Model.Version.GetVersionFromString(messageVersion))
+          XmlParser.SchemaParser.LoadAnotherMessage(CurrentSchema, messageType.ToUpper(), messageTrigger.ToUpper());
         else
-        {
-          if (_CurrentSchema.Version == Model.Version.GetVersionFromString(MessageVersion))
-            V2.Schema.XmlParser.SchemaParser.LoadAnotherMessage(_CurrentSchema, MessageType.ToUpper(), MessageTrigger.ToUpper());
-          else
-            _CurrentSchema = V2.Schema.XmlParser.SchemaParser.LoadSingleMessage(V2.Schema.Model.Version.GetVersionFromString(MessageVersion), MessageType.ToUpper(), MessageTrigger.ToUpper());
-        }
+          CurrentSchema = XmlParser.SchemaParser.LoadSingleMessage(Model.Version.GetVersionFromString(messageVersion), messageType.ToUpper(), messageTrigger.ToUpper());
       }
     }
   }

@@ -1,6 +1,6 @@
-## |Peter Piper Parser| is a HL7 V2.x parser for .NET Core & .NET Framework, available on [Nuget.org](https://www.nuget.org/packages/PeterPiper/)
+## |Peter Piper Parser| is a HL7 V2.x parser for .NET Core available on [Nuget.org](https://www.nuget.org/packages/PeterPiper/)
 
-Compatible with .NET Core V1.0 & .NET Framework V4.6 
+Compatible with .NET Core 7 
 
 > **MSH**|^~\\&|**Peter Piper** parsed a peck of pickled patients\~A peck of pickled patients **Peter Piper** parsed\~If **Peter Piper** picked a peck of pickled patients\~Where's the peck of pickled patients **Peter Piper** parsed?
 

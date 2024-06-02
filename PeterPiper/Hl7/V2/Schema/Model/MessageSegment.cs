@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace PeterPiper.Hl7.V2.Schema.Model;
 
-namespace PeterPiper.Hl7.V2.Schema.Model
+public class MessageSegment : MessageItemBase
 {
-  public class MessageSegment : MessageItemBase
-  {
-    private SegmentStructure _Segment;
-    public SegmentStructure Segment
-    {
-      get { return _Segment; }
-      set { _Segment = value; }
-    }
-
-  }
+  public SegmentStructure Segment { get; set; }
 }

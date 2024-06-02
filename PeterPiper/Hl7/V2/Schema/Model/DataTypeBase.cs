@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace PeterPiper.Hl7.V2.Schema.Model;
 
-namespace PeterPiper.Hl7.V2.Schema.Model
+public abstract class DataTypeBase
 {
-  abstract public class DataTypeBase
-  {
-    private string _Code;
-    public string Code
-    {
-      get { return _Code; }
-      set { _Code = value; }
-    }
-  }
+  public string Code { get; set; }
 }

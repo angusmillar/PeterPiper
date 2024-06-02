@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
-namespace PeterPiper.Hl7.V2.Schema.XmlParser
+namespace PeterPiper.Hl7.V2.Schema.XmlParser;
+
+class MessageParser
 {
-  class MessageParser
-  {
-    public List<string> Run(XDocument xDocument)
-    { 
-      List<string> oFilnameList = new List<string>(); 
-      foreach (var detail in xDocument.Root.DescendantsAndSelf().Elements().Where(d => d.Name == HL7v2Xsd.Elements.Include))
-      {
-        oFilnameList.Add(detail.Attribute(HL7v2Xsd.Attributes.SchemaLocation).Value);
-      }
-      return oFilnameList;
+  public List<string> Run(XDocument xDocument)
+  { 
+    List<string> fileNameList = new List<string>();
+
+    var documentRoot = xDocument.Root;
+    ArgumentNullException.ThrowIfNull(documentRoot);
+    
+    foreach (var detail in documentRoot.DescendantsAndSelf().Elements().Where(d => d.Name == HL7v2Xsd.Elements.Include))
+    {
+      XAttribute schemaLocationAttribute = detail.Attribute(HL7v2Xsd.Attributes.SchemaLocation);
+      ArgumentNullException.ThrowIfNull(schemaLocationAttribute);
+      
+      fileNameList.Add(schemaLocationAttribute.Value);
     }
+    return fileNameList;
   }
 }

@@ -1,144 +1,183 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
-namespace PeterPiper.Hl7.V2.Schema.XmlParser
+namespace PeterPiper.Hl7.V2.Schema.XmlParser;
+
+public class MessageTypeParser
 {
-  public class MessageTypeParser
-  {
-    private Dictionary<string, Schema.Model.MessageSegmentGroup> MessageSegmentGroupDic = new Dictionary<string, Model.MessageSegmentGroup>();
-    private Dictionary<string, Schema.Model.SegmentStructure> oSegmentDictionary;
-    private Schema.Model.MessageStructure oMessageStructure;
+    private readonly Dictionary<string, Model.MessageSegmentGroup> _MessageSegmentGroupDic =
+        new Dictionary<string, Model.MessageSegmentGroup>();
 
-    public Schema.Model.MessageStructure Run(XDocument xDocument, Dictionary<string, Schema.Model.SegmentStructure> oSegmentDic)
+    private Dictionary<string, Model.SegmentStructure> _SegmentDictionary;
+    private Model.MessageStructure _MessageStructure;
+
+    public Model.MessageStructure Run(XDocument xDocument, Dictionary<string, Model.SegmentStructure> segmentDictionary)
     {
-      oSegmentDictionary = oSegmentDic;
-      oMessageStructure = new Model.MessageStructure();
-      
-      foreach (var detail in xDocument.Root.DescendantsAndSelf().Elements().Where(d => d.Name == HL7v2Xsd.Elements.ComplexType))
-      {
-        if (String.IsNullOrWhiteSpace(oMessageStructure.MessageType))
-          ResolveMessageTypeAndEvent(oMessageStructure, detail);
+        _SegmentDictionary = segmentDictionary;
+        _MessageStructure = new Model.MessageStructure();
 
-        //Covers some errors in the standard which render some message types as not implementable. 
-        if (EdgeCaseResolution(oMessageStructure, detail))
-          return oMessageStructure;
+        XElement documentRootElement = xDocument.Root;
+        ArgumentNullException.ThrowIfNull(documentRootElement);
 
-        if (detail.Attribute(HL7v2Xsd.Attributes.Name).Value.Split('.')[1].Trim() == "CONTENT")
+        foreach (var detail in documentRootElement.DescendantsAndSelf().Elements()
+                     .Where(d => d.Name == HL7v2Xsd.Elements.ComplexType))
         {
-          foreach (var element in detail.Elements(HL7v2Xsd.Elements.Sequence).Elements(HL7v2Xsd.Elements.Element))
-          {
-            if (element.Attribute(HL7v2Xsd.Attributes.Ref).Value.Contains('.'))
+            if (String.IsNullOrWhiteSpace(_MessageStructure.MessageType))
             {
-              oMessageStructure.MessageItemList.Add(
-                MessageSegmentGroupDic[element.Attribute(HL7v2Xsd.Attributes.Ref).Value.Split('.')[1].Trim()]);                
+                ResolveMessageTypeAndEvent(_MessageStructure, detail);
+            }
+
+            //Covers some errors in the standard which render some message types as not implementable. 
+            if (EdgeCaseResolution(_MessageStructure, detail))
+            {
+                return _MessageStructure;
+            }
+
+            XAttribute nameAttribute = detail.Attribute(HL7v2Xsd.Attributes.Name);
+            ArgumentNullException.ThrowIfNull(nameAttribute);
+
+
+            if (nameAttribute.Value.Split('.')[1].Trim().Equals("CONTENT"))
+            {
+                foreach (var element in detail.Elements(HL7v2Xsd.Elements.Sequence).Elements(HL7v2Xsd.Elements.Element))
+                {
+                    XAttribute refAttribute = element.Attribute(HL7v2Xsd.Attributes.Ref);
+                    ArgumentNullException.ThrowIfNull(refAttribute);
+
+                    if (refAttribute.Value.Contains('.'))
+                    {
+                        _MessageStructure.MessageItemList.Add(
+                            _MessageSegmentGroupDic[refAttribute.Value.Split('.')[1].Trim()]);
+                    }
+                    else
+                    {
+                        _MessageStructure.MessageItemList.Add(ResolveMessageSegment(element));
+                    }
+                }
+            }
+            else if (!nameAttribute.Value.Split('.')[1].Trim().Equals("CONTENT"))
+            {
+                if (detail.Element(HL7v2Xsd.Elements.Sequence) != null)
+                {
+                    ResolveMessageSegmentGroup(nameAttribute.Value.Split('.')[1].Trim(),
+                        detail.Element(HL7v2Xsd.Elements.Sequence));
+                }
+                else
+                {
+                    ResolveMessageSegmentGroup(nameAttribute.Value.Split('.')[1].Trim(),
+                        detail.Element(HL7v2Xsd.Elements.Choice));
+                }
             }
             else
             {
-              oMessageStructure.MessageItemList.Add(ResolveMessageSegment(element));
+                throw new Exception("Unexpected name value found: " + HL7v2Xsd.Attributes.Name + "=" +
+                                    nameAttribute.Value);
             }
-          }   
-        }
-        else if (detail.Attribute(HL7v2Xsd.Attributes.Name).Value.Split('.')[1].Trim() != "CONTENT")
-        {    
-          if (detail.Element(HL7v2Xsd.Elements.Sequence) != null)
-          {
-
-            ResolveMessageSegmentGroup(detail.Attribute(HL7v2Xsd.Attributes.Name).Value.Split('.')[1].Trim(),
-                                     detail.Element(HL7v2Xsd.Elements.Sequence));
-          }
-          else
-          {                       
-            ResolveMessageSegmentGroup(detail.Attribute(HL7v2Xsd.Attributes.Name).Value.Split('.')[1].Trim(),
-                                        detail.Element(HL7v2Xsd.Elements.Choice));
-          }                                        
-        }
-        else
-        {
-          throw new Exception("Unexpected name value found: " + HL7v2Xsd.Attributes.Name.ToString() + "=" + detail.Attribute(HL7v2Xsd.Attributes.Name).Value);
         }
 
-      }
-      return oMessageStructure;
+        return _MessageStructure;
     }
 
     private bool EdgeCaseResolution(Model.MessageStructure oMessageStructure, XElement detail)
     {
-      if (oMessageStructure.MessageType == "SUR" && oMessageStructure.MessageEvent == "P09")
-      {
-        oMessageStructure.Notes = "This message and event is deprecated for v2.5 due to it being " +
-                                   "technical flawed and not implementable Refer to Chapter 7.11.2 - SUR " +
-                                   "for more information.";
-        return true;
-      }
-      return false;
-    }
-
-    private static void ResolveMessageTypeAndEvent(Schema.Model.MessageStructure oMessageStructure, XElement detail)
-    {     
-      string MessageTypeAndEvent = string.Empty;
-      MessageTypeAndEvent = detail.Attribute(HL7v2Xsd.Attributes.Name).Value.Split('.')[0].Trim();
-
-      //Work out the MessageType and Event from the first group found,
-      if (MessageTypeAndEvent.Contains('_'))
-      {
-        oMessageStructure.MessageType = MessageTypeAndEvent.Split('_')[0].Trim();
-        oMessageStructure.MessageEvent = MessageTypeAndEvent.Split('_')[1].Trim();
-      }
-      else
-      {
-        oMessageStructure.MessageType = MessageTypeAndEvent;
-        oMessageStructure.MessageEvent = String.Empty;
-      }
-    }
-
-    private Schema.Model.MessageSegmentGroup ResolveMessageSegmentGroup(String GroupName, XElement Sequence)
-    {                  
-      Schema.Model.MessageSegmentGroup oMsgSegGroup = new Model.MessageSegmentGroup();
-      oMsgSegGroup.SegmentGroupName = GroupName;
-      foreach (var element in Sequence.Elements(HL7v2Xsd.Elements.Element))
-      {
-        string Ref = element.Attribute(HL7v2Xsd.Attributes.Ref).Value.Trim();                
-        bool CanRepeat = (element.Attribute(HL7v2Xsd.Attributes.MaxOccurs).Value.Trim().ToUpper() == "UNBOUNDED");
-        bool IsMandatory = (element.Attribute(HL7v2Xsd.Attributes.MinOccurs).Value.Trim().ToUpper() == "1");
-
-        if (Ref.Contains('.'))
+        if (oMessageStructure.MessageType == "SUR" && oMessageStructure.MessageEvent == "P09")
         {
-          Schema.Model.MessageSegmentGroup oSubSegGroup = new Model.MessageSegmentGroup();
-          oSubSegGroup.CanRepeat = CanRepeat;
-          oSubSegGroup.IsMandatory = IsMandatory;
-          if (MessageSegmentGroupDic.ContainsKey(Ref.Split('.')[1]))
-          {
-            oSubSegGroup.SegmentGroupItemList = MessageSegmentGroupDic[Ref.Split('.')[1]].SegmentGroupItemList;
-            oSubSegGroup.SegmentGroupName = MessageSegmentGroupDic[Ref.Split('.')[1]].SegmentGroupName;
-            oMsgSegGroup.SegmentGroupItemList.Add(oSubSegGroup);
-          }
-          else
-          {
-            throw new Exception(String.Format("The Message structure for {0}^{1} has a segment group named {3} which is not defined within the same file.", oMessageStructure.MessageType, oMessageStructure.MessageEvent, Ref.Split('.')[1]));
-          }
+            oMessageStructure.Notes = "This message and event is deprecated for v2.5 due to it being " +
+                                      "technical flawed and not implementable Refer to Chapter 7.11.2 - SUR " +
+                                      "for more information.";
+            return true;
+        }
+
+        return false;
+    }
+
+    private static void ResolveMessageTypeAndEvent(Model.MessageStructure messageStructure, XElement detail)
+    {
+        XAttribute nameAttribute = detail.Attribute(HL7v2Xsd.Attributes.Name);
+        ArgumentNullException.ThrowIfNull(nameAttribute);
+
+        string MessageTypeAndEvent = nameAttribute.Value.Split('.')[0].Trim();
+
+        //Work out the MessageType and Event from the first group found,
+        if (MessageTypeAndEvent.Contains('_'))
+        {
+            messageStructure.MessageType = MessageTypeAndEvent.Split('_')[0].Trim();
+            messageStructure.MessageEvent = MessageTypeAndEvent.Split('_')[1].Trim();
         }
         else
         {
-          oMsgSegGroup.SegmentGroupItemList.Add(ResolveMessageSegment(element));
+            messageStructure.MessageType = MessageTypeAndEvent;
+            messageStructure.MessageEvent = String.Empty;
         }
-      }
-      MessageSegmentGroupDic.Add(oMsgSegGroup.SegmentGroupName, oMsgSegGroup);
-      return oMsgSegGroup;
     }
 
-    private Schema.Model.MessageSegment ResolveMessageSegment(XElement Element)
-    {      
-      Schema.Model.MessageSegment oMsgSeg = new Model.MessageSegment();
-      string SegmentCode = Element.Attribute(HL7v2Xsd.Attributes.Ref).Value.Trim();
-      string min = Element.Attribute(HL7v2Xsd.Attributes.MinOccurs).Value.Trim();
-      string max = Element.Attribute(HL7v2Xsd.Attributes.MaxOccurs).Value.Trim();
-      oMsgSeg.CanRepeat = (max.ToUpper() == "UNBOUNDED");
-      oMsgSeg.IsMandatory = (min.ToUpper() == "1");
-      oMsgSeg.Segment = oSegmentDictionary[SegmentCode];
-      return oMsgSeg;
+    private Model.MessageSegmentGroup ResolveMessageSegmentGroup(String groupName, XElement sequence)
+    {
+        Model.MessageSegmentGroup oMsgSegGroup = new Model.MessageSegmentGroup();
+        oMsgSegGroup.SegmentGroupName = groupName;
+        foreach (var element in sequence.Elements(HL7v2Xsd.Elements.Element))
+        {
+            XAttribute refAttribute = element.Attribute(HL7v2Xsd.Attributes.Ref);
+            ArgumentNullException.ThrowIfNull(refAttribute);
+
+            XAttribute minOccursAttribute = element.Attribute(HL7v2Xsd.Attributes.MinOccurs);
+            ArgumentNullException.ThrowIfNull(minOccursAttribute);
+
+            XAttribute maxOccursAttribute = element.Attribute(HL7v2Xsd.Attributes.MaxOccurs);
+            ArgumentNullException.ThrowIfNull(maxOccursAttribute);
+
+            string Ref = refAttribute.Value.Trim();
+            bool IsMandatory = (minOccursAttribute.Value.Trim().ToUpper() == "1");
+            bool CanRepeat = (maxOccursAttribute.Value.Trim().ToUpper() == "UNBOUNDED");
+
+            if (Ref.Contains('.'))
+            {
+                Model.MessageSegmentGroup oSubSegGroup = new Model.MessageSegmentGroup();
+                oSubSegGroup.CanRepeat = CanRepeat;
+                oSubSegGroup.IsMandatory = IsMandatory;
+                if (_MessageSegmentGroupDic.ContainsKey(Ref.Split('.')[1]))
+                {
+                    oSubSegGroup.SegmentGroupItemList = _MessageSegmentGroupDic[Ref.Split('.')[1]].SegmentGroupItemList;
+                    oSubSegGroup.SegmentGroupName = _MessageSegmentGroupDic[Ref.Split('.')[1]].SegmentGroupName;
+                    oMsgSegGroup.SegmentGroupItemList.Add(oSubSegGroup);
+                }
+                else
+                {
+                    throw new Exception(
+                        $"The Message structure for {_MessageStructure.MessageType}^{_MessageStructure.MessageEvent} has a segment group named {Ref.Split('.')[1]} which is not defined within the same file.");
+                }
+            }
+            else
+            {
+                oMsgSegGroup.SegmentGroupItemList.Add(ResolveMessageSegment(element));
+            }
+        }
+
+        _MessageSegmentGroupDic.Add(oMsgSegGroup.SegmentGroupName, oMsgSegGroup);
+        return oMsgSegGroup;
     }
-  }
+
+    private Model.MessageSegment ResolveMessageSegment(XElement element)
+    {
+        Model.MessageSegment oMsgSeg = new Model.MessageSegment();
+
+        XAttribute refAttribute = element.Attribute(HL7v2Xsd.Attributes.Ref);
+        ArgumentNullException.ThrowIfNull(refAttribute);
+
+        XAttribute minOccursAttribute = element.Attribute(HL7v2Xsd.Attributes.MinOccurs);
+        ArgumentNullException.ThrowIfNull(minOccursAttribute);
+
+        XAttribute maxOccursAttribute = element.Attribute(HL7v2Xsd.Attributes.MaxOccurs);
+        ArgumentNullException.ThrowIfNull(maxOccursAttribute);
+
+        string SegmentCode = refAttribute.Value.Trim();
+        string min = minOccursAttribute.Value.Trim();
+        string max = maxOccursAttribute.Value.Trim();
+        oMsgSeg.CanRepeat = (max.ToUpper() == "UNBOUNDED");
+        oMsgSeg.IsMandatory = (min.ToUpper() == "1");
+        oMsgSeg.Segment = _SegmentDictionary[SegmentCode];
+        return oMsgSeg;
+    }
 }

@@ -3,691 +3,660 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using PeterPiper.Hl7.V2.Model;
 using PeterPiper.Hl7.V2.CustomException;
 
-namespace PeterPiper.Hl7.V2.Model.Implementation
+namespace PeterPiper.Hl7.V2.Model.Implementation;
+
+internal class Segment : ModelBase, ISegment
 {
-  internal class Segment : ModelBase, ISegment
-  {
     private Dictionary<int, Element> _ElementDictonary;
-    private string[] _HeaderSegmentCodes = new[] { Support.Standard.Segments.Msh.Code, Support.Standard.Segments.Bhs.Code, Support.Standard.Segments.Fhs.Code };
+
+    private readonly string[] _HeaderSegmentCodes = new[]
+        { Support.Standard.Segments.Msh.Code, Support.Standard.Segments.Bhs.Code, Support.Standard.Segments.Fhs.Code };
 
     //Creator Factory used Constructors
-    internal Segment(string StringRaw)
+    internal Segment(string stringRaw)
     {
-      _Temporary = true;
-      _Index = null;
-      _Parent = null;
-      StringRaw = ValidateStringRaw(StringRaw);
-      _ElementDictonary = ParseSegmentRawStringToElement(StringRaw);
+        _Temporary = true;
+        _Index = null;
+        _Parent = null;
+        stringRaw = ValidateStringRaw(stringRaw);
+        _ElementDictonary = ParseSegmentRawStringToElement(stringRaw);
     }
 
-    internal Segment(string StringRaw, IMessageDelimiters CustomDelimiters)
-      : base(CustomDelimiters)
+    internal Segment(string stringRaw, IMessageDelimiters customDelimiters)
+        : base(customDelimiters)
     {
-      _Temporary = true;
-      _Index = null;
-      _Parent = null;
-      StringRaw = ValidateStringRaw(StringRaw);
-      _ElementDictonary = ParseSegmentRawStringToElement(StringRaw);
+        _Temporary = true;
+        _Index = null;
+        _Parent = null;
+        stringRaw = ValidateStringRaw(stringRaw);
+        _ElementDictonary = ParseSegmentRawStringToElement(stringRaw);
     }
 
     //Only internal Constructors
-    internal Segment(string StringRaw, MessageDelimiters CustomDelimiters, bool Temporary, int? Index, ModelBase Parent)
-      : base(CustomDelimiters)
+    internal Segment(string stringRaw, MessageDelimiters customDelimiters, bool temporary, int? index, ModelBase parent)
+        : base(customDelimiters)
     {
-      _Temporary = Temporary;
-      _Index = Index;
-      _Parent = Parent;
-      StringRaw = ValidateStringRaw(StringRaw);
-      _ElementDictonary = ParseSegmentRawStringToElement(StringRaw);
+        _Temporary = temporary;
+        _Index = index;
+        _Parent = parent;
+        stringRaw = ValidateStringRaw(stringRaw);
+        _ElementDictonary = ParseSegmentRawStringToElement(stringRaw);
     }
 
     //Instance access
-    public IMessageDelimiters MessageDelimiters
-    {
-      get { return this.Delimiters; }
-    }
+    public IMessageDelimiters MessageDelimiters => Delimiters;
 
     public ISegment Clone()
     {
-      return new Segment(this.AsStringRaw, this.Delimiters, true, null, null);
+        return new Segment(AsStringRaw, Delimiters, true, null, null);
     }
 
     public override string ToString()
     {
-      return this.AsString;
+        return AsString;
     }
 
     public override string AsString
     {
-      get
-      {
-        return GetAsStringOrAsRawString(false);
-      }
-      set { this.AsStringRaw = Support.Standard.Escapes.Encode(value, this.Delimiters); }
+        get => GetAsStringOrAsRawString(false);
+        set => AsStringRaw = Support.Standard.Escapes.Encode(value, Delimiters);
     }
 
     public override string AsStringRaw
     {
-      get { return GetAsStringOrAsRawString(true); }
-      set
-      {
-        if (IsHeaderSegment() || this._Index == 1)
-          throw new PeterPiperException(
-            String.Format("Unable to modify an existing {0} segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", this._Code));
-        value = ValidateStringRaw(value);
-        _ElementDictonary = ParseSegmentRawStringToElement(value);
-      }
+        get => GetAsStringOrAsRawString(true);
+        set
+        {
+            if (IsHeaderSegment() || _Index == 1)
+                throw new PeterPiperException(
+                    $"Unable to modify an existing {_Code} segment instance with the AsString " +
+                    $"or AsStringRaw properties. /n You need to create a new Segment instance and use " +
+                    $"it's constructor or selectively edit this segment's parts.");
+            value = ValidateStringRaw(value);
+            _ElementDictonary = ParseSegmentRawStringToElement(value);
+        }
     }
 
-    public bool IsEmpty
-    {
-      get { return (_ElementDictonary.Count == 0); }
-    }
+    public bool IsEmpty => (_ElementDictonary.Count == 0);
 
     public void ClearAll()
     {
-      if (IsHeaderSegment())
-      {
-        Dictionary<int, Element> oNewDic = new Dictionary<int, Element>();
-        oNewDic.Add(1, new Element(ModelSupport.ContentTypeInternal.MainSeparator, _ElementDictonary[1].Delimiters, false, 1, this));
-        oNewDic.Add(2, new Element(ModelSupport.ContentTypeInternal.EncodingCharacters, _ElementDictonary[2].Delimiters, false, 2, this));
-        _ElementDictonary = oNewDic;
-      }
-      else
-      {
+        if (IsHeaderSegment())
+        {
+            Dictionary<int, Element> oNewDic = new Dictionary<int, Element>();
+            oNewDic.Add(1,
+                new Element(ModelSupport.ContentTypeInternal.MainSeparator, _ElementDictonary[1].Delimiters, false, 1,
+                    this));
+            oNewDic.Add(2,
+                new Element(ModelSupport.ContentTypeInternal.EncodingCharacters, _ElementDictonary[2].Delimiters, false,
+                    2, this));
+            _ElementDictonary = oNewDic;
+            return;
+        }
+
         _ElementDictonary.Clear();
-      }
     }
 
     private string _Code;
 
-    public string Code
-    {
-      get { return _Code; }
-    }
+    public string Code => _Code;
 
     private bool _IsMSH = false;
 
-    internal bool IsMSH
-    {
-      get { return _IsMSH; }
-    }
+    internal bool IsMSH => _IsMSH;
 
     public void Add(IElement item)
     {
-      ValidateItemNotInUse(item as Element);
-      this.ElementAppend(item as Element);
+        ValidateItemNotInUse(item as Element);
+        ElementAppend(item as Element);
     }
 
     public void Add(IField item)
     {
-      ValidateItemNotInUse(item as Field);
-      this.FieldAppend(item as Field);
+        ValidateItemNotInUse(item as Field);
+        FieldAppend(item as Field);
     }
 
     public void Insert(int index, IElement item)
     {
-      if (index == 0)
-        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
-      ValidateItemNotInUse(item as Element);
-      this.ElementInsertBefore(item as Element, index);
+        ThrowIfIndexIsZero(index);
+        ValidateItemNotInUse(item as Element);
+        ElementInsertBefore(item as Element, index);
     }
 
     public void Insert(int index, IField item)
     {
-      if (index == 0)
-        throw new PeterPiperException("Field is a one based index, zero is not a valid index.");
-      ValidateItemNotInUse(item as Field);
-      this.FieldInsertBefore(item as Field, index);
+        ThrowIfIndexIsZero(index);
+        ValidateItemNotInUse(item as Field);
+        FieldInsertBefore(item as Field, index);
     }
 
     public void RemoveElementAt(int index)
     {
-      if (index == 0)
-        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
-      this.ElementRemoveAt(index);
+        ThrowIfIndexIsZero(index);
+        ElementRemoveAt(index);
     }
 
     public void RemoveFieldAt(int index)
     {
-      if (index == 0)
-        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
-      this.FieldRemoveAt(index);
+        ThrowIfIndexIsZero(index);
+        FieldRemoveAt(index);
     }
 
-    public int ElementCount
-    {
-      get { return this.CountElement; }
-    }
+    public int ElementCount => CountElement;
 
-    public bool HasElements
-    {
-      get { return this.CountElement > 1; }
-    }
+    public bool HasElements => CountElement > 1;
 
-    public int FieldCount
-    {
-      get { return this.CountField; }
-    }
+    public int FieldCount => CountField;
 
-    public bool HasFields
-    {
-      get { return this.CountField > 1; }
-    }
+    public bool HasFields => CountField > 1;
 
     public IElement Element(int index)
     {
-      if (index == 0)
-        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
-      return this.GetElement(index);
+        ThrowIfIndexIsZero(index);
+        return GetElement(index);
     }
 
     public IField Field(int index)
     {
-      if (Index == 0)
-        throw new PeterPiperException("Element index is a one based index, zero in not allowed");
-      return this.GetField(index);
+        ThrowIfIndexIsZero(index);
+        return GetField(index);
     }
 
     public ReadOnlyCollection<IElement> ElementList
     {
-      get
-      {
-        List<IElement> oNewList = new List<IElement>();
-        int Counter = 1;
-        foreach (var item in _ElementDictonary.OrderBy(x => x.Key))
+        get
         {
-          if (item.Key != Counter)
-          {
-            while (Counter != item.Key)
+            List<IElement> oNewList = new List<IElement>();
+            int Counter = 1;
+            foreach (var item in _ElementDictonary.OrderBy(x => x.Key))
             {
-              oNewList.Add(new Element(string.Empty, this.Delimiters, true, Counter, this));
-              Counter++;
+                if (item.Key != Counter)
+                {
+                    while (Counter != item.Key)
+                    {
+                        oNewList.Add(new Element(string.Empty, Delimiters, true, Counter, this));
+                        Counter++;
+                    }
+
+                    oNewList.Add(item.Value);
+                    Counter++;
+                }
+                else
+                {
+                    oNewList.Add(item.Value);
+                    Counter++;
+                }
             }
 
-            oNewList.Add(item.Value);
-            Counter++;
-          }
-          else
-          {
-            oNewList.Add(item.Value);
-            Counter++;
-          }
+            return oNewList.AsReadOnly();
         }
-
-        return oNewList.AsReadOnly();
-      }
     }
 
     //Element    
+
     internal Element GetElement(int index)
     {
-      if (_ElementDictonary.ContainsKey(index))
-      {
-        _ElementDictonary[index].IsAccessibleElement();
-        return _ElementDictonary[index];
-      }
-      else
-        return new Element(string.Empty, this.Delimiters, true, index, this);
+        if (_ElementDictonary.TryGetValue(index, out Element value))
+        {
+            value.IsAccessibleElement();
+            return value;
+        }
+
+        return new Element(string.Empty, Delimiters, true, index, this);
     }
 
     internal int CountElement
     {
-      get
-      {
-        if (_ElementDictonary.Count > 0)
-          return _ElementDictonary.Keys.Max();
-        else
-          return 0;
-      }
-    }
-
-    internal Element ElementAppend(Element Element)
-    {
-      if (_ElementDictonary.Count > 0)
-      {
-        return ElementInsertBefore(Element, _ElementDictonary.Keys.Max() + 1);
-      }
-      else
-      {
-        Element._Index = 1;
-        Element._Parent = this;
-        if (SetToDictonary(Element))
-          Element._Temporary = false;
-        return _ElementDictonary[1];
-      }
-      //-----------------------------------------------
-      //int InsertAtIndex = 1;
-      //if (_ElementDictonary.Count > 0)
-      //  InsertAtIndex = _ElementDictonary.Keys.Max() + 1;
-      //Element._Index = InsertAtIndex;
-      //Element._Parent = this;
-      //Element._Temporary = false;
-      //_ElementDictonary.Add(InsertAtIndex, Element);
-      //return _ElementDictonary[_ElementDictonary.Keys.Max()];
-    }
-
-    internal Element ElementInsertBefore(Element Element, int Index)
-    {
-      int ElementInsertedAt = 0;
-
-      if (IsHeaderSegment())
-      {
-        if (Index == 1 || Index == 2)
-          if (_ElementDictonary.ContainsKey(Index))
-            _ElementDictonary[Index].IsAccessibleElement();
-      }
-
-      //Empty Dic so just add as first item 
-      if (_ElementDictonary.Count == 0)
-      {
-        ElementInsertedAt = Index;
-        Element._Index = ElementInsertedAt;
-        Element._Parent = this;
-        if (SetToDictonary(Element))
-          Element._Temporary = false;
-      }
-      //Asked to insert before an index larger than the largest in Dic so just add to the end
-      else if (_ElementDictonary.Keys.Max() < Index)
-      {
-        ElementInsertedAt = Index;
-        Element._Index = ElementInsertedAt;
-        Element._Parent = this;
-        if (SetToDictonary(Element))
-          Element._Temporary = false;
-      }
-      //Asked to insert within items already in the Dic so cycle through moving each item higher or equal up by one then just add the new item
-      //The Content Dictionary is different than all the others as it is to never have gaps between items and it is Zero based.
-      else
-      {
-        foreach (var item in _ElementDictonary.Reverse())
+        get
         {
-          if (item.Key >= Index)
-          {
-            item.Value._Index++;
-            if (_ElementDictonary.ContainsKey(item.Key + 1))
+            if (_ElementDictonary.Count > 0)
             {
-              _ElementDictonary.Remove(item.Key);
-              _ElementDictonary[item.Key + 1] = item.Value;
+                return _ElementDictonary.Keys.Max();
             }
-            else
-            {
-              _ElementDictonary.Remove(item.Key);
-              _ElementDictonary.Add(item.Key + 1, item.Value);
-            }
-          }
+
+            return 0;
+        }
+    }
+
+    internal Element ElementAppend(Element element)
+    {
+        if (_ElementDictonary.Count > 0)
+        {
+            return ElementInsertBefore(element, _ElementDictonary.Keys.Max() + 1);
         }
 
-        Element._Index = Index;
-        Element._Parent = this;
-        SetParent();
-        Element._Temporary = false;
-        _ElementDictonary[Index] = Element;
-        ElementInsertedAt = Index;
-      }
-
-      return _ElementDictonary[ElementInsertedAt];
+        element._Index = 1;
+        element._Parent = this;
+        if (SetToDictonary(element))
+            element._Temporary = false;
+        return _ElementDictonary[1];
     }
 
-    internal bool ElementRemoveAt(int Index)
+    internal Element ElementInsertBefore(Element element, int index)
     {
-      if (_ElementDictonary.Keys.Max() >= Index)
-      {
+        int ElementInsertedAt = 0;
+
         if (IsHeaderSegment())
         {
-          if (_ElementDictonary.ContainsKey(Index))
-            _ElementDictonary[Index].IsAccessibleElement();
+            if (index == 1 || index == 2)
+            {
+                if (_ElementDictonary.ContainsKey(index))
+                {
+                    _ElementDictonary[index].IsAccessibleElement();
+                }
+            }
         }
 
-        Dictionary<int, Element> oNewDic = new Dictionary<int, Element>();
-        foreach (var item in _ElementDictonary)
+        //Empty Dic so just add as first item 
+        if (_ElementDictonary.Count == 0)
         {
-          if (item.Key < Index)
-          {
-            oNewDic.Add(item.Key, item.Value);
-          }
-          else if (item.Key > Index)
-          {
-            item.Value._Index--;
-            oNewDic.Add(item.Key - 1, item.Value);
-          }
+            ElementInsertedAt = index;
+            element._Index = ElementInsertedAt;
+            element._Parent = this;
+            if (SetToDictonary(element))
+            {
+                element._Temporary = false;
+            }
+
+            return _ElementDictonary[ElementInsertedAt];
         }
 
-        _ElementDictonary = oNewDic;
-        return true;
-      }
+        //Asked to insert before an index larger than the largest in Dic so just add to the end
+        if (_ElementDictonary.Keys.Max() < index)
+        {
+            ElementInsertedAt = index;
+            element._Index = ElementInsertedAt;
+            element._Parent = this;
+            if (SetToDictonary(element))
+            {
+                element._Temporary = false;
+            }
 
-      return false;
-      //----------------------------------------------
+            return _ElementDictonary[ElementInsertedAt];
+        }
+        //Asked to insert within items already in the Dic so cycle through moving each item higher or equal up by one then just add the new item
+        //The Content Dictionary is different than all the others as it is to never have gaps between items and it is Zero based.
 
+        foreach (var item in _ElementDictonary.Reverse())
+        {
+            if (item.Key >= index)
+            {
+                item.Value._Index++;
+                if (_ElementDictonary.ContainsKey(item.Key + 1))
+                {
+                    _ElementDictonary.Remove(item.Key);
+                    _ElementDictonary[item.Key + 1] = item.Value;
+                }
+                else
+                {
+                    _ElementDictonary.Remove(item.Key);
+                    _ElementDictonary.Add(item.Key + 1, item.Value);
+                }
+            }
+        }
 
-      //if (_ElementDictonary.ContainsKey(Index))
-      //{
-      //  _ElementDictonary[Index].IsAccessibleElement();
-      //  _ElementDictonary.Remove(Index);
-      //  return true;
-      //}
-      //return false;
+        element._Index = index;
+        element._Parent = this;
+        SetParent();
+        element._Temporary = false;
+        _ElementDictonary[index] = element;
+        ElementInsertedAt = index;
+
+        return _ElementDictonary[ElementInsertedAt];
+    }
+
+    internal bool ElementRemoveAt(int index)
+    {
+        if (_ElementDictonary.Keys.Max() >= index)
+        {
+            if (IsHeaderSegment())
+            {
+                if (_ElementDictonary.ContainsKey(index))
+                    _ElementDictonary[index].IsAccessibleElement();
+            }
+
+            Dictionary<int, Element> oNewDic = new Dictionary<int, Element>();
+            foreach (var item in _ElementDictonary)
+            {
+                if (item.Key < index)
+                {
+                    oNewDic.Add(item.Key, item.Value);
+                }
+                else if (item.Key > index)
+                {
+                    item.Value._Index--;
+                    oNewDic.Add(item.Key - 1, item.Value);
+                }
+            }
+
+            _ElementDictonary = oNewDic;
+            return true;
+        }
+
+        return false;
     }
 
     //Field    
+
     internal Field GetField(int index)
     {
-      if (_ElementDictonary.ContainsKey(index))
-        return _ElementDictonary[index].GetRepeat(1);
-      else
-      {
-        Element oElement = new Element(String.Empty, this.Delimiters, true, index, this);
-        return oElement.RepeatAppend(new Field(string.Empty, this.Delimiters, true, 1, oElement));
-      }
+        if (_ElementDictonary.TryGetValue(index, out Element value))
+        {
+            return value.GetRepeat(1);
+        }
+
+        Element oElement = new Element(String.Empty, Delimiters, true, index, this);
+        return oElement.RepeatAppend(new Field(string.Empty, Delimiters, true, 1, oElement));
     }
 
-    internal int CountField
+    internal int CountField => CountElement;
+
+    internal Field FieldAppend(Field field)
     {
-      get { return this.CountElement; }
+        if (_ElementDictonary.Count > 0)
+        {
+            Element oElement = new Element(string.Empty, Delimiters, true, _ElementDictonary.Keys.Max() + 1, this);
+            return oElement.RepeatAppend(field);
+        }
+        else
+        {
+            Element oElement = new Element(string.Empty, Delimiters, true, 1, this);
+            return oElement.RepeatAppend(field);
+        }
     }
 
-    internal Field FieldAppend(Field Field)
+    internal Field FieldInsertBefore(Field field, int index)
     {
-      if (_ElementDictonary.Count > 0)
-      {
-        Element oElement = new Element(string.Empty, this.Delimiters, true, _ElementDictonary.Keys.Max() + 1, this);
-        return oElement.RepeatAppend(Field);
-      }
-      else
-      {
-        //_ElementDictonary = new Dictionary<int, Element>();
-        //_ElementDictonary.Add(1, new Element(string.Empty, this.Delimiters, true, 1, this));
-        //_ElementDictonary[1].RepeatAppend(Field);
-        //return _ElementDictonary[1].GetRepeat(1);
-        Element oElement = new Element(string.Empty, this.Delimiters, true, 1, this);
-        return oElement.RepeatAppend(Field);
-      }
+        Element oElement = new Element(String.Empty, Delimiters, true, index, this);
+        return ElementInsertBefore(oElement, index).RepeatAppend(field);
     }
 
-    internal Field FieldInsertBefore(Field Field, int Index)
+    internal bool FieldRemoveAt(int index)
     {
-      Element oElement = new Element(String.Empty, this.Delimiters, true, Index, this);
-      return this.ElementInsertBefore(oElement, Index).RepeatAppend(Field);
-    }
-
-    internal bool FieldRemoveAt(int Index)
-    {
-      return this.ElementRemoveAt(Index);
+        return ElementRemoveAt(index);
     }
 
     //Building
-    private string GetAsStringOrAsRawString(bool RawString)
+
+    private string GetAsStringOrAsRawString(bool rawString)
     {
-      string SegmentPrefix = string.Empty;
+        string SegmentPrefix;
 
-      if (IsHeaderSegment())
-        SegmentPrefix = string.Format("{0}", this._Code);
-      else
-        SegmentPrefix = string.Format("{0}{1}", this._Code, this.Delimiters.Field);
-
-      if (IsHeaderSegment() && _ElementDictonary.Count == 2)
-      {
-        if (_IsMSH)
+        if (IsHeaderSegment())
         {
-          return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field);  
+            SegmentPrefix = _Code;
         }
         else
         {
-          return string.Format("{0}{1}{2}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw);
+            SegmentPrefix = $"{_Code}{Delimiters.Field}";
         }
-      }
-      
-      // if (IsHeaderSegment() && _ElementDictonary.Count == 2)
-      // {
-      //   return string.Format("{0}{1}{2}{3}", SegmentPrefix, this.Delimiters.Field, _ElementDictonary[2].AsStringRaw, this.Delimiters.Field);
-      // }
 
-      if (_ElementDictonary.Count == 0)
-      {
-        return SegmentPrefix;
-      }
-
-      StringBuilder oStringBuilder = new StringBuilder(SegmentPrefix);
-      _ElementDictonary.OrderByDescending(i => i.Key);
-      for (int i = 1; i < _ElementDictonary.Keys.Max() + 1; i++)
-      {
-        if (_ElementDictonary.ContainsKey(i))
+        if (IsHeaderSegment() && _ElementDictonary.Count == 2)
         {
-          if (RawString)
-            oStringBuilder.Append(_ElementDictonary[i].AsStringRaw);
-          else
-            oStringBuilder.Append(_ElementDictonary[i].AsString);
+            if (_IsMSH)
+            {
+                return $"{SegmentPrefix}{Delimiters.Field}{_ElementDictonary[2].AsStringRaw}{Delimiters.Field}";
+            }
+
+            return $"{SegmentPrefix}{Delimiters.Field}{_ElementDictonary[2].AsStringRaw}";
         }
 
-        if (i != _ElementDictonary.Keys.Max())
+        if (_ElementDictonary.Count == 0)
         {
-          if (IsHeaderSegment())
-          {
-            if (i != 1)
-              oStringBuilder.Append(this.Delimiters.Field);
-          }
-          else
-          {
-            oStringBuilder.Append(this.Delimiters.Field);
-          }
+            return SegmentPrefix;
         }
-      }
 
-      return oStringBuilder.ToString();
+        StringBuilder oStringBuilder = new StringBuilder(SegmentPrefix);
+        _ElementDictonary.OrderByDescending(i => i.Key);
+        for (int i = 1; i < _ElementDictonary.Keys.Max() + 1; i++)
+        {
+            if (_ElementDictonary.ContainsKey(i))
+            {
+                if (rawString)
+                    oStringBuilder.Append(_ElementDictonary[i].AsStringRaw);
+                else
+                    oStringBuilder.Append(_ElementDictonary[i].AsString);
+            }
+
+            if (i != _ElementDictonary.Keys.Max())
+            {
+                if (IsHeaderSegment())
+                {
+                    if (i != 1)
+                        oStringBuilder.Append(Delimiters.Field);
+                }
+                else
+                {
+                    oStringBuilder.Append(Delimiters.Field);
+                }
+            }
+        }
+
+        return oStringBuilder.ToString();
     }
 
     //Maintenance
+
     internal bool SetToDictonary(Element oElement)
     {
-      try
-      {
-        if (_ElementDictonary.ContainsKey(Convert.ToInt32(oElement._Index)))
+        try
         {
-          _ElementDictonary[Convert.ToInt32(oElement._Index)]._Temporary = true;
-          _ElementDictonary[Convert.ToInt32(oElement._Index)]._Parent = null;
-          _ElementDictonary[Convert.ToInt32(oElement._Index)]._Index = null;
-          _ElementDictonary[Convert.ToInt32(oElement._Index)] = oElement;
-        }
-        else
-        {
-          _ElementDictonary.Add(Convert.ToInt32(oElement._Index), oElement);
-        }
+            if (_ElementDictonary.ContainsKey(Convert.ToInt32(oElement._Index)))
+            {
+                _ElementDictonary[Convert.ToInt32(oElement._Index)]._Temporary = true;
+                _ElementDictonary[Convert.ToInt32(oElement._Index)]._Parent = null;
+                _ElementDictonary[Convert.ToInt32(oElement._Index)]._Index = null;
+                _ElementDictonary[Convert.ToInt32(oElement._Index)] = oElement;
+            }
+            else
+            {
+                _ElementDictonary.Add(Convert.ToInt32(oElement._Index), oElement);
+            }
 
-        SetParent();
-        return true;
-      }
-      catch (Exception Exec)
-      {
-        throw new PeterPiperException("Error setting Element into Segment parent", Exec);
-      }
+            SetParent();
+            return true;
+        }
+        catch (Exception Exec)
+        {
+            throw new PeterPiperException("Error setting Element into Segment parent", Exec);
+        }
     }
 
     private void SetParent()
     {
-      if (this._Temporary)
-      {
-        if (this._Parent is Message)
+        if (_Temporary)
         {
-          Message oMessage = this._Parent as Message;
-          if (oMessage.SetContent(this))
-          {
-            this._Temporary = false;
-          }
+            if (_Parent is Message oMessage)
+            {
+                if (oMessage.SetContent(this))
+                {
+                    _Temporary = false;
+                }
+            }
         }
-      }
     }
 
-    internal void RemoveChild(int Index)
+    internal void RemoveChild(int index)
     {
-      try
-      {
-        if (_ElementDictonary.ContainsKey(Index))
+        try
         {
-          _ElementDictonary[Index]._Temporary = true;
-          _ElementDictonary[Index]._Index = null;
-          _ElementDictonary[Index]._Parent = null;
-        }
+            if (_ElementDictonary.ContainsKey(index))
+            {
+                _ElementDictonary[index]._Temporary = true;
+                _ElementDictonary[index]._Index = null;
+                _ElementDictonary[index]._Parent = null;
+            }
 
-        _ElementDictonary.Remove(Index);
-      }
-      catch
-      {
-        throw new PeterPiperException(String.Format("Segment's Element Dictonary did not contain element Index {0} for removal call from Element Instance", Index));
-      }
+            _ElementDictonary.Remove(index);
+        }
+        catch
+        {
+            throw new PeterPiperException(
+                $"Segment's Element Dictonary did not contain element Index {index} for removal call from Element Instance");
+        }
     }
 
     //Parsing and Validation
-    private Dictionary<int, Element> ParseSegmentRawStringToElement(String StringRaw)
+
+    private Dictionary<int, Element> ParseSegmentRawStringToElement(String stringRaw)
     {
-      //Example:  "PID|||First1^Second1^Third1^~First2^Second2&\\H\\Second22\\N\\^Third2|||";
-      _Code = StringRaw.Substring(0, 3);
-      if (IsHeaderSegment())
-      {
-        _IsMSH = (_Code == Support.Standard.Segments.Msh.Code);
-        return ParseHeaderSegmentStringToElement(StringRaw.Substring(3, StringRaw.Length - 3), _Code);
-      }
+        //Example:  "PID|||First1^Second1^Third1^~First2^Second2&\\H\\Second22\\N\\^Third2|||";
+        _Code = stringRaw.Substring(0, 3);
+        if (IsHeaderSegment())
+        {
+            _IsMSH = (_Code == Support.Standard.Segments.Msh.Code);
+            return ParseHeaderSegmentStringToElement(stringRaw.Substring(3, stringRaw.Length - 3), _Code);
+        }
 
-      _IsMSH = false;
-      return ParseNormalSegmentStringToElement(StringRaw.Substring(4, StringRaw.Length - 4));
-
+        _IsMSH = false;
+        return ParseNormalSegmentStringToElement(stringRaw.Substring(4, stringRaw.Length - 4));
     }
 
-    private Dictionary<int, Element> ParseNormalSegmentStringToElement(string StringRaw)
+    private Dictionary<int, Element> ParseNormalSegmentStringToElement(string stringRaw)
     {
-      _ElementDictonary = new Dictionary<int, Element>();
-      if (StringRaw.Contains(this.Delimiters.Field))
-      {
-        string[] ElementParts = StringRaw.Split(this.Delimiters.Field);
+        _ElementDictonary = new Dictionary<int, Element>();
+        if (stringRaw.Contains(Delimiters.Field))
+        {
+            string[] ElementParts = stringRaw.Split(Delimiters.Field);
+            int ElementPositionCounter = 1;
+            foreach (string Part in ElementParts)
+            {
+                if (Part != string.Empty)
+                {
+                    //_ElementDictonary.Add(ElementPositionCounter, new Element(Part, this.Delimiters, false, ElementPositionCounter, this));
+                    new Element(Part, Delimiters, true, ElementPositionCounter, this);
+                }
+
+                ElementPositionCounter++;
+            }
+        }
+        else
+        {
+            //_ElementDictonary.Add(1, new Element(StringRaw, this.Delimiters, false, 1, this));
+            new Element(stringRaw, Delimiters, true, 1, this);
+        }
+
+        return _ElementDictonary;
+    }
+
+    private Dictionary<int, Element> ParseHeaderSegmentStringToElement(string stringRaw, string code)
+    {
+        //example: |^~\&|HNAM RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN     
+        _ElementDictonary = new Dictionary<int, Element>();
+
+        if (!stringRaw.Contains(Delimiters.Field))
+        {
+            if (code == Support.Standard.Segments.Msh.Code)
+            {
+                throw new PeterPiperException(
+                    "MSH Segment being parsed has no Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
+            }
+
+            //This will be BHS & FHS Segment s for HL7 Batches
+            throw new PeterPiperException(
+                $"{code} Segment being parsed has no Fields, {code} Segments must have a minimum of 2 Fields, {code}-2 being the Encoding Characters");
+        }
+
+        string[] ElementParts = stringRaw.Split(Delimiters.Field);
+        if (code == Support.Standard.Segments.Msh.Code && ElementParts.Length < 12)
+        {
+            throw new PeterPiperException(
+                $"MSH Segment being parsed has less than 12 Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field in MSH-12");
+        }
+
         int ElementPositionCounter = 1;
         foreach (string Part in ElementParts)
         {
-          if (Part != string.Empty)
-          {
-            //_ElementDictonary.Add(ElementPositionCounter, new Element(Part, this.Delimiters, false, ElementPositionCounter, this));
-            new Element(Part, this.Delimiters, true, ElementPositionCounter, this);
-          }
+            if (Part != string.Empty && ElementPositionCounter > 2)
+            {
+                _ElementDictonary.Add(ElementPositionCounter,
+                    new Element(Part, Delimiters, false, ElementPositionCounter, this));
+            }
+            else if (ElementPositionCounter == 1)
+            {
+                _ElementDictonary.Add(ElementPositionCounter,
+                    new Element(ModelSupport.ContentTypeInternal.MainSeparator, Delimiters, false,
+                        ElementPositionCounter, this));
+            }
+            else if (ElementPositionCounter == 2)
+            {
+                _ElementDictonary.Add(ElementPositionCounter,
+                    new Element(ModelSupport.ContentTypeInternal.EncodingCharacters, Delimiters, false,
+                        ElementPositionCounter, this));
+            }
 
-          ElementPositionCounter++;
+            ElementPositionCounter++;
         }
-      }
-      else
-      {
-        //_ElementDictonary.Add(1, new Element(StringRaw, this.Delimiters, false, 1, this));
-        new Element(StringRaw, this.Delimiters, true, 1, this);
-      }
 
-      return _ElementDictonary;
+        return _ElementDictonary;
     }
 
-    private Dictionary<int, Element> ParseHeaderSegmentStringToElement(string StringRaw, string Code)
+    private string ValidateStringRaw(string stringRaw)
     {
-      //example: |^~\&|HNAM RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN     
-      _ElementDictonary = new Dictionary<int, Element>();
-
-
-      if (!StringRaw.Contains(this.Delimiters.Field))
-      {
-        if (Code == Support.Standard.Segments.Msh.Code)
+        if (stringRaw.Length == 3)
         {
-          throw new PeterPiperException("MSH Segment being parsed has no Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field");
+            stringRaw += Delimiters.Field;
         }
 
-        //This will be BHS & FHS Segment s for HL7 Batches
-        throw new PeterPiperException(String.Format("{0} Segment being parsed has no Fields, {0} Segments must have a minimum of 2 Fields, {0}-2 being the Encoding Characters", Code));
-      }
+        stringRaw = ValidateSegmentCode(stringRaw);
+        Char[] CharactersAllowed = { Delimiters.Field };
 
-      string[] ElementParts = StringRaw.Split(this.Delimiters.Field);
-      if (Code == Support.Standard.Segments.Msh.Code && ElementParts.Length < 12)
-      {
-        throw new PeterPiperException($"MSH Segment being parsed has less than 12 Fields, MSH Segments must have a minimum of 12 Fields to include HL7 Version Field in MSH-12");
-      }
-
-      int ElementPositionCounter = 1;
-      foreach (string Part in ElementParts)
-      {
-        if (Part != string.Empty && ElementPositionCounter > 2)
+        if (stringRaw.IndexOfAny(CharactersAllowed) < 0)
         {
-          _ElementDictonary.Add(ElementPositionCounter, new Element(Part, this.Delimiters, false, ElementPositionCounter, this));
-        }
-        else if (ElementPositionCounter == 1)
-        {
-          _ElementDictonary.Add(ElementPositionCounter, new Element(ModelSupport.ContentTypeInternal.MainSeparator, this.Delimiters, false, ElementPositionCounter, this));
-        }
-        else if (ElementPositionCounter == 2)
-        {
-          _ElementDictonary.Add(ElementPositionCounter, new Element(ModelSupport.ContentTypeInternal.EncodingCharacters, this.Delimiters, false, ElementPositionCounter, this));
+            throw new PeterPiperException(
+                "Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).");
         }
 
-        ElementPositionCounter++;
-      }
+        if (stringRaw.TrimStart().Substring(3, 1) != Delimiters.Field.ToString())
+        {
+            throw new PeterPiperException(
+                "Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).");
+        }
 
-      return _ElementDictonary;
+        if (!System.Text.RegularExpressions.Regex.IsMatch(stringRaw.TrimStart().Substring(0, 3), @"^[A-Z0-9]+$"))
+        {
+            throw new PeterPiperException("Segment data must begin with a three character upper-case alpha code");
+        }
+
+        return stringRaw;
     }
 
-    private string ValidateStringRaw(string StringRaw)
+    private string ValidateSegmentCode(string stringRaw)
     {
-      if (StringRaw.Length == 3)
-      {
-        StringRaw = StringRaw += this.Delimiters.Field;
-      }
-
-      StringRaw = ValidateSegmentCode(StringRaw);
-      Char[] CharatersAllowed = { this.Delimiters.Field };
-
-      if (StringRaw.IndexOfAny(CharatersAllowed) < 0)
-      {
-        throw new PeterPiperException(String.Format(
-                                        "Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
-      }
-      else if (StringRaw.TrimStart().Substring(3, 1) != this.Delimiters.Field.ToString())
-      {
-        throw new PeterPiperException(String.Format(
-                                        "Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
-      }
-      else if (!System.Text.RegularExpressions.Regex.IsMatch(StringRaw.TrimStart().Substring(0, 3), @"^[A-Z0-9]+$"))
-      {
-        throw new PeterPiperException("Segment data must begin with a three character upper-case alpha code");
-      }
-
-      return StringRaw;
-    }
-
-    private string ValidateSegmentCode(string StringRaw)
-    {
-      Char[] CharatersAllowed = { this.Delimiters.Field };
-      if (StringRaw.IndexOfAny(CharatersAllowed) < 0)
-      {
-        if (StringRaw.Length == 4 && StringRaw.Substring(3, 1).ToCharArray()[0] == this.Delimiters.Field)
+        Char[] CharatersAllowed = { Delimiters.Field };
+        if (stringRaw.IndexOfAny(CharatersAllowed) < 0)
         {
-          return StringRaw;
+            if (stringRaw.Length == 4 && stringRaw.Substring(3, 1).ToCharArray()[0] == Delimiters.Field)
+            {
+                return stringRaw;
+            }
+
+            throw new PeterPiperException("Segments must begin with a three character code followed by a HL7 " +
+                                          "Field delimiter. Segments must end with only a carriage return (Hex 13).");
         }
-        else
+
+        if (stringRaw.IndexOf(Delimiters.Field) != 3)
         {
-          throw new PeterPiperException(String.Format(
-                                          "Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
+            throw new PeterPiperException("Segments must begin with a three character code followed by a " +
+                                          "HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).");
         }
-      }
-      else
-      {
-        if (StringRaw.IndexOf(this.Delimiters.Field) != 3)
-        {
-          throw new PeterPiperException(String.Format(
-                                          "Segments must begin with a three character code followed by a HL7 Field delimiter. Segments must end with only a carriage return (Hex 13).", this.Delimiters.Field));
-        }
-        else
-        {
-          return StringRaw;
-        }
-      }
+
+        return stringRaw;
     }
 
     private bool IsHeaderSegment()
     {
-      return (_HeaderSegmentCodes.Contains(this._Code));
+        return _HeaderSegmentCodes.Contains(_Code);
     }
-  }
+
+    private static void ThrowIfIndexIsZero(int index)
+    {
+        if (index == 0)
+        {
+            throw new PeterPiperException("Element index is a one based index, zero in not allowed");
+        }
+    }
 }

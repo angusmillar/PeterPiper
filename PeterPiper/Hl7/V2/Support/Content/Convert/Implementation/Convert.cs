@@ -1,44 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PeterPiper.Hl7.V2.Model.Implementation;
-using PeterPiper.Hl7.V2.Support.Content.Convert;
+﻿using PeterPiper.Hl7.V2.Model.Implementation;
 
-namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation
+namespace PeterPiper.Hl7.V2.Support.Content.Convert.Implementation;
+
+public class Convert : IConvert
 {
-  public class Convert : PeterPiper.Hl7.V2.Support.Content.Convert.IConvert
+  private readonly ContentBase _ContentBase;
+
+  internal Convert(ContentBase contentBase)
   {
-    private ContentBase _ContentBase;
-
-    internal Convert(ContentBase ContentBase)
-    {
-      _ContentBase = ContentBase;
-    }
-
-    public IBase64 Base64
-    {
-      get
-      {
-        return new Base64(_ContentBase);
-      }
-    }
-    
-    public IDateTime DateTime
-    {
-      get
-      {
-        return new DateTime(_ContentBase);
-      }
-    }
-
-    public IInteger Integer
-    {
-      get
-      {
-        return new Integer(_ContentBase);
-      }
-    }
-
+    _ContentBase = contentBase;
   }
+
+  public IBase64 Base64 => new Base64(_ContentBase);
+
+  public IDateTime DateTime => new DateTime(_ContentBase);
+
+  public IInteger Integer => new Integer(_ContentBase);
 }

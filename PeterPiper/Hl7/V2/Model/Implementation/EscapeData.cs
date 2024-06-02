@@ -14,7 +14,7 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       if (EscapeType == EscapeType.NotAnEscape)
         throw new PeterPiperException(String.Format("EscapeMetaData's EscapeType argument can not be set to '{0}', maybe you should choose '{1}'", EscapeType.NotAnEscape.ToString(), EscapeType.Unknown.ToString()));
       this._EscapeType = EscapeType;
-      this._EscapeTypeCharater = Escapes.ResolveEscapeChararter(_EscapeType);
+      this._EscapeTypeCharacter = Escapes.ResolveEscapeCharacter(_EscapeType);
       this._MetaData = MetaData;
     }
     public EscapeData(string ContentEscapeString)
@@ -25,11 +25,11 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       this._EscapeType = Escapes.ResolveEscapeType(ContentEscapeString);
       if (_EscapeType != EscapeType.Unknown)
       {
-        this._EscapeTypeCharater = Escapes.ResolveEscapeChararter(_EscapeType);
+        this._EscapeTypeCharacter = Escapes.ResolveEscapeCharacter(_EscapeType);
       }
       else
       {
-        this._EscapeTypeCharater = ContentEscapeString.ToCharArray()[0].ToString();
+        this._EscapeTypeCharacter = ContentEscapeString.ToCharArray()[0].ToString();
       }
 
       if (ContentEscapeString.Length > 1)
@@ -55,12 +55,21 @@ namespace PeterPiper.Hl7.V2.Model.Implementation
       }
     }
 
-    private string _EscapeTypeCharater;
+    public string EscapeTypeCharacter
+    {
+      get
+      {
+      return _EscapeTypeCharacter;
+      } 
+    }
+    
+
+    private string _EscapeTypeCharacter;
     public string EscapeTypeCharater
     {
       get
       {
-        return _EscapeTypeCharater;
+        return _EscapeTypeCharacter;
       }
     }
 

@@ -1,75 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.IO;
 using PeterPiper.Hl7.V2.CustomException;
 
-namespace PeterPiper.Hl7.V2.Support.TextFile
+namespace PeterPiper.Hl7.V2.Support.TextFile;
+
+public class Hl7StreamWriter 
 {
-  public class HL7StreamWriter 
-  {
-    public enum HL7OutputStyles { HumanReadable, InterfaceReadable };
+  public enum Hl7OutputStyles { HumanReadable, InterfaceReadable };
 
-    private string _Path;
-    private bool _Append;
+  private string _Path;
+  private bool _Append;
     
-    public HL7StreamWriter(string path, bool Append)
-    {
-      _Path = path;
-      _Append = Append;
-    }
-    public HL7StreamWriter(string path)
-    {
-      _Path = path;
-      _Append = false;
-    }
+  public Hl7StreamWriter(string path, bool append)
+  {
+    _Path = path;
+    _Append = append;
+  }
+  public Hl7StreamWriter(string path)
+  {
+    _Path = path;
+    _Append = false;
+  }
 
-    private void _Write(string OneMessage, HL7OutputStyles eHL7OutputStyle)
+  private void _Write(string oneMessage, Hl7OutputStyles eHl7OutputStyle)
+  {
+    var Mode = FileMode.Create;
+    if (_Append)
     {
-      var Mode = FileMode.Create;
-      if (_Append)
-        Mode = FileMode.Append;
-
-      using (var stream = new FileStream(_Path, Mode, FileAccess.Write, FileShare.Read, 4096, FileOptions.SequentialScan))
+      Mode = FileMode.Append;
+    }
+      
+    using (var stream = new FileStream(_Path, Mode, FileAccess.Write, FileShare.Read, 4096, FileOptions.SequentialScan))
+    {
+      using (var streamWriter = new StreamWriter(stream, System.Text.Encoding.UTF8, 1024, false))
       {
-        using (var streamWriter = new StreamWriter(stream, System.Text.Encoding.UTF8, 1024, false))
+        if (eHl7OutputStyle == Hl7OutputStyles.HumanReadable)
         {
-          if (eHL7OutputStyle == HL7OutputStyles.HumanReadable)
+          string[] SpltMessageSegments = oneMessage.Split(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SegmentTerminator);
+          for (int i = 0; i < SpltMessageSegments.Length; i++)
           {
-            string[] SpltMessagSegments = OneMessage.Split(PeterPiper.Hl7.V2.Support.Standard.Delimiters.SegmentTerminator);
-            for (int i = 0; i < SpltMessagSegments.Length; i++)
-            {
-              streamWriter.Write(String.Format("{0}{1}", SpltMessagSegments[i], System.Environment.NewLine));
-            }
+            streamWriter.Write($"{SpltMessageSegments[i]}{System.Environment.NewLine}");
           }
-          else if (eHL7OutputStyle == HL7OutputStyles.InterfaceReadable)
-          {
-            streamWriter.Write(OneMessage);
-            streamWriter.Write(System.Environment.NewLine);
-          }
-          else
-          {
-            throw new PeterPiperException("Unknown HL7OutputStyles of '" + eHL7OutputStyle.ToString() + "' Found");
-          }
+        }
+        else if (eHl7OutputStyle == Hl7OutputStyles.InterfaceReadable)
+        {
+          streamWriter.Write(oneMessage);
+          streamWriter.Write(System.Environment.NewLine);
+        }
+        else
+        {
+          throw new PeterPiperException("Unknown HL7OutputStyles of '" + eHl7OutputStyle.ToString() + "' Found");
         }
       }
     }
+  }
     
-    public void Write(string OneMessage, HL7OutputStyles eHL7OutputStyle)
+  public void Write(string oneMessage, Hl7OutputStyles eHl7OutputStyle)
+  {
+    _Write(oneMessage, eHl7OutputStyle);
+  }
+  public void Write(PeterPiper.Hl7.V2.Model.IMessage oHl7, Hl7OutputStyles eHl7OutputStyle)
+  {
+    _Write(oHl7.AsStringRaw, eHl7OutputStyle);
+  }
+  public void Write(List<PeterPiper.Hl7.V2.Model.IMessage> oMessageList, Hl7OutputStyles eHl7OutputStyle)
+  {
+    foreach (var oHl7 in oMessageList)
     {
-      _Write(OneMessage, eHL7OutputStyle);
-    }
-    public void Write(PeterPiper.Hl7.V2.Model.IMessage oHL7, HL7OutputStyles eHL7OutputStyle)
-    {
-      _Write(oHL7.AsStringRaw, eHL7OutputStyle);
-    }
-    public void Write(List<PeterPiper.Hl7.V2.Model.IMessage> oMessageList, HL7OutputStyles eHL7OutputStyle)
-    {
-      foreach (var oHL7 in oMessageList)
-      {
-        _Write(oHL7.AsStringRaw, eHL7OutputStyle);
-      }
+      _Write(oHl7.AsStringRaw, eHl7OutputStyle);
     }
   }
 }
