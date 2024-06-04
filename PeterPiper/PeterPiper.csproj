@@ -12,10 +12,12 @@
     <FileVersion>1.0.1.1</FileVersion>
     <Version>1.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>7.0.1</PackageVersion>
-    <PackageReleaseNotes>Update for .NET 7</PackageReleaseNotes>
-    <TargetFramework>net7.0</TargetFramework>
-    <LangVersion>11</LangVersion>
+    <PackageVersion>8.0.0</PackageVersion>
+    <PackageReleaseNotes>Update for .NET 8</PackageReleaseNotes>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Hl7\V2\Schema\XmlParser\XMLSchemaFiles\V2_3\ACK.xsd">

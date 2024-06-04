@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <!--<TargetFramework>netcoreapp1.0</TargetFramework>-->
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
 
-    <LangVersion>11</LangVersion>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

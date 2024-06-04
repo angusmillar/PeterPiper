@@ -190,7 +190,6 @@ public class File : IFile
     if (_Delimiters.Escape != delimitersToCompare.Escape)
       return false;
     return true;
-    ;
   }
   private static List<List<string>> GetBatchSegmentList(List<string> fileSegmentList)
   {
