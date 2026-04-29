@@ -21,7 +21,7 @@ namespace TestPeterPiper.TestModel
     public void Hl7ReaderConstructorTest()
     {
 
-      string path = Support.PathSupport.AssemblyDirectory + @"\TestResource\TestSetOfMsg.dat";
+      string path = Path.Combine(Support.PathSupport.AssemblyDirectory, "TestResource", "TestSetOfMsg.dat");
 
       Hl7StreamReader target = new Hl7StreamReader(path);
       target.Close();
@@ -57,8 +57,8 @@ namespace TestPeterPiper.TestModel
     public void ReadTest()
     {
       
-      string readpath = Support.PathSupport.AssemblyDirectory + "\\TestResource\\TestSetOfMsg.dat";
-      string writepath = Support.PathSupport.AssemblyDirectory + "\\TestResource\\TestSetOfMsg2.dat";
+      string readpath = Path.Combine(Support.PathSupport.AssemblyDirectory, "TestResource", "TestSetOfMsg.dat");
+      string writepath = Path.Combine(Support.PathSupport.AssemblyDirectory, "TestResource", "TestSetOfMsg2.dat");
       if (File.Exists(writepath))
         File.Delete(writepath);
 

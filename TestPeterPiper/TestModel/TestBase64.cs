@@ -19,7 +19,7 @@ namespace TestPeterPiper.TestModel
     [TestMethod]
     public void DecoderTest()
     {
-      string path = Support.PathSupport.AssemblyDirectory + @"\TestResource\ED Data Test.zip";
+      string path = Path.Combine(Support.PathSupport.AssemblyDirectory, "TestResource", "ED Data Test.zip");
       
       string NewPath = String.Empty;
       byte[] item = File.ReadAllBytes(path);
