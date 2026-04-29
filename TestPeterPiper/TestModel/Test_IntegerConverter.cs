@@ -17,7 +17,7 @@ namespace TestPeterPiper.TestModel
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|2147483647|P|2.3.1";
       var target = Creator.Segment(StringRaw);
       Int32 result = target.Element(10).Convert.Integer.Int32;
-      Assert.AreEqual(result, 2147483647);
+      Assert.AreEqual(2147483647, result);
     }
 
     [TestMethod]
@@ -26,7 +26,7 @@ namespace TestPeterPiper.TestModel
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|2147483647|P|2.3.1";
       var target = Creator.Segment(StringRaw);
       int result = target.Element(10).Convert.Integer.Int;
-      Assert.AreEqual(result, 2147483647);
+      Assert.AreEqual(2147483647, result);
     }
 
     [TestMethod]
@@ -35,7 +35,7 @@ namespace TestPeterPiper.TestModel
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|32767|P|2.3.1";
       var target = Creator.Segment(StringRaw);
       Int16 result = target.Element(10).Convert.Integer.Int16;
-      Assert.AreEqual(result, 32767);
+      Assert.AreEqual(32767, result);
     }
 
     [TestMethod]
@@ -44,7 +44,7 @@ namespace TestPeterPiper.TestModel
       string StringRaw = "MSH|^~\\&|||||||ORM^O01^ORM_O01|9223372036854775807|P|2.3.1";
       var target = Creator.Segment(StringRaw);
       Int64 result = target.Element(10).Convert.Integer.Int64;
-      Assert.AreEqual(result, 9223372036854775807);
+      Assert.AreEqual(9223372036854775807, result);
     }
 
     [TestMethod]

@@ -24,14 +24,14 @@ namespace TestPeterPiper.TestSchema
 
       var SingleMessage = SchemaParser.LoadSingleMessage(PeterPiper.Hl7.V2.Schema.Model.VersionsSupported.V2_4, "ORU", "R01");      
 
-      Assert.AreEqual(SingleMessage.MessageStructureList[0].MessageType, "ORU");
-      Assert.AreEqual(SingleMessage.MessageStructureList[0].MessageEvent, "R01");
+      Assert.AreEqual("ORU", SingleMessage.MessageStructureList[0].MessageType);
+      Assert.AreEqual("R01", SingleMessage.MessageStructureList[0].MessageEvent);
       var PatientResult = SingleMessage.MessageStructureList[0].MessageItemList[1] as PeterPiper.Hl7.V2.Schema.Model.MessageSegmentGroup;
       var OrderObservation = PatientResult.SegmentGroupItemList[1] as PeterPiper.Hl7.V2.Schema.Model.MessageSegmentGroup;
       var Observation = OrderObservation.SegmentGroupItemList[4] as PeterPiper.Hl7.V2.Schema.Model.MessageSegmentGroup;
       var OBX = Observation.SegmentGroupItemList[0] as PeterPiper.Hl7.V2.Schema.Model.MessageSegment;
-      Assert.AreEqual(OBX.Segment.Code, "OBX");
-      Assert.AreEqual(OBX.Segment.SegmentFieldList[5].Description, "Observation Value");
+      Assert.AreEqual("OBX", OBX.Segment.Code);
+      Assert.AreEqual("Observation Value", OBX.Segment.SegmentFieldList[5].Description);
 
       var oMsg = Creator.Message("2.4", "ORU", "R01");
       string test = oMsg.Segment("MSH").Field(10).PathDetail.PathVerbos;
@@ -46,7 +46,7 @@ namespace TestPeterPiper.TestSchema
     {
 
       var AllVersions = SchemaParser.LoadAll();      
-      Assert.AreEqual(AllVersions.Count, 5, "Should have support for 5 version found support for: " + AllVersions.Count);
+      Assert.AreEqual(5, AllVersions.Count, "Should have support for 5 version found support for: " + AllVersions.Count);
     }
 
     [TestMethod]
@@ -71,14 +71,14 @@ namespace TestPeterPiper.TestSchema
 
       var SingleMessage = SchemaParser.LoadSingleMessage(oMsg.PathDetail.MessageVersionSupported, oMsg.PathDetail.MessageType, oMsg.PathDetail.MessageEvent);
 
-      Assert.AreEqual(SingleMessage.MessageStructureList[0].MessageType, "ORU");
-      Assert.AreEqual(SingleMessage.MessageStructureList[0].MessageEvent, "R01");
+      Assert.AreEqual("ORU", SingleMessage.MessageStructureList[0].MessageType);
+      Assert.AreEqual("R01", SingleMessage.MessageStructureList[0].MessageEvent);
       var PatientResult = SingleMessage.MessageStructureList[0].MessageItemList[1] as PeterPiper.Hl7.V2.Schema.Model.MessageSegmentGroup;
       var OrderObservation = PatientResult.SegmentGroupItemList[1] as PeterPiper.Hl7.V2.Schema.Model.MessageSegmentGroup;
       var Observation = OrderObservation.SegmentGroupItemList[4] as PeterPiper.Hl7.V2.Schema.Model.MessageSegmentGroup;
       var OBX = Observation.SegmentGroupItemList[0] as PeterPiper.Hl7.V2.Schema.Model.MessageSegment;
-      Assert.AreEqual(OBX.Segment.Code, "OBX");
-      Assert.AreEqual(OBX.Segment.SegmentFieldList[5].Description, "Observation Value");
+      Assert.AreEqual("OBX", OBX.Segment.Code);
+      Assert.AreEqual("Observation Value", OBX.Segment.SegmentFieldList[5].Description);
 
 
     }

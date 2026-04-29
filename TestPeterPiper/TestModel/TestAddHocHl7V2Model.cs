@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using PeterPiper.Hl7.V2.Model;
-using PeterPiper.Hl7.V2.Support;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestPeterPiper.TestModel
@@ -106,18 +102,10 @@ namespace TestPeterPiper.TestModel
   {
     [TestMethod]
     [TestCategory("Content")]
-    public void TestSubComponentCreate()
-    {
-      var oSubComonentWithEscapes = Creator.SubComponent("\\N\\this is not Highlighted\\H\\ This is higlighted \\N\\ This is not, this is hex  \\X0xC2\\ this is local \\Ztesttest\\ this is field \\F\\ this is Compponet \\S\\ this is SubCompoent \\T\\ repeat \\R\\ this is escape \\E\\ done ");
-      var oSubComonentPlainOLDText = Creator.SubComponent("This is plan old test");
-    }
-
-    [TestMethod]
-    [TestCategory("Content")]
     public void TestSubComponentAddingContent()
     {
-      string FullTestStringWithEscapes = "not highlighted\\H\\ Highlighted \\N\\highlighted ended \\H\\Added highlight \\N\\Added not highlight \\H\\\\N\\";
-      string FullTestStringWithOutEscapes = "not highlighted Highlighted highlighted ended Added highlight Added not highlight ";
+      string fullTestStringWithEscapes = "not highlighted\\H\\ Highlighted \\N\\highlighted ended \\H\\Added highlight \\N\\Added not highlight \\H\\\\N\\";
+      string fullTestStringWithOutEscapes = "not highlighted Highlighted highlighted ended Added highlight Added not highlight ";
       var oSubComonent = Creator.SubComponent("not highlighted\\H\\ Highlighted \\N\\highlighted ended ");
       var oContentEscapeHiglightStart = Creator.Content("H", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
       var oContentEscapeHiglightEnd = Creator.Content("N", PeterPiper.Hl7.V2.Support.Content.ContentType.Escape);
@@ -129,17 +117,17 @@ namespace TestPeterPiper.TestModel
       oSubComonent.Add(oContent2);
       oSubComonent.Add(oContentEscapeHiglightStart.Clone());
       oSubComonent.Add(oContentEscapeHiglightEnd.Clone());
-      Assert.AreEqual(oSubComonent.AsStringRaw, FullTestStringWithEscapes);
-      Assert.AreEqual(oSubComonent.AsString, FullTestStringWithOutEscapes);
-      Assert.AreEqual(FullTestStringWithOutEscapes, oSubComonent.ToString());
-      oSubComonent.AsString = FullTestStringWithOutEscapes;
-      Assert.AreEqual(oSubComonent.AsStringRaw, FullTestStringWithOutEscapes);
-      Assert.AreEqual(oSubComonent.AsString, FullTestStringWithOutEscapes);
-      Assert.AreEqual(oSubComonent.ToString(), FullTestStringWithOutEscapes);
-      oSubComonent.AsStringRaw = FullTestStringWithEscapes;
-      Assert.AreEqual(FullTestStringWithEscapes, oSubComonent.AsStringRaw);
-      Assert.AreEqual(oSubComonent.AsString, FullTestStringWithOutEscapes);
-      Assert.AreEqual(oSubComonent.ToString(), FullTestStringWithOutEscapes);
+      Assert.AreEqual(oSubComonent.AsStringRaw, fullTestStringWithEscapes);
+      Assert.AreEqual(oSubComonent.AsString, fullTestStringWithOutEscapes);
+      Assert.AreEqual(fullTestStringWithOutEscapes, oSubComonent.ToString());
+      oSubComonent.AsString = fullTestStringWithOutEscapes;
+      Assert.AreEqual(oSubComonent.AsStringRaw, fullTestStringWithOutEscapes);
+      Assert.AreEqual(oSubComonent.AsString, fullTestStringWithOutEscapes);
+      Assert.AreEqual(oSubComonent.ToString(), fullTestStringWithOutEscapes);
+      oSubComonent.AsStringRaw = fullTestStringWithEscapes;
+      Assert.AreEqual(fullTestStringWithEscapes, oSubComonent.AsStringRaw);
+      Assert.AreEqual(oSubComonent.AsString, fullTestStringWithOutEscapes);
+      Assert.AreEqual(oSubComonent.ToString(), fullTestStringWithOutEscapes);
 
       oSubComonent = Creator.SubComponent("\\H\\This is bold text\\N\\");
       Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.HighlightOn, oSubComonent.Content(0).EscapeMetaData.EscapeType);
@@ -152,7 +140,7 @@ namespace TestPeterPiper.TestModel
 
       oSubComonent = Creator.SubComponent("\\H\\This is bold text\\N\\Not bold Text");
       oSubComonent.Insert(10, Creator.Content(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine));
-      Assert.AreEqual(oSubComonent.Content(4).EscapeMetaData.EscapeType, PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine, "Incorrect ContentType");
+      Assert.AreEqual(PeterPiper.Hl7.V2.Support.Standard.EscapeType.NewLine, oSubComonent.Content(4).EscapeMetaData.EscapeType, "Incorrect ContentType");
       Assert.AreEqual("\\H\\This is bold text\\N\\Not bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
       oSubComonent.RemoveContentAt(2);
       Assert.AreEqual("\\H\\This is bold textNot bold Text\\.br\\", oSubComonent.AsStringRaw, "Incorrect ContentType");
@@ -178,15 +166,15 @@ namespace TestPeterPiper.TestModel
       oSubComp.Add(oConentText);
       oSubComp.Add(oConentNEscape);
       Assert.AreEqual(oSubComp.Content(0).AsString, String.Empty);
-      Assert.AreEqual(oSubComp.Content(0).AsStringRaw, "H");
-      Assert.AreEqual(oSubComp.Content(1).AsString, "This will be highlighted");
-      Assert.AreEqual(oSubComp.Content(1).AsStringRaw, "This will be highlighted");
+      Assert.AreEqual("H", oSubComp.Content(0).AsStringRaw);
+      Assert.AreEqual("This will be highlighted", oSubComp.Content(1).AsString);
+      Assert.AreEqual("This will be highlighted", oSubComp.Content(1).AsStringRaw);
       Assert.AreEqual(oSubComp.Content(2).AsString, String.Empty);
-      Assert.AreEqual(oSubComp.Content(2).AsStringRaw, "N");
-      Assert.AreEqual(oSubComp.AsStringRaw, "\\H\\This will be highlighted\\N\\");
-      Assert.AreEqual(oSubComp.AsString, "This will be highlighted");
+      Assert.AreEqual("N", oSubComp.Content(2).AsStringRaw);
+      Assert.AreEqual("\\H\\This will be highlighted\\N\\", oSubComp.AsStringRaw);
+      Assert.AreEqual("This will be highlighted", oSubComp.AsString);
       oSubComp.Insert(1, Creator.Content(" 2nd "));
-      Assert.AreEqual(oSubComp.AsStringRaw, "\\H\\ 2nd This will be highlighted\\N\\", "Testing oSubComp.Add and AsString, ASStringRaw");
+      Assert.AreEqual( "\\H\\ 2nd This will be highlighted\\N\\",oSubComp.AsStringRaw, "Testing oSubComp.Add and AsString, ASStringRaw");
 
 
       oSubComp.ClearAll();
@@ -197,7 +185,7 @@ namespace TestPeterPiper.TestModel
       oSubComp.Insert(4, Creator.Content("Sixth "));
       oSubComp.Insert(5, Creator.Content("Seven "));
       oSubComp.Insert(2, Creator.Content("Third "));
-      Assert.AreEqual(oSubComp.AsStringRaw, "First Second Third Fourth Fith Sixth Seven ", "Testing oSubComp.ContentInsertAfter");
+      Assert.AreEqual("First Second Third Fourth Fith Sixth Seven ", oSubComp.AsStringRaw,  "Testing oSubComp.ContentInsertAfter");
 
       oSubComp.ClearAll();
       oSubComp.Insert(100, Creator.Content("First "));
@@ -207,10 +195,10 @@ namespace TestPeterPiper.TestModel
       oSubComp.Insert(0, Creator.Content("Sixth "));
       oSubComp.Insert(0, Creator.Content("Seven "));
       oSubComp.Insert(4, Creator.Content("Third "));
-      Assert.AreEqual(oSubComp.AsStringRaw, "Seven Sixth Fith Fourth Third Second First ", "Testing oSubComp.ContentInsertBefore");
+      Assert.AreEqual("Seven Sixth Fith Fourth Third Second First ",oSubComp.AsStringRaw, "Testing oSubComp.ContentInsertBefore");
 
       oSubComp.RemoveContentAt(3);
-      Assert.AreEqual(oSubComp.AsStringRaw, "Seven Sixth Fith Third Second First ", "testing oSubComp.AsStringRaw");
+      Assert.AreEqual("Seven Sixth Fith Third Second First ",oSubComp.AsStringRaw, "testing oSubComp.AsStringRaw");
 
       oSubComp.ClearAll();
       oSubComp.Add(Creator.Content("First "));
@@ -221,13 +209,13 @@ namespace TestPeterPiper.TestModel
       oSubComp.Insert(1, Creator.Content("Second "));
       oSubComp.Insert(5, Creator.Content("Sixth "));
       oSubComp.RemoveContentAt(3);
-      Assert.AreEqual(oSubComp.AsStringRaw, "First Second Third Fith Sixth Seven ", "Testing oSubComp.Content mixure");
+      Assert.AreEqual("First Second Third Fith Sixth Seven ",oSubComp.AsStringRaw, "Testing oSubComp.Content mixure");
 
-      int Counter = 0;
+      int counter = 0;
       foreach (var oContent in oSubComp.ContentList)
       {
-        Assert.AreEqual(oContent.AsStringRaw, oSubComp.Content(Counter).AsStringRaw, "oSubComp.ContentList not equal to Content(index)");
-        Counter++;
+        Assert.AreEqual(oContent.AsStringRaw, oSubComp.Content(counter).AsStringRaw, "oSubComp.ContentList not equal to Content(index)");
+        counter++;
       }
 
     }
@@ -240,14 +228,14 @@ namespace TestPeterPiper.TestModel
       oSubComp.Add(Creator.Content("Second "));
       oSubComp.Add(Creator.Content("Third "));
       oSubComp.Add(Creator.Content("Fourth "));
-      Assert.AreEqual(oSubComp.ContentCount, 4, "Testing oSubComp.ContentCount");
+      Assert.AreEqual(4,oSubComp.ContentCount, "Testing oSubComp.ContentCount");
       oSubComp.Content(10).AsStringRaw = "";
-      Assert.AreEqual(oSubComp.ContentCount, 4, "Testing oSubComp.ContentCount");
+      Assert.AreEqual(4,oSubComp.ContentCount, "Testing oSubComp.ContentCount");
       if (oSubComp.Content(10).AsStringRaw == "Something")
       {
         Assert.Fail("This should not equal anything");
       }
-      Assert.AreEqual(oSubComp.ContentCount, 4, "Testing oSubComp.ContentCount with temp Content genertaed");
+      Assert.AreEqual(4, oSubComp.ContentCount, "Testing oSubComp.ContentCount with temp Content genertaed");
       oSubComp.Content(10).AsStringRaw = "Ten ";
       Assert.AreEqual(5, oSubComp.ContentCount, "Testing oSubComp.ContentCount with temp Content genertaed");
     }
@@ -795,13 +783,13 @@ namespace TestPeterPiper.TestModel
     {
       var oMessage = Creator.Message("2.3.1", "ORU", "R01");
 
-      StringBuilder sbMessageWithTwoMSHSegments = new StringBuilder();
-      sbMessageWithTwoMSHSegments.Append("MSH|^~\\&|HNAM^RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN"); sbMessageWithTwoMSHSegments.Append("\r");
-      sbMessageWithTwoMSHSegments.Append("PID|1|1038785005^^^QH^PT^CD&A^^\"\"|1038785005^^^QH^PT^CD&A^^\"\"~993171^^^QH^MR^PAH&A^^\"\"~343211^^^QH^MR^LOGH&A^^\"\"~43028819141^^^HIC^MC^^^10/2018~\"\"^^^DVA^VA^^\"\"~420823031C^^^HIC^PEN&9^^^31/07/2015~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|993171-PAH^^^^MR^PAH|KABONGO^KABEDI^^^MS^^C||19520725|F||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|24 Holles Street^^WATERFORD WEST^^4133||(046)927-3235^Home|(046)927-3235^Business|78|3^Widowed|2999^Other Christian, nec|1504352845^^^PAH FIN Number Alias Pool^FIN NBR|43028819141||||||0|||||N"); sbMessageWithTwoMSHSegments.Append("\r");
-      sbMessageWithTwoMSHSegments.Append("MSH|^~\\&|HNAM^RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN"); sbMessageWithTwoMSHSegments.Append("\r");
+      StringBuilder sbMessageWithTwoMshSegments = new StringBuilder();
+      sbMessageWithTwoMshSegments.Append("MSH|^~\\&|HNAM^RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN"); sbMessageWithTwoMshSegments.Append("\r");
+      sbMessageWithTwoMshSegments.Append("PID|1|1038785005^^^QH^PT^CD&A^^\"\"|1038785005^^^QH^PT^CD&A^^\"\"~993171^^^QH^MR^PAH&A^^\"\"~343211^^^QH^MR^LOGH&A^^\"\"~43028819141^^^HIC^MC^^^10/2018~\"\"^^^DVA^VA^^\"\"~420823031C^^^HIC^PEN&9^^^31/07/2015~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|993171-PAH^^^^MR^PAH|KABONGO^KABEDI^^^MS^^C||19520725|F||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|24 Holles Street^^WATERFORD WEST^^4133||(046)927-3235^Home|(046)927-3235^Business|78|3^Widowed|2999^Other Christian, nec|1504352845^^^PAH FIN Number Alias Pool^FIN NBR|43028819141||||||0|||||N"); sbMessageWithTwoMshSegments.Append("\r");
+      sbMessageWithTwoMshSegments.Append("MSH|^~\\&|HNAM^RADNET|PAH^00011|IMPAX-CV|QH|20141208064531||ORM^O01^ORM_O01|Q54356818T82744882|P|2.3.1|||AL|NE|AU|8859/1|EN"); sbMessageWithTwoMshSegments.Append("\r");
       try
       {
-        oMessage = Creator.Message(sbMessageWithTwoMSHSegments.ToString());
+        oMessage = Creator.Message(sbMessageWithTwoMshSegments.ToString());
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
@@ -822,8 +810,8 @@ namespace TestPeterPiper.TestModel
       sbMessage.Append("OBX|3|IS|CD:1278500^RADIOLOGY INPATIENT / OUTPATIENT||CD:3"); sbMessage.Append("\r");
       sbMessage.Append("OBX|4|IS|CD:1278500^RADIOLOGY INPATIENT / OUTPATIENT||CD:4"); sbMessage.Append("\r");
 
-      string MessageString = sbMessage.ToString();
-      oMessage = Creator.Message(MessageString);
+      string messageString = sbMessage.ToString();
+      oMessage = Creator.Message(messageString);
       //Check parsed Message same as Original
       Assert.AreEqual(sbMessage.ToString(), oMessage.AsStringRaw, "Parsed Message is not equal to orginal message.");
 
@@ -861,7 +849,7 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(0, oMessage.SegmentList("OBX").Count, "The oMessage.SegmentList(\"OBX\").Count returns the incorrect value.");
       Assert.AreEqual(1, oMessage.SegmentList("MSH").Count, "The oMessage.SegmentList(\"MSH\").Count returns the incorrect value.");
 
-      oMessage.AsStringRaw = MessageString;
+      oMessage.AsStringRaw = messageString;
       Assert.AreEqual(12, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual(4, oMessage.SegmentList("OBX").Count, "The oMessage.SegmentList(\"OBX\").Count returns the incorrect value.");
       Assert.AreEqual("CD:4", oMessage.SegmentList("OBX")[3].Element(5).Repeat(1).AsString, "oMessage.SegmentList(\"OBX\")[3].Element(5).Repeat(1).AsString returns the incorrect value.");
@@ -876,14 +864,14 @@ namespace TestPeterPiper.TestModel
       oMessage.ClearAll();
       try
       {
-        oMessage.AsString = MessageString;
+        oMessage.AsString = messageString;
         Assert.Fail("An exception should have been thrown");
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
         Assert.AreEqual("While setting a message using AsString() could technically work it would make no sense to have the message's escape characters in MSH-1 & MSH-2 re-escaped. You should be using AsStringRaw()", ae.Message, "Exception should have been thrown in setting oMessage.AsString");
       }
-      var oMesage2 = Creator.Message(MessageString);
+      var oMesage2 = Creator.Message(messageString);
       oMessage = oMesage2.Clone();
       Assert.AreEqual(12, oMessage.SegmentCount(), "The oMessage.CountSegment returns the incorrect value.");
       Assert.AreEqual(4, oMessage.SegmentList("OBX").Count, "The oMessage.SegmentList(\"OBX\").Count returns the incorrect value.");
@@ -896,11 +884,11 @@ namespace TestPeterPiper.TestModel
       Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).SubComponent(1).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).SubComponent(1).IsHL7Null returns the incorrect value.");
       Assert.AreEqual(true, oMessage.Segment("PID").Field(2).Component(8).IsHL7Null, "oMessage.Segment(\"PID\").Field(2).Component(8).IsHL7Null returns the incorrect value.");
 
-      int Counter = 1;
-      foreach (var OBX in oMessage.SegmentList("OBX"))
+      int counter = 1;
+      foreach (var obx in oMessage.SegmentList("OBX"))
       {
-        OBX.Field(1).AsString = Counter.ToString();
-        Counter++;
+        obx.Field(1).AsString = counter.ToString();
+        counter++;
       }
       for (int i = 0; i < oMessage.SegmentList("OBX").Count; i++)
       {
@@ -934,12 +922,12 @@ namespace TestPeterPiper.TestModel
       }
 
       var oDelim = Creator.MessageDelimiters('*', '~', '^', '&', '\\');
-      var oMSHSeg = Creator.Segment("MSH*^~\\&*SUPERLIS*QHPS*EGATE-Atomic*CITEC*20140804143827**ORU^R01*000000000000005EVT6P*P*2.3.1*", oDelim);
-      var oMessage3 = Creator.Message(oMSHSeg);
-      var oPIDSeg = Creator.Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
+      var oMshSeg = Creator.Segment("MSH*^~\\&*SUPERLIS*QHPS*EGATE-Atomic*CITEC*20140804143827**ORU^R01*000000000000005EVT6P*P*2.3.1*", oDelim);
+      var oMessage3 = Creator.Message(oMshSeg);
+      var oPidSeg = Creator.Segment("PID|1|1016826143^^^QH^PT^CD&A^^\"\"|1016826143^^^QH^PT^CD&A^^\"\"~103647^^^QH^MR^TPCH&A^^\"\"~299059^^^QH^MR^PAH&A^^\"\"~165650^^^QH^MR^IPSH&A^^\"\"~297739^^^QH^MR^LOGH&A^^\"\"~B419580^^^QH^MR^RBWH&A^^\"\"~40602113521^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|EDDING^WARREN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Colvin Street^^NORTH IPSWICH^^4305||(042)242-9139^Home|(042)242-9139^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
       try
       {
-        oMessage3.Add(oPIDSeg);
+        oMessage3.Add(oPidSeg);
         Assert.Fail("An exception should have been thrown");
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
@@ -957,22 +945,22 @@ namespace TestPeterPiper.TestModel
         Assert.AreEqual("Index one is the MSH Segment. This segment can not be removed, it can be modified or a new Message instance can be created", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
-      oMessage = Creator.Message(MessageString);
+      oMessage = Creator.Message(messageString);
 
       Assert.AreEqual("|", oMessage.MainSeparator, "oMessage.MainSeparator returns the incorrect value");
       Assert.AreEqual("^~\\&", oMessage.EscapeSequence, "oMessage.MessageDelimiters returns the incorrect value");
       //string testr = oMessage.Segment(1).Field(2).AsString;
 
 
-      StringBuilder sbMSH2Exception = new StringBuilder();
-      sbMSH2Exception.Append("MSH-2 contains the 'Encoding Characters' and is not accessible from the Field or Element object instance as it is critical to message construction.");
-      sbMSH2Exception.Append(Environment.NewLine);
-      sbMSH2Exception.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
+      StringBuilder sbMsh2Exception = new StringBuilder();
+      sbMsh2Exception.Append("MSH-2 contains the 'Encoding Characters' and is not accessible from the Field or Element object instance as it is critical to message construction.");
+      sbMsh2Exception.Append(Environment.NewLine);
+      sbMsh2Exception.Append("Instead, you can access the read only property call 'EscapeSequence' from the Message object instance.");
 
-      StringBuilder sbMSH1Exception = new StringBuilder();
-      sbMSH1Exception.Append("MSH-1 contains the 'Main Separator' character and is not accessible from the Field or Element object instance as it is critical to message construction.");
-      sbMSH1Exception.Append(Environment.NewLine);
-      sbMSH1Exception.Append("Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");
+      StringBuilder sbMsh1Exception = new StringBuilder();
+      sbMsh1Exception.Append("MSH-1 contains the 'Main Separator' character and is not accessible from the Field or Element object instance as it is critical to message construction.");
+      sbMsh1Exception.Append(Environment.NewLine);
+      sbMsh1Exception.Append("Instead, you can access the read only property call 'MainSeparator' from the Message object instance.");
 
       try
       {
@@ -981,7 +969,7 @@ namespace TestPeterPiper.TestModel
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
-        Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual(sbMsh1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -991,7 +979,7 @@ namespace TestPeterPiper.TestModel
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
-        Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual(sbMsh2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -1001,7 +989,7 @@ namespace TestPeterPiper.TestModel
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
-        Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual(sbMsh1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -1011,7 +999,7 @@ namespace TestPeterPiper.TestModel
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
-        Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual(sbMsh2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -1021,7 +1009,7 @@ namespace TestPeterPiper.TestModel
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
-        Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual(sbMsh1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -1031,7 +1019,7 @@ namespace TestPeterPiper.TestModel
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
-        Assert.AreEqual(sbMSH1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual(sbMsh1Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -1041,7 +1029,7 @@ namespace TestPeterPiper.TestModel
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
       {
-        Assert.AreEqual(sbMSH2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
+        Assert.AreEqual(sbMsh2Exception.ToString(), ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
       try
@@ -1076,10 +1064,10 @@ namespace TestPeterPiper.TestModel
         Assert.AreEqual("Unable to modify an existing MSH segment instance with the AsString or AsStringRaw properties. /n You need to create a new Segment instance and use it's constructor or selectively edit this segment's parts.", ae.Message, "Exception should have been thrown due to CustomDelimiters not matching");
       }
 
-      var NewMSH = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
+      var newMsh = Creator.Segment("MSH|^~\\&|SUPERLIS|TRAIN|EGATE-Atomic^prjSUPERLISIn|EMR|20140526095519||ORU^R01|000000000000000000ZN|P|2.3.1");
       try
       {
-        oMessage.Add(NewMSH);
+        oMessage.Add(newMsh);
         Assert.Fail("An exception should have been thrown");
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
@@ -1089,7 +1077,7 @@ namespace TestPeterPiper.TestModel
 
       try
       {
-        oMessage.Insert(2, NewMSH);
+        oMessage.Insert(2, newMsh);
         Assert.Fail("An exception should have been thrown");
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
@@ -1099,7 +1087,7 @@ namespace TestPeterPiper.TestModel
 
       try
       {
-        oMessage.Insert(1, NewMSH);
+        oMessage.Insert(1, newMsh);
         Assert.Fail("An exception should have been thrown");
       }
       catch (PeterPiper.Hl7.V2.CustomException.PeterPiperException ae)
@@ -1108,15 +1096,15 @@ namespace TestPeterPiper.TestModel
       }
 
       //Check Component List works correctly
-      oPIDSeg = Creator.Segment("PID|1|1234567890^^^QH^PT^CD&A^^\"\"|1234567890^^^QH^PT^CD&A^^\"\"~123456^^^QH^MR^TPCH&A^^\"\"~123456^^^QH^MR^PAH&A^^\"\"~123456^^^QH^MR^IPSH&A^^\"\"~123456^^^QH^MR^LOGH&A^^\"\"~B123456^^^QH^MR^RBWH&A^^\"\"~12345678901^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|DUMMYSURNAME^DUMMYGIVEN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Where Street^^NORTH HERE^^1234||(042)242-0000^Home|(042)242-0000^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
-      Counter = 1;
-      foreach (var Com in oPIDSeg.Field(3).ComponentList)
+      oPidSeg = Creator.Segment("PID|1|1234567890^^^QH^PT^CD&A^^\"\"|1234567890^^^QH^PT^CD&A^^\"\"~123456^^^QH^MR^TPCH&A^^\"\"~123456^^^QH^MR^PAH&A^^\"\"~123456^^^QH^MR^IPSH&A^^\"\"~123456^^^QH^MR^LOGH&A^^\"\"~B123456^^^QH^MR^RBWH&A^^\"\"~12345678901^^^HIC^MC^^^10/2015~\"\"^^^DVA^VA^^\"\"~NP^^^HIC^PEN&9^^^\"\"~\"\"^^^HIC^HC^^\"\"~\"\"^^^HIC^SN^^\"\"|299059-PAH^^^^MR^PAH|DUMMYSURNAME^DUMMYGIVEN^EVAN^^MR^^C||19520812|M||42^Not Aborig. or Torres Strait Is. ,Not a South Sea Islander|7 Where Street^^NORTH HERE^^1234||(042)242-0000^Home|(042)242-0000^Business|CD:301058|4^Divorced|7010^No Religion, NFD|1504350552^^^PAH FIN Number Alias Pool^FIN NBR|40602113521||||||0|||||N");
+      counter = 1;
+      foreach (var com in oPidSeg.Field(3).ComponentList)
       {
-        if (Com.ToString() != String.Empty)
-          Com.AsString = Counter.ToString();
-        Counter++;
+        if (com.ToString() != String.Empty)
+          com.AsString = counter.ToString();
+        counter++;
       }
-      Assert.AreEqual("1^^^4^5^6^^8", oPIDSeg.Field(3).AsString, "oPIDSeg.Field(3).ComponentList returns the incorrect values");
+      Assert.AreEqual("1^^^4^5^6^^8", oPidSeg.Field(3).AsString, "oPIDSeg.Field(3).ComponentList returns the incorrect values");
 
       string datetest = PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.AsString(DateTimeOffset.Now, true, PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.DateTimePrecision.DateHourMinSec);
       //string datetest = PeterPiper.Hl7.V2.Support.Content.DateTimeTools.ConvertDateTimeOffsetToString.AsDateHourMinSec(DateTimeOffset.Now, true);
@@ -1124,25 +1112,25 @@ namespace TestPeterPiper.TestModel
       DateTimeOffset testDateTime2 = PeterPiper.Hl7.V2.Support.Tools.DateTimeSupportTools.AsDateTimeOffSet("2014+0800");
 
       oMessage = Creator.Message(sbMessage.ToString());
-      var SubCom = Creator.SubComponent("Sub");
+      var subCom = Creator.SubComponent("Sub");
       var oContent1 = Creator.Content("Test1");
       var oContent2 = Creator.Content("Test2");
-      SubCom.Add(oContent1);
-      SubCom.Content(1).AsStringRaw = "";
-      SubCom.Content(1).AsStringRaw = "Raw1";
-      SubCom.Add(oContent2);
+      subCom.Add(oContent1);
+      subCom.Content(1).AsStringRaw = "";
+      subCom.Content(1).AsStringRaw = "Raw1";
+      subCom.Add(oContent2);
       oContent1.AsString = "Test11";
       oContent2.AsString = "Test22";
       oContent1.AsString = "Test111";
       oContent2.AsString = "Test222";
-      Assert.AreEqual("SubRaw1Test222", SubCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
+      Assert.AreEqual("SubRaw1Test222", subCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
 
 
       var oContent3 = Creator.Content("Test3");
       var oContent4 = Creator.Content("Test4");
-      SubCom.Set(1, oContent3);
-      SubCom.Set(2, oContent4);
-      Assert.AreEqual("SubTest3Test4", SubCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
+      subCom.Set(1, oContent3);
+      subCom.Set(2, oContent4);
+      Assert.AreEqual("SubTest3Test4", subCom.AsStringRaw, "SubCom.AsStringRaw returns the incorrect values");
 
       var oField = Creator.Field("Field");
       oField.Component(1).Set(0, oContent1);
