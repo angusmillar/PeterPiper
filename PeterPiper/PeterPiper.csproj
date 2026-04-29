@@ -12,8 +12,6 @@
     <FileVersion>1.0.1.1</FileVersion>
     <Version>1.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>8.0.0</PackageVersion>
-    <PackageReleaseNotes>Update for .NET 8</PackageReleaseNotes>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>14</LangVersion>
     <Nullable>disable</Nullable>
